@@ -274,7 +274,8 @@ class MainActivity : ComponentActivity() {
                             stopSharingService()
                             Toast.makeText(this, "Sharing complete!", Toast.LENGTH_SHORT).show()
                         }
-                    }
+                    },
+                    packageManager = packageManager
                 )
             }
         }
@@ -422,6 +423,7 @@ fun MainScreen(
     appPackages: List<String>?,
     onStartSharing: (AppGroup, MainViewModel) -> Unit,
     onNextStep: () -> Unit,
+    packageManager: PackageManager,
     viewModel: MainViewModel = viewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -513,7 +515,8 @@ fun MainScreen(
                                     allApps = state.allApps,
                                     group = group,
                                     onDismiss = { showModifyGroupDialog = null },
-                                    onSaveApps = { apps -> viewModel.updateGroupApps(group, apps); showModifyGroupDialog = null }
+                                    onSaveApps = { apps -> viewModel.updateGroupApps(group, apps); showModifyGroupDialog = null },
+                                    packageManager = packageManager
                                 )
                             }
 
@@ -546,7 +549,8 @@ fun MainScreen(
                                     onDeleteClick = { groupToDelete = it },
                                     onToggleExpanded = { viewModel.toggleGroupExpanded(it) },
                                     onGroupClick = { onStartSharing(it, viewModel) },
-                                    inShareMode = inShareMode
+                                    inShareMode = inShareMode,
+                                    packageManager = packageManager
                                 )
                             }
                         }
@@ -716,7 +720,8 @@ fun GroupList(
     onDeleteClick: (AppGroup) -> Unit,
     onToggleExpanded: (AppGroup) -> Unit,
     onGroupClick: (AppGroup) -> Unit,
-    inShareMode: Boolean
+    inShareMode: Boolean,
+    packageManager: PackageManager
 ) {
     LazyColumn {
         items(groups) { group ->
@@ -727,7 +732,8 @@ fun GroupList(
                 onDeleteClick = { onDeleteClick(group) },
                 onToggleExpanded = { onToggleExpanded(group) },
                 onGroupClick = { onGroupClick(group) },
-                inShareMode = inShareMode
+                inShareMode = inShareMode,
+                packageManager = packageManager
             )
         }
     }
@@ -741,11 +747,10 @@ fun GroupItem(
     onDeleteClick: () -> Unit,
     onToggleExpanded: () -> Unit,
     onGroupClick: () -> Unit,
-    inShareMode: Boolean
+    inShareMode: Boolean,
+    packageManager: PackageManager
 ) {
     var menuExpanded by remember { mutableStateOf(false) }
-    val context = LocalContext.current
-    val packageManager = context.packageManager
 
     Card(
         modifier = Modifier.padding(8.dp).fillMaxWidth().clickable(enabled = inShareMode, onClick = onGroupClick),
@@ -763,10 +768,7 @@ fun GroupItem(
                 if (!inShareMode) {
                     Box {
                         IconButton(onClick = { menuExpanded = true }) { Icon(Icons.Default.MoreVert, null) }
-                        DropdownMenu(
-                            expanded = menuExpanded,
-                            onDismissRequest = { menuExpanded = false }
-                        ) {
+                        DropdownMenu(expanded = menuExpanded, onDismissRequest = { menuExpanded = false }) {
                             DropdownMenuItem(text = { Text("Modify Apps") }, onClick = { menuExpanded = false; onModifyClick() })
                             DropdownMenuItem(text = { Text("Reorder Apps") }, onClick = { menuExpanded = false; onReorderClick() })
                             DropdownMenuItem(text = { Text("Delete Group", color = MaterialTheme.colorScheme.error) }, onClick = { menuExpanded = false; onDeleteClick() })
@@ -827,12 +829,11 @@ fun ModifyGroupAppsDialog(
     allApps: List<AppInfo>,
     group: AppGroup,
     onDismiss: () -> Unit,
-    onSaveApps: (List<AppInfo>) -> Unit
+    onSaveApps: (List<AppInfo>) -> Unit,
+    packageManager: PackageManager
 ) {
     val selectedApps = remember { mutableStateListOf<AppInfo>().apply { addAll(group.apps) } }
     var searchQuery by remember { mutableStateOf("") }
-    val context = LocalContext.current
-    val packageManager = context.packageManager
 
     AlertDialog(
         onDismissRequest = onDismiss,
