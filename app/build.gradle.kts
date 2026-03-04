@@ -16,8 +16,8 @@ android {
         applicationId = "com.multiappshare"
         minSdk = 26
         targetSdk = 36
-        versionCode = 2
-        versionName = "1.1.0"
+        versionCode = 4
+        versionName = "1.3.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -37,6 +37,17 @@ android {
     }
     buildFeatures {
         compose = true
+    }
+}
+
+// Automatically rename the APK file to include the version name
+androidComponents {
+    onVariants { variant ->
+        variant.outputs.forEach { output ->
+            // Using reflection to set outputFileName as it's the most reliable way in current KTS/AGP versions
+            val outputImpl = output as? com.android.build.gradle.internal.api.BaseVariantOutputImpl
+            outputImpl?.outputFileName = "MultiAppShare-v${android.defaultConfig.versionName}-${variant.name}.apk"
+        }
     }
 }
 

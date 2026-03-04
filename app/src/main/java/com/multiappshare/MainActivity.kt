@@ -23,6 +23,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -184,6 +185,14 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             }
             groupsRepository.saveGroups(updatedGroups)
             _uiState.value = currentState.copy(groups = updatedGroups)
+        }
+    }
+
+    fun updateGroupsOrder(groups: List<AppGroup>) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val currentState = _uiState.value as? MainUiState.Success ?: return@launch
+            groupsRepository.saveGroups(groups)
+            _uiState.value = currentState.copy(groups = groups)
         }
     }
 
@@ -429,6 +438,7 @@ fun MainScreen(
     var showCreateGroupDialog by remember { mutableStateOf(false) }
     var showModifyGroupDialog by remember { mutableStateOf<AppGroup?>(null) }
     var showReorderDialog by remember { mutableStateOf<AppGroup?>(null) }
+    var showSortGroupsDialog by remember { mutableStateOf(false) }
     var groupToDelete by remember { mutableStateOf<AppGroup?>(null) }
     var showHistoryDialog by remember { mutableStateOf(false) }
     var showAboutDialog by remember { mutableStateOf(false) }
@@ -449,6 +459,14 @@ fun MainScreen(
                             expanded = menuExpanded,
                             onDismissRequest = { menuExpanded = false }
                         ) {
+                            DropdownMenuItem(
+                                text = { Text("Sort Groups") },
+                                leadingIcon = { Icon(Icons.AutoMirrored.Filled.List, null) },
+                                onClick = {
+                                    showSortGroupsDialog = true
+                                    menuExpanded = false
+                                }
+                            )
                             DropdownMenuItem(
                                 text = { Text("History") },
                                 leadingIcon = { Icon(Icons.Default.Refresh, null) },
@@ -524,6 +542,14 @@ fun MainScreen(
                                     group = group,
                                     onDismiss = { showReorderDialog = null },
                                     onSaveOrder = { apps -> viewModel.updateGroupApps(group, apps); showReorderDialog = null }
+                                )
+                            }
+
+                            if (showSortGroupsDialog) {
+                                SortGroupsDialog(
+                                    groups = state.groups,
+                                    onDismiss = { showSortGroupsDialog = false },
+                                    onSaveOrder = { groups -> viewModel.updateGroupsOrder(groups); showSortGroupsDialog = false }
                                 )
                             }
 
@@ -892,6 +918,38 @@ fun ReorderAppsDialog(
             }
         },
         confirmButton = { Button(onClick = { onSaveOrder(apps.toList()) }) { Text("Save Order") } },
+        dismissButton = { TextButton(onClick = onDismiss) { Text("Cancel") } }
+    )
+}
+
+@Composable
+fun SortGroupsDialog(
+    groups: List<AppGroup>,
+    onDismiss: () -> Unit,
+    onSaveOrder: (List<AppGroup>) -> Unit
+) {
+    val sortedGroups = remember { mutableStateListOf<AppGroup>().apply { addAll(groups) } }
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text("Sort Groups") },
+        text = {
+            LazyColumn(modifier = Modifier.height(300.dp)) {
+                itemsIndexed(sortedGroups) { index, group ->
+                    Row(modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp), verticalAlignment = Alignment.CenterVertically) {
+                        Icon(imageVector = Icons.Default.Menu, contentDescription = null, modifier = Modifier.padding(8.dp), tint = MaterialTheme.colorScheme.onSurfaceVariant)
+                        Text(text = group.name, modifier = Modifier.weight(1f))
+                        IconButton(onClick = { val item = sortedGroups.removeAt(index); sortedGroups.add(index - 1, item) }, enabled = index > 0) {
+                            Icon(Icons.Default.KeyboardArrowUp, null)
+                        }
+                        IconButton(onClick = { val item = sortedGroups.removeAt(index); sortedGroups.add(index + 1, item) }, enabled = index < sortedGroups.size - 1) {
+                            Icon(Icons.Default.KeyboardArrowDown, null)
+                        }
+                    }
+                    if (index < sortedGroups.size - 1) HorizontalDivider()
+                }
+            }
+        },
+        confirmButton = { Button(onClick = { onSaveOrder(sortedGroups.toList()) }) { Text("Save Order") } },
         dismissButton = { TextButton(onClick = onDismiss) { Text("Cancel") } }
     )
 }
