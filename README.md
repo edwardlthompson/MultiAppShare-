@@ -21,20 +21,22 @@
 - **Data Persistence**: Kotlin Serialization (JSON)
 - **Design System**: Material 3
 
-## 📦 Getting Started
+## 📦 Installation & Setup
 
-### Prerequisites
+### 📥 Download the APK (Recommended)
+You can download the latest pre-built version of the app directly from the [Releases](https://github.com/[Your-GitHub-Username]/MultiAppShare/releases) page. 
 
-- Android Device/Emulator (API 26+)
-- [Android Studio Ladybug](https://developer.android.com/studio) or newer
+1. Download the `app-debug.apk` (or `app-release.apk`) to your Android device.
+2. Open the file to install.
+3. If prompted, allow "Install from unknown sources" in your device settings.
 
-### Installation
-
+### 💻 Build from Source (Optional)
+If you prefer to build the app yourself:
 1. Clone the repository:
    ```bash
    git clone https://github.com/[Your-GitHub-Username]/MultiAppShare.git
    ```
-2. Open the project in Android Studio.
+2. Open the project in [Android Studio Ladybug](https://developer.android.com/studio) or newer.
 3. Build and run the app on your device.
 
 ## 📖 How to Use
