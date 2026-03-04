@@ -4,20 +4,18 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
 }
 
+val appVersion = "1.3.0"
+
 android {
     namespace = "com.multiappshare"
-    compileSdk {
-        version = release(36) {
-            minorApiLevel = 1
-        }
-    }
-
+    compileSdk = 36
+    
     defaultConfig {
         applicationId = "com.multiappshare"
         minSdk = 26
         targetSdk = 36
         versionCode = 4
-        versionName = "1.3.0"
+        versionName = appVersion
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -40,15 +38,11 @@ android {
     }
 }
 
-// Automatically rename the APK file to include the version name
-androidComponents {
-    onVariants { variant ->
-        variant.outputs.forEach { output ->
-            // Using reflection to set outputFileName as it's the most reliable way in current KTS/AGP versions
-            val outputImpl = output as? com.android.build.gradle.internal.api.BaseVariantOutputImpl
-            outputImpl?.outputFileName = "MultiAppShare-v${android.defaultConfig.versionName}-${variant.name}.apk"
-        }
-    }
+// Fixed APK renaming for AGP 8.0+ / 9.0+
+// This sets the base name for artifacts (APKs and AABs).
+// AGP will automatically produce files like: MultiAppShare-v1.3.0-release.apk
+base {
+    archivesName.set("MultiAppShare-v$appVersion")
 }
 
 dependencies {
