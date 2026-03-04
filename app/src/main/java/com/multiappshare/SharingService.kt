@@ -6,13 +6,11 @@ import android.app.PendingIntent
 import android.app.Service
 import android.content.ClipData
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.content.pm.ServiceInfo
 import android.net.Uri
 import android.os.Build
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
-import androidx.core.content.ContextCompat
 
 class SharingService : Service() {
 
@@ -58,11 +56,6 @@ class SharingService : Service() {
             return START_NOT_STICKY
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && ContextCompat.checkSelfPermission(this, android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-            stopSelf()
-            return START_NOT_STICKY
-        }
-
         val notification = createNotification(appPackages, currentIndex).build()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
             startForeground(NOTIFICATION_ID, notification, ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC)
@@ -76,12 +69,7 @@ class SharingService : Service() {
     }
 
     private fun stopServiceForeground() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            stopForeground(STOP_FOREGROUND_REMOVE)
-        } else {
-            @Suppress("DEPRECATION")
-            stopForeground(true)
-        }
+        stopForeground(STOP_FOREGROUND_REMOVE)
     }
 
     private fun createNotification(appPackages: List<String>, currentIndex: Int): NotificationCompat.Builder {
@@ -119,8 +107,8 @@ class SharingService : Service() {
         
         try {
             startActivity(shareIntent)
-        } catch (e: Exception) {
-            e.printStackTrace()
+        } catch (_: Exception) {
+            // Silently handle exceptions for missing packages
         }
     }
 
@@ -142,10 +130,8 @@ class SharingService : Service() {
     }
 
     private fun createNotificationChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(CHANNEL_ID, "Sharing Service", NotificationManager.IMPORTANCE_HIGH)
-            notificationManager.createNotificationChannel(channel)
-        }
+        val channel = NotificationChannel(CHANNEL_ID, "Sharing Service", NotificationManager.IMPORTANCE_HIGH)
+        notificationManager.createNotificationChannel(channel)
     }
 
     override fun onBind(intent: Intent?): IBinder? = null

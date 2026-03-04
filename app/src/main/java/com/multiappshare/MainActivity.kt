@@ -127,15 +127,22 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch(Dispatchers.IO) {
             val groups = groupsRepository.loadGroups()
             val history = historyRepository.loadHistory()
-            val allApps = packageManager.getInstalledApplications(PackageManager.GET_META_DATA)
-                .filter { packageManager.getLaunchIntentForPackage(it.packageName) != null }
-                .map {
-                    AppInfo(
-                        appName = it.loadLabel(packageManager).toString(),
-                        packageName = it.packageName
-                    )
-                }
-                .sortedBy { it.appName.lowercase() }
+            
+            val shareIntent = Intent(Intent.ACTION_SEND).apply { type = "*/*" }
+            val resolveInfos = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                packageManager.queryIntentActivities(shareIntent, PackageManager.ResolveInfoFlags.of(0))
+            } else {
+                @Suppress("DEPRECATION")
+                packageManager.queryIntentActivities(shareIntent, 0)
+            }
+
+            val allApps = resolveInfos.map {
+                AppInfo(
+                    appName = it.loadLabel(packageManager).toString(),
+                    packageName = it.activityInfo.packageName
+                )
+            }.distinctBy { it.packageName }.sortedBy { it.appName.lowercase() }
+
             _uiState.value = MainUiState.Success(groups, allApps, history)
         }
     }
@@ -267,8 +274,7 @@ class MainActivity : ComponentActivity() {
                             stopSharingService()
                             Toast.makeText(this, "Sharing complete!", Toast.LENGTH_SHORT).show()
                         }
-                    },
-                    packageManager = packageManager
+                    }
                 )
             }
         }
@@ -350,11 +356,11 @@ class MainActivity : ComponentActivity() {
         val resolveInfos = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             packageManager.queryIntentActivities(
                 shareIntent,
-                PackageManager.ResolveInfoFlags.of(PackageManager.MATCH_DEFAULT_ONLY.toLong())
+                PackageManager.ResolveInfoFlags.of(0)
             )
         } else {
             @Suppress("DEPRECATION")
-            packageManager.queryIntentActivities(shareIntent, PackageManager.MATCH_DEFAULT_ONLY)
+            packageManager.queryIntentActivities(shareIntent, 0)
         }
         
         val compatiblePackages = resolveInfos.map { it.activityInfo.packageName }.toSet()
@@ -416,7 +422,6 @@ fun MainScreen(
     appPackages: List<String>?,
     onStartSharing: (AppGroup, MainViewModel) -> Unit,
     onNextStep: () -> Unit,
-    packageManager: PackageManager,
     viewModel: MainViewModel = viewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -508,8 +513,7 @@ fun MainScreen(
                                     allApps = state.allApps,
                                     group = group,
                                     onDismiss = { showModifyGroupDialog = null },
-                                    onSaveApps = { apps -> viewModel.updateGroupApps(group, apps); showModifyGroupDialog = null },
-                                    packageManager = packageManager
+                                    onSaveApps = { apps -> viewModel.updateGroupApps(group, apps); showModifyGroupDialog = null }
                                 )
                             }
 
@@ -542,8 +546,7 @@ fun MainScreen(
                                     onDeleteClick = { groupToDelete = it },
                                     onToggleExpanded = { viewModel.toggleGroupExpanded(it) },
                                     onGroupClick = { onStartSharing(it, viewModel) },
-                                    inShareMode = inShareMode,
-                                    packageManager = packageManager
+                                    inShareMode = inShareMode
                                 )
                             }
                         }
@@ -713,8 +716,7 @@ fun GroupList(
     onDeleteClick: (AppGroup) -> Unit,
     onToggleExpanded: (AppGroup) -> Unit,
     onGroupClick: (AppGroup) -> Unit,
-    inShareMode: Boolean,
-    packageManager: PackageManager
+    inShareMode: Boolean
 ) {
     LazyColumn {
         items(groups) { group ->
@@ -725,8 +727,7 @@ fun GroupList(
                 onDeleteClick = { onDeleteClick(group) },
                 onToggleExpanded = { onToggleExpanded(group) },
                 onGroupClick = { onGroupClick(group) },
-                inShareMode = inShareMode,
-                packageManager = packageManager
+                inShareMode = inShareMode
             )
         }
     }
@@ -740,10 +741,11 @@ fun GroupItem(
     onDeleteClick: () -> Unit,
     onToggleExpanded: () -> Unit,
     onGroupClick: () -> Unit,
-    inShareMode: Boolean,
-    packageManager: PackageManager
+    inShareMode: Boolean
 ) {
     var menuExpanded by remember { mutableStateOf(false) }
+    val context = LocalContext.current
+    val packageManager = context.packageManager
 
     Card(
         modifier = Modifier.padding(8.dp).fillMaxWidth().clickable(enabled = inShareMode, onClick = onGroupClick),
@@ -761,7 +763,10 @@ fun GroupItem(
                 if (!inShareMode) {
                     Box {
                         IconButton(onClick = { menuExpanded = true }) { Icon(Icons.Default.MoreVert, null) }
-                        DropdownMenu(expanded = menuExpanded, onDismissRequest = { menuExpanded = false }) {
+                        DropdownMenu(
+                            expanded = menuExpanded,
+                            onDismissRequest = { menuExpanded = false }
+                        ) {
                             DropdownMenuItem(text = { Text("Modify Apps") }, onClick = { menuExpanded = false; onModifyClick() })
                             DropdownMenuItem(text = { Text("Reorder Apps") }, onClick = { menuExpanded = false; onReorderClick() })
                             DropdownMenuItem(text = { Text("Delete Group", color = MaterialTheme.colorScheme.error) }, onClick = { menuExpanded = false; onDeleteClick() })
@@ -822,11 +827,12 @@ fun ModifyGroupAppsDialog(
     allApps: List<AppInfo>,
     group: AppGroup,
     onDismiss: () -> Unit,
-    onSaveApps: (List<AppInfo>) -> Unit,
-    packageManager: PackageManager
+    onSaveApps: (List<AppInfo>) -> Unit
 ) {
     val selectedApps = remember { mutableStateListOf<AppInfo>().apply { addAll(group.apps) } }
     var searchQuery by remember { mutableStateOf("") }
+    val context = LocalContext.current
+    val packageManager = context.packageManager
 
     AlertDialog(
         onDismissRequest = onDismiss,
