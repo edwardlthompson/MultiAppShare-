@@ -26,7 +26,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -36,6 +35,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -87,7 +87,7 @@ class GroupsRepository(context: Context) {
         if (!file.exists()) return emptyList()
         return try {
             Json.decodeFromString(file.readText())
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             emptyList()
         }
     }
@@ -105,7 +105,7 @@ class HistoryRepository(context: Context) {
         if (!file.exists()) return emptyList()
         return try {
             Json.decodeFromString(file.readText())
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             emptyList()
         }
     }
@@ -192,7 +192,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 }
 
 sealed class MainUiState {
-    object Loading : MainUiState()
+    data object Loading : MainUiState()
     data class Success(val groups: List<AppGroup>, val allApps: List<AppInfo>, val history: List<HistoryItem>) : MainUiState()
 }
 
@@ -202,13 +202,13 @@ class MainActivity : ComponentActivity() {
         ActivityResultContracts.RequestPermission()
     ) { _ -> }
 
-    private var currentUri = mutableStateOf<Uri?>(null)
-    private var currentText = mutableStateOf<String?>(null)
-    private var currentMimeType = mutableStateOf<String?>(null)
+    private val currentUri = mutableStateOf<Uri?>(null)
+    private val currentText = mutableStateOf<String?>(null)
+    private val currentMimeType = mutableStateOf<String?>(null)
     
-    private var appPackages = mutableStateOf<List<String>?>(null)
-    private var currentIndex = mutableIntStateOf(0)
-    private var isSharingStarted = mutableStateOf(false)
+    private val appPackages = mutableStateOf<List<String>?>(null)
+    private val currentIndex = mutableIntStateOf(0)
+    private val isSharingStarted = mutableStateOf(false)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -241,7 +241,7 @@ class MainActivity : ComponentActivity() {
                                 "Failed: No compatible apps",
                                 true
                             ))
-                            Toast.makeText(this, "No apps in '${group.name}' support this content.", Toast.LENGTH_LONG).show()
+                            Toast.makeText(this@MainActivity, "No apps in '${group.name}' support this content.", Toast.LENGTH_LONG).show()
                         } else {
                             appPackages.value = compatiblePackages
                             currentIndex.intValue = 0
@@ -447,16 +447,16 @@ fun MainScreen(
                                 text = { Text("History") },
                                 leadingIcon = { Icon(Icons.Default.Refresh, null) },
                                 onClick = {
-                                    menuExpanded = false
                                     showHistoryDialog = true
+                                    menuExpanded = false
                                 }
                             )
                             DropdownMenuItem(
                                 text = { Text("About") },
                                 leadingIcon = { Icon(Icons.Default.Info, null) },
                                 onClick = {
-                                    menuExpanded = false
                                     showAboutDialog = true
+                                    menuExpanded = false
                                 }
                             )
                         }
@@ -517,8 +517,7 @@ fun MainScreen(
                                 ReorderAppsDialog(
                                     group = group,
                                     onDismiss = { showReorderDialog = null },
-                                    onSaveOrder = { apps -> viewModel.updateGroupApps(group, apps); showReorderDialog = null },
-                                    packageManager = packageManager
+                                    onSaveOrder = { apps -> viewModel.updateGroupApps(group, apps); showReorderDialog = null }
                                 )
                             }
 
@@ -661,8 +660,14 @@ fun HistoryDialog(history: List<HistoryItem>, onDismiss: () -> Unit) {
 fun AboutDialog(onDismiss: () -> Unit) {
     val context = LocalContext.current
     val version = try {
-        context.packageManager.getPackageInfo(context.packageName, 0).versionName
-    } catch (e: Exception) {
+        val pInfo = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            context.packageManager.getPackageInfo(context.packageName, PackageManager.PackageInfoFlags.of(0))
+        } else {
+            @Suppress("DEPRECATION")
+            context.packageManager.getPackageInfo(context.packageName, 0)
+        }
+        pInfo.versionName
+    } catch (_: Exception) {
         "Unknown"
     }
 
@@ -680,7 +685,7 @@ fun AboutDialog(onDismiss: () -> Unit) {
                     text = "Telegram: @EdwardLeeThompson",
                     color = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.clickable {
-                        context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://t.me/EdwardLeeThompson")))
+                        context.startActivity(Intent(Intent.ACTION_VIEW, "https://t.me/EdwardLeeThompson".toUri()))
                     }
                 )
                 Spacer(modifier = Modifier.height(16.dp))
@@ -689,7 +694,7 @@ fun AboutDialog(onDismiss: () -> Unit) {
                     text = "Venmo Donation Link",
                     color = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.clickable {
-                        context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://venmo.com/code?user_id=1857304970395648420")))
+                        context.startActivity(Intent(Intent.ACTION_VIEW, "https://venmo.com/code?user_id=1857304970395648420".toUri()))
                     }
                 )
             }
@@ -784,7 +789,7 @@ fun GroupItem(
 
 @Composable
 fun AppListItem(app: AppInfo, packageManager: PackageManager) {
-    val icon = try { packageManager.getApplicationIcon(app.packageName) } catch (e: Exception) { null }
+    val icon = try { packageManager.getApplicationIcon(app.packageName) } catch (_: Exception) { null }
     Row(modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp), verticalAlignment = Alignment.CenterVertically) {
         if (icon != null) {
             Image(painter = rememberDrawablePainter(icon), contentDescription = null, modifier = Modifier.size(40.dp))
@@ -837,7 +842,7 @@ fun ModifyGroupAppsDialog(
                         Row(modifier = Modifier.fillMaxWidth().clickable {
                             if (isSelected) selectedApps.removeAll { it.packageName == app.packageName } else selectedApps.add(app)
                         }.padding(8.dp), verticalAlignment = Alignment.CenterVertically) {
-                            val icon = try { packageManager.getApplicationIcon(app.packageName) } catch (e: Exception) { null }
+                            val icon = try { packageManager.getApplicationIcon(app.packageName) } catch (_: Exception) { null }
                             if (icon != null) Image(painter = rememberDrawablePainter(icon), contentDescription = null, modifier = Modifier.size(40.dp))
                             else Spacer(modifier = Modifier.size(40.dp))
                             Spacer(modifier = Modifier.width(8.dp))
@@ -857,8 +862,7 @@ fun ModifyGroupAppsDialog(
 fun ReorderAppsDialog(
     group: AppGroup,
     onDismiss: () -> Unit,
-    onSaveOrder: (List<AppInfo>) -> Unit,
-    packageManager: PackageManager
+    onSaveOrder: (List<AppInfo>) -> Unit
 ) {
     val apps = remember { mutableStateListOf<AppInfo>().apply { addAll(group.apps) } }
     AlertDialog(
