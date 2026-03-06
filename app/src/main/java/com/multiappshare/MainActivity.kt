@@ -123,11 +123,12 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         loadData()
     }
 
-    private fun loadData() {
+    fun loadData() {
         viewModelScope.launch(Dispatchers.IO) {
             val groups = groupsRepository.loadGroups()
             val history = historyRepository.loadHistory()
             
+            // Query for apps that handle any MIME type for ACTION_SEND
             val shareIntent = Intent(Intent.ACTION_SEND).apply { type = "*/*" }
             val resolveInfos = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 packageManager.queryIntentActivities(shareIntent, PackageManager.ResolveInfoFlags.of(0))
@@ -533,6 +534,7 @@ fun MainScreen(
                                     group = group,
                                     onDismiss = { showModifyGroupDialog = null },
                                     onSaveApps = { apps -> viewModel.updateGroupApps(group, apps); showModifyGroupDialog = null },
+                                    onRefresh = { viewModel.loadData() },
                                     packageManager = packageManager
                                 )
                             }
@@ -855,6 +857,7 @@ fun ModifyGroupAppsDialog(
     group: AppGroup,
     onDismiss: () -> Unit,
     onSaveApps: (List<AppInfo>) -> Unit,
+    onRefresh: () -> Unit,
     packageManager: PackageManager
 ) {
     val selectedApps = remember { mutableStateListOf<AppInfo>().apply { addAll(group.apps) } }
@@ -862,7 +865,14 @@ fun ModifyGroupAppsDialog(
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Modify ${group.name}") },
+        title = { 
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text("Modify ${group.name}", modifier = Modifier.weight(1f))
+                IconButton(onClick = onRefresh) {
+                    Icon(Icons.Default.Refresh, contentDescription = "Refresh App List")
+                }
+            }
+        },
         text = {
             Column {
                 OutlinedTextField(value = searchQuery, onValueChange = { searchQuery = it }, label = { Text("Search apps") }, modifier = Modifier.fillMaxWidth(), singleLine = true)
