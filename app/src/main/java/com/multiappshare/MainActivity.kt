@@ -198,25 +198,27 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             }
             resolveInfos.addAll(launcherInfos)
 
-            val allApps = resolveInfos.map {
-                val appLabel = it.activityInfo.applicationInfo.loadLabel(packageManager).toString()
-                val activityLabel = it.loadLabel(packageManager).toString()
-                
-                val finalName = if (appLabel == activityLabel) {
-                    val shortName = it.activityInfo.name.substringAfterLast('.')
-                    "$appLabel - $shortName"
-                } else {
-                    "$appLabel - $activityLabel"
-                }
+            val allApps = resolveInfos
+                .distinctBy { it.activityInfo.packageName + "/" + it.activityInfo.name }
+                .map {
+                    val appLabel = it.activityInfo.applicationInfo.loadLabel(packageManager).toString()
+                    val activityLabel = it.loadLabel(packageManager).toString()
+                    
+                    val finalName = if (appLabel == activityLabel) {
+                        val shortName = it.activityInfo.name.substringAfterLast('.')
+                        "$appLabel - $shortName"
+                    } else {
+                        "$appLabel - $activityLabel"
+                    }
 
-                AppInfo(
-                    appName = finalName,
-                    packageName = it.activityInfo.packageName,
-                    activityName = it.activityInfo.name
-                )
-            }.filter { it.packageName != getApplication<Application>().packageName } // Exclude self
-             .distinctBy { "${it.packageName}/${it.activityName}" }
-             .sortedBy { it.appName.lowercase() }
+                    AppInfo(
+                        appName = finalName,
+                        packageName = it.activityInfo.packageName,
+                        activityName = it.activityInfo.name
+                    )
+                }
+                .filter { it.packageName != getApplication<Application>().packageName } // Exclude self
+                .sortedBy { it.appName.lowercase() }
 
             _uiState.value = MainUiState.Success(groups, allApps, history)
         }
@@ -961,9 +963,13 @@ fun ModifyGroupAppsDialog(
                 LazyColumn(modifier = Modifier.height(300.dp)) {
                     val filteredApps = allApps.filter { it.appName.contains(searchQuery, ignoreCase = true) }
                     items(filteredApps) { app ->
-                        val isSelected = selectedApps.any { it.packageName == app.packageName }
+                        val isSelected = selectedApps.any { it.packageName == app.packageName && it.activityName == app.activityName }
                         Row(modifier = Modifier.fillMaxWidth().clickable {
-                            if (isSelected) selectedApps.removeAll { it.packageName == app.packageName } else selectedApps.add(app)
+                            if (isSelected) {
+                                selectedApps.removeAll { it.packageName == app.packageName && it.activityName == app.activityName }
+                            } else {
+                                selectedApps.add(app)
+                            }
                         }.padding(8.dp), verticalAlignment = Alignment.CenterVertically) {
                             val icon = try { packageManager.getApplicationIcon(app.packageName) } catch (_: Exception) { null }
                             if (icon != null) Image(painter = rememberDrawablePainter(icon), contentDescription = null, modifier = Modifier.size(40.dp))
