@@ -1,0 +1,11 @@
+Multi App Share is a utility application designed to streamline the process of sharing content across multiple applications. Instead of manually sharing a photo, video, link, or text to each social media platform or messaging app one by one, you can create custom groups and share to all of them in a sequential, guided workflow.
+
+**Features**
+*   **Custom App Groups**: Organize your target apps into groups like "Social Media", "Work", or "Friends".
+*   **Sequential Sharing**: Share content once, and the app natively guides you through each target app in your group without having to completely leave your current app context.
+*   **Multi-Media Sharing**: Share single or multiple photos, videos, and mixed media seamlessly via Android's `ACTION_SEND_MULTIPLE`.
+*   **Smart Compatibility**: Automatically detects and skips apps that do not support the specific media type (photo, video, link, text) you are sharing using advanced Intent resolution caching.
+*   **History Tracking**: Keeps a log of your last 50 sharing activities, highlighting any failures in red.
+*   **Reorderable Lists**: Easily adjust the order in which apps are launched within each group using an intuitive drag-and-drop interface.
+
+100% Free and Open Source.
