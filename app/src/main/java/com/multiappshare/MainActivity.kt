@@ -117,7 +117,6 @@ class HistoryRepository(context: Context) {
 class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val groupsRepository = GroupsRepository(application)
     private val historyRepository = HistoryRepository(application)
-    private val historyRepository = HistoryRepository(application)
     private val packageManager: PackageManager = application.packageManager
 
     private val compatiblePackagesCache = mutableMapOf<Pair<String, String>, Set<String>>()
@@ -536,7 +535,7 @@ fun MainScreen(
                 SharingInProgress(
                     mimeType = mimeType,
                     text = text,
-                    uri = uri,
+                    uris = uris,
                     currentIndex = currentIndex,
                     totalApps = appPackages.size,
                     onNextStep = onNextStep
@@ -616,6 +615,7 @@ fun MainScreen(
                     }
                 }
             }
+        }
         }
     }
 }
