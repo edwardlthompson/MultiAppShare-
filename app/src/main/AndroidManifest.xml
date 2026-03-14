@@ -31,6 +31,10 @@
             <action android:name="android.intent.action.SEND_MULTIPLE" />
             <data android:mimeType="video/*" />
         </intent>
+        <intent>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent>
     </queries>
 
     <!-- Removed QUERY_ALL_PACKAGES as the <queries> block above is sufficient for sharing functions -->

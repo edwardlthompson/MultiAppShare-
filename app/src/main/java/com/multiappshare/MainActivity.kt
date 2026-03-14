@@ -151,31 +151,59 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun loadData() {
+        compatiblePackagesCache.clear()
         viewModelScope.launch(Dispatchers.IO) {
             val groups = groupsRepository.loadGroups()
             val history = historyRepository.loadHistory()
             
-            // Query for apps that handle common MIME types for ACTION_SEND
-            val mimeTypes = listOf("*/*", "text/plain", "image/*", "video/*")
+            // Query for apps that handle common MIME types for ACTION_SEND and ACTION_SEND_MULTIPLE
+            val mimeTypes = listOf("*/*", "text/plain", "image/*", "video/*", "application/*", "text/html", "audio/*")
             val resolveInfos = mutableListOf<android.content.pm.ResolveInfo>()
             
+            val flag = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                PackageManager.ResolveInfoFlags.of(0)
+            } else {
+                0
+            }
+
             for (mime in mimeTypes) {
                 val shareIntent = Intent(Intent.ACTION_SEND).apply { type = mime }
                 val infos = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                    packageManager.queryIntentActivities(shareIntent, PackageManager.ResolveInfoFlags.of(0))
+                    packageManager.queryIntentActivities(shareIntent, flag as PackageManager.ResolveInfoFlags)
                 } else {
                     @Suppress("DEPRECATION")
-                    packageManager.queryIntentActivities(shareIntent, 0)
+                    packageManager.queryIntentActivities(shareIntent, flag as Int)
                 }
                 resolveInfos.addAll(infos)
+                
+                val shareMultipleIntent = Intent(Intent.ACTION_SEND_MULTIPLE).apply { type = mime }
+                val multipleInfos = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    packageManager.queryIntentActivities(shareMultipleIntent, flag as PackageManager.ResolveInfoFlags)
+                } else {
+                    @Suppress("DEPRECATION")
+                    packageManager.queryIntentActivities(shareMultipleIntent, flag as Int)
+                }
+                resolveInfos.addAll(multipleInfos)
             }
+
+            // Also query for launcher apps to capture apps that might only specify specific MIME types we missed
+            val launcherIntent = Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER)
+            val launcherInfos = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                packageManager.queryIntentActivities(launcherIntent, flag as PackageManager.ResolveInfoFlags)
+            } else {
+                @Suppress("DEPRECATION")
+                packageManager.queryIntentActivities(launcherIntent, flag as Int)
+            }
+            resolveInfos.addAll(launcherInfos)
 
             val allApps = resolveInfos.map {
                 AppInfo(
                     appName = it.loadLabel(packageManager).toString(),
                     packageName = it.activityInfo.packageName
                 )
-            }.distinctBy { it.packageName }.sortedBy { it.appName.lowercase() }
+            }.filter { it.packageName != getApplication<Application>().packageName } // Exclude self
+             .distinctBy { it.packageName }
+             .sortedBy { it.appName.lowercase() }
 
             _uiState.value = MainUiState.Success(groups, allApps, history)
         }
@@ -452,6 +480,7 @@ fun MainScreen(
     packageManager: PackageManager,
     viewModel: MainViewModel = viewModel()
 ) {
+    val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsState()
     var showCreateGroupDialog by remember { mutableStateOf(false) }
     var showModifyGroupDialog by remember { mutableStateOf<AppGroup?>(null) }
@@ -565,7 +594,10 @@ fun MainScreen(
                                     group = group,
                                     onDismiss = { showModifyGroupDialog = null },
                                     onSaveApps = { apps -> viewModel.updateGroupApps(group, apps); showModifyGroupDialog = null },
-                                    onRefresh = { viewModel.loadData() },
+                                    onRefresh = { 
+                                        viewModel.loadData() 
+                                        Toast.makeText(context, "Refreshing apps...", Toast.LENGTH_SHORT).show()
+                                    },
                                     packageManager = packageManager
                                 )
                             }

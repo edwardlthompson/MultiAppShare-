@@ -1,0 +1,7 @@
+Fix: Improve app refresh functionality to load all available apps
+
+- Updated `AndroidManifest.xml` with broader intent queries (ACTION_MAIN, CATEGORY_LAUNCHER, ACTION_SEND_MULTIPLE) to bypass package visibility restrictions.
+- Refactored `MainViewModel.kt`'s `loadData` method to correctly handle and capture generalized intents, ensuring edge case apps sharing specialized formats are successfully loaded.
+- Fixed an issue where the compatible package cache wasn't cleared upon manual refresh.
+- Added visual Toast feedback in `MainActivity.kt` upon pressing the refresh button for better user experience.
+- Incremented app version to 1.4.1 (version code 7) for a new release.
