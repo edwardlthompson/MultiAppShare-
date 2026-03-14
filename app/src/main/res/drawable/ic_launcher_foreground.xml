@@ -3,44 +3,67 @@
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
-    <!-- Main Circle / Hub -->
-    <path
-        android:fillColor="#FFFFFF"
-        android:pathData="M54,54m-12,0a12,12 0,1 1,24 0a12,12 0,1 1,-24 0" />
 
-    <!-- Share Node 1 (Top) -->
-    <path
-        android:fillColor="#FFFFFF"
-        android:pathData="M54,28m-8,0a8,8 0,1 1,16 0a8,8 0,1 1,-16 0" />
+    <!-- Overall Translation to center mass properly within 108x108 Adaptive safe zone view -->
+    <group android:translateX="2" android:translateY="-2">
 
-    <!-- Share Node 2 (Bottom Left) -->
-    <path
-        android:fillColor="#FFFFFF"
-        android:pathData="M34,74m-8,0a8,8 0,1 1,16 0a8,8 0,1 1,-16 0" />
+        <!-- 5 Connecting Lines (Radiating to the lower-right) -->
+        <!-- Line 1: towards top-right corner -->
+        <path
+            android:strokeColor="#FFFFFF" android:strokeWidth="3" android:strokeLineCap="round"
+            android:pathData="M52,48 L72,42" />
+        <circle android:cx="76" android:cy="41" android:r="6" android:fillColor="#FFFFFF" />
 
-    <!-- Share Node 3 (Bottom Right) -->
-    <path
-        android:fillColor="#FFFFFF"
-        android:pathData="M74,74m-8,0a8,8 0,1 1,16 0a8,8 0,1 1,-16 0" />
+        <!-- Line 2: slightly further down right -->
+        <path
+            android:strokeColor="#FFFFFF" android:strokeWidth="3" android:strokeLineCap="round"
+            android:pathData="M50,51 L72,55" />
+        <circle android:cx="76" android:cy="56" android:r="6" android:fillColor="#FFFFFF" />
 
-    <!-- Connection Line 1 -->
-    <path
-        android:strokeColor="#FFFFFF"
-        android:strokeWidth="4"
-        android:strokeLineCap="round"
-        android:pathData="M54,42 L54,36" />
+        <!-- Line 3: lower right -->
+        <path
+            android:strokeColor="#FFFFFF" android:strokeWidth="3" android:strokeLineCap="round"
+            android:pathData="M48,53 L68,70" />
+        <circle android:cx="72" android:cy="73" android:r="6" android:fillColor="#FFFFFF" />
 
-    <!-- Connection Line 2 -->
-    <path
-        android:strokeColor="#FFFFFF"
-        android:strokeWidth="4"
-        android:strokeLineCap="round"
-        android:pathData="M46,62 L40,68" />
+        <!-- Line 4: strictly lower down -->
+        <path
+            android:strokeColor="#FFFFFF" android:strokeWidth="3" android:strokeLineCap="round"
+            android:pathData="M46,54 L54,72" />
+        <circle android:cx="57" android:cy="76" android:r="6" android:fillColor="#FFFFFF" />
 
-    <!-- Connection Line 3 -->
-    <path
-        android:strokeColor="#FFFFFF"
-        android:strokeWidth="4"
-        android:strokeLineCap="round"
-        android:pathData="M62,62 L68,68" />
+        <!-- Line 5: strictly down left center -->
+        <path
+            android:strokeColor="#FFFFFF" android:strokeWidth="3" android:strokeLineCap="round"
+            android:pathData="M44,53 L41,69" />
+        <circle android:cx="40" android:cy="74" android:r="6" android:fillColor="#FFFFFF" />
+
+        <!-- Photo Frame (Overlapping/Behind the clapper board) -->
+        <!-- Outer Box -->
+        <path
+            android:strokeColor="#FFFFFF" android:strokeWidth="3" android:strokeLineCap="round" android:strokeLineJoin="round"
+            android:pathData="M42,32 h18 v14 h-18 z" />
+        <!-- Inner Mountains -->
+        <path
+            android:strokeColor="#FFFFFF" android:strokeWidth="2.5" android:strokeLineCap="round" android:strokeLineJoin="round"
+            android:pathData="M42,42 l5,-5 l4,4 l4,-3 l5,4" />
+        <!-- Sun dot -->
+        <circle android:cx="55" android:cy="36" android:r="2" android:fillColor="#FFFFFF" />
+
+        <!-- Clapperboard (Open, Tilted, top-left) -->
+        <!-- Bottom Base box -->
+        <path
+            android:strokeColor="#FFFFFF" android:strokeWidth="3.5" android:strokeLineCap="round" android:strokeLineJoin="round"
+            android:pathData="M24,36 h20 v14 h-20 z" />
+        <!-- Top Board (Tilted to open angle ~15 degrees) -->
+        <!-- Anchor top left corner at roughly 23,34 -->
+        <path
+            android:strokeColor="#FFFFFF" android:strokeWidth="3" android:strokeLineCap="round" android:strokeLineJoin="round"
+            android:pathData="M22,34 l22,-8 l1.5,4 l-22,8 z" />
+        <!-- Slants inside open top bar for stripes -->
+        <path
+            android:strokeColor="#FFFFFF" android:strokeWidth="2" android:strokeLineCap="round"
+            android:pathData="M26,30 l3,-4 M32,28 l3,-4 M38,26 l3,-4" />
+
+    </group>
 </vector>

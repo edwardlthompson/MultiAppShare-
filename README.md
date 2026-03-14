@@ -1,4 +1,4 @@
-# Multi App Share
+# <img src=".github/assets/icon.png" width="48" align="center"> Multi App Share
 
 **Multi App Share** is a utility Android application designed to streamline the process of sharing content across multiple applications. Instead of manually sharing a photo, video, link, or text to each social media platform or messaging app one by one, you can create custom groups and share to all of them in a sequential, guided workflow.
 
