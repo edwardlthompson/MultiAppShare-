@@ -1,0 +1,4 @@
+- Added granular selection to selection lists.
+- Fixed duplicate items on app refresh. 
+- Grouped apps alphabetically by main title.
+- Enabled long label text wrapping.
