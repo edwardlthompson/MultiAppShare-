@@ -42,12 +42,6 @@ jobs:
         id: get_version
         run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
 
-      - name: Rename APKs for release clarity
-        run: |
-          mv app/build/outputs/apk/release/MultiAppShare-${{ env.VERSION }}-release-unsigned.apk MultiAppShare-${{ env.VERSION }}-release-unsigned.apk || true
-          mv app/build/outputs/apk/release/MultiAppShare-${{ env.VERSION }}-release.apk MultiAppShare-${{ env.VERSION }}-release.apk || true
-          mv app/build/outputs/apk/debug/MultiAppShare-${{ env.VERSION }}-debug.apk MultiAppShare-${{ env.VERSION }}-debug.apk || true
-
       - name: Create Release and Upload APKs
         uses: softprops/action-gh-release@v2
         with:
@@ -56,6 +50,5 @@ jobs:
           prerelease: false
           generate_release_notes: true
           files: |
-            MultiAppShare-${{ env.VERSION }}-release.apk
-            MultiAppShare-${{ env.VERSION }}-release-unsigned.apk
-            MultiAppShare-${{ env.VERSION }}-debug.apk
+            app/build/outputs/apk/release/*.apk
+            app/build/outputs/apk/debug/*.apk
