@@ -17,11 +17,10 @@ class SharingService : Service() {
     private lateinit var notificationManager: NotificationManager
 
     companion object {
-        const val EXTRA_IMAGE_URI = "com.multiappshare.EXTRA_IMAGE_URI"
+        const val EXTRA_IMAGE_URIS = "com.multiappshare.EXTRA_IMAGE_URIS"
         const val EXTRA_APP_PACKAGES = "com.multiappshare.EXTRA_APP_PACKAGES"
         const val EXTRA_CURRENT_INDEX = "com.multiappshare.EXTRA_CURRENT_INDEX"
         const val ACTION_START_SHARING = "com.multiappshare.ACTION_START_SHARING"
-        const val ACTION_NEXT = "com.multiappshare.ACTION_NEXT"
         private const val ACTION_STOP = "com.multiappshare.ACTION_STOP"
         private const val NOTIFICATION_ID = 1
         private const val CHANNEL_ID = "sharing_service_channel"
@@ -38,11 +37,11 @@ class SharingService : Service() {
             return START_NOT_STICKY
         }
 
-        val uri: Uri? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            intent.getParcelableExtra(EXTRA_IMAGE_URI, Uri::class.java)
+        val uris: ArrayList<Uri>? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            intent.getParcelableArrayListExtra(EXTRA_IMAGE_URIS, Uri::class.java)
         } else {
             @Suppress("DEPRECATION")
-            intent.getParcelableExtra(EXTRA_IMAGE_URI) as? Uri
+            intent.getParcelableArrayListExtra(EXTRA_IMAGE_URIS)
         }
         val text = intent.getStringExtra(Intent.EXTRA_TEXT)
         val mimeType = intent.type ?: "*/*"
@@ -63,7 +62,7 @@ class SharingService : Service() {
             startForeground(NOTIFICATION_ID, notification)
         }
 
-        shareWithApp(uri, text, mimeType, appPackages[currentIndex])
+        shareWithApp(uris, text, mimeType, appPackages[currentIndex])
 
         return START_NOT_STICKY
     }
@@ -81,21 +80,27 @@ class SharingService : Service() {
             .setOngoing(true)
             .addAction(0, "Stop", createStopPendingIntent())
 
-        if (currentIndex + 1 < appPackages.size) {
-            val nextPendingIntent = createNextPendingIntent(appPackages, currentIndex + 1)
-            builder.addAction(0, "Next App", nextPendingIntent)
-            builder.setContentIntent(nextPendingIntent)
-        }
-
         return builder
     }
 
-    private fun shareWithApp(uri: Uri?, text: String?, mimeType: String, packageName: String) {
-        val shareIntent = Intent(Intent.ACTION_SEND).apply {
+    private fun shareWithApp(uris: List<Uri>?, text: String?, mimeType: String, packageName: String) {
+        val shareAction = if (uris != null && uris.size > 1) Intent.ACTION_SEND_MULTIPLE else Intent.ACTION_SEND
+        val shareIntent = Intent(shareAction).apply {
             type = mimeType
-            if (uri != null) {
-                putExtra(Intent.EXTRA_STREAM, uri)
-                clipData = ClipData.newUri(contentResolver, "Content", uri)
+            if (uris != null && uris.size == 1) {
+                putExtra(Intent.EXTRA_STREAM, uris.first())
+                clipData = ClipData.newUri(contentResolver, "Content", uris.first())
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            } else if (uris != null && uris.size > 1) {
+                putParcelableArrayListExtra(Intent.EXTRA_STREAM, ArrayList(uris))
+                for (uri in uris) {
+                    val clipDataItem = ClipData.Item(uri)
+                    if (clipData == null) {
+                        clipData = ClipData(null, arrayOf(mimeType), clipDataItem)
+                    } else {
+                        clipData?.addItem(clipDataItem)
+                    }
+                }
                 addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
             }
             if (text != null) {
@@ -110,16 +115,6 @@ class SharingService : Service() {
         } catch (_: Exception) {
             // Silently handle exceptions for missing packages
         }
-    }
-
-    private fun createNextPendingIntent(appPackages: List<String>, nextIndex: Int): PendingIntent {
-        val intent = Intent(this, MainActivity::class.java).apply {
-            action = ACTION_NEXT
-            putExtra(EXTRA_APP_PACKAGES, ArrayList(appPackages))
-            putExtra(EXTRA_CURRENT_INDEX, nextIndex)
-            addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
-        }
-        return PendingIntent.getActivity(this, nextIndex, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
     }
 
     private fun createStopPendingIntent(): PendingIntent {

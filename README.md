@@ -9,8 +9,10 @@
 - **Smart Compatibility**: Automatically detects and skips apps that do not support the specific media type (photo, video, link, text) you are sharing.
 - **Persistent State**: Remembers your group configurations and even whether they were expanded or collapsed.
 - **History Tracking**: Keeps a log of your last 50 sharing activities, highlighting any failures in red.
-- **Universal Content Support**: Works with images, videos, URLs, plain text, and generic files.
-- **Reorderable Lists**: Easily adjust the order in which apps are launched within each group.
+- **Universal Content Support**: Works with single images, links, plain text, and generic files.
+- **Multi-Media Sharing**: Select multiple photos, videos, or mixed media at once and seamlessly dispatch the whole batch to your target groups natively.
+- **Translucent Overlay UX**: Sharing from an external app feels native; the share menu floats dynamically over your content instead of completely taking over the screen.
+- **Intuitive Drag & Drop**: Easily rearrange your favorite apps within a group by simply dragging and dropping them into your preferred sequence.
 
 ## 🛠 Tech Stack
 
@@ -46,10 +48,10 @@ If you prefer to build the app yourself:
 3. **Reorder**: Use "Reorder Apps" in the menu to set your preferred sharing sequence.
 4. **Start Sharing**: 
    - Open any other app (e.g., Photos, YouTube, Chrome).
-   - Tap the system **Share** button.
+   - Tap the system **Share** button. (You can also select *multiple* items).
    - Select **Multi App Share** from the list.
-   - Choose the target group.
-   - Follow the "Next App" prompts until finished.
+   - Choose the target group from the floating translucent bottom sheet.
+   - The first app in the group will securely open. Once you finish posting, simply return to your recent apps to see Multi App Share automatically proceed with the remaining apps on your group list!
 
 ## 🤝 Support the Developer
 

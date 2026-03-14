@@ -29,7 +29,10 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.foundation.gestures.detectVerticalDragGestures
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -114,7 +117,32 @@ class HistoryRepository(context: Context) {
 class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val groupsRepository = GroupsRepository(application)
     private val historyRepository = HistoryRepository(application)
+    private val historyRepository = HistoryRepository(application)
     private val packageManager: PackageManager = application.packageManager
+
+    private val compatiblePackagesCache = mutableMapOf<Pair<String, String>, Set<String>>()
+
+    fun getCompatiblePackages(action: String, mime: String): Set<String> {
+        val key = Pair(action, mime)
+        if (compatiblePackagesCache.containsKey(key)) return compatiblePackagesCache[key]!!
+
+        val mimeTypesToCheck = if (mime == "*/*") listOf("*/*", "text/plain", "image/*", "video/*") else listOf(mime)
+        val compatiblePackages = mutableSetOf<String>()
+        
+        for (m in mimeTypesToCheck) {
+            val shareIntent = Intent(action).apply { type = m }
+            val resolveInfos = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                packageManager.queryIntentActivities(shareIntent, PackageManager.ResolveInfoFlags.of(0))
+            } else {
+                @Suppress("DEPRECATION")
+                packageManager.queryIntentActivities(shareIntent, 0)
+            }
+            compatiblePackages.addAll(resolveInfos.map { it.activityInfo.packageName })
+        }
+        
+        compatiblePackagesCache[key] = compatiblePackages
+        return compatiblePackages
+    }
 
     private val _uiState = MutableStateFlow<MainUiState>(MainUiState.Loading)
     val uiState: StateFlow<MainUiState> = _uiState
@@ -128,13 +156,19 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             val groups = groupsRepository.loadGroups()
             val history = historyRepository.loadHistory()
             
-            // Query for apps that handle any MIME type for ACTION_SEND
-            val shareIntent = Intent(Intent.ACTION_SEND).apply { type = "*/*" }
-            val resolveInfos = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                packageManager.queryIntentActivities(shareIntent, PackageManager.ResolveInfoFlags.of(0))
-            } else {
-                @Suppress("DEPRECATION")
-                packageManager.queryIntentActivities(shareIntent, 0)
+            // Query for apps that handle common MIME types for ACTION_SEND
+            val mimeTypes = listOf("*/*", "text/plain", "image/*", "video/*")
+            val resolveInfos = mutableListOf<android.content.pm.ResolveInfo>()
+            
+            for (mime in mimeTypes) {
+                val shareIntent = Intent(Intent.ACTION_SEND).apply { type = mime }
+                val infos = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    packageManager.queryIntentActivities(shareIntent, PackageManager.ResolveInfoFlags.of(0))
+                } else {
+                    @Suppress("DEPRECATION")
+                    packageManager.queryIntentActivities(shareIntent, 0)
+                }
+                resolveInfos.addAll(infos)
             }
 
             val allApps = resolveInfos.map {
@@ -218,7 +252,7 @@ class MainActivity : ComponentActivity() {
         ActivityResultContracts.RequestPermission()
     ) { _ -> }
 
-    private val currentUri = mutableStateOf<Uri?>(null)
+    private val currentUris = mutableStateOf<List<Uri>?>(null)
     private val currentText = mutableStateOf<String?>(null)
     private val currentMimeType = mutableStateOf<String?>(null)
     
@@ -238,7 +272,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             MultiAppShareTheme {
                 MainScreen(
-                    uri = currentUri.value,
+                    uris = currentUris.value,
                     text = currentText.value,
                     mimeType = currentMimeType.value,
                     sharingStarted = isSharingStarted.value,
@@ -246,8 +280,8 @@ class MainActivity : ComponentActivity() {
                     appPackages = appPackages.value,
                     onStartSharing = { group, viewModel ->
                         val mime = currentMimeType.value ?: "*/*"
-                        val compatiblePackages = handleIncompatibleApps(currentUri.value, currentText.value, mime, group)
-                        val contentDesc = getContentDescription(mime, currentText.value, currentUri.value)
+                        val compatiblePackages = handleIncompatibleApps(currentUris.value, mime, group, viewModel)
+                        val contentDesc = getContentDescription(mime, currentText.value, currentUris.value)
                         
                         if (compatiblePackages.isEmpty()) {
                             viewModel.addHistoryItem(HistoryItem(
@@ -261,7 +295,7 @@ class MainActivity : ComponentActivity() {
                         } else {
                             appPackages.value = compatiblePackages
                             currentIndex.intValue = 0
-                            shareStep(currentUri.value, currentText.value, mime, compatiblePackages, 0)
+                            shareStep(currentUris.value, currentText.value, mime, compatiblePackages, 0)
                             isSharingStarted.value = true
                             
                             viewModel.addHistoryItem(HistoryItem(
@@ -277,7 +311,7 @@ class MainActivity : ComponentActivity() {
                         val next = currentIndex.intValue + 1
                         if (packages != null && next < packages.size) {
                             currentIndex.intValue = next
-                            shareStep(currentUri.value, currentText.value, currentMimeType.value ?: "*/*", packages, next)
+                            shareStep(currentUris.value, currentText.value, currentMimeType.value ?: "*/*", packages, next)
                         } else {
                             isSharingStarted.value = false
                             stopSharingService()
@@ -297,54 +331,52 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun handleIntent(intent: Intent?) {
-        if (intent?.action == SharingService.ACTION_NEXT) {
-            val uri: Uri? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                intent.getParcelableExtra(SharingService.EXTRA_IMAGE_URI, Uri::class.java)
+        if (intent?.action == Intent.ACTION_SEND || intent?.action == Intent.ACTION_SEND_MULTIPLE) {
+            val isMultiple = intent.action == Intent.ACTION_SEND_MULTIPLE
+            val uris: List<Uri>? = if (isMultiple) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    intent.getParcelableArrayListExtra(Intent.EXTRA_STREAM, Uri::class.java)
+                } else {
+                    @Suppress("DEPRECATION")
+                    intent.getParcelableArrayListExtra<Uri>(Intent.EXTRA_STREAM)
+                }
             } else {
-                @Suppress("DEPRECATION")
-                intent.getParcelableExtra(SharingService.EXTRA_IMAGE_URI) as? Uri
-            }
-            val text = intent.getStringExtra(Intent.EXTRA_TEXT)
-            val packages = intent.getStringArrayListExtra(SharingService.EXTRA_APP_PACKAGES)
-            val index = intent.getIntExtra(SharingService.EXTRA_CURRENT_INDEX, 0)
-            val mime = intent.type ?: "*/*"
-
-            if (packages != null) {
-                currentUri.value = uri
-                currentText.value = text
-                currentMimeType.value = mime
-                appPackages.value = packages
-                currentIndex.intValue = index
-                isSharingStarted.value = true
-                shareStep(uri, text, mime, packages, index)
-            }
-        } else if (intent?.action == Intent.ACTION_SEND) {
-            val uri: Uri? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                intent.getParcelableExtra(Intent.EXTRA_STREAM, Uri::class.java)
-            } else {
-                @Suppress("DEPRECATION")
-                intent.getParcelableExtra(Intent.EXTRA_STREAM) as? Uri
+                val uri: Uri? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    intent.getParcelableExtra(Intent.EXTRA_STREAM, Uri::class.java)
+                } else {
+                    @Suppress("DEPRECATION")
+                    intent.getParcelableExtra(Intent.EXTRA_STREAM) as? Uri
+                }
+                if (uri != null) listOf(uri) else null
             }
             val text = intent.getStringExtra(Intent.EXTRA_TEXT)
             val mime = intent.type ?: "*/*"
             
-            currentUri.value = uri
+            currentUris.value = uris
             currentText.value = text
             currentMimeType.value = mime
             isSharingStarted.value = false
         }
     }
 
-    private fun shareStep(uri: Uri?, text: String?, mime: String, packages: List<String>, index: Int) {
+    private fun shareStep(uris: List<Uri>?, text: String?, mime: String, packages: List<String>, index: Int) {
         val serviceIntent = Intent(this, SharingService::class.java).apply {
             action = SharingService.ACTION_START_SHARING
             type = mime
-            putExtra(SharingService.EXTRA_IMAGE_URI, uri)
+            if (uris != null) putParcelableArrayListExtra(SharingService.EXTRA_IMAGE_URIS, ArrayList(uris))
             putExtra(Intent.EXTRA_TEXT, text)
             putStringArrayListExtra(SharingService.EXTRA_APP_PACKAGES, ArrayList(packages))
             putExtra(SharingService.EXTRA_CURRENT_INDEX, index)
-            if (uri != null) {
-                clipData = ClipData.newUri(contentResolver, "Content", uri)
+            if (uris != null) {
+                // Grant read permission for all URIs
+                for (uri in uris) {
+                    val clipDataItem = ClipData.Item(uri)
+                    if (clipData == null) {
+                        clipData = ClipData(null, arrayOf(mime), clipDataItem)
+                    } else {
+                        clipData?.addItem(clipDataItem)
+                    }
+                }
                 addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
             }
         }
@@ -356,24 +388,9 @@ class MainActivity : ComponentActivity() {
         stopService(serviceIntent)
     }
 
-    private fun handleIncompatibleApps(uri: Uri?, text: String?, mime: String, group: AppGroup): List<String> {
-        val shareIntent = Intent(Intent.ACTION_SEND).apply {
-            type = mime
-            if (uri != null) putExtra(Intent.EXTRA_STREAM, uri)
-            if (text != null) putExtra(Intent.EXTRA_TEXT, text)
-        }
-        
-        val resolveInfos = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            packageManager.queryIntentActivities(
-                shareIntent,
-                PackageManager.ResolveInfoFlags.of(0)
-            )
-        } else {
-            @Suppress("DEPRECATION")
-            packageManager.queryIntentActivities(shareIntent, 0)
-        }
-        
-        val compatiblePackages = resolveInfos.map { it.activityInfo.packageName }.toSet()
+    private fun handleIncompatibleApps(uris: List<Uri>?, mime: String, group: AppGroup, viewModel: MainViewModel): List<String> {
+        val shareAction = if (uris != null && uris.size > 1) Intent.ACTION_SEND_MULTIPLE else Intent.ACTION_SEND
+        val compatiblePackages = viewModel.getCompatiblePackages(shareAction, mime)
         val compatible = mutableListOf<String>()
         val incompatible = mutableListOf<String>()
 
@@ -411,12 +428,13 @@ class MainActivity : ComponentActivity() {
         notificationManager.notify(2, notification)
     }
 
-    private fun getContentDescription(mimeType: String?, text: String?, uri: Uri?): String {
+    private fun getContentDescription(mimeType: String?, text: String?, uris: List<Uri>?): String {
+        val countStr = if (uris != null && uris.size > 1) " (${uris.size})" else ""
         return when {
-            mimeType?.startsWith("image/") == true -> "Photo"
-            mimeType?.startsWith("video/") == true -> "Video"
-            text != null && uri == null -> if (text.startsWith("http")) "Link" else "Text"
-            else -> "Content"
+            mimeType?.startsWith("image/") == true -> "Photo$countStr"
+            mimeType?.startsWith("video/") == true -> "Video$countStr"
+            text != null && uris.isNullOrEmpty() -> if (text.startsWith("http")) "Link" else "Text"
+            else -> "Media$countStr"
         }
     }
 }
@@ -424,7 +442,7 @@ class MainActivity : ComponentActivity() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(
-    uri: Uri?,
+    uris: List<Uri>?,
     text: String?,
     mimeType: String?,
     sharingStarted: Boolean,
@@ -445,49 +463,51 @@ fun MainScreen(
     var showAboutDialog by remember { mutableStateOf(false) }
     var menuExpanded by remember { mutableStateOf(false) }
 
-    val inShareMode = uri != null || text != null
+    val inShareMode = !uris.isNullOrEmpty() || text != null
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = { Text("Groups") },
-                actions = {
-                    Box {
-                        IconButton(onClick = { menuExpanded = true }) {
-                            Icon(Icons.Default.MoreVert, contentDescription = "Menu")
-                        }
-                        DropdownMenu(
-                            expanded = menuExpanded,
-                            onDismissRequest = { menuExpanded = false }
-                        ) {
-                            DropdownMenuItem(
-                                text = { Text("Sort Groups") },
-                                leadingIcon = { Icon(Icons.AutoMirrored.Filled.List, null) },
-                                onClick = {
-                                    showSortGroupsDialog = true
-                                    menuExpanded = false
-                                }
-                            )
-                            DropdownMenuItem(
-                                text = { Text("History") },
-                                leadingIcon = { Icon(Icons.Default.Refresh, null) },
-                                onClick = {
-                                    showHistoryDialog = true
-                                    menuExpanded = false
-                                }
-                            )
-                            DropdownMenuItem(
-                                text = { Text("About") },
-                                leadingIcon = { Icon(Icons.Default.Info, null) },
-                                onClick = {
-                                    showAboutDialog = true
-                                    menuExpanded = false
-                                }
-                            )
+            if (!inShareMode) {
+                TopAppBar(
+                    title = { Text("Groups") },
+                    actions = {
+                        Box {
+                            IconButton(onClick = { menuExpanded = true }) {
+                                Icon(Icons.Default.MoreVert, contentDescription = "Menu")
+                            }
+                            DropdownMenu(
+                                expanded = menuExpanded,
+                                onDismissRequest = { menuExpanded = false }
+                            ) {
+                                DropdownMenuItem(
+                                    text = { Text("Sort Groups") },
+                                    leadingIcon = { Icon(Icons.AutoMirrored.Filled.List, null) },
+                                    onClick = {
+                                        showSortGroupsDialog = true
+                                        menuExpanded = false
+                                    }
+                                )
+                                DropdownMenuItem(
+                                    text = { Text("History") },
+                                    leadingIcon = { Icon(Icons.Default.Refresh, null) },
+                                    onClick = {
+                                        showHistoryDialog = true
+                                        menuExpanded = false
+                                    }
+                                )
+                                DropdownMenuItem(
+                                    text = { Text("About") },
+                                    leadingIcon = { Icon(Icons.Default.Info, null) },
+                                    onClick = {
+                                        showAboutDialog = true
+                                        menuExpanded = false
+                                    }
+                                )
+                            }
                         }
                     }
-                }
-            )
+                )
+            }
         },
         floatingActionButton = {
             if (!inShareMode) {
@@ -499,8 +519,20 @@ fun MainScreen(
             }
         }
     ) { padding ->
-        Box(modifier = Modifier.fillMaxSize().padding(padding)) {
-            if (inShareMode && sharingStarted && appPackages != null) {
+        val backgroundModifier = if (inShareMode) {
+            Modifier.fillMaxSize().padding(padding).padding(16.dp)
+        } else {
+            Modifier.fillMaxSize().padding(padding)
+        }
+
+        Surface(
+            modifier = backgroundModifier,
+            color = if (inShareMode) MaterialTheme.colorScheme.surface else Color.Transparent,
+            shape = if (inShareMode) MaterialTheme.shapes.large else androidx.compose.ui.graphics.RectangleShape,
+            tonalElevation = if (inShareMode) 8.dp else 0.dp
+        ) {
+            Box(modifier = Modifier.fillMaxSize()) {
+                if (inShareMode && sharingStarted && appPackages != null) {
                 SharingInProgress(
                     mimeType = mimeType,
                     text = text,
@@ -592,7 +624,7 @@ fun MainScreen(
 fun SharingInProgress(
     mimeType: String?,
     text: String?,
-    uri: Uri?,
+    uris: List<Uri>?,
     currentIndex: Int,
     totalApps: Int,
     onNextStep: () -> Unit
@@ -602,11 +634,12 @@ fun SharingInProgress(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
+        val countStr = if (uris != null && uris.size > 1) " (${uris.size})" else ""
         val contentDesc = when {
-            mimeType?.startsWith("image/") == true -> "Photo"
-            mimeType?.startsWith("video/") == true -> "Video"
-            text != null && uri == null -> "Text"
-            else -> "Content"
+            mimeType?.startsWith("image/") == true -> "Photo$countStr"
+            mimeType?.startsWith("video/") == true -> "Video$countStr"
+            text != null && uris.isNullOrEmpty() -> "Text"
+            else -> "Media$countStr"
         }
         Text("Sharing $contentDesc!", style = MaterialTheme.typography.headlineMedium)
         Spacer(modifier = Modifier.height(8.dp))
@@ -907,21 +940,44 @@ fun ReorderAppsDialog(
     onSaveOrder: (List<AppInfo>) -> Unit
 ) {
     val apps = remember { mutableStateListOf<AppInfo>().apply { addAll(group.apps) } }
+    
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Reorder Apps") },
+        title = { Text("Reorder Apps (Drag Handle)") },
         text = {
             LazyColumn(modifier = Modifier.height(300.dp)) {
-                itemsIndexed(apps) { index, app ->
+                itemsIndexed(apps, key = { _, app -> app.packageName }) { index, app ->
+                    var accumulatedDrag by remember { mutableFloatStateOf(0f) }
+                    val itemHeight = 120f
+                    
                     Row(modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp), verticalAlignment = Alignment.CenterVertically) {
-                        Icon(imageVector = Icons.Default.Menu, contentDescription = null, modifier = Modifier.padding(8.dp), tint = MaterialTheme.colorScheme.onSurfaceVariant)
+                        Icon(
+                            imageVector = Icons.Default.Menu, 
+                            contentDescription = "Drag Handle", 
+                            modifier = Modifier
+                                .padding(8.dp)
+                                .pointerInput(Unit) {
+                                    detectVerticalDragGestures(
+                                        onDragEnd = { accumulatedDrag = 0f },
+                                        onDragCancel = { accumulatedDrag = 0f },
+                                        onVerticalDrag = { change, dragAmount ->
+                                            change.consume()
+                                            accumulatedDrag += dragAmount
+                                            if (accumulatedDrag > itemHeight && index < apps.size - 1) {
+                                                val item = apps.removeAt(index)
+                                                apps.add(index + 1, item)
+                                                accumulatedDrag = 0f
+                                            } else if (accumulatedDrag < -itemHeight && index > 0) {
+                                                val item = apps.removeAt(index)
+                                                apps.add(index - 1, item)
+                                                accumulatedDrag = 0f
+                                            }
+                                        }
+                                    )
+                                }, 
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
                         Text(text = app.appName, modifier = Modifier.weight(1f))
-                        IconButton(onClick = { val item = apps.removeAt(index); apps.add(index - 1, item) }, enabled = index > 0) {
-                            Icon(Icons.Default.KeyboardArrowUp, null)
-                        }
-                        IconButton(onClick = { val item = apps.removeAt(index); apps.add(index + 1, item) }, enabled = index < apps.size - 1) {
-                            Icon(Icons.Default.KeyboardArrowDown, null)
-                        }
                     }
                     if (index < apps.size - 1) HorizontalDivider()
                 }
@@ -939,21 +995,44 @@ fun SortGroupsDialog(
     onSaveOrder: (List<AppGroup>) -> Unit
 ) {
     val sortedGroups = remember { mutableStateListOf<AppGroup>().apply { addAll(groups) } }
+    
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Sort Groups") },
+        title = { Text("Sort Groups (Drag Handle)") },
         text = {
             LazyColumn(modifier = Modifier.height(300.dp)) {
-                itemsIndexed(sortedGroups) { index, group ->
+                itemsIndexed(sortedGroups, key = { _, group -> group.name }) { index, group ->
+                    var accumulatedDrag by remember { mutableFloatStateOf(0f) }
+                    val itemHeight = 120f
+                    
                     Row(modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp), verticalAlignment = Alignment.CenterVertically) {
-                        Icon(imageVector = Icons.Default.Menu, contentDescription = null, modifier = Modifier.padding(8.dp), tint = MaterialTheme.colorScheme.onSurfaceVariant)
+                        Icon(
+                            imageVector = Icons.Default.Menu, 
+                            contentDescription = "Drag Handle", 
+                            modifier = Modifier
+                                .padding(8.dp)
+                                .pointerInput(Unit) {
+                                    detectVerticalDragGestures(
+                                        onDragEnd = { accumulatedDrag = 0f },
+                                        onDragCancel = { accumulatedDrag = 0f },
+                                        onVerticalDrag = { change, dragAmount ->
+                                            change.consume()
+                                            accumulatedDrag += dragAmount
+                                            if (accumulatedDrag > itemHeight && index < sortedGroups.size - 1) {
+                                                val item = sortedGroups.removeAt(index)
+                                                sortedGroups.add(index + 1, item)
+                                                accumulatedDrag = 0f
+                                            } else if (accumulatedDrag < -itemHeight && index > 0) {
+                                                val item = sortedGroups.removeAt(index)
+                                                sortedGroups.add(index - 1, item)
+                                                accumulatedDrag = 0f
+                                            }
+                                        }
+                                    )
+                                }, 
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
                         Text(text = group.name, modifier = Modifier.weight(1f))
-                        IconButton(onClick = { val item = sortedGroups.removeAt(index); sortedGroups.add(index - 1, item) }, enabled = index > 0) {
-                            Icon(Icons.Default.KeyboardArrowUp, null)
-                        }
-                        IconButton(onClick = { val item = sortedGroups.removeAt(index); sortedGroups.add(index + 1, item) }, enabled = index < sortedGroups.size - 1) {
-                            Icon(Icons.Default.KeyboardArrowDown, null)
-                        }
                     }
                     if (index < sortedGroups.size - 1) HorizontalDivider()
                 }
