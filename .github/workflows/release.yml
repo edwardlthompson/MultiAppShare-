@@ -1,0 +1,61 @@
+name: Android CI/CD Release
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build_and_release:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: gradle
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Decode Keystore
+        env:
+          ENCODED_KEYSTORE: ${{ secrets.ENCODED_KEYSTORE }}
+        run: |
+          if [ ! -z "$ENCODED_KEYSTORE" ]; then
+            echo "$ENCODED_KEYSTORE" | base64 --decode > release.keystore
+          else
+            echo "Warning: ENCODED_KEYSTORE secret not set. Reversing to debug/unsigned release artifacts if necessary."
+          fi
+          
+      - name: Build debug and release APKs
+        run: ./gradlew assembleDebug assembleRelease
+
+      - name: Get tag version
+        id: get_version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+
+      - name: Rename APKs for release clarity
+        run: |
+          mv app/build/outputs/apk/release/MultiAppShare-${{ env.VERSION }}-release-unsigned.apk MultiAppShare-${{ env.VERSION }}-release-unsigned.apk || true
+          mv app/build/outputs/apk/release/MultiAppShare-${{ env.VERSION }}-release.apk MultiAppShare-${{ env.VERSION }}-release.apk || true
+          mv app/build/outputs/apk/debug/MultiAppShare-${{ env.VERSION }}-debug.apk MultiAppShare-${{ env.VERSION }}-debug.apk || true
+
+      - name: Create Release and Upload APKs
+        uses: softprops/action-gh-release@v2
+        with:
+          name: Multi App Share ${{ env.VERSION }}
+          draft: false
+          prerelease: false
+          generate_release_notes: true
+          files: |
+            MultiAppShare-${{ env.VERSION }}-release.apk
+            MultiAppShare-${{ env.VERSION }}-release-unsigned.apk
+            MultiAppShare-${{ env.VERSION }}-debug.apk
