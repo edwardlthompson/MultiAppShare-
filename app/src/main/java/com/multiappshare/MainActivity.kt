@@ -59,7 +59,8 @@ import java.util.Locale
 @Serializable
 data class AppInfo(
     val appName: String,
-    val packageName: String
+    val packageName: String,
+    val activityName: String = "" // Added to support distinct sharing targets within the same app, default to "" for backward compatibility
 )
 
 @Serializable
@@ -136,7 +137,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 @Suppress("DEPRECATION")
                 packageManager.queryIntentActivities(shareIntent, 0)
             }
-            compatiblePackages.addAll(resolveInfos.map { it.activityInfo.packageName })
+            // Store as packageName/activityName to uniquely identify exact share targets
+            compatiblePackages.addAll(resolveInfos.map { "${it.activityInfo.packageName}/${it.activityInfo.name}" })
         }
         
         compatiblePackagesCache[key] = compatiblePackages
@@ -199,10 +201,11 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             val allApps = resolveInfos.map {
                 AppInfo(
                     appName = it.loadLabel(packageManager).toString(),
-                    packageName = it.activityInfo.packageName
+                    packageName = it.activityInfo.packageName,
+                    activityName = it.activityInfo.name
                 )
             }.filter { it.packageName != getApplication<Application>().packageName } // Exclude self
-             .distinctBy { it.packageName }
+             .distinctBy { "${it.packageName}/${it.activityName}" }
              .sortedBy { it.appName.lowercase() }
 
             _uiState.value = MainUiState.Success(groups, allApps, history)
@@ -386,13 +389,13 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    private fun shareStep(uris: List<Uri>?, text: String?, mime: String, packages: List<String>, index: Int) {
+    private fun shareStep(uris: List<Uri>?, text: String?, mime: String, components: List<String>, index: Int) {
         val serviceIntent = Intent(this, SharingService::class.java).apply {
             action = SharingService.ACTION_START_SHARING
             type = mime
             if (uris != null) putParcelableArrayListExtra(SharingService.EXTRA_IMAGE_URIS, ArrayList(uris))
             putExtra(Intent.EXTRA_TEXT, text)
-            putStringArrayListExtra(SharingService.EXTRA_APP_PACKAGES, ArrayList(packages))
+            putStringArrayListExtra(SharingService.EXTRA_APP_COMPONENTS, ArrayList(components))
             putExtra(SharingService.EXTRA_CURRENT_INDEX, index)
             if (uris != null) {
                 // Grant read permission for all URIs
@@ -422,8 +425,11 @@ class MainActivity : ComponentActivity() {
         val incompatible = mutableListOf<String>()
 
         for (app in group.apps) {
-            if (app.packageName in compatiblePackages) {
-                compatible.add(app.packageName)
+            val componentKey = "${app.packageName}/${app.activityName}"
+            val fallbackKey = "${app.packageName}/" // For backward compatibility with older groups
+            
+            if (componentKey in compatiblePackages || compatiblePackages.any { it.startsWith(fallbackKey) }) {
+                compatible.add(if (app.activityName.isNotEmpty()) componentKey else compatiblePackages.first { it.startsWith(fallbackKey) })
             } else {
                 incompatible.add(app.appName)
             }
