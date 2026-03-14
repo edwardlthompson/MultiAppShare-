@@ -199,8 +199,18 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             resolveInfos.addAll(launcherInfos)
 
             val allApps = resolveInfos.map {
+                val appLabel = it.activityInfo.applicationInfo.loadLabel(packageManager).toString()
+                val activityLabel = it.loadLabel(packageManager).toString()
+                
+                val finalName = if (appLabel == activityLabel) {
+                    val shortName = it.activityInfo.name.substringAfterLast('.')
+                    "$appLabel - $shortName"
+                } else {
+                    "$appLabel - $activityLabel"
+                }
+
                 AppInfo(
-                    appName = it.loadLabel(packageManager).toString(),
+                    appName = finalName,
                     packageName = it.activityInfo.packageName,
                     activityName = it.activityInfo.name
                 )
