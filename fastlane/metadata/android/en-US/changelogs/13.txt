@@ -1,0 +1,4 @@
+- Added top Anchored Chip Row shortcuts for selected apps inside Modify dialogue
+- Strict unblended Smart Auto-Groups Support (Maps, News, Productivity distinct rows)
+- Removed debug outputs from builder outputs uploads
+- Vector image layout fixes for launcher icons
