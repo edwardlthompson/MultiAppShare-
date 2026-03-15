@@ -60,7 +60,8 @@ import java.util.Locale
 data class AppInfo(
     val appName: String,
     val packageName: String,
-    val activityName: String = "" // Added to support distinct sharing targets within the same app, default to "" for backward compatibility
+    val activityName: String = "",
+    val category: Int = -1 // Added for automated smart grouping aggregates
 )
 
 @Serializable
@@ -119,6 +120,15 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val groupsRepository = GroupsRepository(application)
     private val historyRepository = HistoryRepository(application)
     private val packageManager: PackageManager = application.packageManager
+    private val prefs = application.getSharedPreferences("multiappshare_prefs", Context.MODE_PRIVATE)
+
+    var showOnboardingDialog by mutableStateOf(false)
+        private set
+
+    fun setOnboardingDismissed() {
+        prefs.edit().putBoolean("onboarding_completed", true).apply()
+        showOnboardingDialog = false
+    }
 
     private val compatiblePackagesCache = mutableMapOf<Pair<String, String>, Set<String>>()
 
@@ -211,16 +221,74 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                         "$appLabel - $activityLabel"
                     }
 
+                    val category = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        it.activityInfo.applicationInfo.category
+                    } else {
+                        -1 // Constant for undefined if ever run on older
+                    }
+
                     AppInfo(
                         appName = finalName,
                         packageName = it.activityInfo.packageName,
-                        activityName = it.activityInfo.name
+                        activityName = it.activityInfo.name,
+                        category = category
                     )
                 }
-                .filter { it.packageName != getApplication<Application>().packageName } // Exclude self
+                .filter { it.packageName != getApplication<Application>().packageName }
                 .sortedBy { it.appName.lowercase() }
 
-            _uiState.value = MainUiState.Success(groups, allApps, history)
+            val initialOnboardingCompleted = prefs.getBoolean("onboarding_completed", false)
+
+            if (groups.isEmpty() && !initialOnboardingCompleted) {
+                showOnboardingDialog = true
+                // Silent default creation for Social on first run
+                autoGroupApps(allApps, append = false, singleCategoryOnly = android.content.pm.ApplicationInfo.CATEGORY_SOCIAL)
+            }
+
+            _uiState.value = MainUiState.Success(groupsRepository.loadGroups(), allApps, history)
+        }
+    }
+
+    // Smart Auto-group algorithm
+    fun autoGroupApps(allApps: List<AppInfo>, append: Boolean, singleCategoryOnly: Int? = null) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val currentState = _uiState.value as? MainUiState.Success
+            val existingGroups = if (append) currentState?.groups ?: emptyList() else emptyList()
+            val categoryToApps = mutableMapOf<String, MutableList<AppInfo>>()
+            
+            for (app in allApps) {
+                if (singleCategoryOnly != null && app.category != singleCategoryOnly) continue
+
+                val categoryLabel = when (app.category) {
+                    android.content.pm.ApplicationInfo.CATEGORY_SOCIAL -> "Social Media"
+                    android.content.pm.ApplicationInfo.CATEGORY_GAME -> "Games"
+                    android.content.pm.ApplicationInfo.CATEGORY_VIDEO, android.content.pm.ApplicationInfo.CATEGORY_AUDIO -> "Media"
+                    android.content.pm.ApplicationInfo.CATEGORY_IMAGE -> "Photography"
+                    else -> null
+                }
+                
+                if (categoryLabel != null) {
+                    categoryToApps.getOrPut(categoryLabel) { mutableListOf() }.add(app)
+                }
+            }
+
+            val newGroups = categoryToApps.map { (name, apps) ->
+                val existing = existingGroups.find { it.name == name }
+                if (existing != null && append) {
+                    // Append new apps preserving duplicates removal
+                    AppGroup(name = name, apps = (existing.apps + apps).distinctBy { it.packageName + "/" + it.activityName })
+                } else {
+                    AppGroup(name = name, apps = apps)
+                }
+            }
+
+            // Merge with completely unrelated existing groups
+            val mergedGroups = existingGroups.filter { ex -> newGroups.none { it.name == ex.name } } + newGroups
+            groupsRepository.saveGroups(mergedGroups)
+            
+            if (currentState != null) {
+                _uiState.value = currentState.copy(groups = mergedGroups)
+            }
         }
     }
 
@@ -556,12 +624,21 @@ fun MainScreen(
             }
         },
         floatingActionButton = {
-            if (!inShareMode) {
-                ExtendedFloatingActionButton(
-                    onClick = { showCreateGroupDialog = true },
-                    icon = { Icon(Icons.Default.Add, null) },
-                    text = { Text("Add Group") }
-                )
+            val state = uiState
+            if (!inShareMode && state is MainUiState.Success) {
+                Column(horizontalAlignment = androidx.compose.ui.Alignment.End) {
+                    ExtendedFloatingActionButton(
+                        onClick = { viewModel.autoGroupApps(state.allApps, append = true) },
+                        icon = { Icon(Icons.Default.Build, null) },
+                        text = { Text("Auto Group") }
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    ExtendedFloatingActionButton(
+                        onClick = { showCreateGroupDialog = true },
+                        icon = { Icon(Icons.Default.Add, null) },
+                        text = { Text("Add Group") }
+                    )
+                }
             }
         }
     ) { padding ->
@@ -603,6 +680,16 @@ fun MainScreen(
                                 CreateGroupDialog(
                                     onDismiss = { showCreateGroupDialog = false },
                                     onCreateGroup = { name -> viewModel.createGroup(name); showCreateGroupDialog = false }
+                                )
+                            }
+
+                            if (viewModel.showOnboardingDialog) {
+                                OnboardingDialog(
+                                    onAutofill = {
+                                        viewModel.autoGroupApps(state.allApps, append = false)
+                                        viewModel.setOnboardingDismissed()
+                                    },
+                                    onManual = { viewModel.setOnboardingDismissed() }
                                 )
                             }
 
@@ -1094,5 +1181,22 @@ fun SortGroupsDialog(
         },
         confirmButton = { Button(onClick = { onSaveOrder(sortedGroups.toList()) }) { Text("Save Order") } },
         dismissButton = { TextButton(onClick = onDismiss) { Text("Cancel") } }
+    )
+}
+
+@Composable
+fun OnboardingDialog(onAutofill: () -> Unit, onManual: () -> Unit) {
+    AlertDialog(
+        onDismissRequest = { /* Force action to exit */ },
+        title = { Text("Welcome to Multi App Share!") },
+        text = { 
+            Text("We can scan your installed apps and automatically sort them into smart groups (e.g. Social Media, Games, Media).\n\nWould you like to Autofill now, or set them up manually?") 
+        },
+        confirmButton = {
+            Button(onClick = onAutofill) { Text("Autofill Groups") }
+        },
+        dismissButton = {
+            TextButton(onClick = onManual) { Text("Manual Setup") }
+        }
     )
 }
