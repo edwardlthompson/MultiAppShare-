@@ -12,31 +12,31 @@
         <path
             android:strokeColor="#FFFFFF" android:strokeWidth="3" android:strokeLineCap="round"
             android:pathData="M52,48 L72,42" />
-        <circle android:cx="76" android:cy="41" android:r="6" android:fillColor="#FFFFFF" />
+        <path android:fillColor="#FFFFFF" android:pathData="M76,35 a6,6 0 1,0 0,12 a6,6 0 1,0 0,-12 Z" />
 
         <!-- Line 2: slightly further down right -->
         <path
             android:strokeColor="#FFFFFF" android:strokeWidth="3" android:strokeLineCap="round"
             android:pathData="M50,51 L72,55" />
-        <circle android:cx="76" android:cy="56" android:r="6" android:fillColor="#FFFFFF" />
+        <path android:fillColor="#FFFFFF" android:pathData="M76,50 a6,6 0 1,0 0,12 a6,6 0 1,0 0,-12 Z" />
 
         <!-- Line 3: lower right -->
         <path
             android:strokeColor="#FFFFFF" android:strokeWidth="3" android:strokeLineCap="round"
             android:pathData="M48,53 L68,70" />
-        <circle android:cx="72" android:cy="73" android:r="6" android:fillColor="#FFFFFF" />
+        <path android:fillColor="#FFFFFF" android:pathData="M72,67 a6,6 0 1,0 0,12 a6,6 0 1,0 0,-12 Z" />
 
         <!-- Line 4: strictly lower down -->
         <path
             android:strokeColor="#FFFFFF" android:strokeWidth="3" android:strokeLineCap="round"
             android:pathData="M46,54 L54,72" />
-        <circle android:cx="57" android:cy="76" android:r="6" android:fillColor="#FFFFFF" />
+        <path android:fillColor="#FFFFFF" android:pathData="M57,70 a6,6 0 1,0 0,12 a6,6 0 1,0 0,-12 Z" />
 
         <!-- Line 5: strictly down left center -->
         <path
             android:strokeColor="#FFFFFF" android:strokeWidth="3" android:strokeLineCap="round"
             android:pathData="M44,53 L41,69" />
-        <circle android:cx="40" android:cy="74" android:r="6" android:fillColor="#FFFFFF" />
+        <path android:fillColor="#FFFFFF" android:pathData="M40,68 a6,6 0 1,0 0,12 a6,6 0 1,0 0,-12 Z" />
 
         <!-- Photo Frame (Overlapping/Behind the clapper board) -->
         <!-- Outer Box -->
@@ -48,7 +48,7 @@
             android:strokeColor="#FFFFFF" android:strokeWidth="2.5" android:strokeLineCap="round" android:strokeLineJoin="round"
             android:pathData="M42,42 l5,-5 l4,4 l4,-3 l5,4" />
         <!-- Sun dot -->
-        <circle android:cx="55" android:cy="36" android:r="2" android:fillColor="#FFFFFF" />
+        <path android:fillColor="#FFFFFF" android:pathData="M55,34 a2,2 0 1,0 0,4 a2,2 0 1,0 0,-4 Z" />
 
         <!-- Clapperboard (Open, Tilted, top-left) -->
         <!-- Bottom Base box -->
