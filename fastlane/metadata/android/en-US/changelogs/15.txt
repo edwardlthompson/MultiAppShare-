@@ -1,0 +1,1 @@
+- Replaced drag-and-drop mechanics in Reorder dialogs with clean Up/Down Arrow buttons for safer traversal

@@ -1146,40 +1146,38 @@ fun ReorderAppsDialog(
     
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Reorder Apps (Drag Handle)") },
+        title = { Text("Reorder Apps") },
         text = {
-            LazyColumn(modifier = Modifier.height(300.dp)) {
-                itemsIndexed(apps, key = { _, app -> app.packageName }) { index, app ->
-                    var accumulatedDrag by remember { mutableFloatStateOf(0f) }
-                    val itemHeight = 120f
-                    
+            LazyColumn(modifier = Modifier.height(400.dp)) {
+                itemsIndexed(apps, key = { _, app -> app.packageName + "/" + app.activityName }) { index, app ->
                     Row(modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp), verticalAlignment = Alignment.CenterVertically) {
-                        Icon(
-                            imageVector = Icons.Default.Menu, 
-                            contentDescription = "Drag Handle", 
-                            modifier = Modifier
-                                .padding(8.dp)
-                                .pointerInput(Unit) {
-                                    detectVerticalDragGestures(
-                                        onDragEnd = { accumulatedDrag = 0f },
-                                        onDragCancel = { accumulatedDrag = 0f },
-                                        onVerticalDrag = { change, dragAmount ->
-                                            change.consume()
-                                            accumulatedDrag += dragAmount
-                                            if (accumulatedDrag > itemHeight && index < apps.size - 1) {
-                                                val item = apps.removeAt(index)
-                                                apps.add(index + 1, item)
-                                                accumulatedDrag = 0f
-                                            } else if (accumulatedDrag < -itemHeight && index > 0) {
-                                                val item = apps.removeAt(index)
-                                                apps.add(index - 1, item)
-                                                accumulatedDrag = 0f
-                                            }
-                                        }
-                                    )
-                                }, 
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
+                        Column {
+                            IconButton(
+                                onClick = {
+                                    if (index > 0) {
+                                        val item = apps.removeAt(index)
+                                        apps.add(index - 1, item)
+                                    }
+                                },
+                                enabled = index > 0,
+                                modifier = Modifier.size(36.dp)
+                            ) {
+                                Icon(Icons.Default.KeyboardArrowUp, contentDescription = "Move Up")
+                            }
+                            IconButton(
+                                onClick = {
+                                    if (index < apps.size - 1) {
+                                        val item = apps.removeAt(index)
+                                        apps.add(index + 1, item)
+                                    }
+                                },
+                                enabled = index < apps.size - 1,
+                                modifier = Modifier.size(36.dp)
+                            ) {
+                                Icon(Icons.Default.KeyboardArrowDown, contentDescription = "Move Down")
+                            }
+                        }
+                        Spacer(modifier = Modifier.width(8.dp))
                         Text(text = app.appName, modifier = Modifier.weight(1f))
                     }
                     if (index < apps.size - 1) HorizontalDivider()
@@ -1201,40 +1199,38 @@ fun SortGroupsDialog(
     
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Sort Groups (Drag Handle)") },
+        title = { Text("Sort Groups") },
         text = {
-            LazyColumn(modifier = Modifier.height(300.dp)) {
+            LazyColumn(modifier = Modifier.height(400.dp)) {
                 itemsIndexed(sortedGroups, key = { _, group -> group.name }) { index, group ->
-                    var accumulatedDrag by remember { mutableFloatStateOf(0f) }
-                    val itemHeight = 120f
-                    
                     Row(modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp), verticalAlignment = Alignment.CenterVertically) {
-                        Icon(
-                            imageVector = Icons.Default.Menu, 
-                            contentDescription = "Drag Handle", 
-                            modifier = Modifier
-                                .padding(8.dp)
-                                .pointerInput(Unit) {
-                                    detectVerticalDragGestures(
-                                        onDragEnd = { accumulatedDrag = 0f },
-                                        onDragCancel = { accumulatedDrag = 0f },
-                                        onVerticalDrag = { change, dragAmount ->
-                                            change.consume()
-                                            accumulatedDrag += dragAmount
-                                            if (accumulatedDrag > itemHeight && index < sortedGroups.size - 1) {
-                                                val item = sortedGroups.removeAt(index)
-                                                sortedGroups.add(index + 1, item)
-                                                accumulatedDrag = 0f
-                                            } else if (accumulatedDrag < -itemHeight && index > 0) {
-                                                val item = sortedGroups.removeAt(index)
-                                                sortedGroups.add(index - 1, item)
-                                                accumulatedDrag = 0f
-                                            }
-                                        }
-                                    )
-                                }, 
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
+                        Column {
+                            IconButton(
+                                onClick = {
+                                    if (index > 0) {
+                                        val item = sortedGroups.removeAt(index)
+                                        sortedGroups.add(index - 1, item)
+                                    }
+                                },
+                                enabled = index > 0,
+                                modifier = Modifier.size(36.dp)
+                            ) {
+                                Icon(Icons.Default.KeyboardArrowUp, contentDescription = "Move Up")
+                            }
+                            IconButton(
+                                onClick = {
+                                    if (index < sortedGroups.size - 1) {
+                                        val item = sortedGroups.removeAt(index)
+                                        sortedGroups.add(index + 1, item)
+                                    }
+                                },
+                                enabled = index < sortedGroups.size - 1,
+                                modifier = Modifier.size(36.dp)
+                            ) {
+                                Icon(Icons.Default.KeyboardArrowDown, contentDescription = "Move Down")
+                            }
+                        }
+                        Spacer(modifier = Modifier.width(8.dp))
                         Text(text = group.name, modifier = Modifier.weight(1f))
                     }
                     if (index < sortedGroups.size - 1) HorizontalDivider()
