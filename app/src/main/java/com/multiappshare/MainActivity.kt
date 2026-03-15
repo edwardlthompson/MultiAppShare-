@@ -68,7 +68,8 @@ data class AppInfo(
 data class AppGroup(
     val name: String,
     val apps: List<AppInfo>,
-    val isExpanded: Boolean = false
+    val isExpanded: Boolean = false,
+    val usageCount: Int = 0 // Track for frequency sorting on main screen
 )
 
 @Serializable
@@ -165,7 +166,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     fun loadData() {
         compatiblePackagesCache.clear()
         viewModelScope.launch(Dispatchers.IO) {
-            val groups = groupsRepository.loadGroups()
+            val groups = groupsRepository.loadGroups().sortedByDescending { it.usageCount }
             val history = historyRepository.loadHistory()
             
             // Query for apps that handle common MIME types for ACTION_SEND and ACTION_SEND_MULTIPLE
@@ -333,6 +334,18 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    fun incrementGroupUsage(group: AppGroup) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val currentState = _uiState.value as? MainUiState.Success ?: return@launch
+            val updatedGroups = currentState.groups.map { 
+                if (it.name == group.name) it.copy(usageCount = it.usageCount + 1) else it 
+            }.sortedBy { it.name } // wait, sortedBy usageCount descending is what we want on reload, we can sort it inline here too!
+            val sorted = updatedGroups.sortedByDescending { it.usageCount }
+            groupsRepository.saveGroups(sorted)
+            _uiState.value = currentState.copy(groups = sorted)
+        }
+    }
+
     fun updateGroupsOrder(groups: List<AppGroup>) {
         viewModelScope.launch(Dispatchers.IO) {
             val currentState = _uiState.value as? MainUiState.Success ?: return@launch
@@ -407,6 +420,8 @@ class MainActivity : ComponentActivity() {
                             currentIndex.intValue = 0
                             shareStep(currentUris.value, currentText.value, mime, compatiblePackages, 0)
                             isSharingStarted.value = true
+                            
+                            viewModel.incrementGroupUsage(group) // Frequency sorting increment
                             
                             viewModel.addHistoryItem(HistoryItem(
                                 System.currentTimeMillis(),
@@ -734,11 +749,31 @@ fun MainScreen(
                             if (showHistoryDialog) HistoryDialog(history = state.history, onDismiss = { showHistoryDialog = false })
                             if (showAboutDialog) AboutDialog(onDismiss = { showAboutDialog = false })
 
-                            if (state.groups.isEmpty() && !inShareMode) {
-                                EmptyGroupsPlaceholder()
+                            val filteredGroups = if (inShareMode) {
+                                val shareAction = if (uris != null && uris.size > 1) android.content.Intent.ACTION_SEND_MULTIPLE else android.content.Intent.ACTION_SEND
+                                val compatibleCat = viewModel.getCompatiblePackages(shareAction, mimeType ?: "*/*")
+                                state.groups.filter { group ->
+                                    group.apps.any { app ->
+                                        val key = "${app.packageName}/${app.activityName}"
+                                        val fallbackKey = "${app.packageName}/"
+                                        key in compatibleCat || compatibleCat.any { it.startsWith(fallbackKey) }
+                                    }
+                                }
+                            } else {
+                                state.groups
+                            }
+
+                            if (filteredGroups.isEmpty()) {
+                                if (inShareMode) {
+                                    Box(modifier = Modifier.fillMaxSize().padding(16.dp), contentAlignment = androidx.compose.ui.Alignment.Center) {
+                                        Text("No compatible groups found for this content type.", style = MaterialTheme.typography.bodyLarge, textAlign = TextAlign.Center)
+                                    }
+                                } else {
+                                    EmptyGroupsPlaceholder()
+                                }
                             } else {
                                 GroupList(
-                                    groups = state.groups,
+                                    groups = filteredGroups,
                                     onModifyClick = { showModifyGroupDialog = it },
                                     onReorderClick = { showReorderDialog = it },
                                     onDeleteClick = { groupToDelete = it },
@@ -957,7 +992,7 @@ fun GroupItem(
             Row(verticalAlignment = Alignment.CenterVertically) {
                 IconButton(onClick = onToggleExpanded) {
                     Icon(
-                        imageVector = if (group.isExpanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
+                        imageVector = if (group.isExpanded && !inShareMode) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
                         contentDescription = "Toggle"
                     )
                 }
@@ -974,7 +1009,7 @@ fun GroupItem(
                 }
             }
             
-            AnimatedVisibility(visible = group.isExpanded) {
+            AnimatedVisibility(visible = group.isExpanded && !inShareMode) {
                 Column {
                     Spacer(modifier = Modifier.height(8.dp))
                     if (group.apps.isEmpty()) {
