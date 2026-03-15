@@ -1,0 +1,5 @@
+- Smart Auto-Grouping scanner based on system categories
+- Auto-Grouping Dialog box on First Launch with choice layouts
+- Default creation of silent Social Media buckets 
+- Dynamic MIME filters to trim incompatible group listings from overlay sheets
+- Frequency Sorting to prioritize most-handled targets
