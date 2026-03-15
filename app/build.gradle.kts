@@ -4,7 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
 }
 
-val appVersion = "1.5.1"
+val appVersion = "1.5.2"
 
 android {
     namespace = "com.multiappshare"
@@ -14,7 +14,7 @@ android {
         applicationId = "com.multiappshare"
         minSdk = 26
         targetSdk = 36
-        versionCode = 13
+        versionCode = 14
         versionName = appVersion
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"

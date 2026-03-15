@@ -260,12 +260,25 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             for (app in allApps) {
                 if (singleCategoryOnly != null && app.category != singleCategoryOnly) continue
 
-                val categoryLabel = when (app.category) {
-                    android.content.pm.ApplicationInfo.CATEGORY_SOCIAL -> "Social Media"
-                    android.content.pm.ApplicationInfo.CATEGORY_GAME -> "Games"
-                    android.content.pm.ApplicationInfo.CATEGORY_VIDEO, android.content.pm.ApplicationInfo.CATEGORY_AUDIO -> "Media"
-                    android.content.pm.ApplicationInfo.CATEGORY_IMAGE -> "Photography"
-                    else -> null
+                val nameLower = app.appName.lowercase()
+                val pkgLower = app.packageName.lowercase()
+
+                val categoryLabel = when {
+                    nameLower.contains("message") || nameLower.contains("chat") || nameLower.contains("messenger") || pkgLower.contains("messenger") || pkgLower.contains("telegram") || pkgLower.contains("whatsapp") -> "Messaging"
+                    nameLower.contains("mail") || pkgLower.contains("email") || pkgLower.contains("gmail") || pkgLower.contains("outlook") -> "Email"
+                    nameLower.contains("contact") || pkgLower.contains("contact") || nameLower.contains("people") -> "Contacts"
+                    
+                    else -> when (app.category) {
+                        android.content.pm.ApplicationInfo.CATEGORY_SOCIAL -> "Social Media"
+                        android.content.pm.ApplicationInfo.CATEGORY_GAME -> "Games"
+                        android.content.pm.ApplicationInfo.CATEGORY_VIDEO -> "Video"
+                        android.content.pm.ApplicationInfo.CATEGORY_AUDIO -> "Audio"
+                        android.content.pm.ApplicationInfo.CATEGORY_IMAGE -> "Photography"
+                        android.content.pm.ApplicationInfo.CATEGORY_MAPS -> "Maps"
+                        android.content.pm.ApplicationInfo.CATEGORY_NEWS -> "News"
+                        android.content.pm.ApplicationInfo.CATEGORY_PRODUCTIVITY -> "Productivity"
+                        else -> null
+                    }
                 }
                 
                 if (categoryLabel != null) {
@@ -1080,6 +1093,20 @@ fun ModifyGroupAppsDialog(
         },
         text = {
             Column {
+                if (selectedApps.isNotEmpty()) {
+                    androidx.compose.foundation.lazy.LazyRow(
+                        modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
+                        horizontalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(4.dp)
+                    ) {
+                        items(selectedApps) { app ->
+                            AssistChip(
+                                onClick = { selectedApps.remove(app) },
+                                label = { Text(app.appName.split(" - ").first()) },
+                                leadingIcon = { Icon(Icons.Default.Close, null, modifier = Modifier.size(16.dp)) }
+                            )
+                        }
+                    }
+                }
                 OutlinedTextField(value = searchQuery, onValueChange = { searchQuery = it }, label = { Text("Search apps") }, modifier = Modifier.fillMaxWidth(), singleLine = true)
                 Spacer(modifier = Modifier.height(8.dp))
                 LazyColumn(modifier = Modifier.height(300.dp)) {
