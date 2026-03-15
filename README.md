@@ -4,15 +4,15 @@
 
 ## 🚀 Features
 
-- **Custom App Groups**: Organize your target apps into groups like "Social Media", "Work", or "Friends".
-- **Sequential Sharing**: Share content once, and the app guides you through each target app in your group.
-- **Smart Compatibility**: Automatically detects and skips apps that do not support the specific media type (photo, video, link, text) you are sharing.
-- **Persistent State**: Remembers your group configurations and even whether they were expanded or collapsed.
-- **History Tracking**: Keeps a log of your last 50 sharing activities, highlighting any failures in red.
-- **Universal Content Support**: Works with single images, links, plain text, and generic files.
-- **Multi-Media Sharing**: Select multiple photos, videos, or mixed media at once and seamlessly dispatch the whole batch to your target groups natively.
-- **Translucent Overlay UX**: Sharing from an external app feels native; the share menu floats dynamically over your content instead of completely taking over the screen.
-- **Intuitive Drag & Drop**: Easily rearrange your favorite apps within a group by simply dragging and dropping them into your preferred sequence.
+- **Smart Auto-Grouping**: Group your apps automatically by system categories (Games, Maps, Productivity) with name-based fallbacks for strict isolation (Messaging, Email, Contacts).
+- **Overlaid Translucent UX Control**: Sharing from an external app feels native; a floating sheet guides custom choices without locking down standard focus pipelines.
+- **Dynamic MIME Compatible Filters**: Hides whole columns entirely from display templates if **none** of their inner apps support the currently dispatched payload standard.
+- **Frequency-Based Dashboard Sorts Configuration templates details set**: Sorts Dashboard lists from high-rate nodes down to lower ranges recursively weighted back off execution states.
+- **Sequential Single-Batch Guided Delivery Automation Details setup**: Guides targeting loops seamlessly step-by-step iterating forwards through single-intent dispatch loops.
+- **Unified Multi-Format Selection Dispatch setup details**: Select mixed buckets packed with images, grid continuous videos, text lines, and bundles accurately at onset natively.
+- **Keyboard navigation arrow position fixes set**: Easily adjust ranking layouts using safe arrow targets avoiding press-drag continuous motion triggers.
+- **Metric setups history charts overview log Details view diagnostics trigger**: Monitors absolute outputs timestamped with failures flagged explicitly so tracking overheads remain minimal.
+- **Persistent expand-collapse saves layout defaults details saves set**: Preserves drawer-state memory so sheet overlaps don't overflow crowded screen bounds during overlays.
 
 ## 🛠 Tech Stack
 
@@ -43,13 +43,14 @@ If you prefer to build the app yourself:
 
 ## 📖 How to Use
 
-1. **Create a Group**: Tap the "Add Group" button and give it a name.
-2. **Add Apps**: Open the group menu (three dots) and select "Modify Apps" to add your favorite sharing targets.
-3. **Reorder**: Use "Reorder Apps" in the menu to set your preferred sharing sequence.
-4. **Start Sharing**: 
-   - Open any other app (e.g., Photos, YouTube, Chrome).
-   - Tap the system **Share** button. (You can also select *multiple* items).
-   - Select **Multi App Share** from the list.
+1. **Smart Onboarding Setup**: On first launch, select **"Autofill Groups"** to instantly generate isolated categorical folders (Social Media, Video, Games, etc.) fully automatically.
+2. **Auto Group Button Control Details set**: You can also use the Dashboard FAB to trigger append sweeps on newer item installs recursively avoiding manual setups.
+3. **Manual Override modifications set**: Open group context menus (three overflow dots) selecting "Modify Apps" to tweak selection layouts from grouped shortcut headers directly anchored top arrays.
+4. **Ranking sort edits setups**: Reorder position limits seamlessly using Up/Down icons inside items avoiding coordinate conflicts.
+5. **Guided Single-Item Sequential flow loop set**:
+   - Open standard external apps holding payload targets (Photos, Chrome, etc).
+   - Trigger default **Share Dialogs** (supports MIXED BUCKET multicopies).
+   - Select **Multi App Share** overlays sheets cleanly.
    - Choose the target group from the floating translucent bottom sheet.
    - The first app in the group will securely open. Once you finish posting, simply return to your recent apps to see Multi App Share automatically proceed with the remaining apps on your group list!
 
