@@ -7,7 +7,7 @@ plugins {
     id("kotlin-kapt")
 }
 
-val appVersion = "1.6.0"
+val appVersion = "1.6.1"
 
 android {
     namespace = "com.multiappshare"
@@ -17,7 +17,7 @@ android {
         applicationId = "com.multiappshare"
         minSdk = 26
         targetSdk = 36
-        versionCode = 16
+        versionCode = 17
         versionName = appVersion
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
