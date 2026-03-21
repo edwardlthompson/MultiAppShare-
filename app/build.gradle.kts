@@ -53,7 +53,10 @@ android {
         compose = true
         buildConfig = true
     }
+
 }
+
+
 
 // Fixed APK renaming for AGP 8.0+ / 9.0+
 // This sets the base name for artifacts (APKs and AABs).
@@ -65,7 +68,7 @@ base {
 dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.hilt.android)
-    add("kapt", "com.google.dagger:hilt-android-compiler:2.51.1")
+    kapt(libs.hilt.compiler)
     implementation(libs.androidx.datastore.preferences)
     implementation(libs.hilt.navigation.compose)
     implementation(libs.coil.compose)
@@ -90,3 +93,14 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 }
+
+kotlin {
+    jvmToolchain(11)
+}
+
+configurations.all {
+    resolutionStrategy {
+        force("org.jetbrains.kotlin:kotlin-metadata-jvm:2.3.0")
+    }
+}
+

@@ -59,8 +59,6 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.foundation.background
-import android.net.Uri
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import kotlinx.serialization.encodeToString
 import androidx.core.content.pm.ShortcutManagerCompat
