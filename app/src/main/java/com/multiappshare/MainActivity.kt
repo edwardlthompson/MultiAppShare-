@@ -51,84 +51,101 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
+import com.multiappshare.model.*
+import coil.compose.AsyncImage
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.foundation.background
+import android.net.Uri
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
+import kotlinx.serialization.encodeToString
+import androidx.core.content.pm.ShortcutManagerCompat
+import androidx.core.content.pm.ShortcutInfoCompat
+import androidx.core.graphics.drawable.IconCompat
+import android.app.PendingIntent
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.ViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.flow.first
+import javax.inject.Inject
 
-@Serializable
-data class AppInfo(
-    val appName: String,
-    val packageName: String,
-    val activityName: String = "",
-    val category: Int = -1 // Added for automated smart grouping aggregates
-)
 
-@Serializable
-data class AppGroup(
-    val name: String,
-    val apps: List<AppInfo>,
-    val isExpanded: Boolean = false,
-    val usageCount: Int = 0 // Track for frequency sorting on main screen
-)
 
-@Serializable
-data class HistoryItem(
-    val timestamp: Long,
-    val groupName: String,
-    val contentDescription: String,
-    val status: String,
-    val isError: Boolean = false
-)
-
-class GroupsRepository(context: Context) {
-    private val file = File(context.filesDir, "groups.json")
-
-    fun saveGroups(groups: List<AppGroup>) {
-        val jsonString = Json.encodeToString(groups)
-        file.writeText(jsonString)
-    }
-
-    fun loadGroups(): List<AppGroup> {
-        if (!file.exists()) return emptyList()
-        return try {
-            Json.decodeFromString(file.readText())
-        } catch (_: Exception) {
-            emptyList()
-        }
-    }
-}
-
-class HistoryRepository(context: Context) {
-    private val file = File(context.filesDir, "history.json")
-
-    fun saveHistory(history: List<HistoryItem>) {
-        val jsonString = Json.encodeToString(history.take(50))
-        file.writeText(jsonString)
-    }
-
-    fun loadHistory(): List<HistoryItem> {
-        if (!file.exists()) return emptyList()
-        return try {
-            Json.decodeFromString(file.readText())
-        } catch (_: Exception) {
-            emptyList()
-        }
-    }
-}
-
-class MainViewModel(application: Application) : AndroidViewModel(application) {
-    private val groupsRepository = GroupsRepository(application)
-    private val historyRepository = HistoryRepository(application)
-    private val packageManager: PackageManager = application.packageManager
-    private val prefs = application.getSharedPreferences("multiappshare_prefs", Context.MODE_PRIVATE)
+@HiltViewModel
+class MainViewModel @Inject constructor(
+    private val groupsRepository: GroupsRepository,
+    private val historyRepository: HistoryRepository,
+    private val packageManager: PackageManager,
+    private val settingsRepository: SettingsRepository,
+    @ApplicationContext private val context: Context
+) : ViewModel() {
 
     var showOnboardingDialog by mutableStateOf(false)
         private set
 
+    var expandedGroupName by mutableStateOf<String?>(null)
+
     fun setOnboardingDismissed() {
-        prefs.edit().putBoolean("onboarding_completed", true).apply()
-        showOnboardingDialog = false
+        viewModelScope.launch {
+            settingsRepository.setOnboardingCompleted()
+            showOnboardingDialog = false
+        }
+    }
+
+    fun exportGroupsToUri(uri: Uri) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val groups = groupsRepository.loadGroups()
+                val jsonString = Json.encodeToString(groups)
+                context.contentResolver.openOutputStream(uri)?.use { outputStream ->
+                    outputStream.write(jsonString.toByteArray())
+                }
+            } catch (e: Exception) {
+                timber.log.Timber.e(e, "Export failed")
+            }
+        }
+    }
+
+    fun importGroupsFromUri(uri: Uri) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                context.contentResolver.openInputStream(uri)?.use { inputStream ->
+                    val jsonString = inputStream.bufferedReader().use { it.readText() }
+                    val importedGroups: List<AppGroup> = Json.decodeFromString(jsonString)
+                    groupsRepository.saveGroups(importedGroups)
+                    loadData()
+                }
+            } catch (e: Exception) {
+                timber.log.Timber.e(e, "Import failed")
+            }
+        }
+    }
+
+    fun createShortcutForGroup(group: AppGroup) {
+        if (ShortcutManagerCompat.isRequestPinShortcutSupported(context)) {
+            val intent = Intent(context, MainActivity::class.java).apply {
+                action = Intent.ACTION_VIEW
+                putExtra("GROUP_NAME", group.name)
+            }
+            
+            val shortcut = ShortcutInfoCompat.Builder(context, group.name)
+                .setShortLabel(group.name)
+                .setIcon(IconCompat.createWithResource(context, R.drawable.ic_launcher_foreground))
+                .setIntent(intent)
+                .build()
+
+            ShortcutManagerCompat.requestPinShortcut(context, shortcut, null)
+        }
     }
 
     private val compatiblePackagesCache = mutableMapOf<Pair<String, String>, Set<String>>()
@@ -235,10 +252,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                         category = category
                     )
                 }
-                .filter { it.packageName != getApplication<Application>().packageName }
+                .filter { it.packageName != context.packageName }
                 .sortedBy { it.appName.lowercase() }
 
-            val initialOnboardingCompleted = prefs.getBoolean("onboarding_completed", false)
+            val initialOnboardingCompleted = settingsRepository.isOnboardingCompleted.first()
 
             if (groups.isEmpty() && !initialOnboardingCompleted) {
                 showOnboardingDialog = true
@@ -382,7 +399,18 @@ sealed class MainUiState {
     data class Success(val groups: List<AppGroup>, val allApps: List<AppInfo>, val history: List<HistoryItem>) : MainUiState()
 }
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    private val viewModel: MainViewModel by viewModels()
+
+    private val exportLauncher = registerForActivityResult(ActivityResultContracts.CreateDocument("application/json")) { uri ->
+        uri?.let { viewModel.exportGroupsToUri(it) }
+    }
+    
+    private val importLauncher = registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
+        uri?.let { viewModel.importGroupsFromUri(it) }
+    }
 
     private val requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -414,7 +442,10 @@ class MainActivity : ComponentActivity() {
                     sharingStarted = isSharingStarted.value,
                     currentIndex = currentIndex.intValue,
                     appPackages = appPackages.value,
-                    onStartSharing = { group, viewModel ->
+                    viewModel = viewModel,
+                    onExport = { exportLauncher.launch("groups.json") },
+                    onImport = { importLauncher.launch(arrayOf("application/json", "application/octet-stream", "*/*")) },
+                    onStartSharing = { group, vm ->
                         val mime = currentMimeType.value ?: "*/*"
                         val compatiblePackages = handleIncompatibleApps(currentUris.value, mime, group, viewModel)
                         val contentDesc = getContentDescription(mime, currentText.value, currentUris.value)
@@ -580,6 +611,11 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+/**
+ * The main screen of the application.
+ * Displays the list of groups, onboarding dialog, and managing groups/apps.
+ * Also handles the sharing overlay interface when content is passed via Intent.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(
@@ -592,7 +628,9 @@ fun MainScreen(
     onStartSharing: (AppGroup, MainViewModel) -> Unit,
     onNextStep: () -> Unit,
     packageManager: PackageManager,
-    viewModel: MainViewModel = viewModel()
+    onExport: () -> Unit,
+    onImport: () -> Unit,
+    viewModel: MainViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsState()
@@ -642,6 +680,22 @@ fun MainScreen(
                                     leadingIcon = { Icon(Icons.Default.Info, null) },
                                     onClick = {
                                         showAboutDialog = true
+                                        menuExpanded = false
+                                    }
+                                )
+                                DropdownMenuItem(
+                                    text = { Text("Export Groups") },
+                                    leadingIcon = { Icon(Icons.Default.ExitToApp, null) },
+                                    onClick = {
+                                        onExport()
+                                        menuExpanded = false
+                                    }
+                                )
+                                DropdownMenuItem(
+                                    text = { Text("Import Groups") },
+                                    leadingIcon = { Icon(Icons.Default.GetApp, null) },
+                                    onClick = {
+                                        onImport()
                                         menuExpanded = false
                                     }
                                 )
@@ -792,6 +846,7 @@ fun MainScreen(
                                     onDeleteClick = { groupToDelete = it },
                                     onToggleExpanded = { viewModel.toggleGroupExpanded(it) },
                                     onGroupClick = { onStartSharing(it, viewModel) },
+                                    onAddShortcutClick = { viewModel.createShortcutForGroup(it) },
                                     inShareMode = inShareMode,
                                     packageManager = packageManager
                                 )
@@ -805,6 +860,10 @@ fun MainScreen(
     }
 }
 
+/**
+ * Displays the progress of the sequential sharing operation.
+ * Guides the user through sharing items iteratively to apps in a group.
+ */
 @Composable
 fun SharingInProgress(
     mimeType: String?,
@@ -965,6 +1024,7 @@ fun GroupList(
     onDeleteClick: (AppGroup) -> Unit,
     onToggleExpanded: (AppGroup) -> Unit,
     onGroupClick: (AppGroup) -> Unit,
+    onAddShortcutClick: (AppGroup) -> Unit,
     inShareMode: Boolean,
     packageManager: PackageManager
 ) {
@@ -977,6 +1037,7 @@ fun GroupList(
                 onDeleteClick = { onDeleteClick(group) },
                 onToggleExpanded = { onToggleExpanded(group) },
                 onGroupClick = { onGroupClick(group) },
+                onAddShortcutClick = { onAddShortcutClick(group) },
                 inShareMode = inShareMode,
                 packageManager = packageManager
             )
@@ -992,6 +1053,7 @@ fun GroupItem(
     onDeleteClick: () -> Unit,
     onToggleExpanded: () -> Unit,
     onGroupClick: () -> Unit,
+    onAddShortcutClick: () -> Unit,
     inShareMode: Boolean,
     packageManager: PackageManager
 ) {
@@ -1012,10 +1074,11 @@ fun GroupItem(
                 Text(text = group.name, style = MaterialTheme.typography.headlineSmall, modifier = Modifier.weight(1f))
                 if (!inShareMode) {
                     Box {
-                        IconButton(onClick = { menuExpanded = true }) { Icon(Icons.Default.MoreVert, null) }
+                        IconButton(onClick = { menuExpanded = true }) { Icon(Icons.Default.MoreVert, contentDescription = "More Options") }
                         DropdownMenu(expanded = menuExpanded, onDismissRequest = { menuExpanded = false }) {
                             DropdownMenuItem(text = { Text("Modify Apps") }, onClick = { menuExpanded = false; onModifyClick() })
                             DropdownMenuItem(text = { Text("Reorder Apps") }, onClick = { menuExpanded = false; onReorderClick() })
+                            DropdownMenuItem(text = { Text("Add to Home Screen") }, onClick = { menuExpanded = false; onAddShortcutClick() })
                             DropdownMenuItem(text = { Text("Delete Group", color = MaterialTheme.colorScheme.error) }, onClick = { menuExpanded = false; onDeleteClick() })
                         }
                     }
@@ -1041,13 +1104,8 @@ fun GroupItem(
 
 @Composable
 fun AppListItem(app: AppInfo, packageManager: PackageManager) {
-    val icon = try { packageManager.getApplicationIcon(app.packageName) } catch (_: Exception) { null }
     Row(modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp), verticalAlignment = Alignment.CenterVertically) {
-        if (icon != null) {
-            Image(painter = rememberDrawablePainter(icon), contentDescription = null, modifier = Modifier.size(40.dp))
-        } else {
-            Spacer(modifier = Modifier.size(40.dp))
-        }
+        AsyncImage(model = app, contentDescription = null, modifier = Modifier.size(40.dp))
         Spacer(modifier = Modifier.width(8.dp))
         Text(text = app.appName)
     }
@@ -1120,9 +1178,7 @@ fun ModifyGroupAppsDialog(
                                 selectedApps.add(app)
                             }
                         }.padding(8.dp), verticalAlignment = Alignment.CenterVertically) {
-                            val icon = try { packageManager.getApplicationIcon(app.packageName) } catch (_: Exception) { null }
-                            if (icon != null) Image(painter = rememberDrawablePainter(icon), contentDescription = null, modifier = Modifier.size(40.dp))
-                            else Spacer(modifier = Modifier.size(40.dp))
+                            AsyncImage(model = app, contentDescription = null, modifier = Modifier.size(40.dp))
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(text = app.appName, modifier = Modifier.weight(1f))
                             Checkbox(checked = isSelected, onCheckedChange = null)
@@ -1244,17 +1300,102 @@ fun SortGroupsDialog(
 
 @Composable
 fun OnboardingDialog(onAutofill: () -> Unit, onManual: () -> Unit) {
-    AlertDialog(
-        onDismissRequest = { /* Force action to exit */ },
-        title = { Text("Welcome to Multi App Share!") },
-        text = { 
-            Text("We can scan your installed apps and automatically sort them into smart groups (e.g. Social Media, Games, Media).\n\nWould you like to Autofill now, or set them up manually?") 
-        },
-        confirmButton = {
-            Button(onClick = onAutofill) { Text("Autofill Groups") }
-        },
-        dismissButton = {
-            TextButton(onClick = onManual) { Text("Manual Setup") }
+    val pagerState = rememberPagerState(pageCount = { 2 })
+    val coroutineScope = rememberCoroutineScope()
+
+    Dialog(
+        onDismissRequest = { /* Force action */ },
+        properties = DialogProperties(usePlatformDefaultWidth = false)
+    ) {
+        Surface(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(
+                    Brush.verticalGradient(
+                        colors = listOf(
+                            MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.9f),
+                            MaterialTheme.colorScheme.background
+                        )
+                    )
+                ),
+            color = Color.Transparent
+        ) {
+            Column(
+                modifier = Modifier.padding(24.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Spacer(modifier = Modifier.weight(1f))
+
+                HorizontalPager(
+                    state = pagerState,
+                    modifier = Modifier.weight(3f)
+                ) { page ->
+                    when (page) {
+                        0 -> OnboardingPage(
+                            title = "Welcome to MultiAppShare",
+                            description = "Queue your content once, then share it across multiple apps sequentially without returning to the dashboard.",
+                            icon = Icons.Default.Share
+                        )
+                        1 -> OnboardingPage(
+                            title = "Smart Automations",
+                            description = "We can scan your installed apps and automatically sort them into categories (Social, Messaging, Media) for instant setup.",
+                            icon = Icons.Default.AutoAwesome
+                        )
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                // Page indicators
+                Row {
+                    repeat(2) { index ->
+                        val color = if (pagerState.currentPage == index) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.4f)
+                        Box(modifier = Modifier.padding(4.dp).size(8.dp).background(color, androidx.compose.foundation.shape.CircleShape))
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(32.dp))
+
+                if (pagerState.currentPage == 0) {
+                    Button(
+                        onClick = { coroutineScope.launch { pagerState.animateScrollToPage(1) } },
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text("Next")
+                    }
+                } else {
+                    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                        Button(onClick = onAutofill, modifier = Modifier.fillMaxWidth()) {
+                            Text("Autofill Smart Groups")
+                        }
+                        TextButton(onClick = onManual, modifier = Modifier.fillMaxWidth()) {
+                            Text("Set up Manually")
+                        }
+                    }
+                }
+                
+                Spacer(modifier = Modifier.weight(1f))
+            }
         }
-    )
+    }
+}
+
+@Composable
+fun OnboardingPage(title: String, description: String, icon: androidx.compose.ui.graphics.vector.ImageVector) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+        modifier = Modifier.fillMaxSize().padding(16.dp)
+    ) {
+        Icon(
+            imageVector = icon,
+            contentDescription = null,
+            modifier = Modifier.size(100.dp),
+            tint = MaterialTheme.colorScheme.primary
+        )
+        Spacer(modifier = Modifier.height(24.dp))
+        Text(text = title, style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold, textAlign = TextAlign.Center)
+        Spacer(modifier = Modifier.height(16.dp))
+        Text(text = description, style = MaterialTheme.typography.bodyLarge, textAlign = TextAlign.Center, color = MaterialTheme.colorScheme.onSurfaceVariant)
+    }
 }

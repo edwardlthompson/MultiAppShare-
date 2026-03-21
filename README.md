@@ -13,6 +13,8 @@
 - **Keyboard navigation arrow position fixes set**: Easily adjust ranking layouts using safe arrow targets avoiding press-drag continuous motion triggers.
 - **Metric setups history charts overview log Details view diagnostics trigger**: Monitors absolute outputs timestamped with failures flagged explicitly so tracking overheads remain minimal.
 - **Persistent expand-collapse saves layout defaults details saves set**: Preserves drawer-state memory so sheet overlaps don't overflow crowded screen bounds during overlays.
+- **JSON Backup & Restore**: Easily Export or Import your custom groups list to JSON to transfer setups between devices securely.
+- **Home Screen Shortcuts**: Pin highly frequented group bundles directly to your launcher desktop using safe Compat shortcut integrations.
 
 ## 🛠 Tech Stack
 
@@ -26,7 +28,7 @@
 ## 📦 Installation & Setup
 
 ### 📥 Download the APK (Recommended)
-You can download the latest pre-built version of the app directly from the [Releases](https://github.com/[Your-GitHub-Username]/MultiAppShare/releases) page. 
+You can download the latest pre-built version of the app directly from the [Releases](https://github.com/edwardlthompson/MultiAppShare/releases) page. 
 
 1. Download the `app-debug.apk` (or `app-release.apk`) to your Android device.
 2. Open the file to install.
@@ -36,7 +38,7 @@ You can download the latest pre-built version of the app directly from the [Rele
 If you prefer to build the app yourself:
 1. Clone the repository:
    ```bash
-   git clone https://github.com/[Your-GitHub-Username]/MultiAppShare.git
+   git clone https://github.com/edwardlthompson/MultiAppShare.git
    ```
 2. Open the project in [Android Studio Ladybug](https://developer.android.com/studio) or newer.
 3. Build and run the app on your device.

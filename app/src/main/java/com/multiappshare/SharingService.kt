@@ -10,8 +10,14 @@ import android.content.pm.ServiceInfo
 import android.net.Uri
 import android.os.Build
 import android.os.IBinder
+import android.widget.Toast
 import androidx.core.app.NotificationCompat
+import timber.log.Timber
 
+/**
+ * Service that manages the foreground notification and triggers sharing intents.
+ * It is responsible for starting the sharing activity for a specific app component.
+ */
 class SharingService : Service() {
 
     private lateinit var notificationManager: NotificationManager
@@ -123,8 +129,10 @@ class SharingService : Service() {
         
         try {
             startActivity(shareIntent)
-        } catch (_: Exception) {
-            // Silently handle exceptions for missing packages
+            Timber.d("Successfully started share intent for $componentString")
+        } catch (e: Exception) {
+            Timber.e(e, "Exception sharing with app: $componentString")
+            Toast.makeText(this, "Failed to share with $componentString", Toast.LENGTH_SHORT).show()
         }
     }
 
