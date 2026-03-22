@@ -1,5 +1,9 @@
 # <img src=".github/assets/icon.png" width="48" align="center"> Multi App Share
 
+![GitHub release](https://img.shields.io/github/v/release/edwardlthompson/MultiAppShare-?include_prereleases)
+![F-Droid](https://img.shields.io/f-droid/v/com.multiappshare?label=F-Droid&color=blue)
+![License](https://img.shields.io/github/license/edwardlthompson/MultiAppShare-?color=green)
+
 **Multi App Share** is a utility Android application designed to streamline the process of sharing content across multiple applications. Instead of manually sharing a photo, video, link, or text to each social media platform or messaging app one by one, you can create custom groups and share to all of them in a sequential, guided workflow.
 
 ## 🚀 Features
@@ -47,13 +51,26 @@ graph TD
         E[":core-ui"]
     end
 
-    A --> B
-    A --> C
-    A --> D
-    B --> C
-    B --> E
-    C --> D
+    A -->|Depends On| B
+    A -->|Depends On| C
+    A -->|Depends On| D
+    B -->|Depends On| C
+    B -->|Depends On| E
+    C -->|Depends On| D
 ```
+
+### 🔒 Strict Visibility & Encapsulation
+To enforce layout encapsulation and prevent leakage, candidate node sets consume `internal` modifier layouts:
+
+| Module | Core Logic (Internal) | External API (Public) |
+| :--- | :--- | :--- |
+| **`:app`** | App triggers, Hilt modules glue | Application |
+| **`:feature-dashboard`** | VM Screen logic bundles | Composables screens |
+| **`:core-domain`** | RepositoryImpl bounds | UseCases & Repo Interfaces |
+| **`:core-database`** | `AppDatabase`, `DatabaseModule` | Entity schemas & DAO interfaces |
+| **`:core-ui`** | Themes & generic styles | Layout resource styles |
+
+---
 
 ### 📂 Modules
 - **`:app`**: Main Android Binary, Application triggers, and Hilt glue modules.
@@ -61,6 +78,17 @@ graph TD
 - **`:core-domain`**: UseCases and Generic Repository interfaces.
 - **`:core-database`**: Room persistence layers and Entity types.
 - **`:core-ui`**: Centralized XML layout resources, Base themes, and icons.
+
+---
+
+## 🛡 FOSS & Privacy
+
+This application is built with **Privacy-by-Design** and contains **NO Analytics, NO Trackers, and NO Proprietary SDKs** (e.g., GMS/Firebase). 
+
+- **100% Free and Open-Source** under the [MIT License](LICENSE).
+- **F-Droid Readiness**: Fastlane metadata inclusive of reproducible building recipes included.
+
+---
 
 ## 📦 Installation & Setup
 
@@ -71,27 +99,23 @@ You can download the latest pre-built version of the app directly from the [Rele
 2. Open the file to install.
 3. If prompted, allow "Install from unknown sources" in your device settings.
 
-### 💻 Build from Source (Optional)
-If you prefer to build the app yourself:
+### 💻 Build from Source (Advanced)
+If you prefer to build that app yourself from scratch:
 1. Clone the repository:
    ```bash
    git clone https://github.com/edwardlthompson/MultiAppShare.git
    ```
-2. Open the project in [Android Studio Ladybug](https://developer.android.com/studio) or newer.
-3. Build and run the app on your device.
+2. Ensure you have **JDK 17** toolchains and **Android Studio Ladybug+** installed.
+3. Open the workspace; Gradle automatically synchronizes parameters mapping or version catalog.
+4. To test modular components: Run `./gradlew test` securely layout triggers down downstream!
 
 ## 📖 How to Use
 
-1. **Smart Onboarding Setup**: On first launch, select **"Autofill Groups"** to instantly generate isolated categorical folders (Social Media, Video, Games, etc.) fully automatically.
-2. **Auto Group Button Control Details set**: You can also use the Dashboard FAB to trigger append sweeps on newer item installs recursively avoiding manual setups.
-3. **Manual Override modifications set**: Open group context menus (three overflow dots) selecting "Modify Apps" to tweak selection layouts from grouped shortcut headers directly anchored top arrays.
-4. **Ranking sort edits setups**: Reorder position limits seamlessly using Up/Down icons inside items avoiding coordinate conflicts.
-5. **Guided Single-Item Sequential flow loop set**:
-   - Open standard external apps holding payload targets (Photos, Chrome, etc).
-   - Trigger default **Share Dialogs** (supports MIXED BUCKET multicopies).
-   - Select **Multi App Share** overlays sheets cleanly.
-   - Choose the target group from the floating translucent bottom sheet.
-   - The first app in the group will securely open. Once you finish posting, simply return to your recent apps to see Multi App Share automatically proceed with the remaining apps on your group list!
+1. **Configure**: Select **"Autofill Groups"** on onboarding to automatically generate isolated categorical folders triggers setup down downstream.
+2. **Share**: Inside simple exterior payloads (Photos, chrome, links), trigger default Android share dialogs and pick **Multi App Share** sheets.
+3. **Automate**: Pick the target group; The first app in the custom list will open. On finish, return via Recent Apps to see the workflow iterate securely down downstream!
+
+💡 **Pro-Tip**: The **Translucent Overlaid UX** controller lets you guide choices natively without locking standard focus pipelines layout completely securely down downstream!
 
 ## 🤝 Support the Developer
 
