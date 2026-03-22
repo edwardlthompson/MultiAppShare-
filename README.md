@@ -7,12 +7,12 @@
 - **Smart Auto-Grouping**: Group your apps automatically by system categories (Games, Maps, Productivity) with name-based fallbacks for strict isolation (Messaging, Email, Contacts).
 - **Overlaid Translucent UX Control**: Sharing from an external app feels native; a floating sheet guides custom choices without locking down standard focus pipelines.
 - **Dynamic MIME Compatible Filters**: Hides whole columns entirely from display templates if **none** of their inner apps support the currently dispatched payload standard.
-- **Frequency-Based Dashboard Sorts Configuration templates details set**: Sorts Dashboard lists from high-rate nodes down to lower ranges recursively weighted back off execution states.
-- **Sequential Single-Batch Guided Delivery Automation Details setup**: Guides targeting loops seamlessly step-by-step iterating forwards through single-intent dispatch loops.
-- **Unified Multi-Format Selection Dispatch setup details**: Select mixed buckets packed with images, grid continuous videos, text lines, and bundles accurately at onset natively.
-- **Keyboard navigation arrow position fixes set**: Easily adjust ranking layouts using safe arrow targets avoiding press-drag continuous motion triggers.
-- **Metric setups history charts overview log Details view diagnostics trigger**: Monitors absolute outputs timestamped with failures flagged explicitly so tracking overheads remain minimal.
-- **Persistent expand-collapse saves layout defaults details saves set**: Preserves drawer-state memory so sheet overlaps don't overflow crowded screen bounds during overlays.
+- **Frequency-Based Dashboard Sorting**: Automatically prioritizes highly-frequented apps and groups at the top for faster access.
+- **Sequential Guided Workflow**: Guides you smoothly step-by-step through dispatching intents iteratively to all apps in a group.
+- **Unified Multi-Format Support**: Seamlessly accommodates mixed content types like Images, Videos, Links, and Text bundles.
+- **Precise Ranking Controls**: Quickly adjust group application order using intuitive Up/Down icons avoiding press-drag conflicts.
+- **History Logs & Metrics Tracking**: Records backgrounds outputs timestamped so share rates and node overflows remain traceable easily.
+- **Persistent expand-collapse saves layout defaults**: Remembers drawer layouts so overlay sheet sizes don't overflow crowded screens.
 - **JSON Backup & Restore**: Easily Export or Import your custom groups list to JSON to transfer setups between devices securely.
 - **Home Screen Shortcuts**: Pin highly frequented group bundles directly to your launcher desktop using safe Compat shortcut integrations.
 
@@ -20,10 +20,12 @@
 
 - **Language**: [Kotlin](https://kotlinlang.org/)
 - **UI Framework**: [Jetpack Compose](https://developer.android.com/jetpack/compose)
-- **Architecture**: MVVM (Model-View-ViewModel)
+- **Architecture**: MVVM with UseCase nodes
+- **Dependency Injection**: [Dagger Hilt](https://dagger.dev/hilt/)
 - **Concurrency**: Kotlin Coroutines & Flow
-- **Data Persistence**: Kotlin Serialization (JSON)
-- **Design System**: Material 3
+- **Data Persistence**: DataStore (Preferences) & Serialization (JSON)
+- **Image Loading**: [Coil](https://coil-kt.github.io/coil/)
+- **Design System**: Material 3 (Dynamic Color)
 
 ## 📦 Installation & Setup
 

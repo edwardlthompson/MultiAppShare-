@@ -4,6 +4,8 @@ import android.content.Context
 import com.multiappshare.GroupsRepository
 import com.multiappshare.HistoryRepository
 import com.multiappshare.SettingsRepository
+import com.multiappshare.data.local.GroupDao
+import com.multiappshare.data.local.HistoryDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -17,14 +19,14 @@ object RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideGroupsRepository(@ApplicationContext context: Context): GroupsRepository {
-        return GroupsRepository(context)
+    fun provideGroupsRepository(groupDao: GroupDao, @ApplicationContext context: Context): GroupsRepository {
+        return GroupsRepository(groupDao, context)
     }
 
     @Provides
     @Singleton
-    fun provideHistoryRepository(@ApplicationContext context: Context): HistoryRepository {
-        return HistoryRepository(context)
+    fun provideHistoryRepository(historyDao: HistoryDao, @ApplicationContext context: Context): HistoryRepository {
+        return HistoryRepository(historyDao, context)
     }
 
     @Provides

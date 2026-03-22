@@ -450,11 +450,11 @@ class MainActivity : ComponentActivity() {
                         
                         if (compatiblePackages.isEmpty()) {
                             viewModel.addHistoryItem(HistoryItem(
-                                System.currentTimeMillis(),
-                                group.name,
-                                contentDesc,
-                                "Failed: No compatible apps",
-                                true
+                                timestamp = System.currentTimeMillis(),
+                                groupName = group.name,
+                                contentDescription = contentDesc,
+                                status = "Failed: No compatible apps",
+                                isError = true
                             ))
                             Toast.makeText(this@MainActivity, "No apps in '${group.name}' support this content.", Toast.LENGTH_LONG).show()
                         } else {
@@ -466,10 +466,10 @@ class MainActivity : ComponentActivity() {
                             viewModel.incrementGroupUsage(group) // Frequency sorting increment
                             
                             viewModel.addHistoryItem(HistoryItem(
-                                System.currentTimeMillis(),
-                                group.name,
-                                contentDesc,
-                                "Started sharing to ${compatiblePackages.size} apps"
+                                timestamp = System.currentTimeMillis(),
+                                groupName = group.name,
+                                contentDescription = contentDesc,
+                                status = "Started sharing to ${compatiblePackages.size} apps"
                             ))
                         }
                     },

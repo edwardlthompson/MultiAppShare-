@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.hilt)
     id("kotlin-kapt")
+
 }
 
 val appVersion = "1.6.1"
@@ -70,6 +71,9 @@ dependencies {
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
     implementation(libs.androidx.datastore.preferences)
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    kapt(libs.androidx.room.compiler)
     implementation(libs.hilt.navigation.compose)
     implementation(libs.coil.compose)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -98,9 +102,14 @@ kotlin {
     jvmToolchain(11)
 }
 
+// Force kotlin-stdlib and related libraries to 2.0.21 to resolve Room metadata version conflict.
 configurations.all {
     resolutionStrategy {
-        force("org.jetbrains.kotlin:kotlin-metadata-jvm:2.3.0")
+        force("org.jetbrains.kotlin:kotlin-stdlib:2.0.21")
+        force("org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.0.21")
+        force("org.jetbrains.kotlin:kotlin-stdlib-jdk7:2.0.21")
+        force("org.jetbrains.kotlin:kotlin-reflect:2.0.21")
     }
 }
 
+// Removed configurations.all layout triggers

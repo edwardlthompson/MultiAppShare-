@@ -5,3 +5,7 @@ plugins {
     alias(libs.plugins.kotlin.compose) apply false
     alias(libs.plugins.hilt) apply false
 }
+
+allprojects {
+// Removed configurations.all layout triggers
+}
