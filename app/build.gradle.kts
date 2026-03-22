@@ -20,8 +20,8 @@ android {
         applicationId = "com.edwardlthompson.multiappshare"
         minSdk = 26
         targetSdk = 36
-        versionCode = project.property("VERSION_CODE").toString().toInt()
-        versionName = project.property("VERSION_NAME").toString()
+        versionCode = 162
+        versionName = "1.6.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
