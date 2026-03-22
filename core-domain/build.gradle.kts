@@ -34,7 +34,7 @@ dependencies {
 }
 
 kotlin {
-    jvmToolchain(17)
+    jvmToolchain(21)
 }
 // Force kotlin-stdlib and related libraries to 2.0.21 to resolve metadata version conflict.
 configurations.all {
