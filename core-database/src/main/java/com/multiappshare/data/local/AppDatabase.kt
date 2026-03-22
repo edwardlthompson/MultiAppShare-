@@ -42,7 +42,7 @@ interface HistoryDao {
     suspend fun insertHistoryItem(item: HistoryItem)
 }
 
-class Converters {
+internal class Converters {
     @TypeConverter
     fun fromAppInfoList(value: List<AppInfo>): String {
         return Json.encodeToString(value)

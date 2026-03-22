@@ -9,7 +9,7 @@ import kotlinx.serialization.Serializable
 import java.io.File
 
 @Serializable
-data class HistoryBackupWrapper(
+internal data class HistoryBackupWrapper(
     val version: Int = 1,
     val history: List<HistoryItem>
 )

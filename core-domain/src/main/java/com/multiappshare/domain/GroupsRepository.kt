@@ -9,7 +9,7 @@ import kotlinx.serialization.Serializable
 import java.io.File
 
 @Serializable
-data class BackupWrapper(
+internal data class BackupWrapper(
     val version: Int = 1,
     val groups: List<AppGroup>
 )
