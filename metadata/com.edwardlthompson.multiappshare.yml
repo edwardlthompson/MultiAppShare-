@@ -23,7 +23,7 @@ Builds:
     gradle:
       - yes
 
-AutoUpdateMode: Version v%v
+AutoUpdateMode: None
 UpdateCheckMode: Tags
 CurrentVersionName: 1.6.2
 CurrentVersionCode: 162
