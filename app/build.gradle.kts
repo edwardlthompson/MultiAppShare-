@@ -17,7 +17,7 @@ android {
     compileSdk = 36
     
     defaultConfig {
-        applicationId = "com.multiappshare"
+        applicationId = "com.edwardlthompson.multiappshare"
         minSdk = 26
         targetSdk = 36
         versionCode = project.property("VERSION_CODE").toString().toInt()
