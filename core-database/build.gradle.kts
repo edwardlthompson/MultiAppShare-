@@ -39,9 +39,7 @@ dependencies {
     // I'll assume we move Model to core-domain or core-database, or leave it in an accessible layer.
 }
 
-kotlin {
-    jvmToolchain(21)
-}
+
 
 // Force kotlin-stdlib and related libraries to 2.0.21 to resolve Room metadata version conflict.
 configurations.all {

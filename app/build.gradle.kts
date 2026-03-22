@@ -106,9 +106,6 @@ dependencies {
     implementation(project(":feature-dashboard"))
 }
 
-kotlin {
-    jvmToolchain(21)
-}
 
 // Force kotlin-stdlib and related libraries to 2.0.21 to resolve Room metadata version conflict.
 configurations.all {

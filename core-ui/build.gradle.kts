@@ -37,6 +37,3 @@ dependencies {
     implementation(libs.material)
 }
 
-kotlin {
-    jvmToolchain(21)
-}

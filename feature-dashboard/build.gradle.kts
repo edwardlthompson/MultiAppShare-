@@ -49,9 +49,7 @@ dependencies {
     implementation(project(":core-ui"))
 }
 
-kotlin {
-    jvmToolchain(21)
-}
+
 // Force kotlin-stdlib and related libraries to 2.0.21 to resolve metadata version conflict.
 configurations.all {
     resolutionStrategy {
