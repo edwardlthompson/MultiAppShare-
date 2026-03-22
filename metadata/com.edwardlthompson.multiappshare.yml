@@ -1,0 +1,7 @@
+Builds:
+  - versionName: 1.6.2
+    versionCode: 162
+    commit: v1.6.2
+    subdir: app
+    gradle:
+      - yes
