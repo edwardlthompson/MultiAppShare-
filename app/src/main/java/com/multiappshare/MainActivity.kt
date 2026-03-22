@@ -28,6 +28,7 @@ import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.draw.blur
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
@@ -413,10 +414,18 @@ fun MainScreen(
 
         Surface(
             modifier = backgroundModifier,
-            color = if (inShareMode) MaterialTheme.colorScheme.surface else Color.Transparent,
+            color = if (inShareMode) Color.Transparent else Color.Transparent,
             shape = if (inShareMode) MaterialTheme.shapes.large else androidx.compose.ui.graphics.RectangleShape,
             tonalElevation = if (inShareMode) 8.dp else 0.dp
         ) {
+            if (inShareMode) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .blur(20.dp)
+                        .background(Color.White.copy(alpha = 0.4f))
+                )
+            }
             Box(modifier = Modifier.fillMaxSize()) {
                 if (inShareMode && sharingStarted && appPackages != null) {
                 SharingInProgress(
