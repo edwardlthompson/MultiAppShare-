@@ -69,7 +69,7 @@ public final class HistoryDao_Impl implements HistoryDao {
 
   @Override
   public Object insertHistory(final List<HistoryItem> history,
-      final Continuation<? super Unit> arg1) {
+      final Continuation<? super Unit> $completion) {
     return CoroutinesRoom.execute(__db, true, new Callable<Unit>() {
       @Override
       @NonNull
@@ -83,11 +83,12 @@ public final class HistoryDao_Impl implements HistoryDao {
           __db.endTransaction();
         }
       }
-    }, arg1);
+    }, $completion);
   }
 
   @Override
-  public Object insertHistoryItem(final HistoryItem item, final Continuation<? super Unit> arg1) {
+  public Object insertHistoryItem(final HistoryItem item,
+      final Continuation<? super Unit> $completion) {
     return CoroutinesRoom.execute(__db, true, new Callable<Unit>() {
       @Override
       @NonNull
@@ -101,11 +102,11 @@ public final class HistoryDao_Impl implements HistoryDao {
           __db.endTransaction();
         }
       }
-    }, arg1);
+    }, $completion);
   }
 
   @Override
-  public Object getAllHistory(final Continuation<? super List<HistoryItem>> arg0) {
+  public Object getAllHistory(final Continuation<? super List<HistoryItem>> $completion) {
     final String _sql = "SELECT * FROM history ORDER BY timestamp DESC LIMIT 50";
     final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 0);
     final CancellationSignal _cancellationSignal = DBUtil.createCancellationSignal();
@@ -159,7 +160,7 @@ public final class HistoryDao_Impl implements HistoryDao {
           _statement.release();
         }
       }
-    }, arg0);
+    }, $completion);
   }
 
   @NonNull

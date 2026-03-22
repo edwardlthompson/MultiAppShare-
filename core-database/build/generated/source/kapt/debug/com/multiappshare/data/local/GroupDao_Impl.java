@@ -86,7 +86,8 @@ public final class GroupDao_Impl implements GroupDao {
   }
 
   @Override
-  public Object insertGroups(final List<AppGroup> groups, final Continuation<? super Unit> arg1) {
+  public Object insertGroups(final List<AppGroup> groups,
+      final Continuation<? super Unit> $completion) {
     return CoroutinesRoom.execute(__db, true, new Callable<Unit>() {
       @Override
       @NonNull
@@ -100,11 +101,11 @@ public final class GroupDao_Impl implements GroupDao {
           __db.endTransaction();
         }
       }
-    }, arg1);
+    }, $completion);
   }
 
   @Override
-  public Object insertGroup(final AppGroup group, final Continuation<? super Unit> arg1) {
+  public Object insertGroup(final AppGroup group, final Continuation<? super Unit> $completion) {
     return CoroutinesRoom.execute(__db, true, new Callable<Unit>() {
       @Override
       @NonNull
@@ -118,11 +119,11 @@ public final class GroupDao_Impl implements GroupDao {
           __db.endTransaction();
         }
       }
-    }, arg1);
+    }, $completion);
   }
 
   @Override
-  public Object deleteGroup(final AppGroup group, final Continuation<? super Unit> arg1) {
+  public Object deleteGroup(final AppGroup group, final Continuation<? super Unit> $completion) {
     return CoroutinesRoom.execute(__db, true, new Callable<Unit>() {
       @Override
       @NonNull
@@ -136,11 +137,11 @@ public final class GroupDao_Impl implements GroupDao {
           __db.endTransaction();
         }
       }
-    }, arg1);
+    }, $completion);
   }
 
   @Override
-  public Object getAllGroups(final Continuation<? super List<AppGroup>> arg0) {
+  public Object getAllGroups(final Continuation<? super List<AppGroup>> $completion) {
     final String _sql = "SELECT * FROM groups";
     final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 0);
     final CancellationSignal _cancellationSignal = DBUtil.createCancellationSignal();
@@ -186,7 +187,7 @@ public final class GroupDao_Impl implements GroupDao {
           _statement.release();
         }
       }
-    }, arg0);
+    }, $completion);
   }
 
   @NonNull
