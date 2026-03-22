@@ -16,8 +16,8 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     
     buildFeatures {
@@ -50,7 +50,7 @@ dependencies {
 }
 
 kotlin {
-    jvmToolchain(11)
+    jvmToolchain(17)
 }
 // Force kotlin-stdlib and related libraries to 2.0.21 to resolve metadata version conflict.
 configurations.all {
