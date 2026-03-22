@@ -36,5 +36,12 @@ jobs:
     - name: Run Dashboard Tests
       run: ./gradlew :feature-dashboard:testDebugUnitTest
 
-    - name: Build Application Debug APK
-      run: ./gradlew :app:assembleDebug --stacktrace --no-daemon
+    - name: Build Application Release APK
+      run: ./gradlew :app:assembleRelease --stacktrace --no-daemon
+
+    - name: Upload Release APK
+      uses: actions/upload-artifact@v4
+      with:
+        name: app-release
+        path: app/build/outputs/apk/release/*.apk
+        if-no-files-found: error
