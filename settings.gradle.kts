@@ -26,3 +26,7 @@ dependencyResolutionManagement {
 
 rootProject.name = "Multi App Share"
 include(":app")
+include(":core-database")
+include(":core-domain")
+include(":core-ui")
+include(":feature-dashboard")

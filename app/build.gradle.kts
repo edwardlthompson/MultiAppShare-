@@ -96,6 +96,12 @@ dependencies {
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
+
+    // Independent Modules
+    implementation(project(":core-database"))
+    implementation(project(":core-domain"))
+    implementation(project(":core-ui"))
+    implementation(project(":feature-dashboard"))
 }
 
 kotlin {

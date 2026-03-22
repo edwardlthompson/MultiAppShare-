@@ -1,9 +1,9 @@
 package com.multiappshare.di
 
 import android.content.Context
-import com.multiappshare.GroupsRepository
-import com.multiappshare.HistoryRepository
-import com.multiappshare.SettingsRepository
+import com.multiappshare.domain.GroupsRepository
+import com.multiappshare.domain.HistoryRepository
+import com.multiappshare.domain.SettingsRepository
 import com.multiappshare.data.local.GroupDao
 import com.multiappshare.data.local.HistoryDao
 import dagger.Module

@@ -27,6 +27,41 @@
 - **Image Loading**: [Coil](https://coil-kt.github.io/coil/)
 - **Design System**: Material 3 (Dynamic Color)
 
+## 🏗 Module Architecture
+
+The application follows a modular Clean Architecture pattern to enforce separation of concerns and build health.
+
+```mermaid
+graph TD
+    subgraph App_Layer
+        A[":app"] 
+    end
+
+    subgraph Feature_Layer
+        B[":feature-dashboard"]
+    end
+
+    subgraph Core_Layer
+        C[":core-domain"]
+        D[":core-database"]
+        E[":core-ui"]
+    end
+
+    A --> B
+    A --> C
+    A --> D
+    B --> C
+    B --> E
+    C --> D
+```
+
+### 📂 Modules
+- **`:app`**: Main Android Binary, Application triggers, and Hilt glue modules.
+- **`:feature-dashboard`**: Encapsulates dashboard screens and Compose ViewModel setups.
+- **`:core-domain`**: UseCases and Generic Repository interfaces.
+- **`:core-database`**: Room persistence layers and Entity types.
+- **`:core-ui`**: Centralized XML layout resources, Base themes, and icons.
+
 ## 📦 Installation & Setup
 
 ### 📥 Download the APK (Recommended)

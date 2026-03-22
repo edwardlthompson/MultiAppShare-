@@ -1,5 +1,7 @@
 package com.multiappshare
 
+import com.multiappshare.domain.GroupsRepository
+
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
