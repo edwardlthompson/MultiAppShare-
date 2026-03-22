@@ -117,6 +117,10 @@ If you prefer to build that app yourself from scratch:
 
 💡 **Pro-Tip**: The **Translucent Overlaid UX** controller lets you guide choices natively without locking standard focus pipelines layout completely securely down downstream!
 
+## 🤝 Contributing
+
+Contributions are welcome! Please read our [CONTRIBUTING.md](CONTRIBUTING.md) for details on our architectural layout standards, visual restrictions, and FOSS compliance parameters triggers setup down downstream.
+
 ## 🤝 Support the Developer
 
 If you find this tool useful, consider supporting the development!
