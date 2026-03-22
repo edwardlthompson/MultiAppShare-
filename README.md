@@ -105,7 +105,7 @@ If you prefer to build that app yourself from scratch:
    ```bash
    git clone https://github.com/edwardlthompson/MultiAppShare.git
    ```
-2. Ensure you have **JDK 17** toolchains and **Android Studio Ladybug+** installed.
+2. Ensure you have **JDK 21** toolchains and **Android Studio Ladybug+** installed.
 3. Open the workspace; Gradle automatically synchronizes parameters mapping or version catalog.
 4. To test modular components: Run `./gradlew test` securely layout triggers down downstream!
 
