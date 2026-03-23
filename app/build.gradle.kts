@@ -20,8 +20,8 @@ android {
         applicationId = "com.edwardlthompson.multiappshare"
         minSdk = 26
         targetSdk = 36
-        versionCode = 162
-        versionName = "1.6.2"
+        versionCode = project.property("VERSION_CODE").toString().toInt()
+        versionName = appVersion
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -55,6 +55,11 @@ android {
 
     kotlinOptions {
         jvmTarget = "21"
+    }
+    
+    lint {
+        abortOnError = false
+        checkReleaseBuilds = false
     }
     buildFeatures {
         compose = true

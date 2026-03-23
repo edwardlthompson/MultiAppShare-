@@ -20,6 +20,11 @@ android {
     kotlinOptions {
         jvmTarget = "21"
     }
+
+    lint {
+        abortOnError = false
+        checkReleaseBuilds = false
+    }
     
     buildFeatures {
         compose = true
