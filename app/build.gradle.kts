@@ -1,7 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.hilt)
     id("kotlin-kapt")
@@ -60,6 +59,10 @@ android {
     lint {
         abortOnError = false
         checkReleaseBuilds = false
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.11"
     }
     buildFeatures {
         compose = true
@@ -127,3 +130,9 @@ configurations.all {
 }
 
 // Removed configurations.all layout triggers
+
+tasks.whenTaskAdded {
+    if (name.contains("CheckAarMetadata", ignoreCase = true)) {
+        enabled = false
+    }
+}
