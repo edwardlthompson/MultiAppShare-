@@ -9,10 +9,14 @@
 ## 🚀 Features
 
 - **Smart Auto-Grouping**: Group your apps automatically by system categories (Games, Maps, Productivity) with name-based fallbacks for strict isolation (Messaging, Email, Contacts).
-- **Overlaid Translucent UX Control**: Sharing from an external app feels native; a floating sheet guides custom choices without locking down standard focus pipelines.
+- **Overlaid Translucent UX Control**: Sharing from an external app feels native; a floating layout guides custom choices without locking down standard focus pipelines.
+- **Frosted Glass FX Visuals**: Overlaid sheets now feature rich translucent background blurring values securely retaining standard layout visual focuses safely.
+- **Sequential Guided Workflow**: Guides you step-by-step through dispatching intents iteratively to apps in a group seamlessly.
+- **Micro-Interaction Tactics**: Smooth sequential advancing tracking accurate tactile vibrational haptic feedback increments satisfying tactile layouts speeds.
+- **Native Canvas Success Bursts**: Expanding Canvas bursts layer with revealing checkmarks confirming flawless sequence triggers layout completions accurately.
+- **Optimized Async App Icon Speeds**: Sub-second deterministic background placeholders loading speeds populated instantly avoiding blank flashing frame updates.
 - **Dynamic MIME Compatible Filters**: Hides whole columns entirely from display templates if **none** of their inner apps support the currently dispatched payload standard.
 - **Frequency-Based Dashboard Sorting**: Automatically prioritizes highly-frequented apps and groups at the top for faster access.
-- **Sequential Guided Workflow**: Guides you smoothly step-by-step through dispatching intents iteratively to all apps in a group.
 - **Unified Multi-Format Support**: Seamlessly accommodates mixed content types like Images, Videos, Links, and Text bundles.
 - **Precise Ranking Controls**: Quickly adjust group application order using intuitive Up/Down icons avoiding press-drag conflicts.
 - **History Logs & Metrics Tracking**: Records backgrounds outputs timestamped so share rates and node overflows remain traceable easily.
