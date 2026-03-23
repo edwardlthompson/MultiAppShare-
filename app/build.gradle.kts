@@ -135,3 +135,8 @@ tasks.whenTaskAdded {
         enabled = false
     }
 }
+
+composeCompiler {
+    enableStrongSkippingMode = true
+    reportsDestination = layout.buildDirectory.dir("compose_compiler")
+}

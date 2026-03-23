@@ -11,8 +11,4 @@ plugins {
 allprojects {
 // Removed configurations.all layout triggers
 }
-
-composeCompiler {
-    enableStrongSkippingMode = true
-    reportsDestination = layout.buildDirectory.dir("compose_compiler")
-}
+

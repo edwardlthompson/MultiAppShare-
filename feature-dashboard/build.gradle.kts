@@ -71,3 +71,8 @@ configurations.all {
     }
 }
 
+composeCompiler {
+    enableStrongSkippingMode = true
+    reportsDestination = layout.buildDirectory.dir("compose_compiler")
+}
+
