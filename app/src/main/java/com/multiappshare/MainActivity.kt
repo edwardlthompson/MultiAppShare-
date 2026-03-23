@@ -29,9 +29,17 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.blur
+import androidx.compose.ui.draw.blur
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import coil.compose.SubcomposeAsyncImage
+import coil.compose.AsyncImagePainter
+import coil.compose.SubcomposeAsyncImageContent
+import androidx.compose.foundation.shape.CircleShape
+import com.multiappshare.core.ui.ShareSuccessAnimation
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.foundation.gestures.detectVerticalDragGestures
 import androidx.compose.ui.platform.LocalContext
@@ -316,6 +324,7 @@ fun MainScreen(
 ) {
     val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsState()
+    var showSuccessAnimation by remember { mutableStateOf(false) }
     var showCreateGroupDialog by remember { mutableStateOf(false) }
     var showModifyGroupDialog by remember { mutableStateOf<AppGroup?>(null) }
     var showReorderDialog by remember { mutableStateOf<AppGroup?>(null) }
@@ -434,7 +443,12 @@ fun MainScreen(
                     uris = uris,
                     currentIndex = currentIndex,
                     totalApps = appPackages.size,
-                    onNextStep = onNextStep
+                    onNextStep = {
+                        if (currentIndex + 1 == appPackages.size) {
+                            showSuccessAnimation = true
+                        }
+                        onNextStep()
+                    }
                 )
             } else {
                 when (val state = uiState) {
@@ -545,6 +559,12 @@ fun MainScreen(
                     }
                 }
             }
+
+            if (showSuccessAnimation) {
+                Box(modifier = Modifier.fillMaxSize(), contentAlignment = androidx.compose.ui.Alignment.Center) {
+                    ShareSuccessAnimation(onAnimationEnd = { showSuccessAnimation = false })
+                }
+            }
         }
         }
     }
@@ -563,6 +583,8 @@ fun SharingInProgress(
     totalApps: Int,
     onNextStep: () -> Unit
 ) {
+    val haptic = LocalHapticFeedback.current
+
     Column(
         modifier = Modifier.fillMaxSize().padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -585,7 +607,17 @@ fun SharingInProgress(
             style = MaterialTheme.typography.bodyLarge
         )
         Spacer(modifier = Modifier.height(24.dp))
-        Button(onClick = onNextStep, modifier = Modifier.fillMaxWidth()) {
+        Button(
+            onClick = {
+                if (currentIndex + 1 < totalApps) {
+                    haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+                } else {
+                    haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                }
+                onNextStep()
+            },
+            modifier = Modifier.fillMaxWidth()
+        ) {
             Text(if (currentIndex + 1 < totalApps) "Next App" else "Finish")
         }
     }
@@ -794,8 +826,32 @@ fun GroupItem(
 
 @Composable
 fun AppListItem(app: AppInfo, packageManager: PackageManager) {
+    val placeholderColor = remember(app.packageName) {
+        val hash = app.packageName.hashCode()
+        Color(
+            red = ((hash shr 16) and 0xFF) / 255f,
+            green = ((hash shr 8) and 0xFF) / 255f,
+            blue = (hash and 0xFF) / 255f,
+            alpha = 1f
+        )
+    }
+
     Row(modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp), verticalAlignment = Alignment.CenterVertically) {
-        AsyncImage(model = app, contentDescription = null, modifier = Modifier.size(40.dp))
+        SubcomposeAsyncImage(
+            model = app,
+            contentDescription = null,
+            modifier = Modifier.size(40.dp)
+        ) {
+            if (painter.state is AsyncImagePainter.State.Loading) {
+                Box(
+                    modifier = Modifier
+                        .matchParentSize()
+                        .background(placeholderColor, shape = CircleShape)
+                )
+            } else {
+                SubcomposeAsyncImageContent()
+            }
+        }
         Spacer(modifier = Modifier.width(8.dp))
         Text(text = app.appName)
     }
