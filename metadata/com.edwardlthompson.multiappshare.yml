@@ -32,5 +32,5 @@ Builds:
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersionName: 1.7.0
-CurrentVersionCode: 170
+CurrentVersionName: 1.7.1
+CurrentVersionCode: 171
