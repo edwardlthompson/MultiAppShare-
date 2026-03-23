@@ -1,9 +1,9 @@
 plugins {
     id("com.android.library")
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.hilt)
+    alias(libs.plugins.compose.compiler)
     id("kotlin-kapt")
 }
 
@@ -28,6 +28,8 @@ android {
         abortOnError = false
         checkReleaseBuilds = false
     }
+
+
     
     buildFeatures {
         compose = true
