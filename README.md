@@ -1,4 +1,4 @@
-# <img src=".github/assets/icon.png" width="48" height="48"> Multi App Share
+# <img src="metadata/logo.png" width="128"> Multi App Share
 
 ![GitHub release](https://img.shields.io/github/v/release/edwardlthompson/MultiAppShare-?include_prereleases)
 ![F-Droid](https://img.shields.io/f-droid/v/com.multiappshare?label=F-Droid&color=blue)
