@@ -10,7 +10,7 @@ plugins {
 
 
 
-val appVersion = project.property("VERSION_NAME").toString()
+val appVersion = "1.7.3"
 
 android {
     namespace = "com.multiappshare"
@@ -20,8 +20,8 @@ android {
         applicationId = "com.edwardlthompson.multiappshare"
         minSdk = 26
         targetSdk = 36
-        versionCode = project.property("VERSION_CODE").toString().toInt()
-        versionName = appVersion
+        versionCode = 173
+        versionName = "1.7.3"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
