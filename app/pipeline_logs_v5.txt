@@ -1,0 +1,43 @@
+--- Found 1 failures in Pipeline 2409830262 ---
+
+=== JOB: tools check scripts (ID: 13655989276) ===
+01O [32;1m$ export EXITVALUE=0[0;m
+2026-03-26T03:43:24.885069Z 01O [32;1m$ function set_error() { export EXITVALUE=1; printf "\x1b[31mERROR `history|tail -2|head -1|cut -b 6-500`\x1b[0m\n"; }[0;m
+2026-03-26T03:43:24.885070Z 01O [32;1m$ chown -R $(whoami) .[0;m
+2026-03-26T03:43:27.017566Z 01O [32;1m$ ./tools/check-exif-in-images.sh || set_error[0;m
+2026-03-26T03:43:27.019088Z 01E + find metadata/ -name '*.jp*g' -o -name '*.png'
+2026-03-26T03:43:27.019286Z 01E + xargs exiftool -all=
+2026-03-26T03:43:33.047960Z 01O     0 image files updated
+2026-03-26T03:43:33.047964Z 01O    47 image files unchanged
+2026-03-26T03:43:33.062517Z 01E + msg='these images have EXIF that must be stripped:'
+2026-03-26T03:43:33.062523Z 01E + echo these images have EXIF that must be stripped:
+2026-03-26T03:43:33.062524Z 01E + git diff --stat
+2026-03-26T03:43:33.062610Z 01O these images have EXIF that must be stripped:
+2026-03-26T03:43:37.906681Z 01E ++ basename ./tools/check-exif-in-images.sh
+2026-03-26T03:43:37.907613Z 01E + check_name=check-exif-in-images.sh
+2026-03-26T03:43:37.907932Z 01E ++ git diff --name-only
+2026-03-26T03:43:38.083877Z 01E + git diff --name-only --exit-code
+2026-03-26T03:43:38.261082Z 01O [32;1m$ ./tools/check-localized-metadata.py || set_error[0;m
+2026-03-26T03:43:39.252592Z 01O [32;1m$ ./tools/check-keyalias-collision.py || set_error[0;m
+2026-03-26T03:43:39.328243Z 01O [32;1m$ ./tools/check-metadata-summary-whitespace.py || set_error[0;m
+2026-03-26T03:43:53.751553Z 01O [32;1m$ ./tools/check-for-unattached-signatures.py || set_error[0;m
+2026-03-26T03:44:04.030699Z 01O [32;1m$ ./tools/make-summary-translatable.py || set_error[0;m
+2026-03-26T03:44:59.958334Z 01O [31mERROR [0m
+2026-03-26T03:44:59.958341Z 01O [32;1m$ jq '[.[]|.[]]' --slurp *.json > codequality.json[0;m
+2026-03-26T03:44:59.960612Z 01O [32;1m$ exit $EXITVALUE[0;m
+2026-03-26T03:45:00.148086Z 00O section_end:1774496700:step_script
+2026-03-26T03:45:00.148091Z 00O+[0Ksection_start:1774496700:upload_artifacts_on_failure
+2026-03-26T03:45:00.148836Z 00O+[0K[0K[36;1mUploading artifacts for failed job[0;m[0;m
+2026-03-26T03:45:00.585576Z 01O [32;1mUploading artifacts...[0;m
+2026-03-26T03:45:00.659153Z 01E codequality.json: found 1 matching artifact files and directories[0;m 
+2026-03-26T03:45:01.135910Z 01E Uploading artifacts as "codequality" to coordinator... 201 Created[0;m  correlation_id[0;m=f1144fa8f0984083a71f87beb7198be0 id[0;m=13655989276 responseStatus[0;m=201 Created token[0;m=6d_Xq1f9A
+2026-03-26T03:45:01.316761Z 00O section_end:1774496701:upload_artifacts_on_failure
+2026-03-26T03:45:01.316765Z 00O+[0Ksection_start:1774496701:cleanup_file_variables
+2026-03-26T03:45:01.316845Z 00O+[0K[0K[36;1mCleaning up project directory and file based variables[0;m[0;m
+2026-03-26T03:45:01.849872Z 00O section_end:1774496701:cleanup_file_variables
+2026-03-26T03:45:01.849876Z 00O+[0K
+2026-03-26T03:45:02.036951Z 00O [31;1mERROR: Job failed: exit code 1[0;m
+
+
+========================================
+

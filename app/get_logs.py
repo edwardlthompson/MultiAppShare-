@@ -5,7 +5,7 @@ import sys
 # --- Configuration ---
 GITLAB_URL = "https://gitlab.com"
 PROJECT_ID = "edwardleethompson/fdroiddata" # Your project path
-PIPELINE_ID = "2409716852"
+PIPELINE_ID = "2409830262"
 PRIVATE_TOKEN = "glpat-FQ4-U7Bd9iOe5NH12WUyEWM6MQpvOjEKdToxOWc1Ng8.01.170n15fe9"
 
 headers = {"PRIVATE-TOKEN": PRIVATE_TOKEN}

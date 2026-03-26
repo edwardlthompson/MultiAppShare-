@@ -1,0 +1,79 @@
+--- Found 2 failures in Pipeline 2409811007 ---
+
+=== JOB: tools check scripts (ID: 13655879040) ===
+01O [32;1m$ export EXITVALUE=0[0;m
+2026-03-26T03:24:47.266186Z 01O [32;1m$ function set_error() { export EXITVALUE=1; printf "\x1b[31mERROR `history|tail -2|head -1|cut -b 6-500`\x1b[0m\n"; }[0;m
+2026-03-26T03:24:47.266187Z 01O [32;1m$ chown -R $(whoami) .[0;m
+2026-03-26T03:24:49.389376Z 01O [32;1m$ ./tools/check-exif-in-images.sh || set_error[0;m
+2026-03-26T03:24:49.390990Z 01E + find metadata/ -name '*.jp*g' -o -name '*.png'
+2026-03-26T03:24:49.391166Z 01E + xargs exiftool -all=
+2026-03-26T03:24:55.348345Z 01O     0 image files updated
+2026-03-26T03:24:55.348349Z 01O    47 image files unchanged
+2026-03-26T03:24:55.364190Z 01O these images have EXIF that must be stripped:
+2026-03-26T03:24:55.364302Z 01E + msg='these images have EXIF that must be stripped:'
+2026-03-26T03:24:55.364307Z 01E + echo these images have EXIF that must be stripped:
+2026-03-26T03:24:55.364308Z 01E + git diff --stat
+2026-03-26T03:25:00.218459Z 01E ++ basename ./tools/check-exif-in-images.sh
+2026-03-26T03:25:00.219324Z 01E + check_name=check-exif-in-images.sh
+2026-03-26T03:25:00.219657Z 01E ++ git diff --name-only
+2026-03-26T03:25:00.409127Z 01E + git diff --name-only --exit-code
+2026-03-26T03:25:00.590902Z 01O [32;1m$ ./tools/check-localized-metadata.py || set_error[0;m
+2026-03-26T03:25:01.594333Z 01O [32;1m$ ./tools/check-keyalias-collision.py || set_error[0;m
+2026-03-26T03:25:01.670517Z 01O [32;1m$ ./tools/check-metadata-summary-whitespace.py || set_error[0;m
+2026-03-26T03:25:15.401264Z 01O [32;1m$ ./tools/check-for-unattached-signatures.py || set_error[0;m
+2026-03-26T03:25:25.664853Z 01O [32;1m$ ./tools/make-summary-translatable.py || set_error[0;m
+2026-03-26T03:26:21.363164Z 01O [31mERROR [0m
+2026-03-26T03:26:21.363174Z 01O [32;1m$ jq '[.[]|.[]]' --slurp *.json > codequality.json[0;m
+2026-03-26T03:26:21.365716Z 01O [32;1m$ exit $EXITVALUE[0;m
+2026-03-26T03:26:21.568230Z 00O section_end:1774495581:step_script
+2026-03-26T03:26:21.568235Z 00O+[0Ksection_start:1774495581:upload_artifacts_on_failure
+2026-03-26T03:26:21.568930Z 00O+[0K[0K[36;1mUploading artifacts for failed job[0;m[0;m
+2026-03-26T03:26:22.035556Z 01O [32;1mUploading artifacts...[0;m
+2026-03-26T03:26:22.114283Z 01E codequality.json: found 1 matching artifact files and directories[0;m 
+2026-03-26T03:26:22.479876Z 01E Uploading artifacts as "codequality" to coordinator... 201 Created[0;m  correlation_id[0;m=ca2516a6079e485c85d472b8e2d12c82 id[0;m=13655879040 responseStatus[0;m=201 Created token[0;m=6d_wVEGyh
+2026-03-26T03:26:22.663602Z 00O section_end:1774495582:upload_artifacts_on_failure
+2026-03-26T03:26:22.663607Z 00O+[0Ksection_start:1774495582:cleanup_file_variables
+2026-03-26T03:26:22.663710Z 00O+[0K[0K[36;1mCleaning up project directory and file based variables[0;m[0;m
+2026-03-26T03:26:23.229856Z 00O section_end:1774495583:cleanup_file_variables
+2026-03-26T03:26:23.229866Z 00O+[0K
+2026-03-26T03:26:23.424658Z 00O [31;1mERROR: Job failed: exit code 1[0;m
+
+
+========================================
+
+=== JOB: fdroid build (ID: 13655879034) ===
+Z 01E 2026-03-26 03:26:21,419 DEBUG: next suss.json cache update due in 23:59:59.997766
+2026-03-26T03:26:21.452582Z 01E 2026-03-26 03:26:21,452 INFO: Removing gradle-daemon-jvm.properties at gradle/gradle-daemon-jvm.properties
+2026-03-26T03:26:21.452638Z 01E 2026-03-26 03:26:21,452 INFO: Removing gradle-wrapper.jar at gradle/wrapper/gradle-wrapper.jar
+2026-03-26T03:26:21.468403Z 01E 2026-03-26 03:26:21,468 INFO: Running 'build' commands in build/com.edwardlthompson.multiappshare/app
+2026-03-26T03:26:21.468598Z 01E 2026-03-26 03:26:21,468 DEBUG: Directory: build/com.edwardlthompson.multiappshare/app
+2026-03-26T03:26:21.468691Z 01E 2026-03-26 03:26:21,468 DEBUG: > bash -e -u -o pipefail -x -c release
+2026-03-26T03:26:21.570321Z 01E + release
+2026-03-26T03:26:21.570321Z 01E bash: line 1: release: command not found
+2026-03-26T03:26:21.671018Z 01E 2026-03-26 03:26:21,670 ERROR: Could not build app com.edwardlthompson.multiappshare: Error running build command for com.edwardlthompson.multiappshare:173
+2026-03-26T03:26:21.671019Z 01E ==== detail begin ====
+2026-03-26T03:26:21.671020Z 01E + release
+2026-03-26T03:26:21.671020Z 01E bash: line 1: release: command not found
+2026-03-26T03:26:21.671021Z 01E ==== detail end ====
+2026-03-26T03:26:21.671021Z 01E 2026-03-26 03:26:21,670 DEBUG: Error encountered, stopping by user request.
+2026-03-26T03:26:25.426604Z 00O section_end:1774495585:step_script
+2026-03-26T03:26:25.426608Z 00O+[0Ksection_start:1774495585:upload_artifacts_on_failure
+2026-03-26T03:26:25.427395Z 00O+[0K[0K[36;1mUploading artifacts for failed job[0;m[0;m
+2026-03-26T03:26:25.828901Z 01O [32;1mUploading artifacts...[0;m
+2026-03-26T03:26:25.904847Z 01E repo/: found 3 matching artifact files and directories[0;m 
+2026-03-26T03:26:25.904849Z 01E unsigned/: found 1 matching artifact files and directories[0;m 
+2026-03-26T03:26:25.904850Z 01E tmp/: found 1 matching artifact files and directories[0;m 
+2026-03-26T03:26:26.619779Z 01E Uploading artifacts as "archive" to coordinator... 201 Created[0;m  correlation_id[0;m=9d90dcc125854eb8ae64be5739a72b8b id[0;m=13655879034 responseStatus[0;m=201 Created token[0;m=6d_5eowZz
+2026-03-26T03:26:26.696399Z 01O [32;1mUploading artifacts...[0;m
+2026-03-26T03:26:26.771723Z 01E [0;33mWARNING: codequality.json: no matching files. Ensure that the artifact path is relative to the working directory (/builds/edwardleethompson/fdroiddata)[0;m 
+2026-03-26T03:26:26.771727Z 01E [31;1mERROR: No files to upload                         [0;m 
+2026-03-26T03:26:26.942680Z 00O section_end:1774495586:upload_artifacts_on_failure
+2026-03-26T03:26:26.942683Z 00O+[0Ksection_start:1774495586:cleanup_file_variables
+2026-03-26T03:26:26.942807Z 00O+[0K[0K[36;1mCleaning up project directory and file based variables[0;m[0;m
+2026-03-26T03:26:27.448861Z 00O section_end:1774495587:cleanup_file_variables
+2026-03-26T03:26:27.448864Z 00O+[0K
+2026-03-26T03:26:27.980219Z 00O [31;1mERROR: Job failed: exit code 1[0;m
+
+
+========================================
+

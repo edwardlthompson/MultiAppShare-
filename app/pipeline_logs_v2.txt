@@ -1,0 +1,74 @@
+--- Found 2 failures in Pipeline 2409796606 ---
+
+=== JOB: tools check scripts (ID: 13655795267) ===
+01O [32;1m$ export EXITVALUE=0[0;m
+2026-03-26T03:11:53.846919Z 01O [32;1m$ function set_error() { export EXITVALUE=1; printf "\x1b[31mERROR `history|tail -2|head -1|cut -b 6-500`\x1b[0m\n"; }[0;m
+2026-03-26T03:11:53.846920Z 01O [32;1m$ chown -R $(whoami) .[0;m
+2026-03-26T03:11:56.063767Z 01O [32;1m$ ./tools/check-exif-in-images.sh || set_error[0;m
+2026-03-26T03:11:56.065897Z 01E + find metadata/ -name '*.jp*g' -o -name '*.png'
+2026-03-26T03:11:56.066014Z 01E + xargs exiftool -all=
+2026-03-26T03:12:02.103036Z 01O     0 image files updated
+2026-03-26T03:12:02.103041Z 01O    47 image files unchanged
+2026-03-26T03:12:02.121826Z 01O these images have EXIF that must be stripped:
+2026-03-26T03:12:02.121837Z 01E + msg='these images have EXIF that must be stripped:'
+2026-03-26T03:12:02.121838Z 01E + echo these images have EXIF that must be stripped:
+2026-03-26T03:12:02.121838Z 01E + git diff --stat
+2026-03-26T03:12:07.070562Z 01E ++ basename ./tools/check-exif-in-images.sh
+2026-03-26T03:12:07.071567Z 01E + check_name=check-exif-in-images.sh
+2026-03-26T03:12:07.071950Z 01E ++ git diff --name-only
+2026-03-26T03:12:07.258540Z 01E + git diff --name-only --exit-code
+2026-03-26T03:12:07.441822Z 01O [32;1m$ ./tools/check-localized-metadata.py || set_error[0;m
+2026-03-26T03:12:08.444495Z 01O [32;1m$ ./tools/check-keyalias-collision.py || set_error[0;m
+2026-03-26T03:12:08.526328Z 01O [32;1m$ ./tools/check-metadata-summary-whitespace.py || set_error[0;m
+2026-03-26T03:12:22.649233Z 01O [32;1m$ ./tools/check-for-unattached-signatures.py || set_error[0;m
+2026-03-26T03:12:33.045009Z 01O [32;1m$ ./tools/make-summary-translatable.py || set_error[0;m
+2026-03-26T03:13:30.407554Z 01O [31mERROR [0m
+2026-03-26T03:13:30.407564Z 01O [32;1m$ jq '[.[]|.[]]' --slurp *.json > codequality.json[0;m
+2026-03-26T03:13:30.409929Z 01O [32;1m$ exit $EXITVALUE[0;m
+2026-03-26T03:13:30.630167Z 00O section_end:1774494810:step_script
+2026-03-26T03:13:30.630172Z 00O+[0Ksection_start:1774494810:upload_artifacts_on_failure
+2026-03-26T03:13:30.630899Z 00O+[0K[0K[36;1mUploading artifacts for failed job[0;m[0;m
+2026-03-26T03:13:31.143648Z 01O [32;1mUploading artifacts...[0;m
+2026-03-26T03:13:31.225690Z 01E codequality.json: found 1 matching artifact files and directories[0;m 
+2026-03-26T03:13:31.600916Z 01E Uploading artifacts as "codequality" to coordinator... 201 Created[0;m  correlation_id[0;m=269d4b8f2ff14dffb74703d4f4399c1b id[0;m=13655795267 responseStatus[0;m=201 Created token[0;m=6d_oy1pho
+2026-03-26T03:13:31.794728Z 00O section_end:1774494811:upload_artifacts_on_failure
+2026-03-26T03:13:31.794733Z 00O+[0Ksection_start:1774494811:cleanup_file_variables
+2026-03-26T03:13:31.794831Z 00O+[0K[0K[36;1mCleaning up project directory and file based variables[0;m[0;m
+2026-03-26T03:13:32.390620Z 00O section_end:1774494812:cleanup_file_variables
+2026-03-26T03:13:32.390624Z 00O+[0K
+2026-03-26T03:13:32.591722Z 00O [31;1mERROR: Job failed: exit code 1[0;m
+
+
+========================================
+
+=== JOB: fdroid build (ID: 13655795258) ===
+re-domain/build/kotlin/compileDebugKotlin/local-state/build-history.bin
+2026-03-26T03:13:30.929854Z 01E 2026-03-26 03:13:30,929 ERROR: Found binary at core-database/build/kotlin/compileReleaseKotlin/classpath-snapshot/shrunk-classpath-snapshot.bin
+2026-03-26T03:13:30.929855Z 01E 2026-03-26 03:13:30,929 ERROR: Found binary at core-database/build/kotlin/compileReleaseKotlin/cacheable/last-build.bin
+2026-03-26T03:13:30.932603Z 01E 2026-03-26 03:13:30,932 ERROR: Found binary at core-database/build/kotlin/compileReleaseKotlin/local-state/build-history.bin
+2026-03-26T03:13:30.932751Z 01E 2026-03-26 03:13:30,932 ERROR: Found binary at core-database/build/kotlin/kaptGenerateStubsReleaseKotlin/classpath-snapshot/shrunk-classpath-snapshot.bin
+2026-03-26T03:13:30.932942Z 01E 2026-03-26 03:13:30,932 ERROR: Found binary at core-database/build/kotlin/kaptGenerateStubsReleaseKotlin/cacheable/last-build.bin
+2026-03-26T03:13:30.935789Z 01E 2026-03-26 03:13:30,935 ERROR: Found binary at core-database/build/kotlin/kaptGenerateStubsReleaseKotlin/local-state/build-history.bin
+2026-03-26T03:13:30.936038Z 01E 2026-03-26 03:13:30,935 ERROR: Could not build app com.edwardlthompson.multiappshare: Can't build due to 18 errors while scanning
+2026-03-26T03:13:30.936069Z 01E 2026-03-26 03:13:30,935 DEBUG: Error encountered, stopping by user request.
+2026-03-26T03:13:33.460509Z 00O section_end:1774494813:step_script
+2026-03-26T03:13:33.460515Z 00O+[0Ksection_start:1774494813:upload_artifacts_on_failure
+2026-03-26T03:13:33.461220Z 00O+[0K[0K[36;1mUploading artifacts for failed job[0;m[0;m
+2026-03-26T03:13:33.869321Z 01O [32;1mUploading artifacts...[0;m
+2026-03-26T03:13:33.946541Z 01E repo/: found 3 matching artifact files and directories[0;m 
+2026-03-26T03:13:33.946546Z 01E unsigned/: found 1 matching artifact files and directories[0;m 
+2026-03-26T03:13:33.946631Z 01E tmp/: found 1 matching artifact files and directories[0;m 
+2026-03-26T03:13:34.834667Z 01E Uploading artifacts as "archive" to coordinator... 201 Created[0;m  correlation_id[0;m=7cb582cb83aa4829954aa0c56b7f3a85 id[0;m=13655795258 responseStatus[0;m=201 Created token[0;m=6d_KzwUSV
+2026-03-26T03:13:34.916035Z 01O [32;1mUploading artifacts...[0;m
+2026-03-26T03:13:34.987653Z 01E [0;33mWARNING: codequality.json: no matching files. Ensure that the artifact path is relative to the working directory (/builds/edwardleethompson/fdroiddata)[0;m 
+2026-03-26T03:13:34.987657Z 01E [31;1mERROR: No files to upload                         [0;m 
+2026-03-26T03:13:35.159914Z 00O section_end:1774494815:upload_artifacts_on_failure
+2026-03-26T03:13:35.159921Z 00O+[0Ksection_start:1774494815:cleanup_file_variables
+2026-03-26T03:13:35.160018Z 00O+[0K[0K[36;1mCleaning up project directory and file based variables[0;m[0;m
+2026-03-26T03:13:35.664642Z 00O section_end:1774494815:cleanup_file_variables
+2026-03-26T03:13:35.664649Z 00O+[0K
+2026-03-26T03:13:36.232766Z 00O [31;1mERROR: Job failed: exit code 1[0;m
+
+
+========================================
+
