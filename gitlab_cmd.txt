@@ -1,0 +1,48 @@
+git clone https://oauth2:glpat-FQ4-U7Bd9iOe5NH12WUyEWM6MQpvOjEKdToxOWc1Ng8.01.170n15fe9@gitlab.com/edwardleethompson/fdroiddata.git fdroiddata_clone
+Remove-Item fdroiddata_clone -Recurse -Force -ErrorAction SilentlyContinue; git clone --depth 1 https://oauth2:glpat-FQ4-U7Bd9iOe5NH12WUyEWM6MQpvOjEKdToxOWc1Ng8.01.170n15fe9@gitlab.com/edwardleethompson/fdroiddata.git fdroiddata_clone
+git commit --allow-empty -m "chore: trigger pipeline for java 17 fix"; git push "https://oauth2:glpat-FQ4-U7Bd9iOe5NH12WUyEWM6MQpvOjEKdToxOWc1Ng8.01.170n15fe9@gitlab.com/edwardleethompson/fdroiddata.git" main
+git pull --rebase origin main; git push "https://oauth2:glpat-FQ4-U7Bd9iOe5NH12WUyEWM6MQpvOjEKdToxOWc1Ng8.01.170n15fe9@gitlab.com/edwardleethompson/fdroiddata.git" main
+git pull --rebase origin master; git push "https://oauth2:glpat-FQ4-U7Bd9iOe5NH12WUyEWM6MQpvOjEKdToxOWc1Ng8.01.170n15fe9@gitlab.com/edwardleethompson/fdroiddata.git" HEAD:master
+$url = "https://gitlab.com/api/v4/projects/edwardleethompson%2Ffdroiddata/pipelines?ref=master&per_page=1"
+$url = "https://gitlab.com/api/v4/projects/edwardleethompson%2Ffdroiddata/pipelines/2401350883"
+$url = "https://gitlab.com/api/v4/projects/edwardleethompson%2Ffdroiddata/pipelines/2401350883"
+$url = "https://gitlab.com/api/v4/projects/edwardleethompson%2Ffdroiddata/pipelines/2401350883/jobs"
+git commit --allow-empty -m "chore: test java 17 fix"; git push "https://oauth2:glpat-FQ4-U7Bd9iOe5NH12WUyEWM6MQpvOjEKdToxOWc1Ng8.01.170n15fe9@gitlab.com/edwardleethompson/fdroiddata.git" HEAD:master
+$url = "https://gitlab.com/api/v4/projects/edwardleethompson%2Ffdroiddata/pipelines?ref=master&per_page=1"
+$url = "https://gitlab.com/api/v4/projects/edwardleethompson%2Ffdroiddata/pipelines/2401361153"
+$url = "https://gitlab.com/api/v4/projects/edwardleethompson%2Ffdroiddata/pipelines/2401361153"
+$url = "https://gitlab.com/api/v4/projects/edwardleethompson%2Ffdroiddata/pipelines/2401361153/jobs"
+git commit --allow-empty -m "chore: test java 17 fix on new commit"; git push "https://oauth2:glpat-FQ4-U7Bd9iOe5NH12WUyEWM6MQpvOjEKdToxOWc1Ng8.01.170n15fe9@gitlab.com/edwardleethompson/fdroiddata.git" HEAD:master
+$url = "https://gitlab.com/api/v4/projects/edwardleethompson%2Ffdroiddata/pipelines?ref=master&per_page=1"
+$url = "https://gitlab.com/api/v4/projects/edwardleethompson%2Ffdroiddata/pipelines/2401376251"
+$url = "https://gitlab.com/api/v4/projects/edwardleethompson%2Ffdroiddata/pipelines/2401376251"
+$url = "https://gitlab.com/api/v4/projects/edwardleethompson%2Ffdroiddata/pipelines/2401376251/jobs"
+git commit --allow-empty -m "chore: test java 21 toolchain fix"; git push "https://oauth2:glpat-FQ4-U7Bd9iOe5NH12WUyEWM6MQpvOjEKdToxOWc1Ng8.01.170n15fe9@gitlab.com/edwardleethompson/fdroiddata.git" HEAD:master
+$url = "https://gitlab.com/api/v4/projects/edwardleethompson%2Ffdroiddata/pipelines?ref=master&per_page=1"
+$url = "https://gitlab.com/api/v4/projects/edwardleethompson%2Ffdroiddata/pipelines/2401376251/jobs"
+$url = "https://gitlab.com/api/v4/projects/edwardleethompson%2Ffdroiddata/pipelines?ref=master&per_page=2"
+git push "https://oauth2:glpat-FQ4-U7Bd9iOe5NH12WUyEWM6MQpvOjEKdToxOWc1Ng8.01.170n15fe9@gitlab.com/edwardleethompson/fdroiddata.git" HEAD:master
+$url = "https://gitlab.com/api/v4/projects/edwardleethompson%2Ffdroiddata/pipelines?ref=master&per_page=1"
+$url = "https://gitlab.com/api/v4/projects/edwardleethompson%2Ffdroiddata/pipelines/2401386666"
+git push "https://oauth2:glpat-FQ4-U7Bd9iOe5NH12WUyEWM6MQpvOjEKdToxOWc1Ng8.01.170n15fe9@gitlab.com/edwardleethompson/fdroiddata.git" HEAD:master
+$url = "https://gitlab.com/api/v4/projects/edwardleethompson%2Ffdroiddata/pipelines?ref=master&per_page=1"
+$url = "https://gitlab.com/api/v4/projects/edwardleethompson%2Ffdroiddata/pipelines/2401400718"
+$url = "https://gitlab.com/api/v4/projects/edwardleethompson%2Ffdroiddata/pipelines/2401400718"
+$jobsUrl = "https://gitlab.com/api/v4/projects/edwardleethompson%2Ffdroiddata/pipelines/2401400718/jobs"
+git push "https://oauth2:glpat-FQ4-U7Bd9iOe5NH12WUyEWM6MQpvOjEKdToxOWc1Ng8.01.170n15fe9@gitlab.com/edwardleethompson/fdroiddata.git" HEAD:master
+$pipeUrl = "https://gitlab.com/api/v4/projects/edwardleethompson%2Ffdroiddata/pipelines?ref=master&per_page=1"
+$url = "https://gitlab.com/api/v4/projects/edwardleethompson%2Ffdroiddata/pipelines/$pipeId"
+$pipeUrl = "https://gitlab.com/api/v4/projects/edwardleethompson%2Ffdroiddata/pipelines?ref=master&per_page=3"
+$pipeUrl = "https://gitlab.com/api/v4/projects/edwardleethompson%2Ffdroiddata/pipelines?ref=master&per_page=3"
+$url = "https://gitlab.com/api/v4/projects/edwardleethompson%2Ffdroiddata/pipelines?ref=master&per_page=5"
+$url = "https://gitlab.com/api/v4/projects/edwardleethompson%2Ffdroiddata/repository/commits?ref_name=master&per_page=5"
+git push "https://oauth2:glpat-FQ4-U7Bd9iOe5NH12WUyEWM6MQpvOjEKdToxOWc1Ng8.01.170n15fe9@gitlab.com/edwardleethompson/fdroiddata.git" HEAD:master
+$url = "https://gitlab.com/api/v4/projects/edwardleethompson%2Ffdroiddata/pipelines?ref=master&per_page=3"
+$url = "https://gitlab.com/api/v4/projects/edwardleethompson%2Ffdroiddata/pipelines?ref=master&per_page=3"
+$url = "https://gitlab.com/api/v4/projects/edwardleethompson%2Ffdroiddata/pipelines/$pipeId"
+git push "https://oauth2:glpat-FQ4-U7Bd9iOe5NH12WUyEWM6MQpvOjEKdToxOWc1Ng8.01.170n15fe9@gitlab.com/edwardleethompson/fdroiddata.git" HEAD:master
+git push "https://oauth2:glpat-FQ4-U7Bd9iOe5NH12WUyEWM6MQpvOjEKdToxOWc1Ng8.01.170n15fe9@gitlab.com/edwardleethompson/fdroiddata.git" HEAD:master
+git clone https://gitlab.com/edwardleethompson/fdroiddata.git fdroiddata_clone
+grep -rn "gitlab.com" .
+Get-Content (Get-PSReadLineOption).HistorySavePath | Select-String "gitlab.com" | Select-Object -ExpandProperty Line
+Get-Content (Get-PSReadLineOption).HistorySavePath | Select-String "gitlab.com" | Set-Content c:\Users\edwar\MultiAppShare-\gitlab_cmd.txt

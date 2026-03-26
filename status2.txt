@@ -1,0 +1,145 @@
+On branch main
+Your branch is up to date with 'origin/main'.
+
+Changes not staged for commit:
+  (use "git add/rm <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	deleted:    hs_err_pid53052.log
+	deleted:    kapt_deps.txt
+	deleted:    kapt_deps2.txt
+	deleted:    replay_pid53052.log
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	core-domain/build/.transforms/b3b332a691bfc5c36a1a1be550034879/
+	core-domain/build/.transforms/ba2fab9e37dacb9f00b06f8a48f91745/
+	core-domain/build/generated/source/kapt/release/
+	core-domain/build/intermediates/aapt_friendly_merged_manifests/release/
+	core-domain/build/intermediates/aar_main_jar/release/
+	core-domain/build/intermediates/aar_metadata/release/
+	core-domain/build/intermediates/annotation_processor_list/release/
+	core-domain/build/intermediates/annotations_typedef_file/release/
+	core-domain/build/intermediates/classes/release/
+	core-domain/build/intermediates/compile_library_classes_jar/release/
+	core-domain/build/intermediates/compile_r_class_jar/release/
+	core-domain/build/intermediates/compile_symbol_list/release/
+	core-domain/build/intermediates/default_proguard_files/
+	core-domain/build/intermediates/full_jar/
+	core-domain/build/intermediates/incremental/lintVitalAnalyzeRelease/
+	core-domain/build/intermediates/incremental/mergeReleaseAssets/
+	core-domain/build/intermediates/incremental/mergeReleaseJniLibFolders/
+	core-domain/build/intermediates/incremental/mergeReleaseShaders/
+	core-domain/build/intermediates/incremental/release-mergeJavaRes/
+	core-domain/build/intermediates/incremental/release/
+	core-domain/build/intermediates/java_res/release/
+	core-domain/build/intermediates/javac/release/
+	core-domain/build/intermediates/lint-cache/
+	core-domain/build/intermediates/lint_model/
+	core-domain/build/intermediates/lint_model_metadata/
+	core-domain/build/intermediates/lint_vital_lint_model/
+	core-domain/build/intermediates/lint_vital_partial_results/
+	core-domain/build/intermediates/local_aar_for_lint/
+	core-domain/build/intermediates/local_only_symbol_list/release/
+	core-domain/build/intermediates/manifest_merge_blame_file/release/
+	core-domain/build/intermediates/merged_java_res/release/
+	core-domain/build/intermediates/merged_manifest/release/
+	core-domain/build/intermediates/navigation_json/release/
+	core-domain/build/intermediates/nested_resources_validation_report/release/
+	core-domain/build/intermediates/runtime_library_classes_dir/release/
+	core-domain/build/intermediates/runtime_library_classes_jar/release/
+	core-domain/build/intermediates/symbol_list_with_package_name/release/
+	core-domain/build/kotlin/compileReleaseKotlin/
+	core-domain/build/kotlin/kaptGenerateStubsReleaseKotlin/
+	core-domain/build/outputs/logs/manifest-merger-release-report.txt
+	core-domain/build/tmp/compileReleaseJavaWithJavac/
+	core-domain/build/tmp/kapt3/incApCache/release/
+	core-domain/build/tmp/kapt3/incrementalData/release/
+	core-domain/build/tmp/kapt3/stubs/release/
+	core-domain/build/tmp/kotlin-classes/release/
+	core-ui/build/.transforms/3606cb16048047f0ec634133f3c41de0/
+	core-ui/build/.transforms/a40ddcceb60c8c0fd80c84c51f8bc7f4/
+	core-ui/build/intermediates/aapt_friendly_merged_manifests/release/
+	core-ui/build/intermediates/aar_main_jar/release/
+	core-ui/build/intermediates/aar_metadata/release/
+	core-ui/build/intermediates/annotation_processor_list/release/
+	core-ui/build/intermediates/annotations_typedef_file/release/
+	core-ui/build/intermediates/compile_library_classes_jar/release/
+	core-ui/build/intermediates/compile_r_class_jar/release/
+	core-ui/build/intermediates/compile_symbol_list/release/
+	core-ui/build/intermediates/default_proguard_files/
+	core-ui/build/intermediates/full_jar/
+	core-ui/build/intermediates/incremental/lintVitalAnalyzeRelease/
+	core-ui/build/intermediates/incremental/mergeReleaseAssets/
+	core-ui/build/intermediates/incremental/mergeReleaseJniLibFolders/
+	core-ui/build/intermediates/incremental/mergeReleaseShaders/
+	core-ui/build/intermediates/incremental/release-mergeJavaRes/
+	core-ui/build/intermediates/incremental/release/
+	core-ui/build/intermediates/lint-cache/
+	core-ui/build/intermediates/lint_model/
+	core-ui/build/intermediates/lint_model_metadata/
+	core-ui/build/intermediates/lint_vital_lint_model/
+	core-ui/build/intermediates/lint_vital_partial_results/
+	core-ui/build/intermediates/local_aar_for_lint/
+	core-ui/build/intermediates/local_only_symbol_list/release/
+	core-ui/build/intermediates/manifest_merge_blame_file/release/
+	core-ui/build/intermediates/merged_java_res/release/
+	core-ui/build/intermediates/merged_manifest/release/
+	core-ui/build/intermediates/navigation_json/release/
+	core-ui/build/intermediates/nested_resources_validation_report/release/
+	core-ui/build/intermediates/packaged_res/release/
+	core-ui/build/intermediates/runtime_library_classes_jar/release/
+	core-ui/build/intermediates/symbol_list_with_package_name/release/
+	core-ui/build/outputs/logs/manifest-merger-release-report.txt
+	fastlane/metadata/android/en-US/images/
+	feature-dashboard/build/.transforms/957f60b8e738855d2693de5f01d2129f/
+	feature-dashboard/build/.transforms/dd714151cd441e8ff1a96fd27f3afa7f/
+	feature-dashboard/build/generated/source/kapt/release/
+	feature-dashboard/build/intermediates/aapt_friendly_merged_manifests/release/
+	feature-dashboard/build/intermediates/aar_main_jar/release/
+	feature-dashboard/build/intermediates/aar_metadata/release/
+	feature-dashboard/build/intermediates/annotation_processor_list/release/
+	feature-dashboard/build/intermediates/annotations_typedef_file/release/
+	feature-dashboard/build/intermediates/classes/release/
+	feature-dashboard/build/intermediates/compile_library_classes_jar/release/
+	feature-dashboard/build/intermediates/compile_r_class_jar/release/
+	feature-dashboard/build/intermediates/compile_symbol_list/release/
+	feature-dashboard/build/intermediates/consumer_proguard_dir/
+	feature-dashboard/build/intermediates/default_proguard_files/
+	feature-dashboard/build/intermediates/full_jar/
+	feature-dashboard/build/intermediates/generated_proguard_file/release/
+	feature-dashboard/build/intermediates/incremental/lintVitalAnalyzeRelease/
+	feature-dashboard/build/intermediates/incremental/mergeReleaseAssets/
+	feature-dashboard/build/intermediates/incremental/mergeReleaseJniLibFolders/
+	feature-dashboard/build/intermediates/incremental/mergeReleaseShaders/
+	feature-dashboard/build/intermediates/incremental/release-mergeJavaRes/
+	feature-dashboard/build/intermediates/incremental/release/
+	feature-dashboard/build/intermediates/java_res/release/
+	feature-dashboard/build/intermediates/javac/release/
+	feature-dashboard/build/intermediates/lint-cache/
+	feature-dashboard/build/intermediates/lint_model/
+	feature-dashboard/build/intermediates/lint_model_metadata/
+	feature-dashboard/build/intermediates/lint_vital_lint_model/
+	feature-dashboard/build/intermediates/lint_vital_partial_results/
+	feature-dashboard/build/intermediates/local_aar_for_lint/
+	feature-dashboard/build/intermediates/local_only_symbol_list/release/
+	feature-dashboard/build/intermediates/manifest_merge_blame_file/release/
+	feature-dashboard/build/intermediates/merged_consumer_proguard_file/release/
+	feature-dashboard/build/intermediates/merged_java_res/release/
+	feature-dashboard/build/intermediates/merged_manifest/release/
+	feature-dashboard/build/intermediates/navigation_json/release/
+	feature-dashboard/build/intermediates/nested_resources_validation_report/release/
+	feature-dashboard/build/intermediates/runtime_library_classes_dir/release/
+	feature-dashboard/build/intermediates/runtime_library_classes_jar/release/
+	feature-dashboard/build/intermediates/symbol_list_with_package_name/release/
+	feature-dashboard/build/kotlin/compileReleaseKotlin/
+	feature-dashboard/build/kotlin/kaptGenerateStubsReleaseKotlin/
+	feature-dashboard/build/outputs/logs/manifest-merger-release-report.txt
+	feature-dashboard/build/tmp/compileReleaseJavaWithJavac/
+	feature-dashboard/build/tmp/kapt3/classes/release/
+	feature-dashboard/build/tmp/kapt3/incApCache/release/
+	feature-dashboard/build/tmp/kapt3/incrementalData/release/
+	feature-dashboard/build/tmp/kapt3/stubs/release/
+	feature-dashboard/build/tmp/kotlin-classes/release/
+	status2.txt
+
+no changes added to commit (use "git add" and/or "git commit -a")

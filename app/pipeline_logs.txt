@@ -1,0 +1,114 @@
+--- Found 3 failures in Pipeline 2409716852 ---
+
+=== JOB: tools check scripts (ID: 13655285552) ===
+01O [32;1m$ export EXITVALUE=0[0;m
+2026-03-26T02:13:20.364284Z 01O [32;1m$ function set_error() { export EXITVALUE=1; printf "\x1b[31mERROR `history|tail -2|head -1|cut -b 6-500`\x1b[0m\n"; }[0;m
+2026-03-26T02:13:20.364285Z 01O [32;1m$ chown -R $(whoami) .[0;m
+2026-03-26T02:13:22.557324Z 01O [32;1m$ ./tools/check-exif-in-images.sh || set_error[0;m
+2026-03-26T02:13:22.559637Z 01E + find metadata/ -name '*.jp*g' -o -name '*.png'
+2026-03-26T02:13:22.559779Z 01E + xargs exiftool -all=
+2026-03-26T02:13:28.559668Z 01O     0 image files updated
+2026-03-26T02:13:28.559674Z 01O    47 image files unchanged
+2026-03-26T02:13:28.574762Z 01O these images have EXIF that must be stripped:
+2026-03-26T02:13:28.574795Z 01E + msg='these images have EXIF that must be stripped:'
+2026-03-26T02:13:28.574796Z 01E + echo these images have EXIF that must be stripped:
+2026-03-26T02:13:28.574797Z 01E + git diff --stat
+2026-03-26T02:13:33.533671Z 01E ++ basename ./tools/check-exif-in-images.sh
+2026-03-26T02:13:33.534547Z 01E + check_name=check-exif-in-images.sh
+2026-03-26T02:13:33.534817Z 01E ++ git diff --name-only
+2026-03-26T02:13:33.738555Z 01E + git diff --name-only --exit-code
+2026-03-26T02:13:33.921198Z 01O [32;1m$ ./tools/check-localized-metadata.py || set_error[0;m
+2026-03-26T02:13:34.964759Z 01O [32;1m$ ./tools/check-keyalias-collision.py || set_error[0;m
+2026-03-26T02:13:35.042429Z 01O [32;1m$ ./tools/check-metadata-summary-whitespace.py || set_error[0;m
+2026-03-26T02:13:47.747387Z 01O [32;1m$ ./tools/check-for-unattached-signatures.py || set_error[0;m
+2026-03-26T02:13:58.084655Z 01O [32;1m$ ./tools/make-summary-translatable.py || set_error[0;m
+2026-03-26T02:14:53.965414Z 01O [31mERROR [0m
+2026-03-26T02:14:53.965428Z 01O [32;1m$ jq '[.[]|.[]]' --slurp *.json > codequality.json[0;m
+2026-03-26T02:14:53.968501Z 01O [32;1m$ exit $EXITVALUE[0;m
+2026-03-26T02:14:54.174657Z 00O section_end:1774491294:step_script
+2026-03-26T02:14:54.174662Z 00O+[0Ksection_start:1774491294:upload_artifacts_on_failure
+2026-03-26T02:14:54.175387Z 00O+[0K[0K[36;1mUploading artifacts for failed job[0;m[0;m
+2026-03-26T02:14:54.662992Z 01O [32;1mUploading artifacts...[0;m
+2026-03-26T02:14:54.743111Z 01E codequality.json: found 1 matching artifact files and directories[0;m 
+2026-03-26T02:14:55.211309Z 01E Uploading artifacts as "codequality" to coordinator... 201 Created[0;m  correlation_id[0;m=570c1559b19c4e7ca01fcd3eb4382c11 id[0;m=13655285552 responseStatus[0;m=201 Created token[0;m=6d_5sQuuZ
+2026-03-26T02:14:55.391790Z 00O section_end:1774491295:upload_artifacts_on_failure
+2026-03-26T02:14:55.391796Z 00O+[0Ksection_start:1774491295:cleanup_file_variables
+2026-03-26T02:14:55.391908Z 00O+[0K[0K[36;1mCleaning up project directory and file based variables[0;m[0;m
+2026-03-26T02:14:55.972285Z 00O section_end:1774491295:cleanup_file_variables
+2026-03-26T02:14:55.972289Z 00O+[0K
+2026-03-26T02:14:56.177505Z 00O [31;1mERROR: Job failed: exit code 1[0;m
+
+
+========================================
+
+=== JOB: fdroid rewritemeta (ID: 13655285548) ===
+2:14:41.158078Z 01O [32;1m$ export PATH="$fdroidserver:$PATH"[0;m
+2026-03-26T02:14:41.158086Z 01O [32;1m$ export PYTHONPATH="$fdroidserver:$fdroidserver/examples"[0;m
+2026-03-26T02:14:41.158087Z 01O [32;1m$ export PYTHONUNBUFFERED=true[0;m
+2026-03-26T02:14:41.158212Z 01O [32;1m$ export serverwebroot=/tmp[0;m
+2026-03-26T02:14:41.158213Z 01O [32;1m$ chown -R $(whoami) .[0;m
+2026-03-26T02:14:43.466209Z 01O [32;1m$ if [ "$CI_PROJECT_PATH" = "fdroid/fdroiddata" ] && [ "$CI_COMMIT_BRANCH" = "$CI_DEFAULT_BRANCH" ]; then # collapsed multi-line command[0;m
+2026-03-26T02:14:45.697115Z 01E From https://gitlab.com/fdroid/fdroiddata
+2026-03-26T02:14:45.697126Z 01E  * branch                master     -> FETCH_HEAD
+2026-03-26T02:14:45.697134Z 01E  * [new branch]          master     -> upstream/master
+2026-03-26T02:14:45.702843Z 01O [32;1m$ echo $TARGET_REF[0;m
+2026-03-26T02:14:45.702852Z 01O 3c08d1ecad8cbfca8469a1b6ff97f66741b629ac
+2026-03-26T02:14:45.702853Z 01O [32;1m$ for f in $(git diff --name-only --diff-filter=d "${TARGET_REF}...${SOURCE_REF}" -- metadata/*.yml) $(git diff --name-only --diff-filter=d "${TARGET_REF}...${SOURCE_REF}" -- metadata/*/signatures); do # collapsed multi-line command[0;m
+2026-03-26T02:14:46.388111Z 01O [32;1m$ if [ -n "$CHANGED" ]; then # collapsed multi-line command[0;m
+2026-03-26T02:14:46.661311Z 01E 2026-03-26 02:14:46,660 WARNING: unsafe permissions on 'config.yml' (should be 0600)!
+2026-03-26T02:14:46.753406Z 01E 2026-03-26 02:14:46,753 INFO: Rewriting 'com.edwardlthompson.multiappshare'
+2026-03-26T02:14:50.848625Z 01O 
+2026-03-26T02:14:50.848631Z 01O These files need rewritemeta:
+2026-03-26T02:14:51.044356Z 01O metadata/com.edwardlthompson.multiappshare.yml
+2026-03-26T02:14:51.047074Z 01O 
+2026-03-26T02:14:51.047236Z 01O These are the formatting issues:
+2026-03-26T02:14:51.245789Z 01O [1mdiff --git a/metadata/com.edwardlthompson.multiappshare.yml b/metadata/com.edwardlthompson.multiappshare.yml[m
+2026-03-26T02:14:51.245795Z 01O [1mindex 71b5d6126..2c6fca56e 100644[m
+2026-03-26T02:14:51.245796Z 01O [1m--- a/metadata/com.edwardlthompson.multiappshare.yml[m
+2026-03-26T02:14:51.245797Z 01O [1m+++ b/metadata/com.edwardlthompson.multiappshare.yml[m
+2026-03-26T02:14:51.245820Z 01O [36m@@ -28,4 +28,3 @@[m [mAutoUpdateMode: Version[m
+2026-03-26T02:14:51.245820Z 01O  [mUpdateCheckMode: Tags[m
+2026-03-26T02:14:51.245821Z 01O  [mCurrentVersion: 1.7.3[m
+2026-03-26T02:14:51.245821Z 01O  [mCurrentVersionCode: 173[m
+2026-03-26T02:14:51.245822Z 01O [31m-[m
+2026-03-26T02:14:52.724306Z 00O section_end:1774491292:step_script
+2026-03-26T02:14:52.724308Z 00O+[0Ksection_start:1774491292:cleanup_file_variables
+2026-03-26T02:14:52.725107Z 00O+[0K[0K[36;1mCleaning up project directory and file based variables[0;m[0;m
+2026-03-26T02:14:53.252211Z 00O section_end:1774491293:cleanup_file_variables
+2026-03-26T02:14:53.252217Z 00O+[0K
+2026-03-26T02:14:54.937454Z 00O [31;1mERROR: Job failed: exit code 1[0;m
+
+
+========================================
+
+=== JOB: fdroid build (ID: 13655285516) ===
+re-domain/build/kotlin/compileDebugKotlin/local-state/build-history.bin
+2026-03-26T02:14:52.831405Z 01E 2026-03-26 02:14:52,831 ERROR: Found binary at core-database/build/kotlin/compileReleaseKotlin/classpath-snapshot/shrunk-classpath-snapshot.bin
+2026-03-26T02:14:52.831606Z 01E 2026-03-26 02:14:52,831 ERROR: Found binary at core-database/build/kotlin/compileReleaseKotlin/cacheable/last-build.bin
+2026-03-26T02:14:52.834875Z 01E 2026-03-26 02:14:52,834 ERROR: Found binary at core-database/build/kotlin/compileReleaseKotlin/local-state/build-history.bin
+2026-03-26T02:14:52.834920Z 01E 2026-03-26 02:14:52,834 ERROR: Found binary at core-database/build/kotlin/kaptGenerateStubsReleaseKotlin/classpath-snapshot/shrunk-classpath-snapshot.bin
+2026-03-26T02:14:52.835192Z 01E 2026-03-26 02:14:52,834 ERROR: Found binary at core-database/build/kotlin/kaptGenerateStubsReleaseKotlin/cacheable/last-build.bin
+2026-03-26T02:14:52.838017Z 01E 2026-03-26 02:14:52,837 ERROR: Found binary at core-database/build/kotlin/kaptGenerateStubsReleaseKotlin/local-state/build-history.bin
+2026-03-26T02:14:52.838358Z 01E 2026-03-26 02:14:52,838 ERROR: Could not build app com.edwardlthompson.multiappshare: Can't build due to 18 errors while scanning
+2026-03-26T02:14:52.838360Z 01E 2026-03-26 02:14:52,838 DEBUG: Error encountered, stopping by user request.
+2026-03-26T02:14:56.395038Z 00O section_end:1774491296:step_script
+2026-03-26T02:14:56.395043Z 00O+[0Ksection_start:1774491296:upload_artifacts_on_failure
+2026-03-26T02:14:56.395805Z 00O+[0K[0K[36;1mUploading artifacts for failed job[0;m[0;m
+2026-03-26T02:14:56.797822Z 01O [32;1mUploading artifacts...[0;m
+2026-03-26T02:14:56.867519Z 01E repo/: found 3 matching artifact files and directories[0;m 
+2026-03-26T02:14:56.867523Z 01E unsigned/: found 1 matching artifact files and directories[0;m 
+2026-03-26T02:14:56.867523Z 01E tmp/: found 1 matching artifact files and directories[0;m 
+2026-03-26T02:14:57.575922Z 01E Uploading artifacts as "archive" to coordinator... 201 Created[0;m  correlation_id[0;m=52f4ce8680e04ea293624ba11ddad6b2 id[0;m=13655285516 responseStatus[0;m=201 Created token[0;m=6d_Dw5Mw3
+2026-03-26T02:14:57.648732Z 01O [32;1mUploading artifacts...[0;m
+2026-03-26T02:14:57.724941Z 01E [0;33mWARNING: codequality.json: no matching files. Ensure that the artifact path is relative to the working directory (/builds/edwardleethompson/fdroiddata)[0;m 
+2026-03-26T02:14:57.724945Z 01E [31;1mERROR: No files to upload                         [0;m 
+2026-03-26T02:14:57.885779Z 00O section_end:1774491297:upload_artifacts_on_failure
+2026-03-26T02:14:57.885782Z 00O+[0Ksection_start:1774491297:cleanup_file_variables
+2026-03-26T02:14:57.885871Z 00O+[0K[0K[36;1mCleaning up project directory and file based variables[0;m[0;m
+2026-03-26T02:14:58.368609Z 00O section_end:1774491298:cleanup_file_variables
+2026-03-26T02:14:58.368611Z 00O+[0K
+2026-03-26T02:14:58.930320Z 00O [31;1mERROR: Job failed: exit code 1[0;m
+
+
+========================================
+
