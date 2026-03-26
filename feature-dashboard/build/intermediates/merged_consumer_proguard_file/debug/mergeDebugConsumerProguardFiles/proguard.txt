@@ -1,2 +1,0 @@
--keep,allowobfuscation,allowshrinking class com.multiappshare.ui.DashboardViewModel
--keep,allowobfuscation,allowshrinking class com.multiappshare.ui.DashboardViewModel

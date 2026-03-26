@@ -5,10 +5,10 @@ import com.multiappshare.data.local.GroupDao;
 import dagger.internal.DaggerGenerated;
 import dagger.internal.Factory;
 import dagger.internal.Preconditions;
-import dagger.internal.Provider;
 import dagger.internal.QualifierMetadata;
 import dagger.internal.ScopeMetadata;
 import javax.annotation.processing.Generated;
+import javax.inject.Provider;
 
 @ScopeMetadata("javax.inject.Singleton")
 @QualifierMetadata
@@ -22,14 +22,12 @@ import javax.annotation.processing.Generated;
     "rawtypes",
     "KotlinInternal",
     "KotlinInternalInJava",
-    "cast",
-    "deprecation",
-    "nullness:initialization.field.uninitialized"
+    "cast"
 })
 public final class DatabaseModule_ProvideGroupDaoFactory implements Factory<GroupDao> {
   private final Provider<AppDatabase> databaseProvider;
 
-  private DatabaseModule_ProvideGroupDaoFactory(Provider<AppDatabase> databaseProvider) {
+  public DatabaseModule_ProvideGroupDaoFactory(Provider<AppDatabase> databaseProvider) {
     this.databaseProvider = databaseProvider;
   }
 

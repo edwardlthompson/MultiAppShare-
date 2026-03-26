@@ -7,10 +7,10 @@ import com.multiappshare.domain.HistoryRepository;
 import com.multiappshare.domain.SettingsRepository;
 import dagger.internal.DaggerGenerated;
 import dagger.internal.Factory;
-import dagger.internal.Provider;
 import dagger.internal.QualifierMetadata;
 import dagger.internal.ScopeMetadata;
 import javax.annotation.processing.Generated;
+import javax.inject.Provider;
 
 @ScopeMetadata
 @QualifierMetadata
@@ -24,9 +24,7 @@ import javax.annotation.processing.Generated;
     "rawtypes",
     "KotlinInternal",
     "KotlinInternalInJava",
-    "cast",
-    "deprecation",
-    "nullness:initialization.field.uninitialized"
+    "cast"
 })
 public final class DashboardViewModel_Factory implements Factory<DashboardViewModel> {
   private final Provider<GroupsRepository> groupsRepositoryProvider;
@@ -39,7 +37,7 @@ public final class DashboardViewModel_Factory implements Factory<DashboardViewMo
 
   private final Provider<GetCompatibleAppsUseCase> getCompatibleAppsUseCaseProvider;
 
-  private DashboardViewModel_Factory(Provider<GroupsRepository> groupsRepositoryProvider,
+  public DashboardViewModel_Factory(Provider<GroupsRepository> groupsRepositoryProvider,
       Provider<HistoryRepository> historyRepositoryProvider,
       Provider<SettingsRepository> settingsRepositoryProvider,
       Provider<CreateAutoGroupsUseCase> createAutoGroupsUseCaseProvider,
