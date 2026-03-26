@@ -75,9 +75,9 @@ android {
 // Fixed APK renaming for AGP 8.0+ / 9.0+
 // This sets the base name for artifacts (APKs and AABs).
 // AGP will automatically produce files like: MultiAppShare-v1.3.1-release.apk
-base {
-    archivesName.set("MultiAppShare-v$appVersion")
-}
+// base {
+//    archivesName.set("MultiAppShare-v$appVersion")
+// }
 
 dependencies {
     implementation(libs.androidx.core.ktx)
