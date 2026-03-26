@@ -1,4 +1,4 @@
-# <img src="app/src/main/res/mipmap-xxxhdpi/ic_launcher.png" width="128"> Multi App Share
+# <img src="./metadata/icon.png" width="128"> Multi App Share
 
 ![GitHub release](https://img.shields.io/github/v/release/edwardlthompson/MultiAppShare-?include_prereleases)
 ![F-Droid](https://img.shields.io/f-droid/v/com.multiappshare?label=F-Droid&color=blue)
