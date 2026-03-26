@@ -1,0 +1,233 @@
+--- Found 6 failures in Pipeline 2409866605 ---
+
+=== JOB: check source code (ID: 13656186237) ===
+-26T04:15:08.240504Z 01E ++ echo '[32;1m$ if [ -n "$CHANGED" ]; then # collapsed multi-line command[0;m'
+2026-03-26T04:15:08.240505Z 01E ++ '[' -n ' com.edwardlthompson.multiappshare' ']'
+2026-03-26T04:15:08.240612Z 01O [32;1m$ if [ -n "$CHANGED" ]; then # collapsed multi-line command[0;m
+2026-03-26T04:15:08.240614Z 01E ++ ./tools/check-fastlane.py com.edwardlthompson.multiappshare
+2026-03-26T04:15:08.511028Z 01E Checking com.edwardlthompson.multiappshare...
+2026-03-26T04:15:08.526866Z 01E WARNING:root:could not parse 'metadata/com.edwardlthompson.multiappshare.yml'
+2026-03-26T04:15:08.526870Z 01E     metadata/com.edwardlthompson.multiappshare.yml:10: duplication of key "AutoName" in mapping (key-duplicates)
+2026-03-26T04:15:08.527392Z 01E Traceback (most recent call last):
+2026-03-26T04:15:08.528195Z 01E   File "/builds/edwardleethompson/fdroiddata/./tools/check-fastlane.py", line 178, in <module>
+2026-03-26T04:15:08.528196Z 01E     main()
+2026-03-26T04:15:08.528196Z 01E     ~~~~^^
+2026-03-26T04:15:08.528197Z 01E   File "/builds/edwardleethompson/fdroiddata/./tools/check-fastlane.py", line 134, in main
+2026-03-26T04:15:08.528197Z 01E     app = metadata.parse_metadata(metadata_file)
+2026-03-26T04:15:08.528198Z 01E   File "/builds/edwardleethompson/fdroidserver/fdroidserver/metadata.py", line 703, in parse_metadata
+2026-03-26T04:15:08.528199Z 01E     app.update(parse_yaml_metadata(mf))
+2026-03-26T04:15:08.528199Z 01E                ~~~~~~~~~~~~~~~~~~~^^^^
+2026-03-26T04:15:08.528200Z 01E   File "/builds/edwardleethompson/fdroidserver/fdroidserver/metadata.py", line 775, in parse_yaml_metadata
+2026-03-26T04:15:08.528201Z 01E     if yamldata is None or yamldata == '':
+2026-03-26T04:15:08.528201Z 01E        ^^^^^^^^
+2026-03-26T04:15:08.528202Z 01E UnboundLocalError: cannot access local variable 'yamldata' where it is not associated with a value
+2026-03-26T04:15:10.261408Z 00O section_end:1774498510:step_script
+2026-03-26T04:15:10.261413Z 00O+[0Ksection_start:1774498510:upload_artifacts_on_failure
+2026-03-26T04:15:10.262101Z 00O+[0K[0K[36;1mUploading artifacts for failed job[0;m[0;m
+2026-03-26T04:15:10.723235Z 01O [32;1mUploading artifacts...[0;m
+2026-03-26T04:15:10.800508Z 01E codequality.json: found 1 matching artifact files and directories[0;m 
+2026-03-26T04:15:11.179638Z 01E Uploading artifacts as "codequality" to coordinator... 201 Created[0;m  correlation_id[0;m=1cb1201090974dda9982465d8d8a8793 id[0;m=13656186237 responseStatus[0;m=201 Created token[0;m=6d_V-Y1vp
+2026-03-26T04:15:11.358486Z 00O section_end:1774498511:upload_artifacts_on_failure
+2026-03-26T04:15:11.358491Z 00O+[0Ksection_start:1774498511:cleanup_file_variables
+2026-03-26T04:15:11.358596Z 00O+[0K[0K[36;1mCleaning up project directory and file based variables[0;m[0;m
+2026-03-26T04:15:11.907612Z 00O section_end:1774498511:cleanup_file_variables
+2026-03-26T04:15:11.907616Z 00O+[0K
+2026-03-26T04:15:13.645952Z 00O [31;1mERROR: Job failed: exit code 1[0;m
+
+
+========================================
+
+=== JOB: schema validation (ID: 13656186236) ===
+2026-03-26T04:13:46.315953Z 01E +      - yes
+2026-03-26T04:13:46.315954Z 01E +
+2026-03-26T04:13:46.315954Z 01E +AutoUpdateMode: Version
+2026-03-26T04:13:46.315954Z 01E +UpdateCheckMode: Tags
+2026-03-26T04:13:46.315955Z 01E +CurrentVersion: 1.7.3
+2026-03-26T04:13:46.315955Z 01E +CurrentVersionCode: 173'
+2026-03-26T04:13:46.316288Z 01E +++ echo metadata/com.edwardlthompson.multiappshare.yml
+2026-03-26T04:13:46.316460Z 01E +++ sed -E -n 's,^metadata/([^/][^/]*)(\.yml|/signatures/.*),\1,p'
+2026-03-26T04:13:46.317939Z 01E ++ appid=com.edwardlthompson.multiappshare
+2026-03-26T04:13:46.317945Z 01E ++ export 'CHANGED= com.edwardlthompson.multiappshare'
+2026-03-26T04:13:46.317971Z 01E ++ CHANGED=' com.edwardlthompson.multiappshare'
+2026-03-26T04:13:46.318041Z 01O [32;1m$ if [ -z "$CHANGED" ]; then exit; fi[0;m
+2026-03-26T04:13:46.318042Z 01O [32;1m$ echo $CHANGED | sed -En 's|([^ ]*)|metadata/\1.yml|gp' | xargs check-jsonschema --schemafile schemas/metadata.json[0;m
+2026-03-26T04:13:46.318088Z 01E ++ echo '[32;1m$ if [ -z "$CHANGED" ]; then exit; fi[0;m'
+2026-03-26T04:13:46.318094Z 01E ++ '[' -z ' com.edwardlthompson.multiappshare' ']'
+2026-03-26T04:13:46.318095Z 01E ++ echo '[32;1m$ echo $CHANGED | sed -En '\''s|([^ ]*)|metadata/\1.yml|gp'\'' | xargs check-jsonschema --schemafile schemas/metadata.json[0;m'
+2026-03-26T04:13:46.318421Z 01E ++ echo com.edwardlthompson.multiappshare
+2026-03-26T04:13:46.318757Z 01E ++ xargs check-jsonschema --schemafile schemas/metadata.json
+2026-03-26T04:13:46.319224Z 01E ++ sed -En 's|([^ ]*)|metadata/\1.yml|gp'
+2026-03-26T04:13:46.542242Z 01O Several files failed to parse.
+2026-03-26T04:13:46.542346Z 01O   Failed to parse metadata/com.edwardlthompson.multiappshare.yml
+2026-03-26T04:13:46.542351Z 01O     DuplicateKeyError: while constructing a mapping
+2026-03-26T04:13:46.542352Z 01O       in "<byte string>", line 1, column 1:
+2026-03-26T04:13:46.542353Z 01O         Categories:
+2026-03-26T04:13:46.542353Z 01O         ^ (line: 1)
+2026-03-26T04:13:46.542354Z 01O     found duplicate key "AutoName" with value "Multi App Share" (original value: "Multi App Share")
+2026-03-26T04:13:46.542354Z 01O       in "<byte string>", line 10, column 1:
+2026-03-26T04:13:46.542355Z 01O         AutoName: Multi App Share
+2026-03-26T04:13:46.542355Z 01O         ^ (line: 10)
+2026-03-26T04:13:46.542356Z 01O 
+2026-03-26T04:13:46.542356Z 01O     To suppress this check see:
+2026-03-26T04:13:46.542357Z 01O         https://yaml.dev/doc/ruamel.yaml/api/#Duplicate_keys
+2026-03-26T04:13:46.542358Z 01O 
+2026-03-26T04:13:46.946915Z 00O section_end:1774498426:step_script
+2026-03-26T04:13:46.946918Z 00O+[0Ksection_start:1774498426:cleanup_file_variables
+2026-03-26T04:13:46.947720Z 00O+[0K[0K[36;1mCleaning up project directory and file based variables[0;m[0;m
+2026-03-26T04:13:47.566321Z 00O section_end:1774498427:cleanup_file_variables
+2026-03-26T04:13:47.566325Z 00O+[0K
+2026-03-26T04:13:47.643864Z 00O [31;1mERROR: Job failed: exit code 1[0;m
+
+
+========================================
+
+=== JOB: fdroid rewritemeta (ID: 13656186233) ===
+tificates/update.d...
+2026-03-26T04:15:01.308181Z 01O done.
+2026-03-26T04:15:01.320886Z 01O Processing triggers for ca-certificates-java (20240118) ...
+2026-03-26T04:15:01.357790Z 01O done.
+2026-03-26T04:15:01.475161Z 01O [32;1m$ export fdroidserver=$PWD/fdroidserver[0;m
+2026-03-26T04:15:01.475169Z 01O [32;1m$ rm -rf $fdroidserver[0;m
+2026-03-26T04:15:01.476271Z 01O [32;1m$ mkdir $fdroidserver[0;m
+2026-03-26T04:15:01.477384Z 01O [32;1m$ git ls-remote https://gitlab.com/fdroid/fdroidserver.git master[0;m
+2026-03-26T04:15:02.013777Z 01O 5e0b6a851507c7b60b42b16a40188cd6e2968a68	refs/heads/master
+2026-03-26T04:15:02.014060Z 01O [32;1m$ curl --silent https://gitlab.com/fdroid/fdroidserver/-/archive/master/fdroidserver-master.tar.gz | tar -xz --directory=$fdroidserver --strip-components=1[0;m
+2026-03-26T04:15:02.517823Z 01O [32;1m$ export PATH="$fdroidserver:$PATH"[0;m
+2026-03-26T04:15:02.517829Z 01O [32;1m$ export PYTHONPATH="$fdroidserver:$fdroidserver/examples"[0;m
+2026-03-26T04:15:02.517830Z 01O [32;1m$ export PYTHONUNBUFFERED=true[0;m
+2026-03-26T04:15:02.517830Z 01O [32;1m$ export serverwebroot=/tmp[0;m
+2026-03-26T04:15:02.517831Z 01O [32;1m$ chown -R $(whoami) .[0;m
+2026-03-26T04:15:04.805641Z 01O [32;1m$ if [ "$CI_PROJECT_PATH" = "fdroid/fdroiddata" ] && [ "$CI_COMMIT_BRANCH" = "$CI_DEFAULT_BRANCH" ]; then # collapsed multi-line command[0;m
+2026-03-26T04:15:07.114165Z 01E From https://gitlab.com/fdroid/fdroiddata
+2026-03-26T04:15:07.114170Z 01E  * branch                master     -> FETCH_HEAD
+2026-03-26T04:15:07.114844Z 01E  * [new branch]          master     -> upstream/master
+2026-03-26T04:15:07.121922Z 01O [32;1m$ echo $TARGET_REF[0;m
+2026-03-26T04:15:07.121927Z 01O 3c08d1ecad8cbfca8469a1b6ff97f66741b629ac
+2026-03-26T04:15:07.121927Z 01O [32;1m$ for f in $(git diff --name-only --diff-filter=d "${TARGET_REF}...${SOURCE_REF}" -- metadata/*.yml) $(git diff --name-only --diff-filter=d "${TARGET_REF}...${SOURCE_REF}" -- metadata/*/signatures); do # collapsed multi-line command[0;m
+2026-03-26T04:15:07.774649Z 01O [32;1m$ if [ -n "$CHANGED" ]; then # collapsed multi-line command[0;m
+2026-03-26T04:15:08.059833Z 01E 2026-03-26 04:15:08,059 WARNING: unsafe permissions on 'config.yml' (should be 0600)!
+2026-03-26T04:15:08.168395Z 01E 2026-03-26 04:15:08,168 CRITICAL: could not parse 'metadata/com.edwardlthompson.multiappshare.yml'
+2026-03-26T04:15:08.168400Z 01E     metadata/com.edwardlthompson.multiappshare.yml:10: duplication of key "AutoName" in mapping (key-duplicates)
+2026-03-26T04:15:09.989635Z 00O section_end:1774498509:step_script
+2026-03-26T04:15:09.989641Z 00O+[0Ksection_start:1774498509:cleanup_file_variables
+2026-03-26T04:15:09.990399Z 00O+[0K[0K[36;1mCleaning up project directory and file based variables[0;m[0;m
+2026-03-26T04:15:10.579033Z 00O section_end:1774498510:cleanup_file_variables
+2026-03-26T04:15:10.579037Z 00O+[0K
+2026-03-26T04:15:12.397935Z 00O [31;1mERROR: Job failed: exit code 1[0;m
+
+
+========================================
+
+=== JOB: fdroid lint (ID: 13656186232) ===
+6T04:14:57.009804Z 01O done.
+2026-03-26T04:14:57.122567Z 01O [32;1m$ export fdroidserver=$PWD/fdroidserver[0;m
+2026-03-26T04:14:57.122572Z 01O [32;1m$ rm -rf $fdroidserver[0;m
+2026-03-26T04:14:57.123634Z 01O [32;1m$ mkdir $fdroidserver[0;m
+2026-03-26T04:14:57.124726Z 01O [32;1m$ git ls-remote https://gitlab.com/fdroid/fdroidserver.git master[0;m
+2026-03-26T04:14:57.696636Z 01O 5e0b6a851507c7b60b42b16a40188cd6e2968a68	refs/heads/master
+2026-03-26T04:14:57.697213Z 01O [32;1m$ curl --silent https://gitlab.com/fdroid/fdroidserver/-/archive/master/fdroidserver-master.tar.gz | tar -xz --directory=$fdroidserver --strip-components=1[0;m
+2026-03-26T04:14:58.324217Z 01O [32;1m$ export PATH="$fdroidserver:$PATH"[0;m
+2026-03-26T04:14:58.324220Z 01O [32;1m$ export PYTHONPATH="$fdroidserver:$fdroidserver/examples"[0;m
+2026-03-26T04:14:58.324221Z 01O [32;1m$ export PYTHONUNBUFFERED=true[0;m
+2026-03-26T04:14:58.324344Z 01O [32;1m$ export serverwebroot=/tmp[0;m
+2026-03-26T04:14:58.324345Z 01O [32;1m$ chown -R $(whoami) .[0;m
+2026-03-26T04:15:00.756556Z 01O [32;1m$ if [ "$CI_PROJECT_PATH" = "fdroid/fdroiddata" ] && [ "$CI_COMMIT_BRANCH" = "$CI_DEFAULT_BRANCH" ]; then # collapsed multi-line command[0;m
+2026-03-26T04:15:02.999467Z 01E From https://gitlab.com/fdroid/fdroiddata
+2026-03-26T04:15:02.999473Z 01E  * branch                master     -> FETCH_HEAD
+2026-03-26T04:15:03.000309Z 01E  * [new branch]          master     -> upstream/master
+2026-03-26T04:15:03.007613Z 01O [32;1m$ echo $TARGET_REF[0;m
+2026-03-26T04:15:03.007616Z 01O 3c08d1ecad8cbfca8469a1b6ff97f66741b629ac
+2026-03-26T04:15:03.007697Z 01O [32;1m$ for f in $(git diff --name-only --diff-filter=d "${TARGET_REF}...${SOURCE_REF}" -- metadata/*.yml) $(git diff --name-only --diff-filter=d "${TARGET_REF}...${SOURCE_REF}" -- metadata/*/signatures); do # collapsed multi-line command[0;m
+2026-03-26T04:15:03.674313Z 01O [32;1m$ test -n "$CHANGED" || exit 0[0;m
+2026-03-26T04:15:03.674319Z 01O [32;1m$ echo $CHANGED[0;m
+2026-03-26T04:15:03.674320Z 01O com.edwardlthompson.multiappshare
+2026-03-26T04:15:03.674320Z 01O [32;1m$ fdroid lint $CHANGED[0;m
+2026-03-26T04:15:04.053368Z 01E 2026-03-26 04:15:04,052 WARNING: unsafe permissions on 'config.yml' (should be 0600)!
+2026-03-26T04:15:04.319916Z 01E 2026-03-26 04:15:04,319 CRITICAL: could not parse 'metadata/com.edwardlthompson.multiappshare.yml'
+2026-03-26T04:15:04.319920Z 01E     metadata/com.edwardlthompson.multiappshare.yml:10: duplication of key "AutoName" in mapping (key-duplicates)
+2026-03-26T04:15:05.874356Z 00O section_end:1774498505:step_script
+2026-03-26T04:15:05.874361Z 00O+[0Ksection_start:1774498505:cleanup_file_variables
+2026-03-26T04:15:05.875158Z 00O+[0K[0K[36;1mCleaning up project directory and file based variables[0;m[0;m
+2026-03-26T04:15:06.430139Z 00O section_end:1774498506:cleanup_file_variables
+2026-03-26T04:15:06.430143Z 00O+[0K
+2026-03-26T04:15:08.142237Z 00O [31;1mERROR: Job failed: exit code 1[0;m
+
+
+========================================
+
+=== JOB: checkupdates (ID: 13656186228) ===
+04:15:13.389557Z 01E   File "/builds/edwardleethompson/fdroiddata/../fdroidserver/fdroid", line 22, in <module>
+2026-03-26T04:15:13.389558Z 01E     fdroidserver.__main__.main()
+2026-03-26T04:15:13.389559Z 01E     ~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+2026-03-26T04:15:13.389559Z 01E   File "/builds/edwardleethompson/fdroidserver/fdroidserver/__main__.py", line 236, in main
+2026-03-26T04:15:13.389560Z 01E     mod.main()
+2026-03-26T04:15:13.389560Z 01E     ~~~~~~~~^^
+2026-03-26T04:15:13.389561Z 01E   File "/builds/edwardleethompson/fdroidserver/fdroidserver/checkupdates.py", line 911, in main
+2026-03-26T04:15:13.389561Z 01E     apps = common.read_app_args(options.appid)
+2026-03-26T04:15:13.389562Z 01E   File "/builds/edwardleethompson/fdroidserver/fdroidserver/common.py", line 1235, in read_app_args
+2026-03-26T04:15:13.389563Z 01E     allapps = fdroidserver.metadata.read_metadata(vercodes, sort_by_time)
+2026-03-26T04:15:13.389563Z 01E   File "/builds/edwardleethompson/fdroidserver/fdroidserver/metadata.py", line 603, in read_metadata
+2026-03-26T04:15:13.389564Z 01E     app = parse_metadata(metadatapath)
+2026-03-26T04:15:13.389564Z 01E   File "/builds/edwardleethompson/fdroidserver/fdroidserver/metadata.py", line 703, in parse_metadata
+2026-03-26T04:15:13.389565Z 01E     app.update(parse_yaml_metadata(mf))
+2026-03-26T04:15:13.389566Z 01E                ~~~~~~~~~~~~~~~~~~~^^^^
+2026-03-26T04:15:13.389566Z 01E   File "/builds/edwardleethompson/fdroidserver/fdroidserver/metadata.py", line 768, in parse_yaml_metadata
+2026-03-26T04:15:13.389567Z 01E     _warn_or_exception(
+2026-03-26T04:15:13.389567Z 01E     ~~~~~~~~~~~~~~~~~~^
+2026-03-26T04:15:13.389568Z 01E         _("could not parse '{path}'").format(path=mf.name)
+2026-03-26T04:15:13.389568Z 01E         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-03-26T04:15:13.389569Z 01E     ...<2 lines>...
+2026-03-26T04:15:13.389569Z 01E         cause=e,
+2026-03-26T04:15:13.389570Z 01E         ^^^^^^^^
+2026-03-26T04:15:13.389570Z 01E     )
+2026-03-26T04:15:13.389571Z 01E     ^
+2026-03-26T04:15:13.389571Z 01E   File "/builds/edwardleethompson/fdroidserver/fdroidserver/metadata.py", line 49, in _warn_or_exception
+2026-03-26T04:15:13.389572Z 01E     raise MetaDataException(value) from cause
+2026-03-26T04:15:13.389572Z 01E fdroidserver.exception.MetaDataException: could not parse 'metadata/com.edwardlthompson.multiappshare.yml'
+2026-03-26T04:15:13.389573Z 01E     metadata/com.edwardlthompson.multiappshare.yml:10: duplication of key "AutoName" in mapping (key-duplicates)
+2026-03-26T04:15:15.289322Z 00O section_end:1774498515:step_script
+2026-03-26T04:15:15.289327Z 00O+[0Ksection_start:1774498515:cleanup_file_variables
+2026-03-26T04:15:15.290102Z 00O+[0K[0K[36;1mCleaning up project directory and file based variables[0;m[0;m
+2026-03-26T04:15:15.850860Z 00O section_end:1774498515:cleanup_file_variables
+2026-03-26T04:15:15.850865Z 00O+[0K
+2026-03-26T04:15:17.609260Z 00O [31;1mERROR: Job failed: exit code 1[0;m
+
+
+========================================
+
+=== JOB: fdroid build (ID: 13656186226) ===
+04:13:56.025050Z 01E     ~~~~~~~~^^
+2026-03-26T04:13:56.025051Z 01E   File "/home/vagrant/fdroidserver/examples/fdroid_fetchsrclibs.py", line 23, in main
+2026-03-26T04:13:56.025051Z 01E     apps = common.read_app_args(options.appid, allow_version_codes=True, sort_by_time=True)
+2026-03-26T04:13:56.025052Z 01E   File "/home/vagrant/fdroidserver/fdroidserver/common.py", line 1235, in read_app_args
+2026-03-26T04:13:56.025053Z 01E     allapps = fdroidserver.metadata.read_metadata(vercodes, sort_by_time)
+2026-03-26T04:13:56.025053Z 01E   File "/home/vagrant/fdroidserver/fdroidserver/metadata.py", line 603, in read_metadata
+2026-03-26T04:13:56.025054Z 01E     app = parse_metadata(metadatapath)
+2026-03-26T04:13:56.025054Z 01E   File "/home/vagrant/fdroidserver/fdroidserver/metadata.py", line 703, in parse_metadata
+2026-03-26T04:13:56.025055Z 01E     app.update(parse_yaml_metadata(mf))
+2026-03-26T04:13:56.025056Z 01E                ~~~~~~~~~~~~~~~~~~~^^^^
+2026-03-26T04:13:56.025056Z 01E   File "/home/vagrant/fdroidserver/fdroidserver/metadata.py", line 775, in parse_yaml_metadata
+2026-03-26T04:13:56.025057Z 01E     if yamldata is None or yamldata == '':
+2026-03-26T04:13:56.025057Z 01E        ^^^^^^^^
+2026-03-26T04:13:56.025058Z 01E UnboundLocalError: cannot access local variable 'yamldata' where it is not associated with a value
+2026-03-26T04:13:58.416932Z 00O section_end:1774498438:step_script
+2026-03-26T04:13:58.416938Z 00O+[0Ksection_start:1774498438:upload_artifacts_on_failure
+2026-03-26T04:13:58.417673Z 00O+[0K[0K[36;1mUploading artifacts for failed job[0;m[0;m
+2026-03-26T04:13:58.809722Z 01O [32;1mUploading artifacts...[0;m
+2026-03-26T04:13:58.879137Z 01E repo/: found 3 matching artifact files and directories[0;m 
+2026-03-26T04:13:58.879143Z 01E unsigned/: found 1 matching artifact files and directories[0;m 
+2026-03-26T04:13:58.879143Z 01E tmp/: found 1 matching artifact files and directories[0;m 
+2026-03-26T04:13:59.737547Z 01E Uploading artifacts as "archive" to coordinator... 201 Created[0;m  correlation_id[0;m=fc056e3ec27f4c30a016ed799709d0f6 id[0;m=13656186226 responseStatus[0;m=201 Created token[0;m=6d_nC6w2m
+2026-03-26T04:13:59.811372Z 01O [32;1mUploading artifacts...[0;m
+2026-03-26T04:13:59.879542Z 01E [0;33mWARNING: codequality.json: no matching files. Ensure that the artifact path is relative to the working directory (/builds/edwardleethompson/fdroiddata)[0;m 
+2026-03-26T04:13:59.879667Z 01E [31;1mERROR: No files to upload                         [0;m 
+2026-03-26T04:14:00.055461Z 00O section_end:1774498440:upload_artifacts_on_failure
+2026-03-26T04:14:00.055466Z 00O+[0Ksection_start:1774498440:cleanup_file_variables
+2026-03-26T04:14:00.055562Z 00O+[0K[0K[36;1mCleaning up project directory and file based variables[0;m[0;m
+2026-03-26T04:14:00.539292Z 00O section_end:1774498440:cleanup_file_variables
+2026-03-26T04:14:00.539299Z 00O+[0K
+2026-03-26T04:14:00.663021Z 00O [31;1mERROR: Job failed: exit code 1[0;m
+
+
+========================================
+
