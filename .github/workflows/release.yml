@@ -3,6 +3,9 @@ on:
   push:
     tags:
       - 'v*'
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
 jobs:
   build:
     runs-on: ubuntu-latest
