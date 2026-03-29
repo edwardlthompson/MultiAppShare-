@@ -23,7 +23,7 @@ sed -i "s/v[0-9]\.[0-9]\.[0-9]/v${VERSION_NAME}/g" README.md
 # --- 3. REPOSITORY CLEANUP ---
 echo "🧹 Cleaning up redundant files..."
 rm -rf build*.log status2.txt logo.png fdroiddata_clone
-cp app/src/main/res/mipmap-xxxhdpi/ic_launcher.png icon.png
+cp app/src/main/res/drawable/ic_launcher.png icon.png
 
 # --- 4. BUILD & SIGN APK ---
 echo "🔨 Building signed APK..."
@@ -46,6 +46,9 @@ git tag -d "${TAG}" || true
 git push origin --delete "${TAG}" || true
 git tag "${TAG}"
 git push origin "${TAG}"
+
+# Delete existing GitHub release if exists and create a new one
+gh release delete "${TAG}" --yes || true
 
 # Create the formal GitHub Release and upload the APK
 gh release create "${TAG}" "${APK_NAME}" \
