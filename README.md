@@ -1,7 +1,7 @@
 # <img src="icon.png" width="128"> Multi App Share
 
 ![GitHub release](https://img.shields.io/github/v/release/edwardlthompson/MultiAppShare-?include_prereleases)
-![F-Droid](https://img.shields.io/f-droid/v/com.multiappshare?label=F-Droid&color=blue)
+![F-Droid](https://img.shields.io/f-droid/v/com.edwardlthompson.multiappshare?label=F-Droid&color=blue)
 ![License](https://img.shields.io/github/license/edwardlthompson/MultiAppShare-?color=green)
 
 **Multi App Share** is a utility Android application designed to streamline the process of sharing content across multiple applications. Instead of manually sharing a photo, video, link, or text to each social media platform or messaging app one by one, you can create custom groups and share to all of them in a sequential, guided workflow.
@@ -108,7 +108,7 @@ You can download the latest pre-built, optimized version of the app from the [Re
 If you prefer to build that app yourself from scratch:
 1. Clone the repository:
    ```bash
-   git clone https://github.com/edwardlthompson/MultiAppShare.git
+   git clone https://github.com/edwardlthompson/MultiAppShare-.git
    ```
 2. Ensure you have **JDK 21** toolchains and **Android Studio Ladybug+** installed.
 3. Open the workspace; Gradle automatically synchronizes parameters mapping or version catalog.
@@ -125,13 +125,13 @@ Ensure you have a valid `GITHUB_TOKEN` in `scripts/.env.local`.
 
 1. **Configure**: Select **"Autofill Groups"** on onboarding to automatically generate isolated categorical folders triggers setup down downstream.
 2. **Share**: Inside simple exterior payloads (Photos, chrome, links), trigger default Android share dialogs and pick **Multi App Share** sheets.
-3. **Automate**: Pick the target group; The first app in the custom list will open. On finish, return via Recent Apps to see the workflow iterate securely down downstream!
+3. **Automate**: Pick the target group; The first app in the custom list will open. On finish, return via Recent Apps to see the workflow iterate securely!
 
-💡 **Pro-Tip**: The **Translucent Overlaid UX** controller lets you guide choices natively without locking standard focus pipelines layout completely securely down downstream!
+💡 **Pro-Tip**: The **Translucent Overlaid UX** controller lets you guide choices natively without locking standard focus pipelines layout completely!
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please read our [CONTRIBUTING.md](CONTRIBUTING.md) for details on our architectural layout standards, visual restrictions, and FOSS compliance parameters triggers setup down downstream.
+Contributions are welcome! Please read our [CONTRIBUTING.md](CONTRIBUTING.md) for details on our architectural layout standards, visual restrictions, and FOSS compliance parameters.
 
 ## 🤝 Support the Developer
 
