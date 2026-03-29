@@ -28,9 +28,10 @@ cp app/src/main/res/drawable/ic_launcher.png icon.png
 # --- 4. BUILD & SIGN APK ---
 echo "🔨 Building signed APK..."
 ./gradlew clean assembleRelease
+# Assuming standard output path, adjust if using custom splits
 mv app/build/outputs/apk/release/app-release.apk "./${APK_NAME}"
 
-# Verify the build
+# Verify the build integrity
 echo "🔍 Verifying APK version..."
 VER_CHECK=$(aapt dump badging "${APK_NAME}" | grep versionCode | awk '{print $3}')
 echo "Build result: $VER_CHECK"
@@ -41,30 +42,27 @@ git add .
 git commit --allow-empty -m "chore: release ${TAG} - sync branding and versioning"
 git push origin main
 
-# Delete stale tag if exists and re-tag
+# Delete stale tags to ensure clean promotion
 git tag -d "${TAG}" || true
 git push origin --delete "${TAG}" || true
 git tag "${TAG}"
 git push origin "${TAG}"
 
-# Delete existing GitHub release if exists and create a new one
+# THIS IS THE FIX: Explicitly creating the Release object and attaching the APK
+echo "🚀 Creating GitHub Release..."
 gh release delete "${TAG}" --yes || true
-
-# Create the formal GitHub Release and upload the APK
 gh release create "${TAG}" "${APK_NAME}" \
     --title "${TAG} - Official FOSS Release" \
     --notes "Automated release for v${VERSION_NAME}. Fixed F-Droid versioning (v${VERSION_CODE}), updated branding assets, and performed repository cleanup."
 
 # --- 6. GITLAB METADATA SYNC ---
 echo "🦊 Syncing GitLab F-Droid Metadata..."
-# Note: This assumes you have the fdroiddata repo cloned or accessible locally
-# Update the .yml file for your app
+# This assumes fdroiddata is cloned in a sibling directory
 METADATA_PATH="../fdroiddata/metadata/${PACKAGE_NAME}.yml"
 if [ -f "$METADATA_PATH" ]; then
     sed -i "s/CurrentVersion: .*/CurrentVersion: ${VERSION_NAME}/" "$METADATA_PATH"
     sed -i "s/CurrentVersionCode: .*/CurrentVersionCode: ${VERSION_CODE}/" "$METADATA_PATH"
-    # Update the latest build block commit
-    # (Simple sed for the last occurrence of 'commit:')
+    # Update build block commit (assuming it's the last occurrence)
     sed -i "$ s/commit: .*/commit: ${TAG}/" "$METADATA_PATH"
     
     cd ../fdroiddata
@@ -73,7 +71,7 @@ if [ -f "$METADATA_PATH" ]; then
     git push origin master
     echo "✅ GitLab Metadata synced. Pipeline should trigger shortly."
 else
-    echo "⚠️ Warning: F-Droid metadata file not found at $METADATA_PATH. Skipping GL sync."
+    echo "⚠️ Warning: F-Droid metadata file not found at $METADATA_PATH."
 fi
 
 echo "🎉 Release $TAG completed successfully!"
