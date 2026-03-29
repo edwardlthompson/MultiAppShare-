@@ -29,7 +29,7 @@ android {
     signingConfigs {
         create("release") {
             val keystorePath = System.getenv("RELEASE_KEYSTORE_PATH") ?: "release.keystore"
-            val keystoreFile = file(keystorePath)
+            val keystoreFile = rootProject.file(keystorePath)
             
             if (keystoreFile.exists()) {
                 storeFile = keystoreFile
@@ -42,7 +42,10 @@ android {
 
     buildTypes {
         release {
-            signingConfig = signingConfigs.getByName("release")
+            val releaseSigning = signingConfigs.getByName("release")
+            if (releaseSigning.storeFile != null) {
+                signingConfig = releaseSigning
+            }
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(
