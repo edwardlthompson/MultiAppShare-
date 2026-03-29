@@ -25,5 +25,5 @@ Builds:
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersionName: 1.7.4
+CurrentVersion: 1.7.4
 CurrentVersionCode: 174
