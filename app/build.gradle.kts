@@ -27,21 +27,19 @@ android {
     }
 
     signingConfigs {
-        create("release") {
-            storeFile = file("../release.keystore")
-            storePassword = "password"
-            keyAlias = "multiappshare"
-            keyPassword = "password"
+        getByName("release") {
+            // On GitHub, the Action will create a 'release.keystore' file in the runner's temp dir
+            storeFile = file(System.getenv("RELEASE_KEYSTORE_PATH") ?: "C:/Users/edwar/MultiAppShare-/release.keystore")
+            storePassword = System.getenv("RELEASE_KEYSTORE_PASSWORD")
+            keyAlias = System.getenv("RELEASE_KEY_ALIAS")
+            keyPassword = System.getenv("RELEASE_KEY_PASSWORD")
         }
     }
 
     buildTypes {
         release {
-            isMinifyEnabled = true
-            // Only use the release signing config if the keystore file exists
-            if (file("../release.keystore").exists()) {
-                signingConfig = signingConfigs.getByName("release")
-            }
+            signingConfig = signingConfigs.getByName("release")
+            isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
