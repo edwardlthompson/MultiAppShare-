@@ -38,6 +38,6 @@ jobs:
           files: app/build/outputs/apk/release/app-release.apk
           tag_name: ${{ github.ref_name }}
           name: Release ${{ github.ref_name }}
-          body: "Official signed release for v1.7.4. Resolved F-Droid versioning."
+          body: "Official signed release for v1.7.4."
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
