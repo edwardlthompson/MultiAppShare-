@@ -28,8 +28,8 @@ android {
 
     signingConfigs {
         getByName("release") {
-            // 1. Check if we are on GitHub (look for the secret path)
-            // 2. Fallback to your local Windows path for local builds
+            // GitHub will provide "release.keystore". 
+            // Local Windows will use the absolute path.
             val keystorePath = System.getenv("RELEASE_KEYSTORE_PATH") ?: "C:/Users/edwar/MultiAppShare-/release.keystore"
             
             storeFile = file(keystorePath)
