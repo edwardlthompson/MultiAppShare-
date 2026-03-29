@@ -1,6 +1,6 @@
-# Release Notes: MultiAppShare v1.7.3
+# Release Notes: MultiAppShare v1.7.4
 
-### 🏁 Standard v1.7.3 Features
+### 🏁 Standard v1.7.4 Features
 
 - **Fixed:** Resolved F-Droid version regression (synchronized jump from 162 to 173).
 - **CI/CD:** Optimized GitLab/GitHub pipeline synchronization for reliable metadata audits.

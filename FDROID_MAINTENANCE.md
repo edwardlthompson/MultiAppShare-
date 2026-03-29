@@ -12,9 +12,9 @@ This guide ensures that future version updates of MultiAppShare follow the stric
 
 ### 2. Version Alignment (CRITICAL)
 Before every release, ensure these three fields match **exactly**:
-1.  `app/build.gradle.kts` → `versionCode: 173`, `versionName: "1.7.3"`
-2.  `metadata/com.edwardlthompson.multiappshare.yml` → `CurrentVersionCode: 173`, `CurrentVersion: 1.7.3`
-3.  **Git Tag**: `v1.7.3`
+1.  `app/build.gradle.kts` → `versionCode: 174`, `versionName: "1.7.4"`
+2.  `metadata/com.edwardlthompson.multiappshare.yml` → `CurrentVersionCode: 174`, `CurrentVersion: 1.7.4`
+3.  **Git Tag**: `v1.7.4`
 
 ---
 
