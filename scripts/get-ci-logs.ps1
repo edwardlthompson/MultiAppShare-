@@ -67,9 +67,8 @@ foreach ($run in $runs) {
             $stepDur = if ($step.started_at -and $step.completed_at) {
                 [int]([datetime]$step.completed_at - [datetime]$step.started_at).TotalSeconds
             } else { 0 }
-            Write-Host "    [$icon] ($($stepDur)s) $($step.name)" -ForegroundColor (
-                if ($step.conclusion -eq "failure") { "Red" } else { "Gray" }
-            )
+            $color = if ($step.conclusion -eq "failure") { "Red" } else { "Gray" }
+            Write-Host "    [$icon] ($($stepDur)s) $($step.name)" -ForegroundColor $color
         }
     }
 
@@ -100,8 +99,8 @@ foreach ($run in $runs) {
                     $end = [Math]::Min($lines.Count - 1, $idx + 5)
                     for ($j = $start; $j -le $end; $j++) {
                         if (-not $shownIndices.ContainsKey($j)) {
-                            $color = if ($lines[$j] -match "FAILED|error:|exception") { "Red" } else { "Gray" }
-                            Write-Host "  [$j] $($lines[$j])" -ForegroundColor $color
+                            $lColor = if ($lines[$j] -match "FAILED|error:|exception") { "Red" } else { "Gray" }
+                            Write-Host "  [$j] $($lines[$j])" -ForegroundColor $lColor
                             $shownIndices[$j] = $true
                         }
                     }
