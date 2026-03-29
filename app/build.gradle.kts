@@ -42,8 +42,8 @@ android {
 
     buildTypes {
         release {
-            val releaseSigning = signingConfigs.getByName("release")
-            if (releaseSigning.storeFile != null) {
+            val releaseSigning = signingConfigs.findByName("release")
+            if (releaseSigning?.storeFile != null) {
                 signingConfig = releaseSigning
             }
             isMinifyEnabled = true
