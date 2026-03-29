@@ -26,12 +26,13 @@
 
 ## 🛠 Tech Stack
 
-- **Language**: [Kotlin](https://kotlinlang.org/)
-- **UI Framework**: [Jetpack Compose](https://developer.android.com/jetpack/compose)
+- **Language**: [Kotlin 2.0.21](https://kotlinlang.org/)
+- **Build System**: [Gradle 8.7](https://gradle.org/) with [AGP 8.5.2](https://developer.android.com/studio/releases/gradle-plugin)
+- **UI Framework**: [Jetpack Compose 1.7+](https://developer.android.com/jetpack/compose)
 - **Architecture**: MVVM with UseCase nodes
-- **Dependency Injection**: [Dagger Hilt](https://dagger.dev/hilt/)
+- **Dependency Injection**: [Dagger Hilt 2.52](https://dagger.dev/hilt/)
 - **Concurrency**: Kotlin Coroutines & Flow
-- **Data Persistence**: DataStore (Preferences) & Serialization (JSON)
+- **Data Persistence**: Room 2.6.1 & DataStore (Preferences)
 - **Image Loading**: [Coil](https://coil-kt.github.io/coil/)
 - **Design System**: Material 3 (Dynamic Color)
 
@@ -68,10 +69,10 @@ To enforce layout encapsulation and prevent leakage, candidate node sets consume
 
 | Module | Core Logic (Internal) | External API (Public) |
 | :--- | :--- | :--- |
-| **`:app`** | App triggers, Hilt modules glue | Application |
+| **`:app`** | App triggers, Application class | Application |
 | **`:feature-dashboard`** | VM Screen logic bundles | Composables screens |
-| **`:core-domain`** | RepositoryImpl bounds | UseCases & Repo Interfaces |
-| **`:core-database`** | `AppDatabase`, `DatabaseModule` | Entity schemas & DAO interfaces |
+| **`:core-domain`** | RepositoryImpls, **RepositoryModule** | UseCases & Repo Interfaces |
+| **`:core-database`** | `DatabaseModule` | Entity schemas, DAOs, `AppDatabase` |
 | **`:core-ui`** | Themes & generic styles | Layout resource styles |
 
 ---
@@ -97,11 +98,11 @@ This application is built with **Privacy-by-Design** and contains **NO Analytics
 ## 📦 Installation & Setup
 
 ### 📥 Download the APK (Recommended)
-You can download the latest pre-built version of the app directly from the [Releases](https://github.com/edwardlthompson/MultiAppShare/releases) page. 
+You can download the latest pre-built, optimized version of the app from the [Releases](https://github.com/edwardlthompson/MultiAppShare-/releases) page. 
 
-1. Download the `app-debug.apk` (or `app-release.apk`) to your Android device.
+1. Download the `MultiAppShare-v1.7.4-release.apk` (approx. 3.2 MB).
 2. Open the file to install.
-3. If prompted, allow "Install from unknown sources" in your device settings.
+3. If prompted, allow "Install from unknown sources".
 
 ### 💻 Build from Source (Advanced)
 If you prefer to build that app yourself from scratch:
@@ -111,7 +112,14 @@ If you prefer to build that app yourself from scratch:
    ```
 2. Ensure you have **JDK 21** toolchains and **Android Studio Ladybug+** installed.
 3. Open the workspace; Gradle automatically synchronizes parameters mapping or version catalog.
-4. To test modular components: Run `./gradlew test` securely layout triggers down downstream!
+4. To test modular components: Run `./gradlew test`.
+
+### 🔍 CI/CD & Diagnostics
+A custom PowerShell script is provided to fetch GitHub Actions logs locally for easier debugging:
+```powershell
+.\scripts\get-ci-logs.ps1
+```
+Ensure you have a valid `GITHUB_TOKEN` in `scripts/.env.local`.
 
 ## 📖 How to Use
 
