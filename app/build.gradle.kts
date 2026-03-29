@@ -28,11 +28,14 @@ android {
 
     signingConfigs {
         getByName("release") {
-            // On GitHub, the Action will create a 'release.keystore' file in the runner's temp dir
-            storeFile = file(System.getenv("RELEASE_KEYSTORE_PATH") ?: "C:/Users/edwar/MultiAppShare-/release.keystore")
-            storePassword = System.getenv("RELEASE_KEYSTORE_PASSWORD")
-            keyAlias = System.getenv("RELEASE_KEY_ALIAS")
-            keyPassword = System.getenv("RELEASE_KEY_PASSWORD")
+            // 1. Check if we are on GitHub (look for the secret path)
+            // 2. Fallback to your local Windows path for local builds
+            val keystorePath = System.getenv("RELEASE_KEYSTORE_PATH") ?: "C:/Users/edwar/MultiAppShare-/release.keystore"
+            
+            storeFile = file(keystorePath)
+            storePassword = System.getenv("RELEASE_KEYSTORE_PASSWORD") ?: "password"
+            keyAlias = System.getenv("RELEASE_KEY_ALIAS") ?: "multiappshare"
+            keyPassword = System.getenv("RELEASE_KEY_PASSWORD") ?: "password"
         }
     }
 
