@@ -1,11 +1,10 @@
 name: Android Release v1.7.4
+
 on:
   push:
     tags:
       - 'v*'
-    paths-ignore:
-      - '**.md'
-      - 'docs/**'
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -14,22 +13,13 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
-        with:
-          persist-credentials: false
-
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
 
       - name: Set up JDK 21
-        uses: actions/setup-java@v5
+        uses: actions/setup-java@v4
         with:
           java-version: '21'
           distribution: 'temurin'
-
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v4
-        with:
-          gradle-home-cache-cleanup: true
+          cache: gradle
 
       - name: Decode Keystore
         run: echo "${{ secrets.RELEASE_KEYSTORE_BASE64 }}" | base64 --decode > release.keystore
@@ -48,6 +38,6 @@ jobs:
           files: app/build/outputs/apk/release/app-release.apk
           tag_name: ${{ github.ref_name }}
           name: Release ${{ github.ref_name }}
-          body: "Official signed release for v1.7.4."
+          body: "Official signed release for v1.7.4. Resolved F-Droid versioning."
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
