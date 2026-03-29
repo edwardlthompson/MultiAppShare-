@@ -16,3 +16,4 @@ local.properties
 
 /release.keystore
 *.hprof
+scripts/.env.local
