@@ -14,12 +14,12 @@ val appVersion = "1.7.4"
 
 android {
     namespace = "com.multiappshare"
-    compileSdk = 36
+    compileSdk = 35
     
     defaultConfig {
         applicationId = "com.edwardlthompson.multiappshare"
         minSdk = 26
-        targetSdk = 36
+        targetSdk = 35
         versionCode = 174
         versionName = "1.7.4"
 
