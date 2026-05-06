@@ -14,7 +14,8 @@
 #   .\scripts\sync-fdroiddata-gitlab.ps1 -FdroidDataPath D:\src\fdroiddata
 
 param(
-    [string]$Token = $env:GITLAB_TOKEN,
+    # Omit to load from scripts/.env.local (preferred) then GITLAB_TOKEN env
+    [string]$Token = "",
 
     # Your fork: namespace/project on gitlab.com
     [string]$GitLabForkPath = "edwardleethompson/fdroiddata",
@@ -43,17 +44,20 @@ param(
 Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
 
-function Read-Token {
-    param([string]$Initial)
-    if ($Initial) { return $Initial }
+function Resolve-GitLabToken {
+    param([string]$ExplicitToken)
+    if ($ExplicitToken) { return $ExplicitToken.Trim() }
     $envFile = Join-Path $PSScriptRoot ".env.local"
     if (Test-Path $envFile) {
-        Get-Content $envFile | ForEach-Object {
-            if ($_ -match '^\s*GITLAB_TOKEN\s*=\s*"?([^"]*)"?') {
+        foreach ($line in Get-Content $envFile) {
+            # Do not use ForEach-Object { return } — that does not exit this function
+            if ($line -match '^\s*GITLAB_TOKEN\s*=\s*"?([^"#]+)"?\s*(?:#.*)?$') {
                 return $Matches[1].Trim()
             }
         }
     }
+    $e = $env:GITLAB_TOKEN
+    if ($e) { return $e.Trim() }
     return $null
 }
 
@@ -147,7 +151,7 @@ if ($DryRun) {
     exit 0
 }
 
-$Token = Read-Token -Initial $Token
+$Token = Resolve-GitLabToken -ExplicitToken $Token
 if (-not $Token) {
     Write-Host "Error: Set GITLAB_TOKEN or add it to scripts/.env.local" -ForegroundColor Red
     exit 1
@@ -177,7 +181,7 @@ try {
 
     git checkout $SourceBranch
     if ($LASTEXITCODE -ne 0) { throw "git checkout $SourceBranch failed" }
-    git pull origin $SourceBranch
+    git -c credential.helper= pull origin $SourceBranch
     if ($LASTEXITCODE -ne 0) { throw "git pull failed" }
 
     $destDir = Split-Path $destMeta -Parent
@@ -197,7 +201,9 @@ try {
         if ($LASTEXITCODE -ne 0) { throw "git commit failed" }
     }
 
-    git push origin $SourceBranch
+    # Push via explicit oauth2 URL — avoids origin remote losing embedded credentials on some Git builds
+    $pushUrl = "https://oauth2:${tokEsc}@$($glUri.Host)/$GitLabForkPath.git"
+    git -c credential.helper= push $pushUrl "HEAD:$SourceBranch"
     if ($LASTEXITCODE -ne 0) { throw "git push failed" }
     Write-Host "Pushed $SourceBranch to $GitLabForkPath" -ForegroundColor Green
 }
