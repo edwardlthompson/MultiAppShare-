@@ -5,7 +5,7 @@ This guide ensures that future version updates of MultiAppShare follow the stric
 ## 📐 Current Structure (Template)
 
 ### 1. Metadata Location
-- **App repo (this GitHub project)**: `metadata/com.edwardlthompson.multiappshare.yml` is the **canonical** copy to paste into your GitLab `fdroiddata` fork. It intentionally has **no** `Summary`, `Description`, or `AutoName` so F-Droid pulls store text from **Fastlane** under `fastlane/metadata/android/` in the same GitHub repo.
+- **App repo (this GitHub project)**: `metadata/com.edwardlthompson.multiappshare.yml` is the **canonical** copy for your GitLab `fdroiddata` fork. Keep **`Categories`** alphabetically (`Multimedia` then `System`), include **`AutoName: Multi App Share`** (required by `fdroid checkupdates` / `rewritemeta` on fdroiddata CI). Do **not** add `Summary` or `Description` here when using Fastlane for store text.
 - **F-Droid data repo (GitLab fork of `fdroid/fdroiddata`)**: after editing, open a **Merge Request** to [gitlab.com/fdroid/fdroiddata](https://gitlab.com/fdroid/fdroiddata). Your fork’s default branch is usually `master`; CI there runs `fdroid lint`, schema checks, and `check-fastlane.py`.
 - **Optional `en-US` folder in `fdroiddata`**: only if you are **not** using Fastlane in the app source; this project uses Fastlane, so you normally **do not** add `metadata/com.edwardlthompson.multiappshare/en-US/` on GitLab.
 
