@@ -217,18 +217,39 @@ $headers = @{ "PRIVATE-TOKEN" = $Token }
 $forkId = Get-ProjectId -HostUrl $GitLabHost -ProjectPath $GitLabForkPath -Headers $headers
 $upstreamId = Get-ProjectId -HostUrl $GitLabHost -ProjectPath $UpstreamPath -Headers $headers
 
-# List MRs targeting upstream; filter to this fork + branch (works when fork is not the MR namespace).
-$mrPage = Invoke-RestMethod `
-    -Uri "$GitLabHost/api/v4/projects/$upstreamId/merge_requests?state=opened&per_page=50" `
-    -Headers $headers -Method Get
+function Get-ExistingMergeRequest {
+    param([int]$UpstreamProjectId, [int]$ForkProjectId, [string]$SrcBranch, [string]$TgtBranch)
+    # Precise query (avoids missing MRs past the first page of all open MRs)
+    $q = "state=opened&source_branch=$([uri]::EscapeDataString($SrcBranch))&source_project_id=$ForkProjectId&target_branch=$([uri]::EscapeDataString($TgtBranch))&per_page=20"
+    try {
+        $list = Invoke-RestMethod `
+            -Uri "$GitLabHost/api/v4/projects/$UpstreamProjectId/merge_requests?$q" `
+            -Headers $headers -Method Get
+        return $list | Select-Object -First 1
+    }
+    catch {
+        return $null
+    }
+}
 
-$mr = $mrPage | Where-Object {
-    $_.source_project_id -eq $forkId -and
-    $_.source_branch -eq $SourceBranch -and
-    $_.target_branch -eq $TargetBranch
-} | Select-Object -First 1
+$mr = Get-ExistingMergeRequest -UpstreamProjectId $upstreamId -ForkProjectId $forkId `
+    -SrcBranch $SourceBranch -TgtBranch $TargetBranch
 
 if (-not $mr) {
+    $mrPage = Invoke-RestMethod `
+        -Uri "$GitLabHost/api/v4/projects/$upstreamId/merge_requests?state=opened&per_page=100" `
+        -Headers $headers -Method Get
+    $mr = $mrPage | Where-Object {
+        $_.source_project_id -eq $forkId -and
+        $_.source_branch -eq $SourceBranch -and
+        $_.target_branch -eq $TargetBranch
+    } | Select-Object -First 1
+}
+
+if (-not $mr) {
+    $mrPage = Invoke-RestMethod `
+        -Uri "$GitLabHost/api/v4/projects/$upstreamId/merge_requests?state=opened&per_page=100" `
+        -Headers $headers -Method Get
     $mr = $mrPage | Where-Object {
         $_.source_project_id -eq $forkId -and
         ($_.title -like "*$ApplicationId*" -or $_.description -like "*$ApplicationId*")
@@ -259,10 +280,18 @@ try {
     Write-Host "Created MR: $($created.web_url)" -ForegroundColor Green
 }
 catch {
-    $err = $_.ErrorDetails.Message
-    if ($err) {
-        Write-Host "MR create response: $err" -ForegroundColor Yellow
+    $errRaw = $_.ErrorDetails.Message
+    if ($errRaw -match '!(\d+)') {
+        $iid = [int]$Matches[1]
+        $dupUrl = "$GitLabHost/$UpstreamPath/-/merge_requests/$iid"
+        Write-Host "GitLab says an MR already exists for this branch — open it here:" -ForegroundColor Yellow
+        Write-Host $dupUrl -ForegroundColor Green
+        Write-Host "(Your metadata push may still have succeeded; refresh that MR to see the latest pipeline.)" -ForegroundColor Cyan
+        exit 0
     }
-    Write-Error "Merge request creation failed (you may already have an MR from another branch, or token lacks api scope): $($_.Exception.Message)"
+    if ($errRaw) {
+        Write-Host "MR create response: $errRaw" -ForegroundColor Yellow
+    }
+    Write-Error "Merge request creation failed (or token lacks api scope): $($_.Exception.Message)"
     exit 1
 }
