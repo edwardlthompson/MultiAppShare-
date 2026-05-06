@@ -64,3 +64,14 @@ $env:GITLAB_TOKEN = "glpat-..."   # or put GITLAB_TOKEN= in scripts/.env.local
 ```
 
 Optional: `-GitLabForkPath yourname/fdroiddata`, `-FdroidDataPath D:\src\fdroiddata`, `-SkipMr`, `-DryRun`. Versions and tag default from `app/build.gradle.kts` (`v` + `versionName`).
+
+### Download GitLab CI job logs (API, Free tier)
+Create `scripts/.env.local` from `scripts/.env.local.example` and set **`GITLAB_TOKEN`** (PAT with at least **`read_api`**; use **`api`** if anything 403s). Then:
+
+```powershell
+# List failed jobs in a pipeline (paste your pipeline URL from the browser)
+.\scripts\fetch-gitlab-job-log.ps1 -PipelineUrl "https://gitlab.com/edwardleethompson/fdroiddata/-/pipelines/PIPELINE_ID" -FailedOnly
+
+# Save a job log to a file (use job id from the list, or the job’s web URL)
+.\scripts\fetch-gitlab-job-log.ps1 -JobUrl "https://gitlab.com/.../jobs/JOB_ID" -OutFile ".\fdroid-failed-job.txt"
+```
