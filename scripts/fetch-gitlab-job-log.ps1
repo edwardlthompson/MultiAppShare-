@@ -38,8 +38,8 @@ function Read-GitLabToken {
     if ($Initial) { return $Initial.Trim() }
     $envFile = Join-Path $PSScriptRoot ".env.local"
     if (Test-Path $envFile) {
-        Get-Content $envFile | ForEach-Object {
-            if ($_ -match '^\s*GITLAB_TOKEN\s*=\s*"?([^"#]+)"?\s*(?:#.*)?$') {
+        foreach ($line in Get-Content $envFile) {
+            if ($line -match '^\s*GITLAB_TOKEN\s*=\s*"?([^"#]+)"?\s*(?:#.*)?$') {
                 return $Matches[1].Trim()
             }
         }
