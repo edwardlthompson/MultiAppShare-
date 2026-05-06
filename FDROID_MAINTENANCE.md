@@ -5,10 +5,9 @@ This guide ensures that future version updates of MultiAppShare follow the stric
 ## 📐 Current Structure (Template)
 
 ### 1. Metadata Location
-- **Main YAML**: `metadata/com.edwardlthompson.multiappshare.yml` (in the `fdroiddata` repo).
-- **Localized Fields**: `metadata/com.edwardlthompson.multiappshare/en-US/`
-  - `short_description.txt`: Brief summary (max 80 chars).
-  - `description.txt`: Full app description.
+- **App repo (this GitHub project)**: `metadata/com.edwardlthompson.multiappshare.yml` is the **canonical** copy to paste into your GitLab `fdroiddata` fork. It intentionally has **no** `Summary`, `Description`, or `AutoName` so F-Droid pulls store text from **Fastlane** under `fastlane/metadata/android/` in the same GitHub repo.
+- **F-Droid data repo (GitLab fork of `fdroid/fdroiddata`)**: after editing, open a **Merge Request** to [gitlab.com/fdroid/fdroiddata](https://gitlab.com/fdroid/fdroiddata). Your fork’s default branch is usually `master`; CI there runs `fdroid lint`, schema checks, and `check-fastlane.py`.
+- **Optional `en-US` folder in `fdroiddata`**: only if you are **not** using Fastlane in the app source; this project uses Fastlane, so you normally **do not** add `metadata/com.edwardlthompson.multiappshare/en-US/` on GitLab.
 
 ### 2. Version Alignment (CRITICAL)
 Before every release, ensure these three fields match **exactly**:
@@ -33,8 +32,12 @@ python app/strip_all_pngs.py
 *This script is located in the `app/` directory and is essential for all project assets.*
 
 ### ❌ YAML Syntax Failure
-**Problem:** Double `AutoName` keys or `rewritemeta` errors.
-**Solution:** Keep the YAML clean. Never add `Summary:` or `Description:` back to the YAML; keep them in the `en-US` folder.
+**Problem:** Duplicate YAML keys (GitLab CI: `duplication of key "AutoName"`) or `rewritemeta` / `check-fastlane` parse errors.
+**Solution:** Keep a single canonical block. Do **not** set `AutoName` in the `.yml` if Fastlane already defines the title (`fastlane/.../title.txt`). Do **not** add `Summary:` / `Description:` to the `.yml` for this app; Fastlane supplies them.
+
+### ❌ GitLab `fdroiddata` CI failures
+**Problem:** Personal fork pipeline fails on `metadata/com.edwardlthompson.multiappshare.yml`.
+**Solution:** Copy the YAML from this repo’s `metadata/` folder, push to your fork, and fix any merge residue (duplicate keys). Publication still requires an accepted **MR to `fdroid/fdroiddata`**, not only a green fork pipeline.
 
 ---
 
@@ -47,4 +50,7 @@ python app/strip_all_pngs.py
     git tag v1.7.4
     git push origin main --tags
     ```
-4.  **Update fdroiddata**: Sync the YAML `CurrentVersion` and `CurrentVersionCode` in your `fdroiddata` fork.
+4.  **Update GitLab `fdroiddata` fork**: Copy `metadata/com.edwardlthompson.multiappshare.yml` from this repo into the same path in your fork; set `CurrentVersion`, `CurrentVersionCode`, and the `Builds:` `commit:` to the new tag. Push `master` (or your default branch), then open/update an MR to `fdroid/fdroiddata`. The helper scripts `release_v1_7_4.sh` / `automate_v174.sh` expect a sibling clone at `../fdroiddata`.
+
+### GitHub branch `fdroiddata`
+This branch is kept **merged with `main`** so the same metadata and source snapshot match. F-Droid still builds from **GitHub** using the tag in the YAML, not from this branch name.
