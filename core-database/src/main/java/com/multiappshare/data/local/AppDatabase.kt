@@ -60,7 +60,7 @@ internal class Converters {
 
 @Database(entities = [AppGroup::class, HistoryItem::class], version = 1, exportSchema = false)
 @TypeConverters(Converters::class)
-internal abstract class AppDatabase : RoomDatabase() {
+abstract class AppDatabase : RoomDatabase() {
     abstract fun groupDao(): GroupDao
     abstract fun historyDao(): HistoryDao
 }

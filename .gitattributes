@@ -1,0 +1,6 @@
+# Enforce LF for gradlew and other scripts
+gradlew text eol=lf
+gradlew.bat text eol=crlf
+
+# Standard Git behavior for text files
+* text=auto

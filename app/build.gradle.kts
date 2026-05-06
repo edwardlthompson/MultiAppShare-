@@ -14,12 +14,12 @@ val appVersion = "1.7.4"
 
 android {
     namespace = "com.multiappshare"
-    compileSdk = 36
+    compileSdk = 35
     
     defaultConfig {
         applicationId = "com.edwardlthompson.multiappshare"
         minSdk = 26
-        targetSdk = 36
+        targetSdk = 35
         versionCode = 174
         versionName = "1.7.4"
 
@@ -28,20 +28,26 @@ android {
 
     signingConfigs {
         create("release") {
-            storeFile = file("../release.keystore")
-            storePassword = "password"
-            keyAlias = "multiappshare"
-            keyPassword = "password"
+            val keystorePath = System.getenv("RELEASE_KEYSTORE_PATH") ?: "release.keystore"
+            val keystoreFile = rootProject.file(keystorePath)
+            
+            if (keystoreFile.exists()) {
+                storeFile = keystoreFile
+                storePassword = System.getenv("RELEASE_KEYSTORE_PASSWORD") ?: "password"
+                keyAlias = System.getenv("RELEASE_KEY_ALIAS") ?: "multiappshare"
+                keyPassword = System.getenv("RELEASE_KEY_PASSWORD") ?: "password"
+            }
         }
     }
 
     buildTypes {
         release {
-            isMinifyEnabled = true
-            // Only use the release signing config if the keystore file exists
-            if (file("../release.keystore").exists()) {
-                signingConfig = signingConfigs.getByName("release")
+            val releaseSigning = signingConfigs.findByName("release")
+            if (releaseSigning?.storeFile != null) {
+                signingConfig = releaseSigning
             }
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -72,12 +78,10 @@ android {
 
 
 
-// Fixed APK renaming for AGP 8.0+ / 9.0+
-// This sets the base name for artifacts (APKs and AABs).
-// AGP will automatically produce files like: MultiAppShare-v1.3.1-release.apk
-// base {
-//    archivesName.set("MultiAppShare-v$appVersion")
-// }
+// Custom APK naming for v1.7.4
+base {
+   archivesName.set("MultiAppShare-v$appVersion")
+}
 
 dependencies {
     implementation(libs.androidx.core.ktx)

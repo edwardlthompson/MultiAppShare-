@@ -9,7 +9,7 @@ plugins {
 
 android {
     namespace = "com.multiappshare.feature.dashboard"
-    compileSdk = 36
+    compileSdk = 35
 
     defaultConfig {
         minSdk = 26
