@@ -60,8 +60,9 @@ echo "🦊 Syncing GitLab F-Droid Metadata..."
 # This assumes fdroiddata is cloned in a sibling directory
 METADATA_PATH="../fdroiddata/metadata/${PACKAGE_NAME}.yml"
 if [ -f "$METADATA_PATH" ]; then
-    sed -i "s/CurrentVersion: .*/CurrentVersion: ${VERSION_NAME}/" "$METADATA_PATH"
-    sed -i "s/CurrentVersionCode: .*/CurrentVersionCode: ${VERSION_CODE}/" "$METADATA_PATH"
+    sed -i "s/^CurrentVersion: .*/CurrentVersion: ${VERSION_NAME}/" "$METADATA_PATH"
+    sed -i "s/^CurrentVersionName: .*/CurrentVersion: ${VERSION_NAME}/" "$METADATA_PATH"
+    sed -i "s/^CurrentVersionCode: .*/CurrentVersionCode: ${VERSION_CODE}/" "$METADATA_PATH"
     # Update build block commit (assuming it's the last occurrence)
     sed -i "$ s/commit: .*/commit: ${TAG}/" "$METADATA_PATH"
     

@@ -45,8 +45,9 @@ gh release create "${TAG}" "${APK_NAME}" \
 echo "🦊 Syncing GitLab F-Droid Metadata..."
 # (Assumes fdroiddata is in a sibling directory)
 cd ../fdroiddata
-sed -i "s/CurrentVersion: .*/CurrentVersion: ${VERSION_NAME}/" metadata/com.edwardlthompson.multiappshare.yml
-sed -i "s/CurrentVersionCode: .*/CurrentVersionCode: ${VERSION_CODE}/" metadata/com.edwardlthompson.multiappshare.yml
+sed -i "s/^CurrentVersion: .*/CurrentVersion: ${VERSION_NAME}/" metadata/com.edwardlthompson.multiappshare.yml
+sed -i "s/^CurrentVersionName: .*/CurrentVersion: ${VERSION_NAME}/" metadata/com.edwardlthompson.multiappshare.yml
+sed -i "s/^CurrentVersionCode: .*/CurrentVersionCode: ${VERSION_CODE}/" metadata/com.edwardlthompson.multiappshare.yml
 # Update build block commit (assuming it's the last occurrence)
 sed -i "$ s/commit: .*/commit: ${TAG}/" metadata/com.edwardlthompson.multiappshare.yml
 
