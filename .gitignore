@@ -19,3 +19,4 @@ local.properties
 *.hprof
 scripts/.env.local
 full_ci_log.txt
+*.apk
