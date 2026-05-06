@@ -54,3 +54,13 @@ python app/strip_all_pngs.py
 
 ### GitHub branch `fdroiddata`
 This branch is kept **merged with `main`** so the same metadata and source snapshot match. F-Droid still builds from **GitHub** using the tag in the YAML, not from this branch name.
+
+### Automate GitLab fork sync (token)
+From the repo root, with a GitLab PAT that has **`api`** and **`write_repository`**:
+
+```powershell
+$env:GITLAB_TOKEN = "glpat-..."   # or put GITLAB_TOKEN= in scripts/.env.local
+.\scripts\sync-fdroiddata-gitlab.ps1
+```
+
+Optional: `-GitLabForkPath yourname/fdroiddata`, `-FdroidDataPath D:\src\fdroiddata`, `-SkipMr`, `-DryRun`. Versions and tag default from `app/build.gradle.kts` (`v` + `versionName`).
