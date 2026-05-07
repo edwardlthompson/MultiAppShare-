@@ -3,6 +3,7 @@ package com.multiappshare.domain
 import android.content.Context
 import com.multiappshare.data.local.HistoryDao
 import com.multiappshare.model.HistoryItem
+import kotlinx.serialization.SerializationException
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.Serializable
@@ -49,11 +50,11 @@ class HistoryRepository(
         if (!file.exists()) return emptyList()
         return try {
             val jsonText = file.readText()
-            val history = if (jsonText.contains("\"version\"")) {
-                val backup = Json.decodeFromString<HistoryBackupWrapper>(jsonText)
-                backup.history
-            } else {
-                Json.decodeFromString<List<HistoryItem>>(jsonText)
+            val trimmed = jsonText.trim()
+            val history = try {
+                Json.decodeFromString<HistoryBackupWrapper>(trimmed).history
+            } catch (_: SerializationException) {
+                Json.decodeFromString<List<HistoryItem>>(trimmed)
             }
             // Migrate to Room
             if (history.isNotEmpty()) {

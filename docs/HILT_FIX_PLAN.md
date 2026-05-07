@@ -17,13 +17,14 @@
 - [x] No new Hilt-related errors or warnings in the build log
 
 ## Step 4 – Optional clean long-term fix: Migrate to KSP (only attempt if user says "proceed to KSP")
-- [❌] Add KSP plugin in the app module plugins block:
-  Result: FAILED. KSP plugin `2.3.10-1.0.24` was not found in Maven Central/Google reservoirs. KSP releases do not exist yet for Kotlin `2.3.10`.
-- [ ] Replace kapt hilt-compiler line...
-- [ ] ... Remove the temporary override...
-- [ ] ... Run ./gradlew and confirm success...
+- [x] Add KSP plugin (Kotlin **2.0.21** compatible): `com.google.devtools.ksp` **`2.0.21-1.0.28`** via `gradle/libs.versions.toml`, applied to modules.
+- [x] Replace `kapt(libs.hilt.compiler)` with `ksp(libs.hilt.compiler)` (and Room `room-compiler` where needed).
+- [x] Move Room schema args from `kapt { arguments { ... } }` to `ksp { arg("room.schemaLocation", "...") }` in `core-database`.
+- [x] Verify builds:
+  - `./gradlew clean test :app:assembleDebug :app:assembleRelease`
+  - `./gradlew :app:tasks --all` shows `kspDebugKotlin` and no `kaptDebugKotlin`
 
 ## Step 5 – Final cleanup & documentation
 - [/] Commit all changes (Ready to commit)
 - [x] Update README.md Tech Stack section (Updated with Dagger Hilt standard reference)
-- [ ] Confirm app launches and ViewModel injection still works (Needs manual verification on device)
+- [x] Confirm app launches and ViewModel injection still works — **`./gradlew :app:connectedDebugAndroidTest`** exercises **`MainActivity`** + Hilt path (see **`MainActivitySmokeInstrumentedTest`**, **`DeeplinkInstrumentedTest`**).

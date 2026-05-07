@@ -1,3 +1,138 @@
 <resources>
     <string name="app_name">Multi App Share</string>
+
+    <!-- Main screen / toolbar -->
+    <string name="groups_title">Groups</string>
+    <string name="cd_main_menu">Main menu</string>
+    <string name="menu_sort_groups">Sort Groups</string>
+    <string name="menu_history">History</string>
+    <string name="menu_about">About</string>
+    <string name="menu_export_groups">Export Groups</string>
+    <string name="menu_import_groups">Import Groups</string>
+    <string name="fab_auto_group">Auto Group</string>
+    <string name="fab_add_group">Add Group</string>
+    <!-- L.5: primary CTA is “choose group”; attachment preview happens in target apps -->
+    <string name="share_overlay_title">Choose a group</string>
+    <string name="share_overlay_subtitle">Tap a group in the list below to start. To change share order, open the ⋮ menu on a group from the main screen.</string>
+    <string name="label_filter_groups">Search groups</string>
+    <string name="cd_filter_groups">Filter groups by name</string>
+    <string name="no_groups_match_filter">No groups match your search.</string>
+    <string name="cd_reorder_share_order_hint">Share order: open the menu on each group</string>
+    <string name="no_compatible_groups">No compatible groups found for this content type.</string>
+    <!-- L.6: MIME-aware empty state -->
+    <string name="no_compatible_groups_detail">No group includes an app that accepts this type of content (%1$s). Edit your groups from the launcher (when not sharing), or add an app that handles this MIME type.</string>
+    <string name="toast_refreshing_apps">Refreshing apps…</string>
+
+    <!-- Sequential sharing overlay (L.1) -->
+    <string name="sharing_headline_format">Sharing %1$s!</string>
+    <string name="sharing_content_photo">a photo</string>
+    <string name="sharing_content_photos_n">photos (%1$d)</string>
+    <string name="sharing_content_video">a video</string>
+    <string name="sharing_content_videos_n">videos (%1$d)</string>
+    <string name="sharing_content_text">text</string>
+    <string name="sharing_content_media">media</string>
+    <string name="sharing_content_media_n">media (%1$d)</string>
+    <string name="sharing_step_format">Step %1$d of %2$d</string>
+    <string name="sharing_next_app_format">Next: %1$s</string>
+    <!-- L.3: return paths (see docs/RETURN_PATH.md) -->
+    <string name="sharing_return_instruction">After you finish in the target app, return via Recents, tap the low-priority sharing notification, or open Multi App Share from the launcher—then tap Next App. Deeplink: multiappshare://open</string>
+    <!-- L.5: clarify preview/skip happens in each target app, not in this overlay -->
+    <string name="sharing_preview_hint">Preview or adjust the content in each app’s share screen. Tap Next App when you’re ready to continue the sequence.</string>
+    <string name="sharing_button_next">Next App</string>
+    <string name="sharing_button_finish">Finish</string>
+    <string name="sharing_replay_current">Replay this app</string>
+    <string name="sharing_previous">Previous</string>
+
+    <!-- Foreground notification (L.12) -->
+    <string name="notification_channel_sharing_name">Sharing progress</string>
+    <string name="notification_channel_sharing_description">Shows while Multi App Share walks through your group. Low priority avoids covering other apps.</string>
+    <string name="notification_sharing_title">Sharing in progress</string>
+    <!-- %1$s = app label, %2$d = step (1-based), %3$d = total, %4$s = open-app hint -->
+    <string name="notification_sharing_text">%1$s · Step %2$d of %3$d. %4$s</string>
+    <string name="notification_open_to_continue">Open Multi App Share to continue.</string>
+    <string name="notification_action_stop">Stop</string>
+    <string name="toast_sharing_failed">Couldn\u2019t open target app: %1$s</string>
+
+    <!-- Group list & dialogs -->
+    <string name="cd_toggle_group">Toggle group</string>
+    <string name="cd_more_options">More options</string>
+    <string name="menu_modify_apps">Modify Apps</string>
+    <string name="menu_reorder_apps">Reorder Apps</string>
+    <string name="menu_add_home_shortcut">Add to Home Screen</string>
+    <string name="menu_delete_group">Delete Group</string>
+    <string name="group_empty_hint">Empty. Add apps via menu.</string>
+    <string name="dialog_create_group_title">Create New Group</string>
+    <string name="label_group_name">Group Name</string>
+    <string name="button_create">Create</string>
+    <string name="button_cancel">Cancel</string>
+    <string name="modify_group_title">Modify %1$s</string>
+    <string name="cd_refresh_app_list">Refresh app list</string>
+    <string name="label_search_apps">Search apps</string>
+    <string name="button_save">Save</string>
+    <string name="dialog_reorder_apps_title">Reorder Apps</string>
+    <string name="cd_move_up">Move up</string>
+    <string name="cd_move_down">Move down</string>
+    <string name="button_save_order">Save Order</string>
+    <string name="dialog_sort_groups_title">Sort Groups</string>
+    <string name="onboarding_title_welcome">Welcome to MultiAppShare</string>
+    <string name="onboarding_desc_welcome">Queue your content once, then share it across multiple apps sequentially without returning to the dashboard.</string>
+    <string name="onboarding_title_smart">Smart Automations</string>
+    <string name="onboarding_desc_smart">We can scan your installed apps and automatically sort them into categories (Social, Messaging, Media) for instant setup.</string>
+    <string name="onboarding_next">Next</string>
+    <string name="onboarding_autofill">Autofill Smart Groups</string>
+    <string name="onboarding_manual">Set up Manually</string>
+
+    <!-- Placeholder & history / about -->
+    <string name="empty_groups_message">No groups yet.</string>
+    <string name="empty_groups_hint">Create a group or run auto-group using the buttons below.</string>
+    <string name="empty_groups_button_create">Create group</string>
+    <string name="empty_groups_button_auto">Auto-group</string>
+    <string name="delete_group_title">Delete Group</string>
+    <string name="delete_group_message">Are you sure you want to delete the group \"%1$s\"?</string>
+    <string name="button_delete">Delete</string>
+    <string name="history_title">History (Last 50)</string>
+    <string name="history_empty">No activity yet.</string>
+    <string name="history_shared_prefix">Shared %1$s</string>
+    <string name="button_close">Close</string>
+    <string name="about_title">About Multi App Share</string>
+    <string name="about_tagline">Simplify sharing content across multiple apps sequentially.</string>
+    <string name="about_privacy">Privacy: no analytics, no proprietary trackers, no cloud phone-home. Notifications and the foreground service exist only to support sequential sharing while you switch between apps.</string>
+    <string name="about_developer_contact">Developer Contact:</string>
+    <string name="about_telegram_label">Telegram: @EdwardLeeThompson</string>
+    <string name="about_support_developer">Support the Developer:</string>
+    <string name="about_venmo_link">Venmo Donation Link</string>
+    <string name="button_ok">OK</string>
+    <string name="version_line">Version: %1$s</string>
+    <string name="version_unknown">Unknown</string>
+
+    <!-- MainActivity / history / compatibility notification -->
+    <string name="toast_no_apps_for_group">No apps in \"%1$s\" support this content.</string>
+    <string name="toast_sharing_complete">Sharing complete!</string>
+    <string name="history_failed_no_compatible">Failed: No compatible apps</string>
+    <string name="history_started_sharing_n">Started sharing to %1$d apps</string>
+    <string name="notif_channel_compat_name">Compatibility alerts</string>
+    <string name="notif_incompatible_title">Incompatible apps skipped</string>
+    <string name="notif_incompatible_summary">Some apps in the group don\'t support this content.</string>
+    <string name="notif_incompatible_big">Skipped: %1$s</string>
+    <string name="history_content_photo">Photo%1$s</string>
+    <string name="history_content_video">Video%1$s</string>
+    <string name="history_content_link">Link</string>
+    <string name="history_content_text">Text</string>
+    <string name="history_content_media">Media%1$s</string>
+
+    <!-- MainViewModel toasts -->
+    <string name="toast_export_failed">Export failed.</string>
+    <string name="toast_import_failed">Import failed: invalid backup file.</string>
+    <string name="toast_wrong_passphrase">Wrong passphrase.</string>
+    <string name="toast_import_complete">Import complete.</string>
+    <string name="toast_could_not_read_backup">Could not read backup.</string>
+
+    <!-- Backup passphrase dialogs -->
+    <string name="backup_encrypted_title">Encrypted backup</string>
+    <string name="backup_export_body">Exports are encrypted (AES-256-GCM). Choose a passphrase (min %1$d characters). You need it to import this file.</string>
+    <string name="backup_import_body">This backup is encrypted. Enter the passphrase (min %1$d characters).</string>
+    <string name="label_passphrase">Passphrase</string>
+    <string name="label_confirm_passphrase">Confirm passphrase</string>
+    <string name="backup_choose_location">Choose location</string>
+    <string name="backup_import_confirm">Import</string>
 </resources>

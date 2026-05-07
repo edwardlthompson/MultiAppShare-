@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Multi App Share</string>
+
+    <string name="groups_title">Grupos</string>
+    <string name="cd_main_menu">Menú principal</string>
+    <string name="menu_sort_groups">Ordenar grupos</string>
+    <string name="menu_history">Historial</string>
+    <string name="menu_about">Acerca de</string>
+    <string name="menu_export_groups">Exportar grupos</string>
+    <string name="menu_import_groups">Importar grupos</string>
+    <string name="fab_auto_group">Autoagrupar</string>
+    <string name="fab_add_group">Añadir grupo</string>
+    <string name="share_overlay_title">Elegir un grupo</string>
+    <string name="share_overlay_subtitle">Toca un grupo de la lista para empezar. Para cambiar el orden de uso compartido, abre el menú ⋮ de un grupo desde la pantalla principal.</string>
+    <string name="label_filter_groups">Buscar grupos</string>
+    <string name="cd_filter_groups">Filtrar grupos por nombre</string>
+    <string name="no_groups_match_filter">Ningún grupo coincide con tu búsqueda.</string>
+    <string name="cd_reorder_share_order_hint">Orden de uso compartido: abre el menú de cada grupo</string>
+    <string name="no_compatible_groups">No hay grupos compatibles con este tipo de contenido.</string>
+    <string name="no_compatible_groups_detail">Ningún grupo incluye una aplicación que acepte este tipo de contenido (%1$s). Edita tus grupos desde el iniciador (cuando no estés compartiendo) o añade una app que maneje este tipo MIME.</string>
+    <string name="toast_refreshing_apps">Actualizando aplicaciones…</string>
+
+    <string name="sharing_headline_format">¡Compartiendo %1$s!</string>
+    <string name="sharing_content_photo">una foto</string>
+    <string name="sharing_content_photos_n">fotos (%1$d)</string>
+    <string name="sharing_content_video">un vídeo</string>
+    <string name="sharing_content_videos_n">vídeos (%1$d)</string>
+    <string name="sharing_content_text">texto</string>
+    <string name="sharing_content_media">multimedia</string>
+    <string name="sharing_content_media_n">multimedia (%1$d)</string>
+    <string name="sharing_step_format">Paso %1$d de %2$d</string>
+    <string name="sharing_next_app_format">Siguiente: %1$s</string>
+    <string name="sharing_return_instruction">Cuando termines en la app de destino, vuelve con Recientes, toca la notificación de uso compartido (baja prioridad) o abre Multi App Share desde el iniciador y pulsa Siguiente app. Enlace profundo: multiappshare://open</string>
+    <string name="sharing_preview_hint">Previsualiza o ajusta el contenido en la pantalla de uso compartido de cada app. Pulsa Siguiente app cuando quieras continuar la secuencia.</string>
+    <string name="sharing_button_next">Siguiente app</string>
+    <string name="sharing_button_finish">Finalizar</string>
+    <string name="sharing_replay_current">Repetir esta app</string>
+    <string name="sharing_previous">Anterior</string>
+
+    <string name="notification_channel_sharing_name">Progreso del uso compartido</string>
+    <string name="notification_channel_sharing_description">Se muestra mientras Multi App Share recorre tu grupo. Baja prioridad para no tapar otras apps.</string>
+    <string name="notification_sharing_title">Uso compartido en curso</string>
+    <string name="notification_sharing_text">%1$s · Paso %2$d de %3$d. %4$s</string>
+    <string name="notification_open_to_continue">Abre Multi App Share para continuar.</string>
+    <string name="notification_action_stop">Detener</string>
+    <string name="toast_sharing_failed">No se pudo abrir la app de destino: %1$s</string>
+
+    <string name="cd_toggle_group">Expandir o contraer grupo</string>
+    <string name="cd_more_options">Más opciones</string>
+    <string name="menu_modify_apps">Modificar aplicaciones</string>
+    <string name="menu_reorder_apps">Reordenar aplicaciones</string>
+    <string name="menu_add_home_shortcut">Añadir a inicio</string>
+    <string name="menu_delete_group">Eliminar grupo</string>
+    <string name="group_empty_hint">Vacío. Añade apps desde el menú.</string>
+    <string name="dialog_create_group_title">Crear grupo</string>
+    <string name="label_group_name">Nombre del grupo</string>
+    <string name="button_create">Crear</string>
+    <string name="button_cancel">Cancelar</string>
+    <string name="modify_group_title">Modificar %1$s</string>
+    <string name="cd_refresh_app_list">Actualizar lista de aplicaciones</string>
+    <string name="label_search_apps">Buscar aplicaciones</string>
+    <string name="button_save">Guardar</string>
+    <string name="dialog_reorder_apps_title">Reordenar aplicaciones</string>
+    <string name="cd_move_up">Subir</string>
+    <string name="cd_move_down">Bajar</string>
+    <string name="button_save_order">Guardar orden</string>
+    <string name="dialog_sort_groups_title">Ordenar grupos</string>
+    <string name="onboarding_title_welcome">Te damos la bienvenida a MultiAppShare</string>
+    <string name="onboarding_desc_welcome">Encola tu contenido una vez y compártelo en varias apps en secuencia sin volver al panel principal.</string>
+    <string name="onboarding_title_smart">Automatizaciones inteligentes</string>
+    <string name="onboarding_desc_smart">Podemos analizar tus apps instaladas y agruparlas automáticamente (Social, Mensajería, Multimedia) para configurar rápido.</string>
+    <string name="onboarding_next">Siguiente</string>
+    <string name="onboarding_autofill">Rellenar grupos inteligentes</string>
+    <string name="onboarding_manual">Configurar manualmente</string>
+
+    <string name="empty_groups_message">Aún no hay grupos.</string>
+    <string name="empty_groups_hint">Crea un grupo o usa autoagrupar con los botones de abajo.</string>
+    <string name="empty_groups_button_create">Crear grupo</string>
+    <string name="empty_groups_button_auto">Autoagrupar</string>
+    <string name="delete_group_title">Eliminar grupo</string>
+    <string name="delete_group_message">¿Seguro que quieres eliminar el grupo «%1$s»?</string>
+    <string name="button_delete">Eliminar</string>
+    <string name="history_title">Historial (últimos 50)</string>
+    <string name="history_empty">Sin actividad todavía.</string>
+    <string name="history_shared_prefix">Compartido %1$s</string>
+    <string name="button_close">Cerrar</string>
+    <string name="about_title">Acerca de Multi App Share</string>
+    <string name="about_tagline">Simplifica compartir contenido entre varias apps en orden.</string>
+    <string name="about_privacy">Privacidad: sin analítica, sin rastreadores propietarios, sin llamadas a la nube. Las notificaciones y el servicio en primer plano solo sirven para el uso compartido secuencial mientras cambias de app.</string>
+    <string name="about_developer_contact">Contacto del desarrollador:</string>
+    <string name="about_telegram_label">Telegram: @EdwardLeeThompson</string>
+    <string name="about_support_developer">Apoyar al desarrollador:</string>
+    <string name="about_venmo_link">Enlace de donación Venmo</string>
+    <string name="button_ok">Aceptar</string>
+    <string name="version_line">Versión: %1$s</string>
+    <string name="version_unknown">Desconocida</string>
+
+    <string name="toast_no_apps_for_group">Ninguna app en «%1$s» admite este contenido.</string>
+    <string name="toast_sharing_complete">¡Uso compartido completado!</string>
+    <string name="history_failed_no_compatible">Error: sin apps compatibles</string>
+    <string name="history_started_sharing_n">Uso compartido iniciado a %1$d apps</string>
+    <string name="notif_channel_compat_name">Alertas de compatibilidad</string>
+    <string name="notif_incompatible_title">Apps incompatibles omitidas</string>
+    <string name="notif_incompatible_summary">Algunas apps del grupo no admiten este contenido.</string>
+    <string name="notif_incompatible_big">Omitidas: %1$s</string>
+    <string name="history_content_photo">Foto%1$s</string>
+    <string name="history_content_video">Vídeo%1$s</string>
+    <string name="history_content_link">Enlace</string>
+    <string name="history_content_text">Texto</string>
+    <string name="history_content_media">Multimedia%1$s</string>
+
+    <string name="toast_export_failed">Error al exportar.</string>
+    <string name="toast_import_failed">Error al importar: archivo de copia no válido.</string>
+    <string name="toast_wrong_passphrase">Contraseña incorrecta.</string>
+    <string name="toast_import_complete">Importación completada.</string>
+    <string name="toast_could_not_read_backup">No se pudo leer la copia.</string>
+
+    <string name="backup_encrypted_title">Copia cifrada</string>
+    <string name="backup_export_body">Las exportaciones están cifradas (AES-256-GCM). Elige una contraseña (mín. %1$d caracteres). La necesitarás para importar este archivo.</string>
+    <string name="backup_import_body">Esta copia está cifrada. Introduce la contraseña (mín. %1$d caracteres).</string>
+    <string name="label_passphrase">Contraseña</string>
+    <string name="label_confirm_passphrase">Confirmar contraseña</string>
+    <string name="backup_choose_location">Elegir ubicación</string>
+    <string name="backup_import_confirm">Importar</string>
+</resources>

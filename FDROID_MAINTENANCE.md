@@ -11,9 +11,9 @@ This guide ensures that future version updates of MultiAppShare follow the stric
 
 ### 2. Version Alignment (CRITICAL)
 Before every release, ensure these three fields match **exactly**:
-1.  `app/build.gradle.kts` → `versionCode: 174`, `versionName: "1.7.4"`
-2.  `metadata/com.edwardlthompson.multiappshare.yml` → `CurrentVersionCode: 174`, `CurrentVersion: 1.7.4` (use `CurrentVersion`, not `CurrentVersionName`)
-3.  **Git Tag**: `v1.7.4`
+1.  `app/build.gradle.kts` → `versionCode: 175`, `versionName: "1.8.0"`
+2.  `metadata/com.edwardlthompson.multiappshare.yml` → `CurrentVersionCode: 175`, `CurrentVersion: 1.8.0` (use `CurrentVersion`, not `CurrentVersionName`)
+3.  **Git Tag**: `v1.8.0`
 
 ---
 
@@ -46,8 +46,8 @@ python app/strip_all_pngs.py
 2.  **Strip Images**: `python app/strip_all_pngs.py`.
 3.  **Commit & Tag**:
     ```bash
-    git add . ; git commit -m "release: v1.7.4"
-    git tag v1.7.4
+    git add . ; git commit -m "release: v1.8.0"
+    git tag v1.8.0
     git push origin main --tags
     ```
 4.  **Update GitLab `fdroiddata` fork**: Copy `metadata/com.edwardlthompson.multiappshare.yml` from this repo into the same path in your fork; set `CurrentVersion`, `CurrentVersionCode`, and the `Builds:` `commit:` to the new tag. Push `master` (or your default branch), then open/update an MR to `fdroid/fdroiddata`. The helper scripts `release_v1_7_4.sh` / `automate_v174.sh` expect a sibling clone at `../fdroiddata`.

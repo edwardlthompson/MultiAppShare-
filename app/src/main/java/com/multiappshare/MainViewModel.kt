@@ -1,5 +1,6 @@
 package com.multiappshare
 
+import com.multiappshare.crypto.BackupCipher
 import com.multiappshare.domain.GroupsRepository
 import com.multiappshare.domain.HistoryRepository
 import com.multiappshare.domain.SettingsRepository
@@ -9,6 +10,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
+import android.widget.Toast
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -23,12 +25,12 @@ import com.multiappshare.model.HistoryItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
+import javax.crypto.AEADBadTagException
 import javax.inject.Inject
 import timber.log.Timber
 
@@ -44,7 +46,9 @@ class MainViewModel @Inject constructor(
     var showOnboardingDialog by mutableStateOf(false)
         private set
 
-    var expandedGroupName by mutableStateOf<String?>(null)
+    /** Non-null while UI must prompt for passphrase to finish import of an encrypted backup. */
+    var importPassphrasePendingUri by mutableStateOf<Uri?>(null)
+        private set
 
     fun setOnboardingDismissed() {
         viewModelScope.launch {
@@ -53,16 +57,22 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun exportGroupsToUri(uri: Uri) {
+    fun exportGroupsToUri(uri: Uri, passphrase: CharArray) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val groups = groupsRepository.loadGroups()
-                val jsonString = Json.encodeToString(groups)
+                val payload = groupsRepository.encodeBackupPayload(groups)
+                val encrypted = BackupCipher.encryptUtf8(payload, passphrase)
                 context.contentResolver.openOutputStream(uri)?.use { outputStream ->
-                    outputStream.write(jsonString.toByteArray())
+                    outputStream.write(encrypted.toByteArray(Charsets.UTF_8))
                 }
             } catch (e: Exception) {
                 Timber.e(e, "Export failed")
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(context, context.getString(R.string.toast_export_failed), Toast.LENGTH_SHORT).show()
+                }
+            } finally {
+                passphrase.fill('\u0000')
             }
         }
     }
@@ -70,23 +80,74 @@ class MainViewModel @Inject constructor(
     fun importGroupsFromUri(uri: Uri) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                context.contentResolver.openInputStream(uri)?.use { inputStream ->
-                    val jsonString = inputStream.bufferedReader().use { it.readText() }
-                    val importedGroups: List<AppGroup> = Json.decodeFromString(jsonString)
-                    groupsRepository.saveGroups(importedGroups)
-                    loadData()
+                val text = context.contentResolver.openInputStream(uri)?.use { inputStream ->
+                    inputStream.bufferedReader().use { it.readText() }
+                } ?: return@launch
+
+                when {
+                    BackupCipher.isEncryptedEnvelope(text) -> {
+                        importPassphrasePendingUri = uri
+                    }
+                    else -> {
+                        val importedGroups = groupsRepository.parsePlaintextBackup(text)
+                        groupsRepository.saveGroups(importedGroups)
+                        loadData()
+                    }
                 }
             } catch (e: Exception) {
                 Timber.e(e, "Import failed")
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(context, context.getString(R.string.toast_import_failed), Toast.LENGTH_LONG).show()
+                }
+            }
+        }
+    }
+
+    fun dismissImportPassphraseRequest() {
+        importPassphrasePendingUri = null
+    }
+
+    fun importGroupsWithPassphrase(uri: Uri, passphrase: CharArray) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val text = context.contentResolver.openInputStream(uri)?.use { inputStream ->
+                    inputStream.bufferedReader().use { it.readText() }
+                } ?: return@launch
+                val plain = try {
+                    BackupCipher.decryptUtf8(text, passphrase)
+                } catch (_: AEADBadTagException) {
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(context, context.getString(R.string.toast_wrong_passphrase), Toast.LENGTH_SHORT).show()
+                    }
+                    return@launch
+                }
+                val importedGroups = groupsRepository.parsePlaintextBackup(plain)
+                groupsRepository.saveGroups(importedGroups)
+                importPassphrasePendingUri = null
+                loadData()
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(context, context.getString(R.string.toast_import_complete), Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: Exception) {
+                Timber.e(e, "Decrypt/import failed")
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(context, context.getString(R.string.toast_could_not_read_backup), Toast.LENGTH_SHORT).show()
+                }
+            } finally {
+                passphrase.fill('\u0000')
             }
         }
     }
 
     fun createShortcutForGroup(group: AppGroup) {
         if (ShortcutManagerCompat.isRequestPinShortcutSupported(context)) {
-            val intent = Intent(context, MainActivity::class.java).apply {
-                action = Intent.ACTION_VIEW
-                putExtra("GROUP_NAME", group.name)
+            val uri = Uri.Builder()
+                .scheme(DeeplinkContract.SCHEME)
+                .authority(DeeplinkContract.HOST_GROUP)
+                .appendQueryParameter(DeeplinkContract.QUERY_GROUP_NAME, group.name)
+                .build()
+            val intent = Intent(Intent.ACTION_VIEW, uri).apply {
+                setClass(context, MainActivity::class.java)
             }
             
             val shortcut = ShortcutInfoCompat.Builder(context, group.name)
@@ -210,7 +271,7 @@ class MainViewModel @Inject constructor(
                 autoGroupApps(allApps, append = false, singleCategoryOnly = android.content.pm.ApplicationInfo.CATEGORY_SOCIAL)
             }
 
-            _uiState.value = MainUiState.Success(groupsRepository.loadGroups(), allApps, history)
+            _uiState.value = MainUiState.Success(groups, allApps, history)
         }
     }
 
@@ -291,6 +352,20 @@ class MainViewModel @Inject constructor(
             val currentState = _uiState.value as? MainUiState.Success ?: return@launch
             val updatedGroups = currentState.groups.map {
                 if (it.name == group.name) it.copy(isExpanded = !it.isExpanded) else it
+            }
+            groupsRepository.saveGroups(updatedGroups)
+            _uiState.value = currentState.copy(groups = updatedGroups)
+        }
+    }
+
+    /** Expands the matching group if present (used by custom-scheme deeplinks and tests). */
+    fun expandGroupByNameIfPresent(name: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val currentState = _uiState.value as? MainUiState.Success ?: return@launch
+            val group = currentState.groups.find { it.name == name } ?: return@launch
+            if (group.isExpanded) return@launch
+            val updatedGroups = currentState.groups.map {
+                if (it.name == name) it.copy(isExpanded = true) else it
             }
             groupsRepository.saveGroups(updatedGroups)
             _uiState.value = currentState.copy(groups = updatedGroups)

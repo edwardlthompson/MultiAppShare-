@@ -34,6 +34,8 @@ This is a **FOSS-first** project:
 - Additions must adhere to **MIT / Apache 2.0** permissive licenses.
 - No inclusion of binary blobs or non-free tracking SDKs layout.
 
+**Secrets:** Never commit signing keystores, **`keystore.properties`**, API keys, or `local.properties` tokens. For local signed **`assembleRelease`** / **`bundleRelease`**, use **`keystore.properties`** from **`keystore.properties.example`** or **`scripts/setup-release-keystore.ps1`** (see **`docs/SIGNING_FOR_BEGINNERS.md`** and **`docs/LOCAL_RELEASE_BUILD.md`**). Use CI repository secrets for automated release pipelines.
+
 ---
 
 ## 🌳 Git Workflow

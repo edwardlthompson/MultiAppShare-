@@ -16,8 +16,13 @@ build/
 local.properties
 
 /release.keystore
+localtest-release.keystore
+keystore.properties
 *.hprof
 scripts/.env.local
 full_ci_log.txt
 *.apk
 gitlab-log-*.txt
+
+# Baseline profile outputs (keep local unless explicitly shipping artifacts)
+app/src/main/generated/

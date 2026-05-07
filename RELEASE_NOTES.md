@@ -1,11 +1,13 @@
-# Release Notes: MultiAppShare v1.7.4
+# Release Notes: MultiAppShare v1.8.0
 
-### 🏁 Standard v1.7.4 Features
+### 🏁 Standard v1.8.0 Features
 
-- **Fixed:** Resolved F-Droid version regression (synchronized jump from 162 to 173).
-- **CI/CD:** Optimized GitLab/GitHub pipeline synchronization for reliable metadata audits.
-- **Branding:** Updated project icons to match the official APK and F-Droid listing.
-- **Maintenance:** Intensive internal cleanup of build artifacts, recursive pathing, and metadata stripping.
+- **Performance:** Baseline profile generation harness + merged profile artifacts (improves cold start / first-frame paths).
+- **Security:** Encrypted JSON backup export/import (AES-256-GCM + PBKDF2-HMAC-SHA256) with passphrase dialogs + tests.
+- **Toolchain:** Hilt + Room migrated from kapt to **KSP**; Compose compiler deprecation cleanup; CI/Dependabot hygiene.
+- **UX:** Main screen refactor into smaller Compose files; sharing overlays and dialogs split for maintainability.
+- **i18n:** Added French and Spanish string resources + locale configuration.
+- **Release workflow:** Documented novice-friendly local signing + helper scripts for generating signed APKs.
 
 ---
 *Verified and released by Antigravity.*

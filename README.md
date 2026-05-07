@@ -11,7 +11,7 @@
 - **Smart Auto-Grouping**: Group your apps automatically by system categories (Games, Maps, Productivity) with name-based fallbacks for strict isolation (Messaging, Email, Contacts).
 - **Overlaid Translucent UX Control**: Sharing from an external app feels native; a floating layout guides custom choices without locking down standard focus pipelines.
 - **Frosted Glass FX Visuals**: Overlaid sheets now feature rich translucent background blurring values securely retaining standard layout visual focuses safely.
-- **Sequential Guided Workflow**: Guides you step-by-step through dispatching intents iteratively to apps in a group seamlessly.
+- **Sequential Guided Workflow**: Guides you step-by-step through dispatching intents iteratively to apps in a group seamlessly; progress stays in the notification shade at low priority so target apps (e.g. social composers) are not covered by pop-up banners.
 - **Micro-Interaction Tactics**: Smooth sequential advancing tracking accurate tactile vibrational haptic feedback increments satisfying tactile layouts speeds.
 - **Native Canvas Success Bursts**: Expanding Canvas bursts layer with revealing checkmarks confirming flawless sequence triggers layout completions accurately.
 - **Optimized Async App Icon Speeds**: Sub-second deterministic background placeholders loading speeds populated instantly avoiding blank flashing frame updates.
@@ -64,6 +64,8 @@ graph TD
     C -->|Depends On| D
 ```
 
+Primary **home / share-overlay Compose UI** in `:app` lives in `MainScreen.kt`, `MainActivityGroupUi.kt`, and `MainActivityDialogs.kt`; `:feature-dashboard` remains wired for future dashboard consolidation (see `docs/ADR-001-feature-dashboard.md`).
+
 ### 🔒 Strict Visibility & Encapsulation
 To enforce layout encapsulation and prevent leakage, candidate node sets consume `internal` modifier layouts:
 
@@ -93,6 +95,8 @@ This application is built with **Privacy-by-Design** and contains **NO Analytics
 - **100% Free and Open-Source** under the [MIT License](LICENSE).
 - **F-Droid Readiness**: Fastlane metadata inclusive of reproducible building recipes included.
 
+**Third-party OSS libraries** (partial list for attribution): Kotlin, Jetpack Compose & Material 3, AndroidX (Room, DataStore, Lifecycle), Dagger Hilt, Coil, Kotlinx Serialization, Timber, LeakCanary (debug-only). Full dependency graph is in Gradle version catalogs (`gradle/libs.versions.toml`).
+
 ---
 
 ## 📦 Installation & Setup
@@ -100,7 +104,7 @@ This application is built with **Privacy-by-Design** and contains **NO Analytics
 ### 📥 Download the APK (Recommended)
 You can download the latest pre-built, optimized version of the app from the [Releases](https://github.com/edwardlthompson/MultiAppShare-/releases) page. 
 
-1. Download the `MultiAppShare-v1.7.4-release.apk` (approx. 3.2 MB).
+1. Download the `MultiAppShare-v1.8.0-release.apk` (approx. 3.2 MB).
 2. Open the file to install.
 3. If prompted, allow "Install from unknown sources".
 
@@ -113,6 +117,9 @@ If you prefer to build that app yourself from scratch:
 2. Ensure you have **JDK 21** toolchains and **Android Studio Ladybug+** installed.
 3. Open the workspace; Gradle automatically synchronizes parameters mapping or version catalog.
 4. To test modular components: Run `./gradlew test`.
+5. Instrumented smoke (device/emulator): `./gradlew :app:connectedDebugAndroidTest`.
+
+**Signed release APK / App Bundle** (your keystore, GitHub Releases, adb testing): start with **[docs/SIGNING_FOR_BEGINNERS.md](docs/SIGNING_FOR_BEGINNERS.md)**; full detail in **[docs/LOCAL_RELEASE_BUILD.md](docs/LOCAL_RELEASE_BUILD.md)** — `keystore.properties` + `./gradlew :app:assembleRelease` or `:app:bundleRelease`.
 
 ### 🔍 CI/CD & Diagnostics
 A custom PowerShell script is provided to fetch GitHub Actions logs locally for easier debugging:
@@ -126,6 +133,8 @@ Ensure you have a valid `GITHUB_TOKEN` in `scripts/.env.local`.
 1. **Configure**: Select **"Autofill Groups"** on onboarding to automatically generate isolated categorical folders triggers setup down downstream.
 2. **Share**: Inside simple exterior payloads (Photos, chrome, links), trigger default Android share dialogs and pick **Multi App Share** sheets.
 3. **Automate**: Pick the target group; The first app in the custom list will open. On finish, return via Recent Apps to see the workflow iterate securely!
+
+**Returning mid-sequence:** Use Recents, the low-priority sharing notification, the launcher, or the `multiappshare://open` deeplink—see [docs/RETURN_PATH.md](docs/RETURN_PATH.md).
 
 💡 **Pro-Tip**: The **Translucent Overlaid UX** controller lets you guide choices natively without locking standard focus pipelines layout completely!
 

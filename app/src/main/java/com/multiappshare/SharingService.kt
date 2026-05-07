@@ -29,7 +29,8 @@ class SharingService : Service() {
         const val ACTION_START_SHARING = "com.multiappshare.ACTION_START_SHARING"
         private const val ACTION_STOP = "com.multiappshare.ACTION_STOP"
         private const val NOTIFICATION_ID = 1
-        private const val CHANNEL_ID = "sharing_service_channel"
+        /** New ID so importance can move off IMPORTANCE_HIGH without users being stuck on the old channel. */
+        private const val CHANNEL_ID = "sharing_service_channel_v2"
         private const val REQUEST_CODE_STOP = 0
     }
 
@@ -78,13 +79,27 @@ class SharingService : Service() {
     }
 
     private fun createNotification(appComponents: List<String>, currentIndex: Int): NotificationCompat.Builder {
+        val pm = packageManager
+        val key = appComponents.getOrNull(currentIndex).orEmpty()
+        val targetLabel = resolveShareTargetLabel(pm, key).ifBlank { getString(R.string.app_name) }
+        val openHint = getString(R.string.notification_open_to_continue)
+        val body = getString(
+            R.string.notification_sharing_text,
+            targetLabel,
+            currentIndex + 1,
+            appComponents.size,
+            openHint,
+        )
         val builder = NotificationCompat.Builder(this, CHANNEL_ID)
-            .setContentTitle("Sharing in progress")
-            .setContentText("Sharing to app ${currentIndex + 1} of ${appComponents.size}")
+            .setContentTitle(getString(R.string.notification_sharing_title))
+            .setContentText(body)
+            .setStyle(NotificationCompat.BigTextStyle().bigText(body))
             .setSmallIcon(R.drawable.ic_launcher_foreground)
-            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setPriority(NotificationCompat.PRIORITY_LOW)
+            .setSilent(true)
+            .setCategory(NotificationCompat.CATEGORY_PROGRESS)
             .setOngoing(true)
-            .addAction(0, "Stop", createStopPendingIntent())
+            .addAction(0, getString(R.string.notification_action_stop), createStopPendingIntent())
 
         return builder
     }
@@ -132,7 +147,8 @@ class SharingService : Service() {
             Timber.d("Successfully started share intent for $componentString")
         } catch (e: Exception) {
             Timber.e(e, "Exception sharing with app: $componentString")
-            Toast.makeText(this, "Failed to share with $componentString", Toast.LENGTH_SHORT).show()
+            val label = resolveShareTargetLabel(packageManager, componentString).ifBlank { componentString }
+            Toast.makeText(this, getString(R.string.toast_sharing_failed, label), Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -144,7 +160,14 @@ class SharingService : Service() {
     }
 
     private fun createNotificationChannel() {
-        val channel = NotificationChannel(CHANNEL_ID, "Sharing Service", NotificationManager.IMPORTANCE_HIGH)
+        val channel = NotificationChannel(
+            CHANNEL_ID,
+            getString(R.string.notification_channel_sharing_name),
+            NotificationManager.IMPORTANCE_LOW
+        ).apply {
+            description = getString(R.string.notification_channel_sharing_description)
+            setShowBadge(false)
+        }
         notificationManager.createNotificationChannel(channel)
     }
 

@@ -2,6 +2,7 @@ package com.multiappshare.di
 
 import android.content.Context
 import androidx.room.Room
+import com.multiappshare.core.database.BuildConfig
 import com.multiappshare.data.local.AppDatabase
 import com.multiappshare.data.local.GroupDao
 import com.multiappshare.data.local.HistoryDao
@@ -19,11 +20,17 @@ object DatabaseModule {
     @Provides
     @Singleton
     fun provideDatabase(@ApplicationContext context: Context): AppDatabase {
-        return Room.databaseBuilder(
+        val builder = Room.databaseBuilder(
             context,
             AppDatabase::class.java,
             "multiappshare_db"
-        ).fallbackToDestructiveMigration().build()
+        )
+        // Release: never wipe user groups/history on schema mismatch — add Migration X→Y when bumping DB version.
+        // Debug: destructive rebuild OK for fast iteration (see BUILD_PLAN F.3).
+        if (BuildConfig.DEBUG) {
+            builder.fallbackToDestructiveMigration()
+        }
+        return builder.build()
     }
 
     @Provides

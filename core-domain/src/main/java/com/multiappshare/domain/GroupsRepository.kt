@@ -3,6 +3,7 @@ package com.multiappshare.domain
 import android.content.Context
 import com.multiappshare.data.local.GroupDao
 import com.multiappshare.model.AppGroup
+import kotlinx.serialization.SerializationException
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.Serializable
@@ -38,6 +39,24 @@ class GroupsRepository(
         }
     }
 
+    /** Plain JSON payload for encrypted export (same shape as legacy backup file). */
+    fun encodeBackupPayload(groups: List<AppGroup>): String {
+        val backup = BackupWrapper(version = 1, groups = groups)
+        return Json.encodeToString(backup)
+    }
+
+    /**
+     * Parses legacy plaintext imports: [BackupWrapper], raw list, or legacy JSON array.
+     */
+    fun parsePlaintextBackup(jsonText: String): List<AppGroup> {
+        val trimmed = jsonText.trim()
+        return try {
+            Json.decodeFromString<BackupWrapper>(trimmed).groups
+        } catch (_: SerializationException) {
+            Json.decodeFromString<List<AppGroup>>(trimmed)
+        }
+    }
+
     suspend fun loadGroups(): List<AppGroup> {
         val dbGroups = groupDao.getAllGroups()
         if (dbGroups.isNotEmpty()) {
@@ -48,12 +67,7 @@ class GroupsRepository(
         if (!file.exists()) return emptyList()
         return try {
             val jsonText = file.readText()
-            val groups = if (jsonText.contains("\"version\"")) {
-                val backup = Json.decodeFromString<BackupWrapper>(jsonText)
-                backup.groups
-            } else {
-                Json.decodeFromString<List<AppGroup>>(jsonText)
-            }
+            val groups = parsePlaintextBackup(jsonText)
             // Migrate to Room
             if (groups.isNotEmpty()) {
                 groupDao.insertGroups(groups)
