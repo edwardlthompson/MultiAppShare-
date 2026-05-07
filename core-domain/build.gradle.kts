@@ -52,10 +52,10 @@ dependencies {
 // Force kotlin-stdlib and related libraries to 2.0.21 to resolve metadata version conflict.
 configurations.all {
     resolutionStrategy {
-        force("org.jetbrains.kotlin:kotlin-stdlib:2.0.21")
-        force("org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.0.21")
-        force("org.jetbrains.kotlin:kotlin-stdlib-jdk7:2.0.21")
-        force("org.jetbrains.kotlin:kotlin-reflect:2.0.21")
+        force("org.jetbrains.kotlin:kotlin-stdlib:2.3.21")
+        force("org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.3.21")
+        force("org.jetbrains.kotlin:kotlin-stdlib-jdk7:2.3.21")
+        force("org.jetbrains.kotlin:kotlin-reflect:2.3.21")
     }
 }
 
