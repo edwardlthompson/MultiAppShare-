@@ -6,7 +6,7 @@ Central index for persistent context. Append at milestone boundaries only.
 
 | Dimension | Value |
 |-----------|-------|
-| **Platform** | Native Android — Kotlin 2.0.21, Jetpack Compose, Hilt, Room, DataStore |
+| **Platform** | Native Android — Kotlin 2.4.0, Jetpack Compose, Hilt 2.59, Room 2.8, Gradle 9.5 / AGP 9.2 |
 | **Purpose** | Sequential multi-app sharing via custom groups; no backend, no accounts |
 | **Distribution** | MIT; [GitHub Releases](https://github.com/edwardlthompson/MultiAppShare-/releases); [F-Droid](https://f-droid.org/packages/com.edwardlthompson.multiappshare/) via [`metadata/com.edwardlthompson.multiappshare.yml`](metadata/com.edwardlthompson.multiappshare.yml) |
 | **App ID** | `com.edwardlthompson.multiappshare` |
@@ -26,7 +26,7 @@ See [`docs/MODULE_BOUNDARIES.md`](docs/MODULE_BOUNDARIES.md).
 
 ## Platform compliance
 
-- [`docs/TARGET_SDK_REVIEW.md`](docs/TARGET_SDK_REVIEW.md) — current targetSdk **35**
+- [`docs/TARGET_SDK_REVIEW.md`](docs/TARGET_SDK_REVIEW.md) — `compileSdk` **37**, `targetSdk` **35**
 - [`docs/NATIVE_16KB_PAGE_SIZE.md`](docs/NATIVE_16KB_PAGE_SIZE.md) — native `.so` alignment
 - [`docs/REPRODUCIBLE_BUILDS.md`](docs/REPRODUCIBLE_BUILDS.md) — SOURCE_DATE_EPOCH, F-Droid parity
 
@@ -38,8 +38,8 @@ See [`docs/MODULE_BOUNDARIES.md`](docs/MODULE_BOUNDARIES.md).
 
 ## Living plans
 
-- Active roadmap: [`docs/BUILD_PLAN.md`](docs/BUILD_PLAN.md) — pre-release gate only; Milestone **S** (bug hardening + dashboard) archived 2026-06-12
-- Completed milestones A–S: [`docs/COMPLETED_TASKS.md`](docs/COMPLETED_TASKS.md)
+- Active roadmap: [`docs/BUILD_PLAN.md`](docs/BUILD_PLAN.md) — pre-release gate; next milestone TBD
+- Completed milestones A–T: [`docs/COMPLETED_TASKS.md`](docs/COMPLETED_TASKS.md)
 - ADRs: [`docs/adr/README.md`](docs/adr/README.md)
 - Decision log: [`docs/DECISION_LOG.md`](docs/DECISION_LOG.md)
 

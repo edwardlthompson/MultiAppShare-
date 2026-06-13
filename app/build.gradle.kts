@@ -2,7 +2,6 @@ import java.util.Properties
 
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.hilt)
     alias(libs.plugins.compose.compiler)
@@ -26,8 +25,7 @@ val keystoreProperties = Properties().apply {
 
 android {
     namespace = "com.multiappshare"
-    compileSdk = 35
-    
+    compileSdk = 37
     defaultConfig {
         applicationId = "com.edwardlthompson.multiappshare"
         minSdk = 26
@@ -82,10 +80,6 @@ android {
         sourceCompatibility = JavaVersion.VERSION_21
         targetCompatibility = JavaVersion.VERSION_21
     }
-
-    kotlinOptions {
-        jvmTarget = "21"
-    }
     
     lint {
         abortOnError = true
@@ -116,6 +110,7 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
+    ksp(libs.kotlin.metadata.jvm)
     implementation(libs.androidx.datastore.preferences)
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
@@ -159,19 +154,6 @@ dependencies {
     baselineProfile(project(":baselineprofile"))
 }
 
-
-// Force kotlin-stdlib and related libraries to 2.0.21 to resolve Room metadata version conflict.
-configurations.all {
-    resolutionStrategy {
-        force("org.jetbrains.kotlin:kotlin-stdlib:2.0.21")
-        force("org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.0.21")
-        force("org.jetbrains.kotlin:kotlin-stdlib-jdk7:2.0.21")
-        force("org.jetbrains.kotlin:kotlin-reflect:2.0.21")
-    }
-}
-
-// Removed configurations.all layout triggers
-
 tasks.whenTaskAdded {
     if (name.contains("CheckAarMetadata", ignoreCase = true)) {
         enabled = false
@@ -180,4 +162,8 @@ tasks.whenTaskAdded {
 
 composeCompiler {
     reportsDestination = layout.buildDirectory.dir("compose_compiler")
+}
+
+tasks.withType<Test>().configureEach {
+    reports.html.required.set(false)
 }

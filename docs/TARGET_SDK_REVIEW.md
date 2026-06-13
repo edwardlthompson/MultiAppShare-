@@ -6,10 +6,13 @@ Use this checklist **before** each **`targetSdk` / `compileSdk` bump** (ideally 
 
 | Setting | Value |
 |--------|--------|
-| `compileSdk` | 35 |
+| `compileSdk` | 37 |
 | `targetSdk` | 35 |
 | `minSdk` | 26 |
-| AGP | 8.5.2 (see `gradle/libs.versions.toml`) |
+| Gradle | 9.5.1 (wrapper) |
+| AGP | 9.2.1 (see `gradle/libs.versions.toml`) |
+| Kotlin | 2.4.0 |
+| JDK | 21 |
 
 ## Pre-bump checklist
 

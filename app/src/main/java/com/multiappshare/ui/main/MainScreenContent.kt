@@ -53,6 +53,15 @@ internal fun MainScreenDialogsHost(
     onShowAboutDialog: (Boolean) -> Unit,
 ) {
     val context = LocalContext.current
+    val duplicateGroupToast = stringResource(R.string.toast_duplicate_group_name)
+    val refreshingAppsToast = stringResource(R.string.toast_refreshing_apps)
+    val historyLabels = HistoryDialogLabels(
+        title = stringResource(R.string.history_title),
+        empty = stringResource(R.string.history_empty),
+        sharedPrefix = stringResource(R.string.history_shared_prefix),
+        close = stringResource(R.string.button_close),
+    )
+    val filterGroupsCd = stringResource(R.string.cd_filter_groups)
 
     if (showCreateGroupDialog) {
         CreateGroupDialog(
@@ -64,7 +73,7 @@ internal fun MainScreenDialogsHost(
                     } else {
                         Toast.makeText(
                             context,
-                            context.getString(R.string.toast_duplicate_group_name),
+                            duplicateGroupToast,
                             Toast.LENGTH_SHORT,
                         ).show()
                     }
@@ -94,7 +103,7 @@ internal fun MainScreenDialogsHost(
             },
             onRefresh = {
                 viewModel.loadData()
-                Toast.makeText(context, context.getString(R.string.toast_refreshing_apps), Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, refreshingAppsToast, Toast.LENGTH_SHORT).show()
             },
             packageManager = packageManager,
         )
@@ -136,12 +145,7 @@ internal fun MainScreenDialogsHost(
     if (showHistoryDialog) {
         DashboardHistoryDialog(
             history = state.history,
-            labels = HistoryDialogLabels(
-                title = context.getString(R.string.history_title),
-                empty = context.getString(R.string.history_empty),
-                sharedPrefix = context.getString(R.string.history_shared_prefix),
-                close = context.getString(R.string.button_close),
-            ),
+            labels = historyLabels,
             onDismiss = { onShowHistoryDialog(false) },
         )
     }
@@ -157,18 +161,18 @@ internal fun MainScreenDialogsHost(
         } catch (_: Exception) {
             null
         }
-        val versionLabel = version ?: context.getString(R.string.version_unknown)
+        val versionLabel = version ?: stringResource(R.string.version_unknown)
         DashboardAboutDialog(
             labels = AboutDialogLabels(
-                title = context.getString(R.string.about_title),
-                versionLine = context.getString(R.string.version_line, versionLabel),
-                tagline = context.getString(R.string.about_tagline),
-                privacy = context.getString(R.string.about_privacy),
-                developerContact = context.getString(R.string.about_developer_contact),
-                telegramLabel = context.getString(R.string.about_telegram_label),
-                supportDeveloper = context.getString(R.string.about_support_developer),
-                venmoLink = context.getString(R.string.about_venmo_link),
-                ok = context.getString(R.string.button_ok),
+                title = stringResource(R.string.about_title),
+                versionLine = stringResource(R.string.version_line, versionLabel),
+                tagline = stringResource(R.string.about_tagline),
+                privacy = stringResource(R.string.about_privacy),
+                developerContact = stringResource(R.string.about_developer_contact),
+                telegramLabel = stringResource(R.string.about_telegram_label),
+                supportDeveloper = stringResource(R.string.about_support_developer),
+                venmoLink = stringResource(R.string.about_venmo_link),
+                ok = stringResource(R.string.button_ok),
             ),
             onDismiss = { onShowAboutDialog(false) },
         )
@@ -189,7 +193,7 @@ internal fun MainScreenGroupsSection(
     onGroupToDelete: (AppGroup?) -> Unit,
     onStartSharing: (AppGroup, MainViewModel) -> Unit,
 ) {
-    val context = LocalContext.current
+    val filterGroupsCd = stringResource(R.string.cd_filter_groups)
 
     val inShareMode = shareSession.inShareMode
     val uris = shareSession.uris
@@ -205,7 +209,7 @@ internal fun MainScreenGroupsSection(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp, vertical = 8.dp)
-                    .semantics { contentDescription = context.getString(R.string.cd_filter_groups) },
+                    .semantics { contentDescription = filterGroupsCd },
                 label = { Text(stringResource(R.string.label_filter_groups)) },
                 singleLine = true,
                 placeholder = { Text(stringResource(R.string.label_filter_groups)) },

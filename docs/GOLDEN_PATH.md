@@ -29,3 +29,16 @@ Use **encrypted backup round-trip** as the structural template for new features.
 - Hardcoded English user strings
 
 See [`MODULE_BOUNDARIES.md`](MODULE_BOUNDARIES.md) and [`AGENTS.md`](../AGENTS.md).
+
+## Toolchain pins (Milestone T)
+
+| Pin | Value |
+|-----|--------|
+| JDK | 21 (Android Studio JBR) |
+| Gradle | 9.5.1 (wrapper) |
+| AGP | 9.2.1 |
+| Kotlin | 2.4.0 (built into AGP 9 — do not apply `org.jetbrains.kotlin.android`) |
+| KSP | 2.3.9 |
+| `compileSdk` | 37 |
+
+AGP 9 notes: Hilt modules need `ksp("org.jetbrains.kotlin:kotlin-metadata-jvm")` matching the Kotlin version; Paparazzi **2.0.0-alpha05** for AGP 9 compatibility.

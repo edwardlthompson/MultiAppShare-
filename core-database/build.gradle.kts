@@ -1,6 +1,5 @@
 plugins {
     id("com.android.library")
-    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.hilt)
     alias(libs.plugins.ksp)
@@ -8,7 +7,7 @@ plugins {
 
 android {
     namespace = "com.multiappshare.core.database"
-    compileSdk = 35
+    compileSdk = 37
     buildFeatures {
         buildConfig = true
     }
@@ -21,10 +20,6 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_21
         targetCompatibility = JavaVersion.VERSION_21
-    }
-
-    kotlinOptions {
-        jvmTarget = "21"
     }
 
     lint {
@@ -42,6 +37,7 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
+    ksp(libs.kotlin.metadata.jvm)
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
     ksp(libs.androidx.room.compiler)
@@ -50,22 +46,4 @@ dependencies {
     testImplementation(libs.junit)
     testImplementation(libs.robolectric)
     testImplementation(libs.androidx.test.core)
-    // For now, it will use existing model which is currently in app/model folder.
-    // Wait, if we move Database without moving Model, we cannot import Model!
-    // So Model must ALSO be moved or made a module, or placed in core-database!
-    // The previous agent already added @Entity to AppGroup.
-    // So AppGroup MUST go to core-database or a shared core-model module!
-    // I'll assume we move Model to core-domain or core-database, or leave it in an accessible layer.
-}
-
-
-
-// Force kotlin-stdlib and related libraries to 2.0.21 to resolve Room metadata version conflict.
-configurations.all {
-    resolutionStrategy {
-        force("org.jetbrains.kotlin:kotlin-stdlib:2.0.21")
-        force("org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.0.21")
-        force("org.jetbrains.kotlin:kotlin-stdlib-jdk7:2.0.21")
-        force("org.jetbrains.kotlin:kotlin-reflect:2.0.21")
-    }
 }

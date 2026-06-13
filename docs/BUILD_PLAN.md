@@ -1,6 +1,6 @@
 # MultiAppShare BUILD PLAN – Living Checklist
 
-Completed milestones **A–S** are archived in [`docs/COMPLETED_TASKS.md`](COMPLETED_TASKS.md).
+Completed milestones **A–T** are archived in [`docs/COMPLETED_TASKS.md`](COMPLETED_TASKS.md).
 
 Agent workspace: [`AGENTS.md`](../AGENTS.md), [`AGENT_MEMORY.md`](../AGENT_MEMORY.md), [`KNOWLEDGE_BASE.md`](../KNOWLEDGE_BASE.md).
 
@@ -32,6 +32,12 @@ Required **before every release** per [`docs/PRE_RELEASE_AUDIT.md`](PRE_RELEASE_
 
 ---
 
-## Next milestone
+## Next milestone (TBD)
 
-No active milestone. Append the next letter (e.g. **T**) here when scoped; archive completed work to [`COMPLETED_TASKS.md`](COMPLETED_TASKS.md).
+No active milestone. Candidate follow-ups (pick one when planning):
+
+- **U** — Re-enable Gradle configuration cache (`org.gradle.configuration-cache=true`) after AGP 9 validation (**E.5**).
+- **U** — Dependabot alerts + security advisory triage (**T.0.1**, human-only).
+- **U** — `targetSdk` / platform behavior review when raising beyond **35** — see [`TARGET_SDK_REVIEW.md`](TARGET_SDK_REVIEW.md).
+
+Toolchain after **Milestone T** (2026-06-13): Gradle **9.5.1**, AGP **9.2.1**, Kotlin **2.4.0**, `compileSdk` **37** — details in [`COMPLETED_TASKS.md`](COMPLETED_TASKS.md#milestone-t--dependabot-dependency-upgrades).

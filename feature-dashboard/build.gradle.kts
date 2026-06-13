@@ -1,6 +1,5 @@
 plugins {
     id("com.android.library")
-    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.hilt)
     alias(libs.plugins.compose.compiler)
@@ -9,7 +8,7 @@ plugins {
 
 android {
     namespace = "com.multiappshare.feature.dashboard"
-    compileSdk = 35
+    compileSdk = 37
 
     defaultConfig {
         minSdk = 26
@@ -18,10 +17,6 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_21
         targetCompatibility = JavaVersion.VERSION_21
-    }
-
-    kotlinOptions {
-        jvmTarget = "21"
     }
 
     lint {
@@ -40,6 +35,7 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
+    ksp(libs.kotlin.metadata.jvm)
     implementation(libs.kotlinx.serialization.json)
     
     // Feature Dashboard depends on Domain to access UseCases
@@ -58,17 +54,6 @@ dependencies {
     implementation(libs.hilt.navigation.compose)
     implementation(libs.coil.compose)
     implementation(project(":core-ui"))
-}
-
-
-// Force kotlin-stdlib and related libraries to 2.0.21 to resolve metadata version conflict.
-configurations.all {
-    resolutionStrategy {
-        force("org.jetbrains.kotlin:kotlin-stdlib:2.0.21")
-        force("org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.0.21")
-        force("org.jetbrains.kotlin:kotlin-stdlib-jdk7:2.0.21")
-        force("org.jetbrains.kotlin:kotlin-reflect:2.0.21")
-    }
 }
 
 composeCompiler {

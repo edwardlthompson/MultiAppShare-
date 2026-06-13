@@ -25,6 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLocale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -33,7 +34,6 @@ import androidx.core.net.toUri
 import com.multiappshare.model.HistoryItem
 import java.text.SimpleDateFormat
 import java.util.Date
-import java.util.Locale
 
 @Composable
 fun EmptyGroupsPlaceholder(
@@ -93,7 +93,8 @@ fun HistoryDialog(history: List<HistoryItem>, onDismiss: () -> Unit) {
             } else {
                 LazyColumn(modifier = Modifier.height(400.dp)) {
                     items(history) { item ->
-                        val date = SimpleDateFormat("MMM dd, HH:mm", Locale.getDefault()).format(Date(item.timestamp))
+                        val locale = LocalLocale.current.platformLocale
+                        val date = SimpleDateFormat("MMM dd, HH:mm", locale).format(Date(item.timestamp))
                         Column(modifier = Modifier.padding(vertical = 4.dp)) {
                             Row(verticalAlignment = Alignment.CenterVertically) {
                                 Text(

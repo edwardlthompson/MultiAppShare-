@@ -30,13 +30,13 @@
 
 ## 🛠 Tech Stack
 
-- **Language**: [Kotlin 2.0.21](https://kotlinlang.org/)
-- **Build System**: [Gradle 8.7](https://gradle.org/) with [AGP 8.5.2](https://developer.android.com/studio/releases/gradle-plugin)
-- **UI Framework**: [Jetpack Compose 1.7+](https://developer.android.com/jetpack/compose)
+- **Language**: [Kotlin 2.4.0](https://kotlinlang.org/)
+- **Build System**: [Gradle 9.5](https://gradle.org/) with [AGP 9.2.1](https://developer.android.com/studio/releases/gradle-plugin)
+- **UI Framework**: [Jetpack Compose](https://developer.android.com/jetpack/compose) (BOM 2026.05.01)
 - **Architecture**: MVVM with UseCase nodes
-- **Dependency Injection**: [Dagger Hilt 2.52](https://dagger.dev/hilt/)
+- **Dependency Injection**: [Dagger Hilt 2.59](https://dagger.dev/hilt/)
 - **Concurrency**: Kotlin Coroutines & Flow
-- **Data Persistence**: Room 2.6.1 & DataStore (Preferences)
+- **Data Persistence**: Room 2.8 & DataStore (Preferences)
 - **Image Loading**: [Coil](https://coil-kt.github.io/coil/)
 - **Design System**: Material 3 (Dynamic Color)
 

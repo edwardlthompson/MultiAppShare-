@@ -570,3 +570,66 @@ Ongoing per-tag ritual lives in [`BUILD_PLAN.md`](BUILD_PLAN.md); first **R.5.2*
 
 # MILESTONE S COMPLETE ✅
 
+---
+
+## Milestone T – Dependabot dependency upgrades
+
+> **Legend:** `[Agent]` · `[ADB]` · `[Human]` · `[Dependabot]`
+
+> **Gate (verified 2026-06-13):** `./gradlew lint test detekt koverXmlReport assembleDebug` green; `check-file-limits.ps1 -Fail` green; `./gradlew :app:connectedDebugAndroidTest` **5/5** on **OnePlus CPH2583 (Android 16)**.
+
+> **Supersedes:** Dependabot PRs [#1](https://github.com/edwardlthompson/MultiAppShare-/pull/1)–[#4](https://github.com/edwardlthompson/MultiAppShare-/pull/4), [#7](https://github.com/edwardlthompson/MultiAppShare-/pull/7), [#15](https://github.com/edwardlthompson/MultiAppShare-/pull/15)–[#21](https://github.com/edwardlthompson/MultiAppShare-/pull/21) (close after merge to `main`).
+
+### T.0 Repo hygiene
+
+- [ ] **T.0.1** Enable Dependabot alerts — Verdict: ⏳ [Human]
+  - Evidence: Still disabled on repo; enable in GitHub Settings → Code security.
+- [x] **T.0.2** Review superseded closed PRs (#11–#14 → superseded by #16) — Verdict: ✅ [COMPLETED]
+  - Evidence: No action; documented in original T plan.
+
+### T.1 GitHub Actions — Phase T-A
+
+- [x] **T.1.1** `actions/checkout` 4 → 6 — Verdict: ✅ [COMPLETED]
+  - Evidence: `.github/workflows/android.yml`, `codeql.yml`.
+- [x] **T.1.2** `gradle/actions/setup-gradle` 4 → 6 — Verdict: ✅ [COMPLETED]
+- [x] **T.1.3** `actions/setup-java` 4 → 5 — Verdict: ✅ [COMPLETED]
+- [x] **T.1.4** `softprops/action-gh-release` — Verdict: ✅ [N/A]
+  - Evidence: Legacy `release.yml` removed; APK upload via `android.yml` on tag.
+
+### T.2 Gradle singles — Phase T-B
+
+- [x] **T.2.1** detekt 1.23.7 → 1.23.8 — Verdict: ✅ [COMPLETED]
+- [x] **T.2.2** Coil 2.6.0 → 2.7.0 — Verdict: ✅ [COMPLETED]
+- [x] **T.2.3** Material 1.12.0 → 1.14.0 — Verdict: ✅ [COMPLETED]
+- [x] **T.2.4** Hilt 2.52 → 2.59.2 — Verdict: ✅ [COMPLETED]
+  - Evidence: `ksp(libs.kotlin.metadata.jvm)` on Hilt modules for Kotlin 2.4 metadata.
+
+### T.3 Gradle wrapper — Phase T-C
+
+- [x] **T.3.1** Gradle 8.7 → 9.5.1 — Verdict: ✅ [COMPLETED]
+  - Evidence: `gradle/wrapper/gradle-wrapper.properties`; removed deprecated APIs; `gradle.properties` cleanup (dropped `suppressUnsupportedCompileSdk`).
+
+### T.4 Kotlin + Compose — Phase T-D
+
+- [x] **T.4.1** kotlin-compose group (#16) — Verdict: ✅ [COMPLETED]
+  - Evidence: Kotlin **2.4.0**, Compose BOM **2026.05.01**, KSP **2.3.9**, Kover **0.9.8** in `gradle/libs.versions.toml`; removed `org.jetbrains.kotlin.android` plugin (AGP 9 built-in Kotlin); removed obsolete `kotlinOptions` / `resolutionStrategy.force` kotlin pins.
+
+### T.5 AndroidX + AGP — Phase T-E
+
+- [x] **T.5.1** androidx group (#15) — Verdict: ✅ [COMPLETED]
+  - Evidence: AGP **9.2.1**; AndroidX core/lifecycle/activity/datastore/Room bumps; **`compileSdk = 37`** on all Android modules (required by core-ktx 1.19.0); Room **2.8.4** — no schema migration (export unchanged at v1).
+
+### T.6 Testing — Phase T-F
+
+- [x] **T.6.1** testing group (#17) — Verdict: ✅ [COMPLETED]
+  - Evidence: androidx.test runner/core **1.7.0**, Robolectric **4.16.1**, mockk **1.14.11**; Paparazzi bumped to **2.0.0-alpha05** (AGP 9 compatible; supersedes Dependabot 1.3.5 pin); baseline profile plugin **1.5.0-alpha06**.
+
+### T.7 AGP 9 migration extras
+
+- [x] **T.7.1** Compose BOM lint — Verdict: ✅ [COMPLETED]
+  - Evidence: `MainScreenContent.kt` — `stringResource()` instead of `context.getString()` in composables; `MainActivityDialogs.kt` — `LocalLocale.current.platformLocale` for date formatting.
+- [x] **T.7.2** Root buildscript for KGP + KSP — Verdict: ✅ [COMPLETED]
+  - Evidence: `build.gradle.kts` buildscript classpath; Paparazzi HTML test reports disabled in `app/build.gradle.kts`.
+
+# MILESTONE T COMPLETE ✅
+
