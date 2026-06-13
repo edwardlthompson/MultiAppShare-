@@ -10,7 +10,7 @@ on:
 
 jobs:
   analyze:
-    name: Analyze Kotlin/Java
+    name: Analyze Actions
     runs-on: ubuntu-latest
     permissions:
       security-events: write
@@ -21,14 +21,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
-      # Kotlin 2.4.0 exceeds CodeQL's supported compiler range (<2.3.30); build-based
-      # modes fail during :compileDebugKotlin. Use none until github/codeql#21938 lands.
-      # Java sources are still scanned; Kotlin coverage resumes when upstream supports 2.4.x.
+      # Kotlin 2.4.0 exceeds CodeQL's supported compiler range (<2.3.30); java-kotlin
+      # build modes fail (github/codeql#21938). This repo is Kotlin-only, so build-mode
+      # none also yields zero extractable sources. Scan Actions until upstream supports 2.4.x,
+      # then restore: languages: java-kotlin, build-mode: manual, ./gradlew :app:assembleDebug.
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v3
         with:
-          languages: java-kotlin
-          build-mode: none
+          languages: actions
           queries: security-extended,security-and-quality
 
       - name: Perform CodeQL Analysis
