@@ -21,24 +21,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
+      # Kotlin 2.4.0 exceeds CodeQL's supported compiler range (<2.3.30); build-based
+      # modes fail during :compileDebugKotlin. Use none until github/codeql#21938 lands.
+      # Java sources are still scanned; Kotlin coverage resumes when upstream supports 2.4.x.
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v3
         with:
           languages: java-kotlin
+          build-mode: none
           queries: security-extended,security-and-quality
-
-      - name: Set up JDK 21
-        uses: actions/setup-java@v5
-        with:
-          java-version: '21'
-          distribution: 'temurin'
-          cache: gradle
-
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v6
-
-      - name: Build for CodeQL
-        run: ./gradlew :app:assembleDebug --no-daemon
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3

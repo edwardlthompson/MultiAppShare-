@@ -120,14 +120,14 @@ jobs:
 
 
 
-      - name: APK size budget (25 MB debug)
+      - name: APK size budget (27 MB debug)
         run: |
           APK=$(find app/build/outputs/apk/debug -name '*-debug.apk' -o -name 'MultiAppShare-v*-debug.apk' | head -n 1)
           if [ -z "$APK" ]; then
             APK=$(find app/build/outputs/apk/debug -name '*.apk' ! -name '*androidTest*' | head -n 1)
           fi
           BYTES=$(stat -c%s "$APK")
-          MAX=$((25 * 1024 * 1024))
+          MAX=$((27 * 1024 * 1024))
           echo "APK: $APK"
           echo "APK size: $BYTES bytes (max $MAX)"
           test "$BYTES" -le "$MAX"

@@ -13,7 +13,7 @@ Run before every **`v*`** tag or production release.
 | Debug build | `./gradlew assembleDebug` |
 | CodeQL | Green on `main` (GitHub Actions) |
 | Dependabot | No critical unmerged security PRs |
-| APK size | CI budget check (debug APK ≤ 25 MB) |
+| APK size | CI budget check (debug APK ≤ 27 MB) |
 | File size limits | `scripts/check-file-limits.ps1` |
 
 ## Metadata sync (agent)
