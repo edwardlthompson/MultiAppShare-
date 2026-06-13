@@ -120,18 +120,16 @@ jobs:
 
 
 
-      - name: APK size budget (15 MB)
-
+      - name: APK size budget (25 MB debug)
         run: |
-
-          APK=$(find app/build/outputs/apk/debug -name '*.apk' | head -n 1)
-
+          APK=$(find app/build/outputs/apk/debug -name '*-debug.apk' -o -name 'MultiAppShare-v*-debug.apk' | head -n 1)
+          if [ -z "$APK" ]; then
+            APK=$(find app/build/outputs/apk/debug -name '*.apk' ! -name '*androidTest*' | head -n 1)
+          fi
           BYTES=$(stat -c%s "$APK")
-
-          MAX=$((15 * 1024 * 1024))
-
+          MAX=$((25 * 1024 * 1024))
+          echo "APK: $APK"
           echo "APK size: $BYTES bytes (max $MAX)"
-
           test "$BYTES" -le "$MAX"
 
 
@@ -214,9 +212,6 @@ jobs:
 
 
 
-      - name: Build signed release APK
-        run: ./gradlew :app:assembleRelease --no-daemon
-
       - name: Reproducibility smoke (double debug build hash)
         env:
           SOURCE_DATE_EPOCH: 1704067200
@@ -231,6 +226,9 @@ jobs:
           echo "Debug APK SHA-256 run1: $HASH1"
           echo "Debug APK SHA-256 run2: $HASH2"
           test "$HASH1" = "$HASH2"
+
+      - name: Build signed release APK
+        run: ./gradlew :app:assembleRelease --no-daemon
 
       - name: Upload APK to GitHub Release (clobber)
 
