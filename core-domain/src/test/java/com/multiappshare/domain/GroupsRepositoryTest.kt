@@ -79,4 +79,31 @@ class GroupsRepositoryTest {
         assertEquals("Social", loaded[0].name)
         assertEquals(1, loaded[0].apps.size)
     }
+
+    @Test
+    fun deleteGroup_persistsAfterReload() = runBlocking {
+        val repo = GroupsRepository(db.groupDao(), context)
+        val g1 = AppGroup(name = "A", apps = emptyList())
+        val g2 = AppGroup(name = "B", apps = emptyList())
+        repo.saveGroups(listOf(g1, g2))
+        repo.saveGroups(listOf(g1))
+        val loaded = repo.loadGroups()
+        assertEquals(1, loaded.size)
+        assertEquals("A", loaded[0].name)
+    }
+
+    @Test
+    fun import_replacesAllGroups() = runBlocking {
+        val repo = GroupsRepository(db.groupDao(), context)
+        repo.saveGroups(
+            listOf(
+                AppGroup(name = "Old1", apps = emptyList()),
+                AppGroup(name = "Old2", apps = emptyList()),
+            ),
+        )
+        repo.saveGroups(listOf(AppGroup(name = "New", apps = emptyList())))
+        val loaded = repo.loadGroups()
+        assertEquals(1, loaded.size)
+        assertEquals("New", loaded[0].name)
+    }
 }

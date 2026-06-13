@@ -16,7 +16,7 @@ Use this checklist **before** each **`targetSdk` / `compileSdk` bump** (ideally 
 1. **Release notes** — Read [Behavior changes: all apps](https://developer.android.com/about/versions) for the new API level (notifications, FGS types, **exact alarms**, **edge-to-edge**, backup rules, etc.).
 2. **Manifest** — `foregroundServiceType`, `POST_NOTIFICATIONS`, **`localeConfig`**, **`enableOnBackInvokedCallback`** (predictive back), any new permission splits.
 3. **Notifications** — Channels, runtime permission denial paths (`SharingService` / compatibility alerts).
-4. **Back navigation** — Predictive back + `Dialog` / full-screen onboarding (`MainActivityGroupUi`); no accidental double-finish.
+4. **Back navigation** — Predictive back + `Dialog` / full-screen onboarding (`ui/onboarding/OnboardingDialog`); no accidental double-finish.
 5. **Data & backups** — `data_extraction_rules` / `fullBackupContent` vs Room (**F.4**); encrypted export story unchanged (**N**).
 6. **Testing** — `./gradlew :app:lintDebug`, `test`, `assembleDebug`, `assembleRelease`; device smoke: share sequence, backup import/export, deeplink.
 

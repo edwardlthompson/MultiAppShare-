@@ -111,6 +111,7 @@
     <string name="history_content_media">Multimedia%1$s</string>
 
     <string name="toast_export_failed">Error al exportar.</string>
+    <string name="toast_duplicate_group_name">Ya existe un grupo con ese nombre.</string>
     <string name="toast_import_failed">Error al importar: archivo de copia no válido.</string>
     <string name="toast_wrong_passphrase">Contraseña incorrecta.</string>
     <string name="toast_import_complete">Importación completada.</string>

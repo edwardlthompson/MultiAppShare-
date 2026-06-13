@@ -3,10 +3,11 @@ package com.multiappshare.domain
 import android.content.Context
 import com.multiappshare.data.local.GroupDao
 import com.multiappshare.model.AppGroup
+import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.Serializable
+import timber.log.Timber
 import java.io.File
 
 @Serializable
@@ -22,10 +23,7 @@ class GroupsRepository(
     private val file = File(context.filesDir, "groups.json")
 
     suspend fun saveGroups(groups: List<AppGroup>) {
-        // 1. Save to Room
-        groupDao.insertGroups(groups)
-        
-        // 2. Auto-save transparent backup to JSON
+        groupDao.replaceAllGroups(groups)
         saveToJsonBackup(groups)
     }
 
@@ -35,7 +33,7 @@ class GroupsRepository(
             val jsonString = Json.encodeToString(backup)
             file.writeText(jsonString)
         } catch (e: Exception) {
-            // Fail silently or log
+            Timber.e(e, "Failed to write groups.json shadow backup")
         }
     }
 

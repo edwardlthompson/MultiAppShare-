@@ -53,10 +53,40 @@ class DeeplinkInstrumentedTest {
         }
     }
 
+    @Test
+    fun deeplinkGroup_existingName_expandsGroup() {
+        val groupName = "SmokeTestGroup"
+        seedGroup(groupName)
+        val uri = Uri.Builder()
+            .scheme(DeeplinkContract.SCHEME)
+            .authority(DeeplinkContract.HOST_GROUP)
+            .appendQueryParameter(DeeplinkContract.QUERY_GROUP_NAME, groupName)
+            .build()
+        val intent = Intent(Intent.ACTION_VIEW, uri).apply {
+            setClass(appContext, MainActivity::class.java)
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        }
+        ActivityScenario.launch<MainActivity>(intent).use {
+            dismissOnboardingIfPresent()
+            assertTrue(device.wait(Until.hasObject(By.text(groupsTitle)), 15_000))
+            assertTrue(device.wait(Until.hasObject(By.text(groupName)), 10_000))
+        }
+    }
+
+    private fun seedGroup(name: String) {
+        val db = androidx.room.Room.databaseBuilder(
+            appContext,
+            com.multiappshare.data.local.AppDatabase::class.java,
+            "multiappshare.db",
+        ).build()
+        kotlinx.coroutines.runBlocking {
+            val repo = com.multiappshare.domain.GroupsRepository(db.groupDao(), appContext)
+            repo.saveGroups(listOf(com.multiappshare.model.AppGroup(name = name, apps = emptyList(), isExpanded = false)))
+        }
+        db.close()
+    }
+
     private fun dismissOnboardingIfPresent() {
-        val manual = appContext.getString(R.string.onboarding_manual)
-        val btn = device.wait(Until.findObject(By.text(manual)), 2_000) ?: return
-        btn.click()
-        device.waitForIdle()
+        InstrumentedTestHelpers.dismissStartupDialogsUiAutomator(device, appContext)
     }
 }

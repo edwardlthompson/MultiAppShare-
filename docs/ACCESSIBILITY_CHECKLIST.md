@@ -1,6 +1,6 @@
 # Accessibility checklist (share and groups)
 
-Use this for **K.4** / **L.13** regression passes and **Milestone Q.1** in **`docs/BUILD_PLAN.md`**. Re-run after major UI changes to `MainScreen`, `MainActivityGroupUi`, or dialogs.
+Use this for **K.4** / **L.13** regression passes and **Milestone Q.1** in **`docs/BUILD_PLAN.md`**. Re-run after major UI changes to `MainScreen`, `ui/groups/`, `ui/sharing/`, or dialogs.
 
 ## TalkBack / screen reader
 

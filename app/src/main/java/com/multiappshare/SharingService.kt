@@ -27,7 +27,9 @@ class SharingService : Service() {
         const val EXTRA_APP_COMPONENTS = "com.multiappshare.EXTRA_APP_COMPONENTS"
         const val EXTRA_CURRENT_INDEX = "com.multiappshare.EXTRA_CURRENT_INDEX"
         const val ACTION_START_SHARING = "com.multiappshare.ACTION_START_SHARING"
-        private const val ACTION_STOP = "com.multiappshare.ACTION_STOP"
+        const val ACTION_STOP = "com.multiappshare.ACTION_STOP"
+        const val ACTION_SHARE_FAILED = "com.multiappshare.ACTION_SHARE_FAILED"
+        const val EXTRA_FAILED_COMPONENT = "com.multiappshare.EXTRA_FAILED_COMPONENT"
         private const val NOTIFICATION_ID = 1
         /** New ID so importance can move off IMPORTANCE_HIGH without users being stuck on the old channel. */
         private const val CHANNEL_ID = "sharing_service_channel_v2"
@@ -149,6 +151,12 @@ class SharingService : Service() {
             Timber.e(e, "Exception sharing with app: $componentString")
             val label = resolveShareTargetLabel(packageManager, componentString).ifBlank { componentString }
             Toast.makeText(this, getString(R.string.toast_sharing_failed, label), Toast.LENGTH_SHORT).show()
+            sendBroadcast(
+                Intent(ACTION_SHARE_FAILED).apply {
+                    setPackage(packageName)
+                    putExtra(EXTRA_FAILED_COMPONENT, componentString)
+                },
+            )
         }
     }
 

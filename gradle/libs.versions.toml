@@ -29,6 +29,8 @@ androidxBenchmark = "1.4.1"
 androidxUiAutomator = "2.3.0"
 paparazzi = "1.3.4"
 ksp = "2.0.21-1.0.28"
+detekt = "1.23.7"
+kover = "0.9.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -80,3 +82,5 @@ android-test = { id = "com.android.test", version.ref = "agp" }
 androidx-baselineprofile = { id = "androidx.baselineprofile", version.ref = "androidxBaselineProfilePlugin" }
 paparazzi = { id = "app.cash.paparazzi", version.ref = "paparazzi" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }

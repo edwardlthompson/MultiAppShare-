@@ -122,6 +122,7 @@
 
     <!-- MainViewModel toasts -->
     <string name="toast_export_failed">Export failed.</string>
+    <string name="toast_duplicate_group_name">A group with that name already exists.</string>
     <string name="toast_import_failed">Import failed: invalid backup file.</string>
     <string name="toast_wrong_passphrase">Wrong passphrase.</string>
     <string name="toast_import_complete">Import complete.</string>

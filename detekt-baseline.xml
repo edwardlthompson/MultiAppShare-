@@ -1,0 +1,173 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <CurrentIssues>
+    <ID>ArgumentListWrapping:BackupOperations.kt$BackupOperations$(R.string.toast_could_not_read_backup)</ID>
+    <ID>ArgumentListWrapping:BackupOperations.kt$BackupOperations$(R.string.toast_export_failed)</ID>
+    <ID>ArgumentListWrapping:BackupOperations.kt$BackupOperations$(R.string.toast_import_complete)</ID>
+    <ID>ArgumentListWrapping:BackupOperations.kt$BackupOperations$(R.string.toast_wrong_passphrase)</ID>
+    <ID>ArgumentListWrapping:BackupOperations.kt$BackupOperations$(context, context.getString(R.string.toast_could_not_read_backup), Toast.LENGTH_SHORT)</ID>
+    <ID>ArgumentListWrapping:BackupOperations.kt$BackupOperations$(context, context.getString(R.string.toast_export_failed), Toast.LENGTH_SHORT)</ID>
+    <ID>ArgumentListWrapping:BackupOperations.kt$BackupOperations$(context, context.getString(R.string.toast_import_complete), Toast.LENGTH_SHORT)</ID>
+    <ID>ArgumentListWrapping:BackupOperations.kt$BackupOperations$(context, context.getString(R.string.toast_wrong_passphrase), Toast.LENGTH_SHORT)</ID>
+    <ID>ArgumentListWrapping:CreateAutoGroupsUseCase.kt$CreateAutoGroupsUseCase$(Dispatchers.IO)</ID>
+    <ID>ArgumentListWrapping:CreateAutoGroupsUseCase.kt$CreateAutoGroupsUseCase$(name = name, apps = (existing.apps + apps).distinctBy { it.packageName + "/" + it.activityName })</ID>
+    <ID>ArgumentListWrapping:GroupDialogs.kt$(R.string.button_save)</ID>
+    <ID>ArgumentListWrapping:GroupDialogs.kt$(onClick = { onSaveApps(selectedApps.toList()) })</ID>
+    <ID>ArgumentListWrapping:GroupDialogs.kt$(selectedApps.toList())</ID>
+    <ID>ArgumentListWrapping:GroupDialogs.kt$(stringResource(R.string.button_save))</ID>
+    <ID>ArgumentListWrapping:GroupList.kt$(R.string.menu_delete_group)</ID>
+    <ID>ArgumentListWrapping:GroupList.kt$(stringResource(R.string.menu_delete_group), color = MaterialTheme.colorScheme.error)</ID>
+    <ID>ArgumentListWrapping:GroupReorderDialogs.kt$(Icons.Default.KeyboardArrowDown, contentDescription = stringResource(R.string.cd_move_down))</ID>
+    <ID>ArgumentListWrapping:GroupReorderDialogs.kt$(Icons.Default.KeyboardArrowUp, contentDescription = stringResource(R.string.cd_move_up))</ID>
+    <ID>ArgumentListWrapping:GroupReorderDialogs.kt$(R.string.button_save_order)</ID>
+    <ID>ArgumentListWrapping:GroupReorderDialogs.kt$(R.string.cd_move_down)</ID>
+    <ID>ArgumentListWrapping:GroupReorderDialogs.kt$(R.string.cd_move_up)</ID>
+    <ID>ArgumentListWrapping:GroupReorderDialogs.kt$(apps.toList())</ID>
+    <ID>ArgumentListWrapping:GroupReorderDialogs.kt$(onClick = { onSaveOrder(apps.toList()) })</ID>
+    <ID>ArgumentListWrapping:GroupReorderDialogs.kt$(onClick = { onSaveOrder(sortedGroups.toList()) })</ID>
+    <ID>ArgumentListWrapping:GroupReorderDialogs.kt$(sortedGroups.toList())</ID>
+    <ID>ArgumentListWrapping:GroupReorderDialogs.kt$(stringResource(R.string.button_save_order))</ID>
+    <ID>ArgumentListWrapping:MainActivity.kt$MainActivity$("application/json")</ID>
+    <ID>ArgumentListWrapping:MainActivity.kt$MainActivity$("application/json", "application/octet-stream", "*/*")</ID>
+    <ID>ArgumentListWrapping:MainActivity.kt$MainActivity$("http")</ID>
+    <ID>ArgumentListWrapping:MainActivity.kt$MainActivity$(ActivityResultContracts.CreateDocument("application/json"))</ID>
+    <ID>ArgumentListWrapping:MainActivity.kt$MainActivity$(R.string.history_content_link)</ID>
+    <ID>ArgumentListWrapping:MainActivity.kt$MainActivity$(R.string.history_content_text)</ID>
+    <ID>ArgumentListWrapping:MainActivity.kt$MainActivity$(R.string.notif_channel_compat_name)</ID>
+    <ID>ArgumentListWrapping:MainActivity.kt$MainActivity$(arrayOf("application/json", "application/octet-stream", "*/*"))</ID>
+    <ID>ArgumentListWrapping:MainActivity.kt$MainActivity$(channelId, getString(R.string.notif_channel_compat_name), NotificationManager.IMPORTANCE_DEFAULT)</ID>
+    <ID>ArgumentListWrapping:MainActivityDialogs.kt$(Intent(Intent.ACTION_VIEW, "https://venmo.com/code?user_id=1857304970395648420".toUri()))</ID>
+    <ID>ArgumentListWrapping:MainActivityDialogs.kt$(Intent.ACTION_VIEW, "https://venmo.com/code?user_id=1857304970395648420".toUri())</ID>
+    <ID>ArgumentListWrapping:MainActivityDialogs.kt$(R.string.button_delete)</ID>
+    <ID>ArgumentListWrapping:MainActivityDialogs.kt$(onClick = onConfirm)</ID>
+    <ID>ArgumentListWrapping:MainActivityDialogs.kt$(stringResource(R.string.button_delete), color = MaterialTheme.colorScheme.error)</ID>
+    <ID>ArgumentListWrapping:MainViewModel.kt$MainViewModel$(it, groupsRepository, group)</ID>
+    <ID>ArgumentListWrapping:MainViewModel.kt$MainViewModel$(it, groupsRepository, group, apps)</ID>
+    <ID>ArgumentListWrapping:MainViewModel.kt$MainViewModel$(it, groupsRepository, groups)</ID>
+    <ID>ArgumentListWrapping:SharingService.kt$SharingService$(this, REQUEST_CODE_STOP, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)</ID>
+    <ID>BlockCommentInitialStarAlignment:Type.kt$/* Other default text styles to override titleLarge = TextStyle( fontFamily = FontFamily.Default, fontWeight = FontWeight.Normal, fontSize = 22.sp, lineHeight = 28.sp, letterSpacing = 0.sp ), labelSmall = TextStyle( fontFamily = FontFamily.Default, fontWeight = FontWeight.Medium, fontSize = 11.sp, lineHeight = 16.sp, letterSpacing = 0.5.sp ) */</ID>
+    <ID>CyclomaticComplexMethod:AutoGroupHelper.kt$AutoGroupHelper$fun buildAutoGroups( allApps: List&lt;AppInfo&gt;, existingGroups: List&lt;AppGroup&gt;, append: Boolean, singleCategoryOnly: Int?, ): List&lt;AppGroup&gt;</ID>
+    <ID>CyclomaticComplexMethod:CreateAutoGroupsUseCase.kt$CreateAutoGroupsUseCase$suspend operator fun invoke(allApps: List&lt;AppInfo&gt;, append: Boolean, singleCategoryOnly: Int? = null)</ID>
+    <ID>CyclomaticComplexMethod:MainScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun MainScreen( onStartSharing: (AppGroup, MainViewModel) -&gt; Unit, onNextStep: () -&gt; Unit, onReplayShareStep: () -&gt; Unit = {}, onPreviousShareStep: () -&gt; Unit = {}, packageManager: PackageManager, onExport: () -&gt; Unit, onImport: () -&gt; Unit, viewModel: MainViewModel = hiltViewModel(), )</ID>
+    <ID>CyclomaticComplexMethod:SharingInProgress.kt$@Composable fun SharingInProgress( mimeType: String?, text: String?, uris: List&lt;Uri&gt;?, currentIndex: Int, totalApps: Int, appComponents: List&lt;String&gt;, packageManager: PackageManager, onReplayCurrentStep: () -&gt; Unit = {}, onPreviousStep: () -&gt; Unit = {}, onNextStep: () -&gt; Unit, )</ID>
+    <ID>CyclomaticComplexMethod:SharingService.kt$SharingService$private fun shareWithApp(uris: List&lt;Uri&gt;?, text: String?, mimeType: String, componentString: String)</ID>
+    <ID>EmptyFunctionBlock:MainViewModelTest.kt$MainViewModelTest.&lt;no name provided&gt;${}</ID>
+    <ID>FinalNewline:ExampleUnitTest.kt$com.multiappshare.ExampleUnitTest.kt</ID>
+    <ID>FinalNewline:Type.kt$com.multiappshare.ui.theme.Type.kt</ID>
+    <ID>ImportOrdering:AppIconFetcher.kt$import android.content.ComponentName import android.content.pm.PackageManager import coil.ImageLoader import coil.decode.DataSource import coil.fetch.DrawableResult import coil.fetch.FetchResult import coil.fetch.Fetcher import coil.request.Options import android.graphics.drawable.Drawable import android.util.LruCache import com.multiappshare.model.AppInfo</ID>
+    <ID>ImportOrdering:BackupCipher.kt$import kotlinx.serialization.Serializable import kotlinx.serialization.encodeToString import kotlinx.serialization.json.Json import java.security.SecureRandom import javax.crypto.Cipher import javax.crypto.SecretKeyFactory import javax.crypto.spec.GCMParameterSpec import javax.crypto.spec.PBEKeySpec import javax.crypto.spec.SecretKeySpec import java.util.Base64</ID>
+    <ID>ImportOrdering:BackupDialogs.kt$import androidx.compose.foundation.layout.Column import androidx.compose.foundation.layout.Spacer import androidx.compose.foundation.layout.fillMaxWidth import androidx.compose.foundation.layout.height import androidx.compose.material3.AlertDialog import androidx.compose.material3.MaterialTheme import androidx.compose.material3.OutlinedTextField import androidx.compose.material3.Text import androidx.compose.material3.TextButton import androidx.compose.runtime.Composable import androidx.compose.runtime.mutableStateOf import androidx.compose.runtime.remember import androidx.compose.runtime.getValue import androidx.compose.runtime.setValue import androidx.compose.ui.Modifier import androidx.compose.ui.res.stringResource import androidx.compose.ui.text.input.PasswordVisualTransformation import androidx.compose.ui.unit.dp</ID>
+    <ID>ImportOrdering:BackupOperations.kt$import android.content.Context import android.net.Uri import android.widget.Toast import com.multiappshare.crypto.BackupCipher import com.multiappshare.domain.GroupsRepository import kotlinx.coroutines.CoroutineScope import kotlinx.coroutines.Dispatchers import kotlinx.coroutines.launch import kotlinx.coroutines.withContext import javax.crypto.AEADBadTagException import timber.log.Timber</ID>
+    <ID>ImportOrdering:ExampleUnitTest.kt$import org.junit.Test import org.junit.Assert.*</ID>
+    <ID>ImportOrdering:GroupEditViewModel.kt$import com.multiappshare.domain.GroupsRepository import androidx.lifecycle.ViewModel import dagger.hilt.android.lifecycle.HiltViewModel import javax.inject.Inject</ID>
+    <ID>ImportOrdering:MainViewModel.kt$import android.content.Context import android.content.pm.PackageManager import androidx.compose.runtime.getValue import androidx.compose.runtime.mutableStateOf import androidx.compose.runtime.setValue import androidx.lifecycle.ViewModel import androidx.lifecycle.viewModelScope import com.multiappshare.domain.GroupNameHelper import com.multiappshare.domain.GroupsRepository import com.multiappshare.domain.HistoryRepository import com.multiappshare.domain.SettingsRepository import com.multiappshare.model.AppGroup import com.multiappshare.model.AppInfo import com.multiappshare.model.HistoryItem import dagger.hilt.android.lifecycle.HiltViewModel import dagger.hilt.android.qualifiers.ApplicationContext import android.net.Uri import kotlinx.coroutines.Dispatchers import kotlinx.coroutines.flow.MutableStateFlow import kotlinx.coroutines.flow.StateFlow import kotlinx.coroutines.flow.first import kotlinx.coroutines.launch import kotlinx.coroutines.sync.Mutex import kotlinx.coroutines.sync.withLock import kotlinx.coroutines.withContext import javax.inject.Inject</ID>
+    <ID>ImportOrdering:MainViewModelTest.kt$import android.content.Context import android.content.pm.PackageManager import androidx.test.core.app.ApplicationProvider import com.multiappshare.domain.GroupsRepository import com.multiappshare.domain.HistoryRepository import com.multiappshare.domain.SettingsRepository import com.multiappshare.model.AppGroup import io.mockk.coEvery import io.mockk.every import io.mockk.mockk import kotlinx.coroutines.Dispatchers import kotlinx.coroutines.flow.flowOf import kotlinx.coroutines.flow.filterIsInstance import kotlinx.coroutines.flow.first import kotlinx.coroutines.runBlocking import kotlinx.coroutines.ExperimentalCoroutinesApi import kotlinx.coroutines.test.UnconfinedTestDispatcher import kotlinx.coroutines.test.resetMain import kotlinx.coroutines.test.setMain import org.junit.After import org.junit.Assert.assertEquals import org.junit.Before import org.junit.Test import org.junit.runner.RunWith import org.robolectric.RobolectricTestRunner import org.robolectric.annotation.Config import timber.log.Timber</ID>
+    <ID>ImportOrdering:RepositoryModule.kt$import android.content.Context import com.multiappshare.domain.GroupsRepository import com.multiappshare.domain.HistoryRepository import com.multiappshare.domain.SettingsRepository import com.multiappshare.data.local.GroupDao import com.multiappshare.data.local.HistoryDao import dagger.Module import dagger.Provides import dagger.hilt.InstallIn import dagger.hilt.android.qualifiers.ApplicationContext import dagger.hilt.components.SingletonComponent import javax.inject.Singleton</ID>
+    <ID>LongMethod:GroupList.kt$@Composable fun GroupItem( group: AppGroup, onModifyClick: () -&gt; Unit, onReorderClick: () -&gt; Unit, onDeleteClick: () -&gt; Unit, onToggleExpanded: () -&gt; Unit, onGroupClick: () -&gt; Unit, onAddShortcutClick: () -&gt; Unit, inShareMode: Boolean, packageManager: PackageManager, )</ID>
+    <ID>LongMethod:MainScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun MainScreen( onStartSharing: (AppGroup, MainViewModel) -&gt; Unit, onNextStep: () -&gt; Unit, onReplayShareStep: () -&gt; Unit = {}, onPreviousShareStep: () -&gt; Unit = {}, packageManager: PackageManager, onExport: () -&gt; Unit, onImport: () -&gt; Unit, viewModel: MainViewModel = hiltViewModel(), )</ID>
+    <ID>LongMethod:MainScreenContent.kt$@Composable internal fun MainScreenDialogsHost( state: MainUiState.Success, viewModel: MainViewModel, packageManager: PackageManager, showCreateGroupDialog: Boolean, onShowCreateGroupDialog: (Boolean) -&gt; Unit, showModifyGroupDialog: AppGroup?, onShowModifyGroupDialog: (AppGroup?) -&gt; Unit, showReorderDialog: AppGroup?, onShowReorderDialog: (AppGroup?) -&gt; Unit, showSortGroupsDialog: Boolean, onShowSortGroupsDialog: (Boolean) -&gt; Unit, groupToDelete: AppGroup?, onGroupToDelete: (AppGroup?) -&gt; Unit, showHistoryDialog: Boolean, onShowHistoryDialog: (Boolean) -&gt; Unit, showAboutDialog: Boolean, onShowAboutDialog: (Boolean) -&gt; Unit, )</ID>
+    <ID>LongMethod:OnboardingDialog.kt$@Composable fun OnboardingDialog(onAutofill: () -&gt; Unit, onManual: () -&gt; Unit)</ID>
+    <ID>LongMethod:SharingInProgress.kt$@Composable fun SharingInProgress( mimeType: String?, text: String?, uris: List&lt;Uri&gt;?, currentIndex: Int, totalApps: Int, appComponents: List&lt;String&gt;, packageManager: PackageManager, onReplayCurrentStep: () -&gt; Unit = {}, onPreviousStep: () -&gt; Unit = {}, onNextStep: () -&gt; Unit, )</ID>
+    <ID>LongParameterList:DashboardViewModel.kt$DashboardViewModel$( private val groupsRepository: GroupsRepository, private val historyRepository: HistoryRepository, private val settingsRepository: SettingsRepository, private val createAutoGroupsUseCase: CreateAutoGroupsUseCase, private val getCompatibleAppsUseCase: GetCompatibleAppsUseCase, private val listInstalledAppsUseCase: ListInstalledAppsUseCase, @ApplicationContext private val context: Context, )</ID>
+    <ID>LongParameterList:MainScreenContent.kt$( state: MainUiState.Success, viewModel: MainViewModel, packageManager: PackageManager, showCreateGroupDialog: Boolean, onShowCreateGroupDialog: (Boolean) -&gt; Unit, showModifyGroupDialog: AppGroup?, onShowModifyGroupDialog: (AppGroup?) -&gt; Unit, showReorderDialog: AppGroup?, onShowReorderDialog: (AppGroup?) -&gt; Unit, showSortGroupsDialog: Boolean, onShowSortGroupsDialog: (Boolean) -&gt; Unit, groupToDelete: AppGroup?, onGroupToDelete: (AppGroup?) -&gt; Unit, showHistoryDialog: Boolean, onShowHistoryDialog: (Boolean) -&gt; Unit, showAboutDialog: Boolean, onShowAboutDialog: (Boolean) -&gt; Unit, )</ID>
+    <ID>LongParameterList:MainScreenContent.kt$( state: MainUiState.Success, viewModel: MainViewModel, shareSession: ShareSessionState, packageManager: PackageManager, groupFilterQuery: String, onGroupFilterChange: (String) -&gt; Unit, onShowCreateGroupDialog: (Boolean) -&gt; Unit, onShowModifyGroupDialog: (AppGroup?) -&gt; Unit, onShowReorderDialog: (AppGroup?) -&gt; Unit, onGroupToDelete: (AppGroup?) -&gt; Unit, onStartSharing: (AppGroup, MainViewModel) -&gt; Unit, )</ID>
+    <ID>LongParameterList:SharingInProgress.kt$( mimeType: String?, text: String?, uris: List&lt;Uri&gt;?, currentIndex: Int, totalApps: Int, appComponents: List&lt;String&gt;, packageManager: PackageManager, onReplayCurrentStep: () -&gt; Unit = {}, onPreviousStep: () -&gt; Unit = {}, onNextStep: () -&gt; Unit, )</ID>
+    <ID>MaxLineLength:BackupOperations.kt$BackupOperations$Toast.makeText(context, context.getString(R.string.toast_could_not_read_backup), Toast.LENGTH_SHORT).show()</ID>
+    <ID>MaxLineLength:BackupOperations.kt$BackupOperations$Toast.makeText(context, context.getString(R.string.toast_export_failed), Toast.LENGTH_SHORT).show()</ID>
+    <ID>MaxLineLength:BackupOperations.kt$BackupOperations$Toast.makeText(context, context.getString(R.string.toast_import_complete), Toast.LENGTH_SHORT).show()</ID>
+    <ID>MaxLineLength:BackupOperations.kt$BackupOperations$Toast.makeText(context, context.getString(R.string.toast_wrong_passphrase), Toast.LENGTH_SHORT).show()</ID>
+    <ID>MaxLineLength:CreateAutoGroupsUseCase.kt$CreateAutoGroupsUseCase$AppGroup(name = name, apps = (existing.apps + apps).distinctBy { it.packageName + "/" + it.activityName })</ID>
+    <ID>MaxLineLength:CreateAutoGroupsUseCase.kt$CreateAutoGroupsUseCase$nameLower.contains("contact") || pkgLower.contains("contact") || nameLower.contains("people") -&gt; "Contacts"</ID>
+    <ID>MaxLineLength:CreateAutoGroupsUseCase.kt$CreateAutoGroupsUseCase$nameLower.contains("mail") || pkgLower.contains("email") || pkgLower.contains("gmail") || pkgLower.contains("outlook") -&gt; "Email"</ID>
+    <ID>MaxLineLength:CreateAutoGroupsUseCase.kt$CreateAutoGroupsUseCase$nameLower.contains("message") || nameLower.contains("chat") || nameLower.contains("messenger") || pkgLower.contains("messenger") || pkgLower.contains("telegram") || pkgLower.contains("whatsapp") -&gt; "Messaging"</ID>
+    <ID>MaxLineLength:CreateAutoGroupsUseCase.kt$CreateAutoGroupsUseCase$suspend operator</ID>
+    <ID>MaxLineLength:DashboardViewModel.kt$DashboardUiState$Success : DashboardUiState</ID>
+    <ID>MaxLineLength:GroupDialogs.kt$confirmButton = { Button(onClick = { onSaveApps(selectedApps.toList()) }) { Text(stringResource(R.string.button_save)) } }</ID>
+    <ID>MaxLineLength:GroupList.kt$text = { Text(stringResource(R.string.menu_delete_group), color = MaterialTheme.colorScheme.error) }</ID>
+    <ID>MaxLineLength:GroupMutations.kt$GroupMutations$suspend</ID>
+    <ID>MaxLineLength:GroupReorderDialogs.kt$Icon(Icons.Default.KeyboardArrowDown, contentDescription = stringResource(R.string.cd_move_down))</ID>
+    <ID>MaxLineLength:GroupReorderDialogs.kt$Icon(Icons.Default.KeyboardArrowUp, contentDescription = stringResource(R.string.cd_move_up))</ID>
+    <ID>MaxLineLength:GroupReorderDialogs.kt$confirmButton = { Button(onClick = { onSaveOrder(apps.toList()) }) { Text(stringResource(R.string.button_save_order)) } }</ID>
+    <ID>MaxLineLength:GroupReorderDialogs.kt$confirmButton = { Button(onClick = { onSaveOrder(sortedGroups.toList()) }) { Text(stringResource(R.string.button_save_order)) } }</ID>
+    <ID>MaxLineLength:MainActivity.kt$MainActivity$if (text.startsWith("http")) getString(R.string.history_content_link) else getString(R.string.history_content_text)</ID>
+    <ID>MaxLineLength:MainActivity.kt$MainActivity$onImport = { importLauncher.launch(arrayOf("application/json", "application/octet-stream", "*/*")) }</ID>
+    <ID>MaxLineLength:MainActivity.kt$MainActivity$private</ID>
+    <ID>MaxLineLength:MainActivity.kt$MainActivity$val channel = NotificationChannel(channelId, getString(R.string.notif_channel_compat_name), NotificationManager.IMPORTANCE_DEFAULT)</ID>
+    <ID>MaxLineLength:MainActivityDialogs.kt$TextButton(onClick = onConfirm) { Text(stringResource(R.string.button_delete), color = MaterialTheme.colorScheme.error) }</ID>
+    <ID>MaxLineLength:MainActivityDialogs.kt$context.startActivity(Intent(Intent.ACTION_VIEW, "https://venmo.com/code?user_id=1857304970395648420".toUri()))</ID>
+    <ID>MaxLineLength:MainViewModel.kt$MainViewModel$fun incrementGroupUsage(group: AppGroup)</ID>
+    <ID>MaxLineLength:MainViewModel.kt$MainViewModel$fun toggleGroupExpanded(group: AppGroup)</ID>
+    <ID>MaxLineLength:MainViewModel.kt$MainViewModel$fun updateGroupApps(group: AppGroup, apps: List&lt;AppInfo&gt;)</ID>
+    <ID>MaxLineLength:MainViewModel.kt$MainViewModel$fun updateGroupsOrder(groups: List&lt;AppGroup&gt;)</ID>
+    <ID>MaxLineLength:SharingService.kt$SharingService$return PendingIntent.getService(this, REQUEST_CODE_STOP, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)</ID>
+    <ID>MaximumLineLength:BackupOperations.kt$BackupOperations$ </ID>
+    <ID>MaximumLineLength:CreateAutoGroupsUseCase.kt$CreateAutoGroupsUseCase$ </ID>
+    <ID>MaximumLineLength:DashboardViewModel.kt$DashboardUiState$ </ID>
+    <ID>MaximumLineLength:GroupDialogs.kt$ </ID>
+    <ID>MaximumLineLength:GroupList.kt$ </ID>
+    <ID>MaximumLineLength:GroupMutations.kt$GroupMutations$ </ID>
+    <ID>MaximumLineLength:GroupReorderDialogs.kt$ </ID>
+    <ID>MaximumLineLength:MainActivity.kt$MainActivity$ </ID>
+    <ID>MaximumLineLength:MainActivityDialogs.kt$ </ID>
+    <ID>MaximumLineLength:MainViewModel.kt$MainViewModel$ </ID>
+    <ID>MaximumLineLength:SharingService.kt$SharingService$ </ID>
+    <ID>MultiLineIfElse:MainScreen.kt$when (val state = uiState) { is MainUiState.Loading -&gt; CircularProgressIndicator(modifier = Modifier.align(Alignment.Center)) is MainUiState.Success -&gt; { MainScreenDialogsHost( state = state, viewModel = viewModel, packageManager = packageManager, showCreateGroupDialog = showCreateGroupDialog, onShowCreateGroupDialog = { showCreateGroupDialog = it }, showModifyGroupDialog = showModifyGroupDialog, onShowModifyGroupDialog = { showModifyGroupDialog = it }, showReorderDialog = showReorderDialog, onShowReorderDialog = { showReorderDialog = it }, showSortGroupsDialog = showSortGroupsDialog, onShowSortGroupsDialog = { showSortGroupsDialog = it }, groupToDelete = groupToDelete, onGroupToDelete = { groupToDelete = it }, showHistoryDialog = showHistoryDialog, onShowHistoryDialog = { showHistoryDialog = it }, showAboutDialog = showAboutDialog, onShowAboutDialog = { showAboutDialog = it }, ) MainScreenGroupsSection( state = state, viewModel = viewModel, shareSession = shareSession, packageManager = packageManager, groupFilterQuery = groupFilterQuery, onGroupFilterChange = { groupFilterQuery = it }, onShowCreateGroupDialog = { showCreateGroupDialog = it }, onShowModifyGroupDialog = { showModifyGroupDialog = it }, onShowReorderDialog = { showReorderDialog = it }, onGroupToDelete = { groupToDelete = it }, onStartSharing = onStartSharing, ) } }</ID>
+    <ID>MultiLineIfElse:SharingInProgress.kt$stringResource(R.string.sharing_content_media)</ID>
+    <ID>MultiLineIfElse:SharingInProgress.kt$stringResource(R.string.sharing_content_media_n, uris.size)</ID>
+    <ID>MultiLineIfElse:SharingInProgress.kt$stringResource(R.string.sharing_content_photo)</ID>
+    <ID>MultiLineIfElse:SharingInProgress.kt$stringResource(R.string.sharing_content_photos_n, uris.size)</ID>
+    <ID>MultiLineIfElse:SharingInProgress.kt$stringResource(R.string.sharing_content_video)</ID>
+    <ID>MultiLineIfElse:SharingInProgress.kt$stringResource(R.string.sharing_content_videos_n, uris.size)</ID>
+    <ID>NestedBlockDepth:ExecuteSequentialShareUseCase.kt$ExecuteSequentialShareUseCase$operator fun invoke(uris: List&lt;Uri&gt;?, text: String?, mime: String, components: List&lt;String&gt;, index: Int)</ID>
+    <ID>NestedBlockDepth:MainActivity.kt$MainActivity$private fun shareStep(uris: List&lt;Uri&gt;?, text: String?, mime: String, components: List&lt;String&gt;, index: Int)</ID>
+    <ID>NestedBlockDepth:SharingService.kt$SharingService$private fun shareWithApp(uris: List&lt;Uri&gt;?, text: String?, mimeType: String, componentString: String)</ID>
+    <ID>NewLineAtEndOfFile:ExampleUnitTest.kt$com.multiappshare.ExampleUnitTest.kt</ID>
+    <ID>NewLineAtEndOfFile:Type.kt$com.multiappshare.ui.theme.Type.kt</ID>
+    <ID>NoTrailingSpaces:CreateAutoGroupsUseCase.kt$CreateAutoGroupsUseCase$ </ID>
+    <ID>NoTrailingSpaces:GetCompatibleAppsUseCase.kt$GetCompatibleAppsUseCase$ </ID>
+    <ID>NoTrailingSpaces:GlassySurface.kt$ </ID>
+    <ID>NoTrailingSpaces:GroupsRepository.kt$GroupsRepository$ </ID>
+    <ID>NoTrailingSpaces:HistoryRepository.kt$HistoryRepository$ </ID>
+    <ID>NoTrailingSpaces:ShareSuccessAnimation.kt$ </ID>
+    <ID>NoTrailingSpaces:SharingService.kt$SharingService$ </ID>
+    <ID>NoUnusedImports:AppListResolver.kt$com.multiappshare.AppListResolver.kt</ID>
+    <ID>NoUnusedImports:GroupDialogs.kt$com.multiappshare.ui.groups.GroupDialogs.kt</ID>
+    <ID>NoWildcardImports:ExampleUnitTest.kt$import org.junit.Assert.*</ID>
+    <ID>ParameterListWrapping:CreateAutoGroupsUseCase.kt$CreateAutoGroupsUseCase$(allApps: List&lt;AppInfo&gt;, append: Boolean, singleCategoryOnly: Int? = null)</ID>
+    <ID>ParameterListWrapping:DashboardViewModel.kt$DashboardUiState.Success$(val groups: List&lt;AppGroup&gt;, val allApps: List&lt;AppInfo&gt;, val history: List&lt;HistoryItem&gt;)</ID>
+    <ID>ParameterListWrapping:MainViewModel.kt$MainViewModel$(group: AppGroup)</ID>
+    <ID>ParameterListWrapping:MainViewModel.kt$MainViewModel$(group: AppGroup, apps: List&lt;AppInfo&gt;)</ID>
+    <ID>ParameterListWrapping:MainViewModel.kt$MainViewModel$(groups: List&lt;AppGroup&gt;)</ID>
+    <ID>PropertyWrapping:MainActivity.kt$MainActivity$private val exportLauncher = registerForActivityResult(ActivityResultContracts.CreateDocument("application/json")) { uri -&gt; if (uri != null) { val p = pendingExportPassphrase if (p != null) { viewModel.exportGroupsToUri(uri, p) } } pendingExportPassphrase?.fill('\u0000') pendingExportPassphrase = null }</ID>
+    <ID>PropertyWrapping:MainActivity.kt$MainActivity$val channel = NotificationChannel(channelId, getString(R.string.notif_channel_compat_name), NotificationManager.IMPORTANCE_DEFAULT)</ID>
+    <ID>ReturnCount:BackupOperations.kt$BackupOperations$private suspend fun readBackupText(context: Context, uri: Uri): String?</ID>
+    <ID>ReturnCount:GroupsRepository.kt$GroupsRepository$suspend fun loadGroups(): List&lt;AppGroup&gt;</ID>
+    <ID>ReturnCount:HistoryRepository.kt$HistoryRepository$suspend fun loadHistory(): List&lt;HistoryItem&gt;</ID>
+    <ID>ReturnCount:ShareTargetLabels.kt$fun resolveShareTargetLabel(packageManager: PackageManager, componentKey: String): String</ID>
+    <ID>ReturnCount:SharingService.kt$SharingService$override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int</ID>
+    <ID>SpacingBetweenDeclarationsWithAnnotations:ShareTargetLabels.kt$@Suppress("DEPRECATION") val info = packageManager.getActivityInfo(cn, 0)</ID>
+    <ID>SpacingBetweenDeclarationsWithComments:SharingService.kt$SharingService.Companion$/** New ID so importance can move off IMPORTANCE_HIGH without users being stuck on the old channel. */</ID>
+    <ID>TooGenericExceptionCaught:AppDatabase.kt$Converters$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:BackupOperations.kt$BackupOperations$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:GroupsRepository.kt$GroupsRepository$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:HistoryRepository.kt$HistoryRepository$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:SharingService.kt$SharingService$e: Exception</ID>
+    <ID>TooGenericExceptionThrown:AppIconFetcher.kt$AppIconFetcher$throw Exception("Icon not found for ${appInfo.packageName}")</ID>
+    <ID>UnusedPrivateProperty:GroupEditViewModel.kt$GroupEditViewModel$private val groupsRepository: GroupsRepository</ID>
+    <ID>UnusedPrivateProperty:ShareFlowViewModel.kt$ShareFlowViewModel$private val executeSequentialShareUseCase: ExecuteSequentialShareUseCase</ID>
+    <ID>WildcardImport:ExampleUnitTest.kt$import org.junit.Assert.*</ID>
+    <ID>Wrapping:GroupDialogs.kt$Button(onClick = { onSaveApps(selectedApps.toList()) }) { Text(stringResource(R.string.button_save)) }</ID>
+    <ID>Wrapping:GroupDialogs.kt$Text(stringResource(R.string.button_save))</ID>
+    <ID>Wrapping:GroupDialogs.kt$onSaveApps(selectedApps.toList())</ID>
+    <ID>Wrapping:GroupList.kt$;</ID>
+    <ID>Wrapping:GroupReorderDialogs.kt$Button(onClick = { onSaveOrder(apps.toList()) }) { Text(stringResource(R.string.button_save_order)) }</ID>
+    <ID>Wrapping:GroupReorderDialogs.kt$Button(onClick = { onSaveOrder(sortedGroups.toList()) }) { Text(stringResource(R.string.button_save_order)) }</ID>
+    <ID>Wrapping:GroupReorderDialogs.kt$Text(stringResource(R.string.button_save_order))</ID>
+    <ID>Wrapping:GroupReorderDialogs.kt$onSaveOrder(apps.toList())</ID>
+    <ID>Wrapping:GroupReorderDialogs.kt$onSaveOrder(sortedGroups.toList())</ID>
+    <ID>Wrapping:MainActivityDialogs.kt$Text(stringResource(R.string.button_delete), color = MaterialTheme.colorScheme.error)</ID>
+    <ID>Wrapping:MainScreen.kt$;</ID>
+    <ID>Wrapping:MainViewModel.kt$MainViewModel$GroupMutations.updateApps(it, groupsRepository, group, apps)</ID>
+  </CurrentIssues>
+</SmellBaseline>

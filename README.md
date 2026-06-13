@@ -21,7 +21,11 @@
 - **Precise Ranking Controls**: Quickly adjust group application order using intuitive Up/Down icons avoiding press-drag conflicts.
 - **History Logs & Metrics Tracking**: Records backgrounds outputs timestamped so share rates and node overflows remain traceable easily.
 - **Persistent expand-collapse saves layout defaults**: Remembers drawer layouts so overlay sheet sizes don't overflow crowded screens.
-- **JSON Backup & Restore**: Easily Export or Import your custom groups list to JSON to transfer setups between devices securely.
+- **Encrypted JSON Backup & Restore**: Export or import your custom groups with AES-256-GCM passphrase encryption; import guarded against oversized files.
+- **Reliable group persistence**: Delete, import, and reorder operations sync correctly to Room storage.
+- **Duplicate-safe group names**: Trimmed names are validated so you cannot create two groups with the same label.
+- **Share session resilience**: Sequential share state survives screen rotation; new share intents reset stale sessions; failed targets are skipped automatically.
+- **Deeplink group expand**: Cold launch `multiappshare://group?name=YourGroup` opens and expands the matching group.
 - **Home Screen Shortcuts**: Pin highly frequented group bundles directly to your launcher desktop using safe Compat shortcut integrations.
 
 ## 🛠 Tech Stack
@@ -64,7 +68,7 @@ graph TD
     C -->|Depends On| D
 ```
 
-Primary **home / share-overlay Compose UI** in `:app` lives in `MainScreen.kt`, `MainActivityGroupUi.kt`, and `MainActivityDialogs.kt`; `:feature-dashboard` remains wired for future dashboard consolidation (see `docs/ADR-001-feature-dashboard.md`).
+Primary **home / share-overlay Compose UI** in `:app` lives in `MainScreen.kt`, `ui/groups/`, `ui/sharing/`, and `ui/main/`; dashboard history/about dialogs live in `:feature-dashboard` (see [`docs/adr/0001-feature-dashboard.md`](docs/adr/0001-feature-dashboard.md)).
 
 ### 🔒 Strict Visibility & Encapsulation
 To enforce layout encapsulation and prevent leakage, candidate node sets consume `internal` modifier layouts:
@@ -94,6 +98,7 @@ This application is built with **Privacy-by-Design** and contains **NO Analytics
 
 - **100% Free and Open-Source** under the [MIT License](LICENSE).
 - **F-Droid Readiness**: Fastlane metadata inclusive of reproducible building recipes included.
+- **Agent / maintainer docs**: [`AGENTS.md`](AGENTS.md), [`AGENT_MEMORY.md`](AGENT_MEMORY.md), living roadmap [`docs/BUILD_PLAN.md`](docs/BUILD_PLAN.md).
 
 **Third-party OSS libraries** (partial list for attribution): Kotlin, Jetpack Compose & Material 3, AndroidX (Room, DataStore, Lifecycle), Dagger Hilt, Coil, Kotlinx Serialization, Timber, LeakCanary (debug-only). Full dependency graph is in Gradle version catalogs (`gradle/libs.versions.toml`).
 
@@ -104,7 +109,7 @@ This application is built with **Privacy-by-Design** and contains **NO Analytics
 ### 📥 Download the APK (Recommended)
 You can download the latest pre-built, optimized version of the app from the [Releases](https://github.com/edwardlthompson/MultiAppShare-/releases) page. 
 
-1. Download the `MultiAppShare-v1.8.0-release.apk` (approx. 3.2 MB).
+1. Download the latest `MultiAppShare-v1.9.0-release.apk` from [Releases](https://github.com/edwardlthompson/MultiAppShare-/releases).
 2. Open the file to install.
 3. If prompted, allow "Install from unknown sources".
 

@@ -111,6 +111,7 @@
     <string name="history_content_media">Média%1$s</string>
 
     <string name="toast_export_failed">Échec de l’export.</string>
+    <string name="toast_duplicate_group_name">Un groupe avec ce nom existe déjà.</string>
     <string name="toast_import_failed">Échec de l’import : fichier de sauvegarde invalide.</string>
     <string name="toast_wrong_passphrase">Phrase secrète incorrecte.</string>
     <string name="toast_import_complete">Import terminé.</string>

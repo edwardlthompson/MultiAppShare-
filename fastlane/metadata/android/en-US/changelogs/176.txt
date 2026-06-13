@@ -1,0 +1,15 @@
+# Release Notes: MultiAppShare v1.9.0
+
+### Bug hardening & reliability (Milestone S)
+
+- **Data integrity:** Group delete/import now persists correctly via Room replace-all sync; history capped at 50 rows on save; duplicate group names rejected.
+- **Backup:** Fixed export passphrase race; added import size guard and clearer export failure handling.
+- **Sharing:** Share overlay state survives rotation; new SEND payloads reset the prior session; failed share targets are skipped automatically.
+- **Deeplinks:** `multiappshare://group?name=…` expands the target group after cold start.
+- **Security:** Plaintext JSON shadow backups excluded from Android Auto Backup.
+
+### Architecture & CI (Milestone R)
+
+- Modular UI refactor (`ui/groups/`, `ui/sharing/`, `:feature-dashboard` dialogs).
+- CodeQL, detekt, Kover, file-size CI gates; reproducible build scaffolding.
+- Agent/maintainer docs: `AGENTS.md`, `AGENT_MEMORY.md`, archived roadmap in `docs/COMPLETED_TASKS.md`.

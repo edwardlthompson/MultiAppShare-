@@ -40,6 +40,7 @@ dependencies {
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
     implementation(libs.kotlinx.serialization.json)
+    implementation(libs.timber)
     
     // Core Domain depends on Core Database to access repositories/sources
     implementation(project(":core-database"))

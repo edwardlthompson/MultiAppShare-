@@ -3,10 +3,11 @@ package com.multiappshare.domain
 import android.content.Context
 import com.multiappshare.data.local.HistoryDao
 import com.multiappshare.model.HistoryItem
+import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.Serializable
+import timber.log.Timber
 import java.io.File
 
 @Serializable
@@ -23,10 +24,7 @@ class HistoryRepository(
 
     suspend fun saveHistory(history: List<HistoryItem>) {
         val limited = history.take(50)
-        // 1. Save to Room
-        historyDao.insertHistory(limited)
-        
-        // 2. Auto-save transparent backup to JSON
+        historyDao.replaceAllHistory(limited)
         saveToJsonBackup(limited)
     }
 
@@ -36,7 +34,7 @@ class HistoryRepository(
             val jsonString = Json.encodeToString(backup)
             file.writeText(jsonString)
         } catch (e: Exception) {
-            // Fail silently or log
+            Timber.e(e, "Failed to write history.json shadow backup")
         }
     }
 

@@ -41,4 +41,17 @@ This is a **FOSS-first** project:
 ## 🌳 Git Workflow
 
 - **Commits**: Use **Conventional Commits** (e.g., `feat:`, `fix:`, `docs:`, `chore:`).
-- **Branching**: Branch off `develop` (or a feature node) before targeting `main` releases layout.
+- **Branching**: Branch off `main` (feature branches) before opening a PR.
+- **Required checks**: PRs must pass CI (`build` job: lint, test, assembleDebug) and CodeQL when enabled. Maintainer enables branch protection on `main` — see [`docs/BRANCH_PROTECTION.md`](docs/BRANCH_PROTECTION.md).
+- **Agent guidelines**: See [`AGENTS.md`](AGENTS.md) and [`docs/BUILD_PLAN.md`](docs/BUILD_PLAN.md).
+
+---
+
+## 🔧 Optional local hooks
+
+```bash
+pip install pre-commit   # or brew install pre-commit
+pre-commit install
+```
+
+See [`.pre-commit-config.yaml`](.pre-commit-config.yaml). Hooks are opt-in per developer.

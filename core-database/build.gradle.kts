@@ -47,7 +47,9 @@ dependencies {
     ksp(libs.androidx.room.compiler)
     implementation(libs.kotlinx.serialization.json)
     
-    // We may need model dependencies if it's placed in a separate module later.
+    testImplementation(libs.junit)
+    testImplementation(libs.robolectric)
+    testImplementation(libs.androidx.test.core)
     // For now, it will use existing model which is currently in app/model folder.
     // Wait, if we move Database without moving Model, we cannot import Model!
     // So Model must ALSO be moved or made a module, or placed in core-database!

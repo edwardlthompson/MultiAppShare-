@@ -1,17 +1,19 @@
 package com.multiappshare.data.local
 
-import androidx.room.Database
-import androidx.room.RoomDatabase
-import androidx.room.TypeConverter
-import androidx.room.TypeConverters
+import android.util.Log
 import androidx.room.Dao
-import androidx.room.Query
+import androidx.room.Database
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
-import androidx.room.Delete
+import androidx.room.Query
+import androidx.room.RoomDatabase
+import androidx.room.Transaction
+import androidx.room.TypeConverter
+import androidx.room.TypeConverters
 import com.multiappshare.model.AppGroup
-import com.multiappshare.model.HistoryItem
 import com.multiappshare.model.AppInfo
+import com.multiappshare.model.HistoryItem
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
@@ -28,6 +30,17 @@ interface GroupDao {
 
     @Delete
     suspend fun deleteGroup(group: AppGroup)
+
+    @Query("DELETE FROM groups")
+    suspend fun deleteAllGroups()
+
+    @Transaction
+    suspend fun replaceAllGroups(groups: List<AppGroup>) {
+        deleteAllGroups()
+        if (groups.isNotEmpty()) {
+            insertGroups(groups)
+        }
+    }
 }
 
 @Dao
@@ -40,6 +53,17 @@ interface HistoryDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertHistoryItem(item: HistoryItem)
+
+    @Query("DELETE FROM history")
+    suspend fun deleteAllHistory()
+
+    @Transaction
+    suspend fun replaceAllHistory(history: List<HistoryItem>) {
+        deleteAllHistory()
+        if (history.isNotEmpty()) {
+            insertHistory(history)
+        }
+    }
 }
 
 internal class Converters {
@@ -53,6 +77,7 @@ internal class Converters {
         return try {
             Json.decodeFromString(value)
         } catch (e: Exception) {
+            Log.w("AppDatabaseConverters", "Failed to decode app list JSON", e)
             emptyList()
         }
     }

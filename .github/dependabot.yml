@@ -5,8 +5,29 @@ updates:
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 10
+    groups:
+      androidx:
+        patterns:
+          - "androidx.*"
+          - "com.android.*"
+      kotlin-compose:
+        patterns:
+          - "org.jetbrains.kotlin*"
+          - "androidx.compose*"
+          - "com.google.devtools.ksp"
+      testing:
+        patterns:
+          - "junit*"
+          - "io.mockk*"
+          - "org.robolectric*"
+          - "androidx.test*"
+          - "app.cash.paparazzi*"
 
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "weekly"
+    groups:
+      github-actions:
+        patterns:
+          - "*"
