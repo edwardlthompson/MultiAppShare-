@@ -163,10 +163,10 @@ dependencies {
 // Force kotlin-stdlib and related libraries to 2.0.21 to resolve Room metadata version conflict.
 configurations.all {
     resolutionStrategy {
-        force("org.jetbrains.kotlin:kotlin-stdlib:2.0.21")
-        force("org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.0.21")
-        force("org.jetbrains.kotlin:kotlin-stdlib-jdk7:2.0.21")
-        force("org.jetbrains.kotlin:kotlin-reflect:2.0.21")
+        force("org.jetbrains.kotlin:kotlin-stdlib:2.4.0")
+        force("org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.4.0")
+        force("org.jetbrains.kotlin:kotlin-stdlib-jdk7:2.4.0")
+        force("org.jetbrains.kotlin:kotlin-reflect:2.4.0")
     }
 }
 
