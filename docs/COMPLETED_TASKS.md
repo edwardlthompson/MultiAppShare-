@@ -633,3 +633,28 @@ Ongoing per-tag ritual lives in [`BUILD_PLAN.md`](BUILD_PLAN.md); first **R.5.2*
 
 # MILESTONE T COMPLETE ✅
 
+---
+
+## Milestone U – Template Migration (agent-project-bootstrap v0.11.0)
+
+> **Gate (verified 2026-06-19):** `validate-bootstrap.sh --quick` ✅ · `verify-slash-commands.sh` ✅ · `./gradlew lint test detekt koverXmlReport assembleDebug` ✅
+
+- [x] **U.1** – **U.5** — Verdict: ✅ [COMPLETED] — Evidence: `.cursor/rules/` (12 `.mdc`), `.cursor/commands/` (25), bootstrap gate scripts, `docs/START_HERE.md`, `docs/BOOTSTRAP_TEMPLATE_MAP.md`, updated `AGENTS.md` / `README.md`.
+- [x] **U.6** `[AGENT]` — Verdict: ✅ [COMPLETED] — Gradle gate green; Git Bash `watch-agent-gates` requires `JAVA_HOME` (documented in `docs/GATES.md`, `docs/RUNBOOK.md`).
+- [ ] **U.6** `[HUMAN]` — Cursor `/` menu visibility test — pending human sign-off.
+
+# MILESTONE U COMPLETE ✅ (agent scope)
+
+---
+
+## Milestone W – Post-U Audit (`/audit` 2026-06-19)
+
+> **Gate:** `validate-bootstrap.sh --quick` ✅ · `feature-gate.sh --stack android` ✅ · `watch-agent-gates.sh --once --autofix --step audit` ✅
+
+- [x] **W.2** – **W.4** `[AGENT]` — Verdict: ✅ [COMPLETED] — Evidence: pinned Actions SHAs; path fixes; `check-parallel-scope.sh`; `CODE_REVIEW.md` (ephemeral).
+- [x] **W.1** `[AUTO]` — Verdict: ✅ [COMPLETED] — Evidence: git commit `chore(agent): bootstrap v0.11.0 alignment` (Milestones U+W).
+- [x] **W.5** `[AUTO]` — Verdict: ✅ [COMPLETED] — Evidence: `gh api PUT .../vulnerability-alerts` 204; `dependabot_security_updates` enabled.
+- [x] **W.6** `[AUTO]` — Verdict: ✅ [COMPLETED] — Evidence: `verify-slash-commands.sh` + `check-batch-commands.sh` pass (25 commands).
+
+# MILESTONE W COMPLETE ✅
+

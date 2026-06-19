@@ -24,4 +24,13 @@ full_ci_log.txt
 *.apk
 gitlab-log-*.txt
 
-.cursor/
+# Bootstrap hygiene (no Node/Python stacks in repo; keep ignores for gate scripts)
+node_modules/
+dist/
+__pycache__/
+coverage/
+
+# Cursor ephemeral (rules/commands are tracked)
+.cursor/agent-progress.json
+.cursor-session-state
+CODE_REVIEW.md

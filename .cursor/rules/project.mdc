@@ -1,0 +1,41 @@
+---
+description: Multi App Share — project-specific rules (modules, FOSS, BUILD_PLAN)
+alwaysApply: true
+---
+
+# Multi App Share — project rules
+
+Read [`docs/START_HERE.md`](../../docs/START_HERE.md) and [`AGENTS.md`](../../AGENTS.md) every session.
+
+## Milestone workflow
+
+- Work from [`docs/BUILD_PLAN.md`](../../docs/BUILD_PLAN.md) labels: `[AGENT]` / `[ADB]` / `[HUMAN]` / `[AUTO]`
+- Spawn **parallel subagents** only for isolated scopes in [`docs/PARALLEL_AGENT_SCOPES.md`](../../docs/PARALLEL_AGENT_SCOPES.md) when present
+- After each major `[AGENT]` step: `bash scripts/watch-agent-gates.sh --once --autofix`
+
+## Architecture
+
+- Module boundaries: [`docs/MODULE_BOUNDARIES.md`](../../docs/MODULE_BOUNDARIES.md)
+- `:core-domain` pure Kotlin only; repositories implement domain interfaces in `:core-database`
+- Read-before-write: inspect `:core-domain` interfaces before editing repositories or ViewModels
+
+## Validate before push
+
+Never push without:
+
+1. `./gradlew lint test detekt koverXmlReport assembleDebug`
+2. `bash scripts/validate-bootstrap.sh --quick`
+3. `bash scripts/feature-gate.sh --stack android`
+4. Pre-release: [`docs/PRE_RELEASE_AUDIT.md`](../../docs/PRE_RELEASE_AUDIT.md) + [`docs/RELEASE_SMOKE.md`](../../docs/RELEASE_SMOKE.md)
+
+## FOSS & limits
+
+- No GMS, Firebase, or closed telemetry SDKs
+- Composable/view files ≤ 250 lines; logic files ≤ 150 lines (`scripts/check-file-limits.ps1`)
+
+## Production path
+
+- Gradle root project (`app/`, `feature-dashboard/`, `core-*`) — **not** `examples/android/`
+- Map: [`docs/BOOTSTRAP_TEMPLATE_MAP.md`](../../docs/BOOTSTRAP_TEMPLATE_MAP.md)
+
+FOSS, CI, and security: see `foss-compliance.mdc`, `ci-gates.mdc`, `security-triage.mdc`.

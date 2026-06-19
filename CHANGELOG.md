@@ -3,6 +3,12 @@
 This project uses Android **`versionCode`**-keyed changelogs for F-Droid/Store metadata under
 `fastlane/metadata/android/en-US/changelogs/`.
 
+## [Unreleased]
+
+### Added
+
+- Agent-project-bootstrap v0.11.0 alignment (Milestone U): Cursor rules, 25 slash commands, gate scripts.
+
 ## 1.9.0 (versionCode 176)
 
 - **Data integrity:** Room replace-all sync for groups and history; duplicate group names rejected; corrupt app-list JSON logged.

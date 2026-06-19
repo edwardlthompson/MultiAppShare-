@@ -42,7 +42,19 @@ verify SharingService low-importance notification unchanged. Read docs/RETURN_PA
 ## Agent milestone execution
 
 ```
-Read AGENTS.md and docs/BUILD_PLAN.md Milestone [X]. Use Plan Mode for non-trivial items.
-Respect executor tags: [Agent] vs [ADB] vs [Human]. Parallel-F tasks must not overlap files.
-Include Critique subsection in plan.
+Read AGENTS.md and docs/BUILD_PLAN.md. Use Plan Mode for non-trivial items.
+Respect executor tags: [AGENT] vs [ADB] vs [HUMAN]. Parallel tasks must not overlap files.
+Include Critique subsection in plan. Run /verify before marking complete.
 ```
+
+## Bootstrap slash commands
+
+```
+/verify   — docs + validate-bootstrap + feature-gate (+ CI poll via /ci)
+/gates    — local Gradle + bootstrap checks only
+/prerelease — PRE_RELEASE_AUDIT + Paparazzi
+/ship     — prerelease + push + regress (explicit push approval)
+/debug    — defect investigation (not /audit)
+```
+
+See [`docs/help/BATCH_COMMANDS.md`](docs/help/BATCH_COMMANDS.md) for full catalog.

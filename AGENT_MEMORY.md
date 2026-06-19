@@ -38,10 +38,24 @@ See [`docs/MODULE_BOUNDARIES.md`](docs/MODULE_BOUNDARIES.md).
 
 ## Living plans
 
-- Active roadmap: [`docs/BUILD_PLAN.md`](docs/BUILD_PLAN.md) — pre-release gate; next milestone TBD
+- Active roadmap: [`docs/BUILD_PLAN.md`](docs/BUILD_PLAN.md) — Milestone **U** (bootstrap alignment)
 - Completed milestones A–T: [`docs/COMPLETED_TASKS.md`](docs/COMPLETED_TASKS.md)
 - ADRs: [`docs/adr/README.md`](docs/adr/README.md)
 - Decision log: [`docs/DECISION_LOG.md`](docs/DECISION_LOG.md)
+
+## Bootstrap agent workspace (v0.11.0)
+
+| Artifact | Path |
+|----------|------|
+| Entry | [`docs/START_HERE.md`](docs/START_HERE.md) |
+| Cursor modes | [`docs/CURSOR_MODES.md`](docs/CURSOR_MODES.md) |
+| Slash commands (human) | [`docs/help/BATCH_COMMANDS.md`](docs/help/BATCH_COMMANDS.md) |
+| Slash commands (agent) | [`docs/BATCH_COMMANDS.md`](docs/BATCH_COMMANDS.md) |
+| Template map | [`docs/BOOTSTRAP_TEMPLATE_MAP.md`](docs/BOOTSTRAP_TEMPLATE_MAP.md) |
+| Cursor rules | `.cursor/rules/*.mdc` (13 files) |
+| Cursor commands | `.cursor/commands/*.md` (25 files) |
+| Gate scripts | `scripts/validate-bootstrap.sh`, `watch-agent-gates.sh`, `feature-gate.sh` |
+| Template version | `.template-version` → **0.11.0** |
 
 ## Retrospectives
 

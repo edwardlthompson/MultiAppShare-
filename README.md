@@ -98,7 +98,8 @@ This application is built with **Privacy-by-Design** and contains **NO Analytics
 
 - **100% Free and Open-Source** under the [MIT License](LICENSE).
 - **F-Droid Readiness**: Fastlane metadata inclusive of reproducible building recipes included.
-- **Agent / maintainer docs**: [`AGENTS.md`](AGENTS.md), [`AGENT_MEMORY.md`](AGENT_MEMORY.md), living roadmap [`docs/BUILD_PLAN.md`](docs/BUILD_PLAN.md).
+- **Agent / maintainer docs**: [`AGENTS.md`](AGENTS.md), [`AGENT_MEMORY.md`](AGENT_MEMORY.md), [`docs/START_HERE.md`](docs/START_HERE.md), living roadmap [`docs/BUILD_PLAN.md`](docs/BUILD_PLAN.md).
+- **Cursor slash commands**: type `/` in Agent chat — cheat sheet [`docs/help/BATCH_COMMANDS.md`](docs/help/BATCH_COMMANDS.md). Run `/verify` before opening a PR.
 
 **Third-party OSS libraries** (partial list for attribution): Kotlin, Jetpack Compose & Material 3, AndroidX (Room, DataStore, Lifecycle), Dagger Hilt, Coil, Kotlinx Serialization, Timber, LeakCanary (debug-only). Full dependency graph is in Gradle version catalogs (`gradle/libs.versions.toml`).
 

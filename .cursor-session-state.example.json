@@ -1,0 +1,21 @@
+{
+  "$comment": "Copy to .cursor-session-state.json to restore agent context after clearing chat.",
+  "version": 1,
+  "saved_at": "2026-06-19T12:00:00Z",
+  "mode": "reference",
+  "$comment_mode": "Repo mode (bootstrap|reference) — not Cursor Ask/Plan/Agent/Debug; see docs/CURSOR_MODES.md",
+  "stack": "android",
+  "active_sprint": "W",
+  "sequential_step": 1,
+  "parallel_tasks_in_flight": [],
+  "last_files_touched": [
+    "docs/BUILD_PLAN.md",
+    "CODE_REVIEW.md"
+  ],
+  "build_plan_lane": "sequential",
+  "autonomous_mode": true,
+  "current_feature": null,
+  "last_gate_exit": null,
+  "strikes": 0,
+  "notes": "Mirror .cursor/agent-progress.json when running watch-agent-gates."
+}

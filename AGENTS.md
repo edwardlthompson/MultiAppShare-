@@ -1,6 +1,13 @@
-# Agent instructions — Multi App Share
+# Agent Router — Multi App Share
 
-> **Update rule:** Change this file only at session startup, milestone boundaries, or major architectural pivots. See also [`AGENT_MEMORY.md`](AGENT_MEMORY.md), [`KNOWLEDGE_BASE.md`](KNOWLEDGE_BASE.md), and [`docs/BUILD_PLAN.md`](docs/BUILD_PLAN.md).
+1. **First read:** [`docs/START_HERE.md`](docs/START_HERE.md)
+2. **Cursor modes:** [`docs/CURSOR_MODES.md`](docs/CURSOR_MODES.md) (Ask / Plan / Agent / Debug)
+3. **Reference mode:** [`docs/FOR_AGENTS.md`](docs/FOR_AGENTS.md) + [`docs/BOOTSTRAP_TEMPLATE_MAP.md`](docs/BOOTSTRAP_TEMPLATE_MAP.md)
+4. **Task board:** [`docs/BUILD_PLAN.md`](docs/BUILD_PLAN.md) (Sequential before Parallel)
+5. **Living memory:** update [`AGENT_MEMORY.md`](AGENT_MEMORY.md) only at milestone boundaries
+6. **Slash commands:** type `/` in Agent chat — see [`docs/help/BATCH_COMMANDS.md`](docs/help/BATCH_COMMANDS.md)
+
+> Legacy `.cursorrules` is deprecated. Use `.cursor/rules/*.mdc` and this file.
 
 ## Project summary
 
@@ -24,6 +31,15 @@ Before editing repositories, ViewModels, or persistence:
 2. Verify type signatures at boundaries (Room entities, backup wrappers, repository contracts).
 3. Check [`docs/ROOM_MIGRATION_CHECKLIST.md`](docs/ROOM_MIGRATION_CHECKLIST.md) before bumping `@Database` version.
 
+## Session protocol
+
+- On session start: read `START_HERE.md`, pick mode via `CURSOR_MODES.md`, then `docs/BUILD_PLAN.md` Sequential lane
+- On milestone end: update `AGENT_MEMORY.md`, append to `docs/DECISION_LOG.md` or `docs/adr/`
+- After each major `[AGENT]` step: `bash scripts/watch-agent-gates.sh --once --autofix`
+- On 3-strike failure: halt and escalate to human
+- On context bloat: write `.cursor-session-state`, ask human to clear chat
+- Destructive operations require `[HUMAN]` approval (see `.cursor/rules/destructive-ops.mdc`)
+
 ## Plan mode and critique
 
 For non-trivial work, use Plan Mode. Plans must include a **Critique** subsection covering null/empty inputs, network timeouts (N/A for this app), concurrency, and unhandled exceptions.
@@ -35,29 +51,21 @@ For non-trivial work, use Plan Mode. Plans must include a **Critique** subsectio
 - Room schema / shared API types: **one sequential agent** before parallel feature work.
 - Instrumented tests stay **local/device** — not in default CI (see **P.7**).
 
-## Session checkpoint
-
-Before a major milestone or when context is degraded:
-
-1. Write `.cursor-session-state` with completion status, open bugs, next steps.
-2. Ask the user to start a fresh chat.
-3. On restart, read `.cursor-session-state` via `@` indexing, then delete it.
-
-## 3-strike rule
-
-If the same build/test failure persists after **3 consecutive code changes**, stop. Summarize the conflict, list failed approaches, and ask the human for direction.
-
 ## Quality gates (local)
 
 ```bash
+bash scripts/validate-bootstrap.sh --quick
 ./gradlew lint test detekt koverXmlReport assembleDebug
+bash scripts/feature-gate.sh --stack android
 ```
 
 Paparazzi goldens: `./gradlew :app:recordPaparazziDebug` when UI changes intentionally.
 
+Slash shortcuts: `/verify` (docs + gates + CI), `/ship` (prerelease + push + regress).
+
 ## Pre-release
 
-Run [`docs/PRE_RELEASE_AUDIT.md`](docs/PRE_RELEASE_AUDIT.md) before every `v*` tag.
+Run [`docs/PRE_RELEASE_AUDIT.md`](docs/PRE_RELEASE_AUDIT.md) before every `v*` tag. Prefer `/prerelease` or `/ship`.
 
 ## Branch protection (human)
 
