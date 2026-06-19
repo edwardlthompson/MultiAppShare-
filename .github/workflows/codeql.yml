@@ -19,17 +19,17 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       # Kotlin 2.4.0 exceeds CodeQL's supported compiler range (<2.3.30); java-kotlin
       # build modes fail (github/codeql#21938). This repo is Kotlin-only, so build-mode
       # none also yields zero extractable sources. Scan Actions until upstream supports 2.4.x,
       # then restore: languages: java-kotlin, build-mode: manual, ./gradlew :app:assembleDebug.
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@v3
+        uses: github/codeql-action/init@v4
         with:
           languages: actions
           queries: security-extended,security-and-quality
 
       - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v3
+        uses: github/codeql-action/analyze@v4
