@@ -27,7 +27,19 @@ Record milestone and release gate evidence here.
 
 **Git Bash:** export `JAVA_HOME="/c/Program Files/Android/Android Studio/jbr"` before `bash scripts/watch-agent-gates.sh`.
 
-## Milestone W — Audit (2026-06-19)
+## Ship — bootstrap push (2026-06-19)
+
+| Step | Result | Notes |
+|------|--------|-------|
+| `/prerelease` | ✅ | `pre-release-gate.sh`, `feature-gate` 8/8 stages |
+| `/push` | ✅ | `6eb91e1` → `origin/main` (no new tag; v1.9.0 already released) |
+| `/regress` | ✅ | `validate-bootstrap --quick`; CI green |
+| Android CI | ✅ | [run 27850423758](https://github.com/edwardlthompson/MultiAppShare-/actions/runs/27850423758) |
+| CodeQL | ✅ | [run 27850423756](https://github.com/edwardlthompson/MultiAppShare-/actions/runs/27850423756) |
+
+Local note: `:app:verifyPaparazziDebug` flaky on Windows dev host; CI unit tests pass on Linux.
+
+---
 
 | Step | Status | Notes |
 |------|--------|-------|
