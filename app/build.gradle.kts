@@ -29,7 +29,7 @@ android {
     defaultConfig {
         applicationId = "com.edwardlthompson.multiappshare"
         minSdk = 26
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 176
         versionName = "1.9.0"
 

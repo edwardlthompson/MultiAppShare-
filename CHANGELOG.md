@@ -8,6 +8,7 @@ This project uses Android **`versionCode`**-keyed changelogs for F-Droid/Store m
 ### Added
 
 - Agent-project-bootstrap v0.11.0 alignment (Milestone U): Cursor rules, 25 slash commands, gate scripts.
+- `targetSdk` 36 + `enableEdgeToEdge()` in `MainActivity` (Milestone V.3b).
 
 ## 1.9.0 (versionCode 176)
 

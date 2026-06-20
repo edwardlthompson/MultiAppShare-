@@ -656,5 +656,20 @@ Ongoing per-tag ritual lives in [`BUILD_PLAN.md`](BUILD_PLAN.md); first **R.5.2*
 - [x] **W.5** `[AUTO]` — Verdict: ✅ [COMPLETED] — Evidence: `gh api PUT .../vulnerability-alerts` 204; `dependabot_security_updates` enabled.
 - [x] **W.6** `[AUTO]` — Verdict: ✅ [COMPLETED] — Evidence: `verify-slash-commands.sh` + `check-batch-commands.sh` pass (25 commands).
 
-# MILESTONE W COMPLETE ✅
+| 2026-06-19 | Dependabot vulnerability alerts + security updates enabled via GitHub API | Milestone W / F-002 |
+
+---
+
+## Milestone V – Configuration cache + targetSdk review
+
+> **Gate (2026-06-19):** `./gradlew lint test detekt koverXmlReport assembleDebug --configuration-cache` ✅  
+> **Gate (2026-06-20):** V.2 triage — 0 Critical/High; Dependabot PRs merged; CI green on `8afb342` ✅
+
+- [x] **V.1** `[AGENT]` — Verdict: ✅ [COMPLETED] — Evidence: `org.gradle.configuration-cache=true` in `gradle.properties`; full gate suite with `--configuration-cache` pass (AGP 9.2.1 / Gradle 9.5.1).
+- [x] **V.3** `[AGENT]` — Verdict: ✅ [COMPLETED] — Evidence: [`TARGET_SDK_REVIEW.md`](TARGET_SDK_REVIEW.md) V.3 section — **defer `targetSdk` 36**; follow-up **V.3b** for E2E + bump.
+- [x] **V.3b** `[AGENT]` — Verdict: ✅ [COMPLETED] — Evidence: `enableEdgeToEdge()` in `MainActivity`; `targetSdk` 36 in `:app` + `:baselineprofile`.
+- [x] **V.3b smoke** `[ADB]` — Verdict: ✅ [COMPLETED] — Evidence: **CPH2583** · Android **16** (API **36**) · `MultiAppShare-v1.9.0-debug.apk` · `targetSdk=36` confirmed via `dumpsys package`. **5/5** `connectedDebugAndroidTest`. ADB: cold launch → **Groups** top bar; `SEND text/plain` → **Choose a group** overlay; rotation **landscape** → overlay preserved; deeplinks `multiappshare://open` + `group?name=…`; no `AndroidRuntime` fatals. E2E insets: content `bounds` y=384 below status bar on 1440×3168 display. *Deferred to pre-release:* full sequential handoff, failed-target skip, encrypted backup ([`RELEASE_SMOKE.md`](RELEASE_SMOKE.md) steps 3–6).
+- [x] **V.2** `[HUMAN]` — Verdict: ✅ [COMPLETED] — Evidence: 0 open Critical/High Dependabot alerts; squash-merged [#25](https://github.com/edwardlthompson/MultiAppShare-/pull/25) (github-actions), [#23](https://github.com/edwardlthompson/MultiAppShare-/pull/23) (androidx), [#24](https://github.com/edwardlthompson/MultiAppShare-/pull/24) (compose-bom `2026.06.00`); Android CI + CodeQL green on `8afb342`. See [`GATES.md`](GATES.md) V.2 section.
+
+# MILESTONE V COMPLETE ✅
 

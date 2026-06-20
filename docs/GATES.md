@@ -39,6 +39,38 @@ Record milestone and release gate evidence here.
 
 Local note: `:app:verifyPaparazziDebug` flaky on Windows dev host; CI unit tests pass on Linux.
 
+## Milestone V (2026-06-19)
+
+| Task | Status | Notes |
+|------|--------|-------|
+| V.1 Configuration cache | ✅ | Full gate suite `--configuration-cache` pass |
+| V.3b targetSdk 36 + E2E | ✅ | `enableEdgeToEdge()`; Gradle bump |
+| V.3b Android 16 smoke | ✅ | CPH2583 (API 36) — details below |
+| V.2 Dependabot triage | ✅ | 0 Critical/High alerts; merged #25, #23, #24 → `8afb342` — details below |
+
+### V.3b device smoke (2026-06-19)
+
+| Field | Value |
+|-------|--------|
+| Device | OnePlus **CPH2583** (wireless ADB) |
+| OS | Android **16** · API **36** |
+| Build | `MultiAppShare-v1.9.0-debug.apk` · `targetSdk=36` (`dumpsys package`) |
+| Instrumented | **5/5** pass — `MainActivitySmokeInstrumentedTest`, `DeeplinkInstrumentedTest` |
+| ADB cold launch | ✅ `Groups` top bar; no fatal |
+| ADB share overlay | ✅ `SEND text/plain` → **Choose a group** |
+| ADB rotation | ✅ landscape; overlay text preserved |
+| ADB deeplinks | ✅ `multiappshare://open`; `multiappshare://group?name=…` |
+| E2E insets | ✅ Compose content below status bar (y=384 on 1440×3168) |
+| Deferred (pre-`v*` tag) | Full sequential handoff, failed-target skip, encrypted backup — [`RELEASE_SMOKE.md`](RELEASE_SMOKE.md) |
+
+### V.2 Dependabot triage (2026-06-20)
+
+| Field | Value |
+|-------|--------|
+| Critical/High alerts | **0** (`count-critical-high-dependabot.sh`) |
+| Merged PRs | [#25](https://github.com/edwardlthompson/MultiAppShare-/pull/25) github-actions → `58fa7d5` · [#23](https://github.com/edwardlthompson/MultiAppShare-/pull/23) androidx → `c6418ab` · [#24](https://github.com/edwardlthompson/MultiAppShare-/pull/24) compose-bom → `8afb342` |
+| Post-merge CI | ✅ [Android CI](https://github.com/edwardlthompson/MultiAppShare-/actions/runs/27870673145) · ✅ [CodeQL](https://github.com/edwardlthompson/MultiAppShare-/actions/runs/27870673138) on `8afb342` |
+
 ---
 
 | Step | Status | Notes |
