@@ -19,10 +19,9 @@ done
 
 ERRORS=0
 
-if ! command -v gh >/dev/null 2>&1; then
-  echo "ERROR: gh CLI required"
-  exit 1
-fi
+# shellcheck source=lib/resolve-gh.sh
+source "$ROOT/scripts/lib/resolve-gh.sh"
+require_gh || exit 1
 
 REPO="$(gh repo view --json nameWithOwner -q .nameWithOwner 2>/dev/null || true)"
 if [ -z "$REPO" ]; then

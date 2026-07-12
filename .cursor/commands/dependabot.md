@@ -1,8 +1,13 @@
 # Dependabot triage
 
 Follow @docs/SECURITY_TRIAGE.md and @KNOWLEDGE_BASE.md KB-007.
-List open Dependabot alerts and PRs via `gh`; prioritize Critical/High.
-Merge safe bumps; use npm `overrides` in `examples/web/package.json` for transitive CVEs when needed.
+
+```bash
+bash scripts/triage-dependabot-prs.sh           # report
+bash scripts/triage-dependabot-prs.sh --apply   # squash-merge green+MERGEABLE Dependabot PRs
+```
+
+Prioritize Critical/High alerts first (`scripts/count-critical-high-dependabot.sh`).
 Document temporary overrides in @DECISION_LOG.md.
 
 Begin now.

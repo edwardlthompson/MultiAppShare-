@@ -2,97 +2,83 @@
 
 Weekly CVE triage playbook for Dependabot alerts and release security gates.
 
+## This repo (reference mode)
+
+Required GitHub workflow names (what `scripts/check-github-ci.sh` polls when `.github/workflows/android.yml` is present):
+
+| Workflow | File | Role |
+|----------|------|------|
+| **Android CI** | `.github/workflows/android.yml` | Build, test, hygiene, feature gate |
+| **CodeQL** | `.github/workflows/codeql.yml` | Actions YAML analysis (Kotlin app scan deferred until CodeQL supports Kotlin 2.4.x) |
+| **Security Scan** | `.github/workflows/security.yml` | Trivy fs scan (enable via `scripts/enable-optional-security-workflows.sh --apply`) |
+| OpenSSF Scorecard | `.github/workflows/scorecard.yml` | Scorecard SARIF (same enable script) |
+| PR title check | `.github/workflows/pr-title.yml` | Conventional PR titles (not a release blocker) |
+
+`check-security-triage.sh` SKIPs Scorecard when `scorecard.yml` is absent. `check-github-ci.sh` adds **Security Scan** when `security.yml` exists.
+
+Override required workflow names with `GITHUB_REQUIRED_WORKFLOWS` if needed.
+
 ## Setup (one-time, [HUMAN])
 
-1. Open GitHub -> **Settings** -> **Code security and analysis**
-2. Enable **Dependabot alerts** and **Dependabot security updates** (CVE advisories on dependencies)
-3. Enable **Private vulnerability reporting** (Settings -> Code security -> Private vulnerability reporting)
-4. Verify `.github/dependabot.yml` exists for each active package ecosystem
+1. Open GitHub → **Settings** → **Code security and analysis**
+2. Enable **Dependabot alerts** and **Dependabot security updates**
+3. Enable **Private vulnerability reporting**
+4. Verify `.github/dependabot.yml` exists
+5. Configure branch protection on `main` requiring at least **Android CI** and **CodeQL** (add **Security Scan** after enabling Trivy). Prefer **Settings → Rules → Rulesets** when classic branch protection returns `404`.
+6. Optional: `bash scripts/enable-optional-security-workflows.sh --apply`
 
-**Automated setup (recommended):** run the idempotent script after clone or init:
-
-```bash
-bash scripts/setup-github-repo.sh
-# Windows:
-pwsh scripts/setup-github-repo.ps1
-```
-
-Requires `gh` CLI authenticated with admin access. On API `422` (plan or permission limits), the script prints a manual UI checklist. Re-run after fixing permissions.
-
-5. Configure branch protection on `main` requiring status checks: **CI**, **Security Scan**, **CodeQL**, **Repo Hygiene**, **Feature Gate** (`scripts/setup-github-repo.sh` sets these via API; verify in Settings -> Branches)
-
-**Verify after setup:** `bash scripts/verify-branch-protection.sh` asserts required check contexts, `strict: true`, and `allow_force_pushes: false`. Override expected checks with `GITHUB_REQUIRED_CHECKS` when workflow job names differ.
-
-**Rulesets fallback:** GitHub repos using **rulesets** instead of classic branch protection return `404` from `repos/{owner}/{repo}/branches/{branch}/protection`. In that case, confirm equivalent rules in **Settings -> Rules -> Rulesets** (required status checks, block force pushes, require linear history) or migrate to classic protection via `setup-github-repo.sh`.
-
-**Note:** Workflow rollup names (`CI`, `Security Scan`, `CodeQL`) and CI job names (`Repo Hygiene`, `Feature Gate`) must match GitHub check contexts exactly. Override with `GITHUB_REQUIRED_CHECKS` if your repo uses different names.
-
-**Public repos:** Dependabot alerts are free.
-
-`dependabot.yml` schedules version-update PRs; **Dependabot alerts** are a separate GitHub setting for CVE advisories - both are required.
+`dependabot.yml` schedules version-update PRs; **Dependabot alerts** are a separate setting for CVE advisories — both are required.
 
 ## Weekly Triage Pass
 
-Recommended cadence: **Monday** (aligned with scheduled security scans and `health-check.yml`).
+Recommended cadence: **Monday**.
 
 | Step | Owner | Action |
 |------|-------|--------|
-| 1 | HUMAN | Open **Security -> Dependabot alerts**; sort Critical/High first |
-| 2 | HUMAN | Review open Dependabot version-update PRs |
-| 3 | AGENT | Apply dependency bumps, run tests locally, open PRs as needed |
-| 4 | AUTO | CI (Trivy, CodeQL, matrix tests) validates merges |
-| 5 | HUMAN | Merge PR or escalate deferred items |
-| 6 | AUTO | Review `weekly-health-check.yml` weekly run (Monday 07:00 UTC); confirm CI + Security Scan + CodeQL green on main |
-| 7 | AUTO | Run `bash scripts/check-security-triage.sh --wait-ci 300` (Dependabot + workflows + OpenSSF Scorecard) |
+| 1 | HUMAN/AUTO | Open **Security → Dependabot alerts**; sort Critical/High first |
+| 2 | AUTO | `bash scripts/triage-dependabot-prs.sh` (report) or `--apply` (squash-merge green PRs) |
+| 3 | AGENT | Resolve conflicted Dependabot PRs / recreate via `@dependabot recreate` |
+| 4 | AUTO | **Android CI** + **CodeQL** (+ **Security Scan** if enabled) validate merges |
+| 5 | AUTO | `bash scripts/check-security-triage.sh --wait-ci 300` |
+
+On Windows Git Bash, scripts resolve `gh.exe` via `scripts/lib/resolve-gh.sh` and JDK via `scripts/lib/resolve-java-home.sh`.
 
 ## OpenSSF Scorecard
 
+- Enable: `bash scripts/enable-optional-security-workflows.sh --apply`
 - Workflow: `.github/workflows/scorecard.yml` (`name: OpenSSF Scorecard`)
-- Weekly triage: `check-security-triage.sh` reports latest Scorecard run conclusion
-- Pre-release: `pre-release-gate.sh` invokes `check-security-triage.sh --strict` (fails on missing/failed Scorecard)
-- SARIF: Scorecard uploads findings to **Security → Code scanning**; triage open items into BUILD_PLAN `[AGENT]` rows or dismiss with rationale in DECISION_LOG.md
+- Weekly triage: `check-security-triage.sh` reports the latest run; `--strict` fails on missing/failed Scorecard when the workflow file exists
 
 ## Triage Decisions
 
 | Decision | When | Action |
 |----------|------|--------|
-| **Fix** | Patch available, low risk | Merge Dependabot PR or [AGENT] applies bump |
+| **Fix** | Patch available, low risk | `triage-dependabot-prs.sh --apply` or [AGENT] applies bump |
 | **Defer** | No fix yet, acceptable risk window | Open issue with expiry date; log in DECISION_LOG.md |
 | **Dismiss** | False positive or not applicable | Document rationale in issue or ADR |
 
-After triage, confirm Trivy and CodeQL workflows are green on `main`.
+After triage, confirm required workflows are green on `main`.
 
 ## GitHub Actions Pin Policy
 
-Third-party workflow actions must use **immutable refs** to reduce supply-chain risk (see Trivy action advisory, March 2026).
+Third-party workflow actions should use **immutable refs**:
 
 | Rule | Detail |
 |------|--------|
-| **Allowed** | `@vX.Y.Z` (-v prefix semver) or full commit SHA with `# vX.Y.Z` comment |
+| **Allowed** | `@vX.Y.Z` or full commit SHA with `# vX.Y.Z` comment |
 | **Forbidden** | Bare semver (`@0.28.0`), floating `@v0` / `@main`, unpinned third-party actions |
-| **Pre-push** | Run `scripts/validate-workflow-actions.sh` (requires `gh` + `GH_TOKEN`) |
-| **Local fast guard** | `scripts/check-workflow-action-ref-format.sh` (pre-commit; no network) |
-| **Post-push** | `scripts/check-github-ci.sh --wait 300` - required workflows: **CI**, **Security Scan**, **CodeQL** |
+| **Trivy** | Pin `aquasecurity/trivy-action` to **v0.35.0** commit SHA only (post March 2026 supply-chain incident) |
+| **Post-push** | `scripts/check-github-ci.sh --wait 300` |
 
 ## Release Gate (mandatory before tag)
 
 Before any version bump or GitHub Release:
 
-- ⬜ Weekly triage completed within last **7 days**
-- ⬜ Zero open **Critical/High** Dependabot alerts (or documented exception with [HUMAN] approval + linked issue/ADR)
-- ⬜ Deferred vulnerabilities have a linked issue and [HUMAN] sign-off in release notes or DECISION_LOG.md
-- ⬜ All [AUTO] security scans green on main (Trivy, CodeQL)
-
-**Release workflow gates (`.github/workflows/release.yml`):**
-
-| Trigger | Gate / action |
-|---------|----------------|
-| `workflow_dispatch` (no tag input) | Full `pre-release-gate.sh` dry-run before next release |
-| `workflow_dispatch` (with `tag` input) | SBOM upload only — backfill assets on an existing release |
-| `release` published | Polls full CI rollup (`check-github-ci.sh --wait 3600`) then SBOM + Winget stub upload |
-| Tag push `v*` | Lightweight gate only: tag must match `.template-version`; polls **Repo Hygiene** + **Feature Gate** via `check-github-ci.sh --skip-workflows` (does **not** wait on CI/CodeQL rollup or emulator jobs) |
-
-Release Please publishes the GitHub Release; the `release` published event attaches SBOM assets. Use `workflow_dispatch` (no tag input) for maintainer dry-runs before merging the Release Please PR.
+- Weekly triage completed within last **7 days**
+- Zero open **Critical/High** Dependabot alerts (or documented exception with [HUMAN] approval)
+- Deferred vulnerabilities have a linked issue and [HUMAN] sign-off
+- Required workflows green on `main` (`bash scripts/check-github-ci.sh --wait 300`)
+- Local: `bash scripts/pre-release-gate.sh` (or `/prerelease` / `/ship`)
 
 If a Critical/High alert has no upstream fix, release may proceed only when:
 
@@ -104,16 +90,15 @@ If a Critical/High alert has no upstream fix, release may proceed only when:
 | File | Purpose |
 |------|---------|
 | `.github/dependabot.yml` | Weekly grouped version-update PRs |
-| `.github/workflows/security.yml` | Trivy filesystem scan |
-| `.github/workflows/codeql.yml` | CodeQL static analysis |
-| `.github/workflows/weekly-health-check.yml` | Weekly CI + Security Scan + CodeQL status on main |
-| `scripts/validate-workflow-actions.sh` | Resolve action refs via GitHub API |
-| `scripts/check-workflow-action-ref-format.sh` | Local bare-semver guard |
-| `scripts/check-security-triage.sh` | Weekly Dependabot + workflow + Scorecard gate |
-| `scripts/pre-release-gate.sh` | Pre-merge `workflow_dispatch` dry-run (`feature-gate --strict`, `check-security-triage --strict`) |
-| `.github/workflows/scorecard.yml` | OpenSSF Scorecard SARIF upload |
-| `scripts/setup-github-repo.sh` | One-time Dependabot + reporting + branch protection setup |
-| `scripts/verify-branch-protection.sh` | Post-setup branch protection + strict/force-push verification |
-| `scripts/verify-reproducible-apk.sh` | Local reproducible APK hash check (also in `run-maintainer-gates.sh` full mode) |
-| `docs/MAINTAINING_THE_TEMPLATE.md` | Maintainer release checklist |
-| `docs/INITIALIZATION_PROMPT.md` | Section 7a pre-release gate |
+| `.github/workflows/android.yml` | Android CI |
+| `.github/workflows/codeql.yml` | CodeQL (Actions-only until Kotlin 2.4 supported) |
+| `.github/workflows/security.yml` | Trivy Security Scan (optional enable script) |
+| `.github/workflows/scorecard.yml` | OpenSSF Scorecard (optional enable script) |
+| `scripts/triage-dependabot-prs.sh` | Report / squash-merge green Dependabot PRs |
+| `scripts/enable-optional-security-workflows.sh` | Create Trivy + Scorecard workflows |
+| `scripts/lib/resolve-java-home.sh` | Auto-detect JDK for Android gates |
+| `scripts/check-security-triage.sh` | Weekly Dependabot + workflow gate |
+| `scripts/check-github-ci.sh` | Poll required workflows on a commit |
+| `scripts/lib/resolve-gh.sh` | Windows-friendly `gh` / `gh.exe` resolution |
+| `scripts/pre-release-gate.sh` | Pre-release dry-run |
+| `docs/PRE_RELEASE_AUDIT.md` | Human pre-release checklist |

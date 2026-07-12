@@ -65,6 +65,7 @@ After each `[AGENT]` BUILD_PLAN step in a feature row:
 
 ```bash
 bash scripts/watch-agent-gates.sh --once --autofix
+
 ```
 
 - Exit `0`: proceed to next step
@@ -75,6 +76,7 @@ Extended sessions:
 
 ```bash
 bash scripts/watch-agent-gates.sh --interval 60 --max-attempts 10 --autofix
+
 ```
 
 Mechanical fixers run first via `feature-autofix.sh`. Push to remote still requires human approval (`destructive-ops.mdc`).
@@ -89,10 +91,10 @@ Use **Debug Mode** (`docs/CURSOR_MODES.md`, PROMPT_LIBRARY Entry 20) when CI or 
 
 ```bash
 bash scripts/check-github-ci.sh --wait 300
-# Windows: pwsh scripts/check-github-ci.ps1 -WaitSeconds 300
+
 ```
 
-Required green workflows: **CI**, **Security Scan**, **CodeQL**.
+Required green workflows: **Android CI**, **CodeQL** (auto-resolved when `android.yml` is present).
 
 If a job is missing, wait - GitHub may not have enqueued it yet. If `FAIL` persists:
 1. Open the run URL from script output
@@ -118,6 +120,7 @@ Before launching parallel agents:
 
 ```bash
 bash scripts/check-parallel-scope.sh
+
 ```
 
 If overlap is reported, split tasks or serialize the conflicting rows in BUILD_PLAN.

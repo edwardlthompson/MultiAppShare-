@@ -673,3 +673,19 @@ Ongoing per-tag ritual lives in [`BUILD_PLAN.md`](BUILD_PLAN.md); first **R.5.2*
 
 # MILESTONE V COMPLETE ✅
 
+---
+
+## Milestone X – Audit sprint (/audit 2026-07-12)
+
+> **Gate:** alidate-bootstrap.sh --quick OK · check-security-triage.sh OK · JAVA auto-resolve via 
+esolve-java-home.sh
+
+- [x] **X.1** [AGENT] — Verdict: ✅ [COMPLETE ✅D] — Evidence: *.sh text eol=lf in .gitattributes; CRLF to LF on bootstrap/count/verify/release shell scripts.
+- [x] **X.2** [AGENT] — Verdict: ✅ [COMPLETE ✅D] — Evidence: scripts/lib/resolve-gh.sh; wired into CI/security/dependabot count scripts.
+- [x] **X.3** [AGENT] — Verdict: ✅ [COMPLETE ✅D] — Evidence: SECURITY_TRIAGE / rules aligned to Android CI + CodeQL + MIT.
+- [x] **X.4** [AUTO] — Verdict: ✅ [COMPLETE ✅D] — Evidence: scripts/triage-dependabot-prs.sh --apply merged #27, #28, #31; #29/#32 conflicted then @dependabot recreate.
+- [x] **X.5** [AGENT] — Verdict: ✅ [COMPLETE ✅D] — Evidence: scripts/lib/resolve-java-home.sh (Windows Program Files shim) wired into eature-gate.sh.
+- [x] **X.6** [AGENT] — Verdict: ✅ [COMPLETE ✅D] — Evidence: nable-optional-security-workflows.sh --apply wrote security.yml (Trivy v0.35.0 SHA) + scorecard.yml.
+
+# MILESTONE X COMPLETE ✅
+

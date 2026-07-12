@@ -1,8 +1,9 @@
 # MultiAppShare BUILD PLAN – Living Checklist
 
-> **Completed milestones:** A–T, **U**, **W**, **V** — [`COMPLETED_TASKS.md`](COMPLETED_TASKS.md)  
+> **Completed milestones:** A–T, **U**, **W**, **V**, **X** — [`COMPLETED_TASKS.md`](COMPLETED_TASKS.md)  
 > **Agent workspace:** [`AGENTS.md`](../AGENTS.md) · [`AGENT_MEMORY.md`](../AGENT_MEMORY.md) · [`docs/START_HERE.md`](START_HERE.md)  
-> **Gate log:** [`docs/GATES.md`](GATES.md)
+> **Gate log:** [`docs/GATES.md`](GATES.md)  
+> **Audit:** [`CODE_REVIEW.md`](../CODE_REVIEW.md) (2026-07-12, gitignored)
 
 ---
 
@@ -41,13 +42,19 @@ Per [`PRE_RELEASE_AUDIT.md`](PRE_RELEASE_AUDIT.md). Prefer `/ship`.
 
 _No active milestone._
 
-**Toolchain:** Gradle **9.5.1** · AGP **9.2.1** · Kotlin **2.4.0** · `compileSdk` **37** · `targetSdk` **36**
+**Scripted follow-ups:**
+
+- After Dependabot recreate finishes: `bash scripts/triage-dependabot-prs.sh --apply` for #29 / #32
+- Commit + push local `security.yml` / `scorecard.yml` to activate on `main`
+- Android gates: `scripts/lib/resolve-java-home.sh` is wired into `feature-gate.sh`
+
+**Toolchain:** Gradle **9.5.1** (PR #31 may bump to **9.6.1** on main) · AGP **9.2.1** · Kotlin **2.4.0** · `compileSdk` **37** · `targetSdk` **36**
 
 ---
 
 ## Ongoing maintenance
 
-- Weekly: `check-security-triage.sh` · Dependabot triage · `/verify`
+- Weekly: `check-security-triage.sh` · `triage-dependabot-prs.sh` · `/verify`
 - Pre-release: `/ship` · device smoke
 
 ---
@@ -59,3 +66,4 @@ _No active milestone._
 | A–T | Complete | [`COMPLETED_TASKS.md`](COMPLETED_TASKS.md) |
 | U, W | Complete (2026-06-19) | [`BOOTSTRAP_TEMPLATE_MAP.md`](BOOTSTRAP_TEMPLATE_MAP.md) · [`GATES.md`](GATES.md) |
 | V (V.1–V.3b, V.2) | Complete (2026-06-20) | [`TARGET_SDK_REVIEW.md`](TARGET_SDK_REVIEW.md) · [`SECURITY_TRIAGE.md`](SECURITY_TRIAGE.md) |
+| X (audit + automation) | Complete (2026-07-12) | [`COMPLETED_TASKS.md`](COMPLETED_TASKS.md) · automation scripts |

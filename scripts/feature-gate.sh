@@ -208,10 +208,17 @@ if should_run python && [ -f examples/python/pyproject.toml ]; then
   fi
 fi
 
+# Auto-detect JDK on Windows Git Bash / CI agents (X.5)
+# shellcheck source=lib/resolve-java-home.sh
+source "$(cd "$(dirname "$0")" && pwd)/lib/resolve-java-home.sh"
+if should_run android; then
+  require_java_home 2>/dev/null || true
+fi
+
 if should_run android && [ -f gradlew ]; then
-  if ! command -v java >/dev/null 2>&1 && [ -z "${JAVA_HOME:-}" ]; then
+  if ! command -v java >/dev/null 2>&1 && ! command -v java.exe >/dev/null 2>&1 && [ -z "${JAVA_HOME:-}" ]; then
     if [ "$STACK" = "android" ]; then
-      block_env "JAVA_HOME not set; Android gate blocked"
+      block_env "JAVA_HOME not set; Android gate blocked (install JDK 17+ or set JAVA_HOME)"
     else
       skip_or_block "Skipping android gate (JAVA_HOME not set)"
     fi
@@ -223,7 +230,7 @@ if should_run android && [ -f gradlew ]; then
     run_cmd android-assemble ./gradlew assembleDebug --quiet
   fi
 elif should_run android && [ -f examples/android/gradlew ]; then
-  if ! command -v java >/dev/null 2>&1 && [ -z "${JAVA_HOME:-}" ]; then
+  if ! command -v java >/dev/null 2>&1 && ! command -v java.exe >/dev/null 2>&1 && [ -z "${JAVA_HOME:-}" ]; then
     skip_or_block "Skipping examples/android gate (JAVA_HOME not set)"
   else
     run_in_dir examples/android android-test ./gradlew test --quiet

@@ -1,5 +1,5 @@
 ---
-description: FOSS compliance, privacy, and telemetry constraints — Screen Wakelock Detector
+description: FOSS compliance, privacy, and telemetry constraints — Multi App Share
 alwaysApply: true
 ---
 
@@ -7,7 +7,7 @@ alwaysApply: true
 
 ## License
 
-- **Apache-2.0** — F-Droid-only distribution
+- **MIT** — GitHub Releases + F-Droid distribution
 - No proprietary closed-source SDKs in production path
 - Android: no Google Play Services, Firebase, or closed telemetry trackers
 
@@ -19,14 +19,12 @@ alwaysApply: true
 ## Privacy
 
 - All data local on device; no cloud, no analytics
-- Notification listener reads metadata locally for attribution only
 
 ## Security
 
-- Root: libsu in-app only; command allowlist — no user input in shell
-- New Gradle deps: check [`docs/FOSS.md`](docs/FOSS.md)
+- New Gradle deps: check project FOSS notes and Dependabot alerts
 
 ## Android FOSS
 
-- Reproducible builds — `scripts/fdroid/verify-reproducible.sh`
+- Reproducible builds — `scripts/fdroid/verify-reproducible.sh` when present
 - Lock Gradle wrapper and dependency versions

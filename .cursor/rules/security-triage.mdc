@@ -1,5 +1,5 @@
 ---
-description: Weekly security triage and Dependabot expectations for template maintainers
+description: Weekly security triage and Dependabot expectations
 alwaysApply: false
 globs:
   - "docs/BUILD_PLAN.md"
@@ -11,15 +11,15 @@ globs:
 
 ## Cadence
 
-- Run `bash scripts/check-security-triage.sh --wait-ci 300` weekly (or `run-maintainer-gates.sh` full cycle)
-- Triage OpenSSF Scorecard SARIF findings into BUILD_PLAN `[AGENT]` rows when not green
+- Run `bash scripts/check-security-triage.sh --wait-ci 300` weekly
+- Triage Dependabot Critical/High first; open version-update PRs next
 
 ## Gates
 
 - Zero open Critical/High Dependabot alerts before release (`pre-release-gate.sh`)
-- Required workflows green: **CI**, **Security Scan**, **CodeQL**
-- Scorecard workflow latest run should be `success` after `scorecard.yml` fix is on `main`
+- Required workflows green: **Android CI**, **CodeQL**
+- Scorecard / Trivy are optional — SKIP when workflows are absent (see `docs/SECURITY_TRIAGE.md`)
 
 ## gh auth
 
-Dependabot API requires `gh` auth with access to repository security alerts. See `docs/SECURITY_TRIAGE.md`.
+Dependabot API requires `gh` auth with access to repository security alerts. On Windows Git Bash, scripts use `scripts/lib/resolve-gh.sh` (`gh.exe`). See `docs/SECURITY_TRIAGE.md`.

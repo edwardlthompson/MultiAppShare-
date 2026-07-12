@@ -6,7 +6,7 @@ Central index for persistent context. Append at milestone boundaries only.
 
 | Dimension | Value |
 |-----------|-------|
-| **Platform** | Native Android — Kotlin 2.4.0, Jetpack Compose, Hilt 2.59, Room 2.8, Gradle 9.5 / AGP 9.2 |
+| **Platform** | Native Android — Kotlin 2.4.0, Jetpack Compose, Hilt 2.59.2, Room 2.8.4, Gradle 9.5.1 / AGP 9.2.1 |
 | **Purpose** | Sequential multi-app sharing via custom groups; no backend, no accounts |
 | **Distribution** | MIT; [GitHub Releases](https://github.com/edwardlthompson/MultiAppShare-/releases); [F-Droid](https://f-droid.org/packages/com.edwardlthompson.multiappshare/) via [`metadata/com.edwardlthompson.multiappshare.yml`](metadata/com.edwardlthompson.multiappshare.yml) |
 | **App ID** | `com.edwardlthompson.multiappshare` |
@@ -38,7 +38,7 @@ See [`docs/MODULE_BOUNDARIES.md`](docs/MODULE_BOUNDARIES.md).
 
 ## Living plans
 
-- Active roadmap: [`docs/BUILD_PLAN.md`](docs/BUILD_PLAN.md) — no active milestone; candidates in Milestone **V**
+- Active roadmap: [`docs/BUILD_PLAN.md`](docs/BUILD_PLAN.md) — Milestone **X** audit sprint (2026-07-12); prior A–V in COMPLETED_TASKS
 - Completed milestones A–T: [`docs/COMPLETED_TASKS.md`](docs/COMPLETED_TASKS.md)
 - ADRs: [`docs/adr/README.md`](docs/adr/README.md)
 - Decision log: [`docs/DECISION_LOG.md`](docs/DECISION_LOG.md)
@@ -56,7 +56,9 @@ See [`docs/MODULE_BOUNDARIES.md`](docs/MODULE_BOUNDARIES.md).
 | Cursor commands | `.cursor/commands/*.md` (25 files) |
 | Gate scripts | `scripts/validate-bootstrap.sh`, `watch-agent-gates.sh`, `feature-gate.sh` |
 | Template version | `.template-version` → **0.11.0** |
-
 ## Retrospectives
 
-_(Append milestone notes here at boundaries.)_
+### Milestone X (2026-07-12)
+
+- /audit: fixed CRLF shell scripts + *.sh eol=lf; Windows gh.exe resolution; docs now name **Android CI** + **CodeQL** (Scorecard/Trivy optional).
+- HUMAN remaining: Dependabot PRs #27–#32, JAVA_HOME for agent Git Bash Gradle, optional Scorecard adoption.

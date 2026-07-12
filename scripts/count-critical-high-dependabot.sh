@@ -3,7 +3,10 @@
 # Exit 1 on gh/API failure.
 set -euo pipefail
 
-command -v gh >/dev/null 2>&1 || exit 1
+ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+# shellcheck source=lib/resolve-gh.sh
+source "$ROOT/scripts/lib/resolve-gh.sh"
+require_gh || exit 1
 
 REPO="${GITHUB_REPO:-$(gh repo view --json nameWithOwner -q .nameWithOwner 2>/dev/null || true)}"
 [[ -n "${REPO}" ]] || exit 1

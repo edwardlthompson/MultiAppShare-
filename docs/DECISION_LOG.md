@@ -12,3 +12,5 @@ Chronological index of major technical decisions. Entries are **append-only**.
 | 2026-06-19 | V.3b Android 16 smoke — CPH2583 pass (overlay, rotation, deeplinks, E2E insets) | [`GATES.md`](GATES.md) |
 | 2026-06-20 | V.2 Dependabot triage — 0 Critical/High; merged #25, #23, #24; CI green on `8afb342` | [`GATES.md`](GATES.md) |
 | 2026-06-19 | V.1 configuration cache re-validated under AGP 9.2.1 full gate suite | `gradle.properties` |
+| 2026-07-12 | Audit X — require Android CI + CodeQL (not template Security Scan); keep Scorecard/Trivy optional; fix shell LF + Windows gh.exe | [`CODE_REVIEW.md`](../CODE_REVIEW.md) · [`SECURITY_TRIAGE.md`](SECURITY_TRIAGE.md) |
+| 2026-07-12 | Automate X.4–X.6: Dependabot triage script, JAVA_HOME resolve, Trivy+Scorecard workflows (SHA-pinned trivy-action v0.35.0) | [SECURITY_TRIAGE.md](SECURITY_TRIAGE.md) |

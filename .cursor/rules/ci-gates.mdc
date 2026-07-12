@@ -30,5 +30,5 @@ Primary workflow: `.github/workflows/android.yml` (`Android CI`)
 
 ## Do Not Mark Complete
 
-- BUILD_PLAN `[AUTO]` items while CI / Security Scan / CodeQL red
-- Sprint sign-off without `scripts/pre-release-gate.sh` on template releases
+- BUILD_PLAN `[AUTO]` items while **Android CI** / **CodeQL** red
+- Sprint sign-off without `scripts/pre-release-gate.sh` on releases

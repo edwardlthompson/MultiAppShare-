@@ -41,6 +41,9 @@ resolve_required_workflows() {
     if [ -f .github/workflows/codeql.yml ]; then
       REQUIRED+=("CodeQL")
     fi
+    if [ -f .github/workflows/security.yml ] || [ -f .github/workflows/trivy.yml ]; then
+      REQUIRED+=("Security Scan")
+    fi
   elif [ -f .github/workflows/android-ci.yml ] && \
      [ ! -f .github/workflows/codeql.yml ] && \
      [ ! -f .github/workflows/security.yml ]; then
@@ -51,10 +54,9 @@ resolve_required_workflows() {
 }
 resolve_required_workflows
 
-if ! command -v gh >/dev/null 2>&1; then
-  echo "ERROR: gh CLI required (https://cli.github.com/)"
-  exit 1
-fi
+# shellcheck source=lib/resolve-gh.sh
+source "$ROOT/scripts/lib/resolve-gh.sh"
+require_gh || exit 1
 
 REPO="$(gh repo view --json nameWithOwner -q .nameWithOwner 2>/dev/null || true)"
 if [ -z "$REPO" ]; then
