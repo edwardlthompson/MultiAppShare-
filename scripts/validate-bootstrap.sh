@@ -23,14 +23,22 @@ REQUIRED=(
   AGENT_MEMORY.md
   docs/DECISION_LOG.md
   docs/COMPLETED_TASKS.md
+  HUMAN_BACKLOG.md
+  TEMPLATE_INDEX.json
+  .template-version
+  .template-update.json
   docs/START_HERE.md
   docs/CURSOR_MODES.md
   docs/FOR_AGENTS.md
   docs/INITIALIZATION_PROMPT.md
   docs/BOOTSTRAP_TEMPLATE_MAP.md
+  docs/BOOTSTRAP_ALIGNMENT.md
+  docs/UPGRADING_FROM_TEMPLATE.md
   .cursor/rules/cursor-modes.mdc
   .cursor/rules/batch-commands.mdc
+  .cursor/rules/local-compute.mdc
   .cursor/rules/project.mdc
+  .cursor/hooks.json
   docs/DESIGN_GUIDE.md
   docs/GOLDEN_PATH.md
   docs/SECURITY_TRIAGE.md
@@ -43,16 +51,17 @@ REQUIRED=(
   CODEOWNERS
   THIRD_PARTY_LICENSES.md
   .env.example
-  .template-version
   docs/help/BATCH_COMMANDS.md
   docs/BATCH_COMMANDS.md
+  CODE_REVIEW.md.example
+  RELEASE_NOTES.md.example
   modules/android/MODULE.md
   gradlew
   app/build.gradle.kts
 )
 
 BATCH_COMMANDS=(
-  audit debug gates triage dependabot push prerelease regress
+  audit cleanup debug gates triage dependabot push prerelease regress
   feature fix init prune ci docs upgrade setup plan restore compact scope
   bootstrap verify build ship maintain
 )
@@ -87,11 +96,23 @@ if ! grep -qE '\[(AGENT|HUMAN|ADB)\]' docs/BUILD_PLAN.md; then
 fi
 
 bash scripts/sync-exemplar-config.sh >/dev/null 2>&1 || true
-run_check bash scripts/check-file-encoding.sh
-run_check bash scripts/check-markdown-tables.sh
-run_check bash scripts/check-changelog-unreleased.sh
-run_check bash scripts/check-repo-hygiene.sh
-run_check bash scripts/check-batch-commands.sh
+
+# Independent read-only checks — local CPU (BOOTSTRAP_CHECK_JOBS overrides)
+if ! python3 scripts/lib/run_checks_parallel.py \
+  check-file-encoding.sh \
+  check-markdown-tables.sh \
+  check-changelog-unreleased.sh \
+  check-repo-hygiene.sh \
+  check-batch-commands.sh \
+  check-cursor-hooks.sh \
+  check-template-version-sync.sh \
+  validate-template-index.sh
+then
+  ERRORS=$((ERRORS + 1))
+fi
+
+# BUILD_PLAN parallel structure (defaults to docs/BUILD_PLAN.md)
+run_check bash scripts/check-build-plan-parallel.sh --draft "$ROOT/docs/BUILD_PLAN.md"
 
 if [ "$QUICK" = false ]; then
   run_check bash scripts/check-readme-health.sh

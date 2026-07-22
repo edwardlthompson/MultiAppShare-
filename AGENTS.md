@@ -6,8 +6,9 @@
 4. **Task board:** [`docs/BUILD_PLAN.md`](docs/BUILD_PLAN.md) (Sequential before Parallel)
 5. **Living memory:** update [`AGENT_MEMORY.md`](AGENT_MEMORY.md) only at milestone boundaries
 6. **Slash commands:** type `/` in Agent chat — see [`docs/help/BATCH_COMMANDS.md`](docs/help/BATCH_COMMANDS.md)
+7. **Bootstrap alignment:** [`docs/BOOTSTRAP_ALIGNMENT.md`](docs/BOOTSTRAP_ALIGNMENT.md) (template **v0.15.0**)
 
-> Legacy `.cursorrules` is deprecated. Use `.cursor/rules/*.mdc` and this file.
+> Legacy `.cursorrules` is deprecated. Use `.cursor/rules/*.mdc`, `.cursor/skills/`, FOSS `.cursor/hooks.json`, and this file.
 
 ## Project summary
 

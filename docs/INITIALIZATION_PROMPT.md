@@ -67,7 +67,7 @@ Initialize the repository with a professional, hermetic layout. Early in the lif
 - **`[AGENT]`** TypeScript `strict` mode: DOM elements null-checked at module scope must be copied to a `const` (e.g. `const root = app`) before use inside nested functions — narrowing does not cross function boundaries.
 - **`[AGENT]`** Python CI must run `ruff format --check` alongside `ruff check`; module docstrings require a blank line before the first `def`.
 - **`[AGENT]`** Web e2e: Playwright `webServer` must bind preview to `127.0.0.1` (e.g. `npm run preview -- --port 4173 --host 127.0.0.1`); serve the existing production build only — do not chain `build && preview` in `webServer` when CI already runs `npm run build` separately. Run `npm run lint`, `npm test`, `npm run build`, and Playwright locally before Sprint 0 sign-off.
-- **`[AGENT]`** Do not mark BUILD_PLAN complete until **all required GitHub workflows are green on `main`**: **CI**, **Security Scan**, and **CodeQL** — not only the CI workflow or local partial checks. Run `scripts/check-github-ci.sh --wait 300` (or `.ps1 -WaitSeconds 300`) after push to poll all three.
+- **`[AGENT]`** Do not mark BUILD_PLAN complete until **required GitHub workflows are green on `main`**: **Android CI** (`.github/workflows/android.yml`) and **CodeQL** — plus **Security Scan** when `security.yml` is present. Run `scripts/check-github-ci.sh --wait 300` (or `.ps1 -WaitSeconds 300`) after push.
 
 ## 3. Persistent Agent Workspace & Memory
 

@@ -14,3 +14,4 @@ Chronological index of major technical decisions. Entries are **append-only**.
 | 2026-06-19 | V.1 configuration cache re-validated under AGP 9.2.1 full gate suite | `gradle.properties` |
 | 2026-07-12 | Audit X — require Android CI + CodeQL (not template Security Scan); keep Scorecard/Trivy optional; fix shell LF + Windows gh.exe | [`CODE_REVIEW.md`](../CODE_REVIEW.md) · [`SECURITY_TRIAGE.md`](SECURITY_TRIAGE.md) |
 | 2026-07-12 | Automate X.4–X.6: Dependabot triage script, JAVA_HOME resolve, Trivy+Scorecard workflows (SHA-pinned trivy-action v0.35.0) | [SECURITY_TRIAGE.md](SECURITY_TRIAGE.md) |
+| 2026-07-21 | Milestone Y — Align to agent-project-bootstrap v0.15.0 (skills/hooks/agents, TEMPLATE_INDEX, dependency-review); keep docs/ board paths + android.yml; no release-please | [BOOTSTRAP_ALIGNMENT.md](BOOTSTRAP_ALIGNMENT.md) |

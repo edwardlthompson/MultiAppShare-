@@ -1,8 +1,10 @@
-# Bootstrap Template Map — Multi App Share
+# Bootstrap Template Map - Multi App Share
 
-Maps [agent-project-bootstrap](https://github.com/edwardlthompson/agent-project-bootstrap) v**0.11.0** to this **android** child repo.
+Maps [agent-project-bootstrap](https://github.com/edwardlthompson/agent-project-bootstrap) v**0.15.0** to this **android** child repo.
 
-**Production path locked:** root Gradle modules — do not relocate to `examples/android/`.
+**Production path locked:** root Gradle modules - do not relocate to `examples/android/`.
+
+**Alignment record:** [`BOOTSTRAP_ALIGNMENT.md`](BOOTSTRAP_ALIGNMENT.md)
 
 ## Root documentation
 
@@ -13,8 +15,10 @@ Maps [agent-project-bootstrap](https://github.com/edwardlthompson/agent-project-
 | `AGENT_MEMORY.md` | `AGENT_MEMORY.md` | Living memory |
 | `COMPLETED_TASKS.md` | `docs/COMPLETED_TASKS.md` | Milestone archive |
 | `DECISION_LOG.md` | `docs/DECISION_LOG.md` | Major trade-offs |
-| `docs/DESIGN_GUIDE.md` | Pointer → `docs/GOLDEN_PATH.md` + Material 3 in `:core-ui` | |
-| `examples/android/` | **`app/`**, **`feature-dashboard/`**, **`core-*`** | Production modules |
+| `HUMAN_BACKLOG.md` | `HUMAN_BACKLOG.md` | Non-automatable items |
+| `TEMPLATE_INDEX.json` | `TEMPLATE_INDEX.json` | Agent file index (paths adapted) |
+| `docs/DESIGN_GUIDE.md` | Pointer to `docs/GOLDEN_PATH.md` + Material 3 in `:core-ui` | |
+| `examples/android/` | `app/`, `feature-dashboard/`, `core-*` | Production modules |
 | `docs/GATES.md` | `docs/GATES.md` | Release + milestone gate log |
 
 ## Golden Path
@@ -39,18 +43,22 @@ Maps [agent-project-bootstrap](https://github.com/edwardlthompson/agent-project-
 | `pre-release-gate.sh` | + [`docs/PRE_RELEASE_AUDIT.md`](PRE_RELEASE_AUDIT.md) |
 | Device smoke | [`docs/RELEASE_SMOKE.md`](RELEASE_SMOKE.md), `:app:connectedDebugAndroidTest` |
 
-## Cursor rules & commands
+## Cursor surface (0.15.0)
 
 | Template | MultiAppShare |
 |----------|---------------|
-| `.cursor/rules/batch-commands.mdc` | ✅ 25 slash commands |
-| `.cursor/rules/project.mdc` | Module boundaries, FOSS, BUILD_PLAN path |
-| `.cursor/commands/*.md` | Customized `gates`, `prerelease`, `regress`, `ci`, `init`, `push` |
+| `.cursor/rules/*.mdc` | Includes `local-compute.mdc` + `project.mdc` |
+| `.cursor/commands/*.md` | 26 commands (21 atomic + 5 super), Android-tuned gates/ci/push |
+| `.cursor/skills/` | 7 skills (paths to `docs/BUILD_PLAN.md`) |
+| `.cursor/agents/` | explorer, gate-fixer, verifier |
+| `.cursor/hooks.json` | FOSS hooks enabled (encoding + shell guard) |
+| Commercial examples | `*.commercial.example` only - not activated |
 
 ## Intentionally omitted
 
 - `examples/web/`, `examples/python/`, `examples/node/`
 - GitHub Pages / PWA workflows
+- release-please (signed APK via `android.yml`)
 - Relocating modules into `examples/`
 
 ## Intentional divergences
@@ -59,6 +67,7 @@ Maps [agent-project-bootstrap](https://github.com/edwardlthompson/agent-project-
 |----------|---------------|
 | Root `BUILD_PLAN.md` | `docs/BUILD_PLAN.md` |
 | Root `DECISION_LOG.md` | `docs/DECISION_LOG.md` |
+| `ci.yml` | `android.yml` (**Android CI**) |
 | `CODEOWNERS` in `.github/` | `CODEOWNERS` at repo root |
 | Generic file limits script | `check-file-limits.ps1` + bash wrapper |
-| Milestone R partial alignment | Milestone **U** full bootstrap (2026-06-19) |
+| Milestone U (0.11.0) | Milestone **Y** (0.15.0, 2026-07-21) |

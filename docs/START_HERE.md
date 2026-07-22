@@ -4,7 +4,7 @@
 
 ## What is this?
 
-**Multi App Share** is a native Android FOSS app for sequential multi-app sharing. This repo uses the [agent-project-bootstrap](https://github.com/edwardlthompson/agent-project-bootstrap) v**0.11.0** agent framework (Milestone **U**, 2026-06-19).
+**Multi App Share** is a native Android FOSS app for sequential multi-app sharing. This repo uses the [agent-project-bootstrap](https://github.com/edwardlthompson/agent-project-bootstrap) v**0.15.0** agent framework (Milestone **Y**, 2026-07-21).
 
 ## Which repo mode are you in?
 
@@ -35,7 +35,8 @@ Type **`/`** in Cursor Agent chat. Start with **[docs/help/BATCH_COMMANDS.md](he
 4. `AGENTS.md`
 5. `docs/BUILD_PLAN.md` Sequential lane
 6. `docs/BOOTSTRAP_TEMPLATE_MAP.md` (template → this repo)
-7. Active module docs: `docs/MODULE_BOUNDARIES.md`, `docs/GOLDEN_PATH.md`
+7. docs/BOOTSTRAP_ALIGNMENT.md (0.15 migration notes)
+8. Active module docs: `docs/MODULE_BOUNDARIES.md`, `docs/GOLDEN_PATH.md`
 8. `KNOWLEDGE_BASE.md` when debugging edge cases
 
 ## Do not read yet

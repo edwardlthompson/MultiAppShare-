@@ -27,6 +27,16 @@ Record milestone and release gate evidence here.
 
 **Git Bash:** export `JAVA_HOME="/c/Program Files/Android/Android Studio/jbr"` before `bash scripts/watch-agent-gates.sh`.
 
+## Ship — v1.9.1 bootstrap 0.15 (2026-07-21)
+
+| Step | Result | Notes |
+|------|--------|-------|
+| Metadata sync | ✅ | `versionCode` 177 / `versionName` 1.9.1; F-Droid YAML; fastlane `177.txt`; CHANGELOG |
+| `/prerelease` | ✅ | `pre-release-gate.sh` — feature-gate 8/8; 0 Crit/High Dependabot |
+| Device smoke | ⏭️ | N/A — process/tooling only (no UX change) |
+| Tag | ✅ | `v1.9.1` (versionCode 177) |
+| Note | ⚠️ | Security Scan / Scorecard failed on prior HEAD (optional); Android CI + CodeQL green |
+
 ## Ship — bootstrap push (2026-06-19)
 
 | Step | Result | Notes |

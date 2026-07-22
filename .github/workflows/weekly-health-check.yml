@@ -1,0 +1,32 @@
+name: Weekly Health Check
+
+on:
+  schedule:
+    - cron: "0 7 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: write
+
+jobs:
+  health:
+    name: Weekly Workflow Health
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Verify Android CI + CodeQL green on HEAD
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # --dispatch-if-missing covers Dependabot merges that used GITHUB_TOKEN
+          # (those push events do not start Android CI / CodeQL).
+          bash scripts/check-github-ci.sh "$(git rev-parse HEAD)" --wait 600 --dispatch-if-missing
+
+      - name: Bootstrap quick validation
+        run: bash scripts/validate-bootstrap.sh --quick
+
+      - name: Template update check (non-blocking)
+        continue-on-error: true
+        run: bash scripts/check-template-updates.sh --verbose

@@ -98,8 +98,8 @@ This application is built with **Privacy-by-Design** and contains **NO Analytics
 
 - **100% Free and Open-Source** under the [MIT License](LICENSE).
 - **F-Droid Readiness**: Fastlane metadata inclusive of reproducible building recipes included.
-- **Agent / maintainer docs**: [`AGENTS.md`](AGENTS.md), [`AGENT_MEMORY.md`](AGENT_MEMORY.md), [`docs/START_HERE.md`](docs/START_HERE.md), living roadmap [`docs/BUILD_PLAN.md`](docs/BUILD_PLAN.md).
-- **Cursor slash commands**: type `/` in Agent chat — cheat sheet [`docs/help/BATCH_COMMANDS.md`](docs/help/BATCH_COMMANDS.md). Run `/verify` before opening a PR.
+- **How agents should work in this repo:** read [`docs/START_HERE.md`](docs/START_HERE.md) → pick a Cursor mode via [`docs/CURSOR_MODES.md`](docs/CURSOR_MODES.md) → execute [`docs/BUILD_PLAN.md`](docs/BUILD_PLAN.md) **Sequential** lane first. Router: [`AGENTS.md`](AGENTS.md). Memory: [`AGENT_MEMORY.md`](AGENT_MEMORY.md). Bootstrap alignment: [`docs/BOOTSTRAP_ALIGNMENT.md`](docs/BOOTSTRAP_ALIGNMENT.md) (template v0.15.0).
+- **Cursor slash commands:** type `/` in Agent chat — cheat sheet [`docs/help/BATCH_COMMANDS.md`](docs/help/BATCH_COMMANDS.md). Run `/verify` before opening a PR.
 
 **Third-party OSS libraries** (partial list for attribution): Kotlin, Jetpack Compose & Material 3, AndroidX (Room, DataStore, Lifecycle), Dagger Hilt, Coil, Kotlinx Serialization, Timber, LeakCanary (debug-only). Full dependency graph is in Gradle version catalogs (`gradle/libs.versions.toml`).
 
@@ -110,7 +110,7 @@ This application is built with **Privacy-by-Design** and contains **NO Analytics
 ### 📥 Download the APK (Recommended)
 You can download the latest pre-built, optimized version of the app from the [Releases](https://github.com/edwardlthompson/MultiAppShare-/releases) page. 
 
-1. Download the latest `MultiAppShare-v1.9.0-release.apk` from [Releases](https://github.com/edwardlthompson/MultiAppShare-/releases).
+1. Download the latest `MultiAppShare-v1.9.1-release.apk` from [Releases](https://github.com/edwardlthompson/MultiAppShare-/releases).
 2. Open the file to install.
 3. If prompted, allow "Install from unknown sources".
 

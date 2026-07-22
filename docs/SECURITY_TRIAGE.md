@@ -13,6 +13,9 @@ Required GitHub workflow names (what `scripts/check-github-ci.sh` polls when `.g
 | **Security Scan** | `.github/workflows/security.yml` | Trivy fs scan (enable via `scripts/enable-optional-security-workflows.sh --apply`) |
 | OpenSSF Scorecard | `.github/workflows/scorecard.yml` | Scorecard SARIF (same enable script) |
 | PR title check | `.github/workflows/pr-title.yml` | Conventional PR titles (not a release blocker) |
+| Dependency Review | `.github/workflows/dependency-review.yml` | PR dependency advisory gate (fail on high+) |
+| Stale | `.github/workflows/stale.yml` | Marks inactive issues/PRs (not a release blocker) |
+| Weekly Health Check | `.github/workflows/weekly-health-check.yml` | Polls Android CI + CodeQL; bootstrap quick check |
 
 `check-security-triage.sh` SKIPs Scorecard when `scorecard.yml` is absent. `check-github-ci.sh` adds **Security Scan** when `security.yml` exists.
 

@@ -1,0 +1,8 @@
+# Release Notes: MultiAppShare v1.9.1
+
+### Agent tooling and process (Milestone Y)
+
+- Aligned repo agent framework to agent-project-bootstrap v0.15.0 (skills, FOSS hooks, agents, TEMPLATE_INDEX).
+- Added dependency-review, stale, and android-adapted weekly-health-check workflows.
+- Added HUMAN_BACKLOG, UPGRADING_FROM_TEMPLATE, and BOOTSTRAP_ALIGNMENT migration notes.
+- No user-facing app behavior changes in this release.

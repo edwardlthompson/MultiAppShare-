@@ -38,12 +38,13 @@ See [`docs/MODULE_BOUNDARIES.md`](docs/MODULE_BOUNDARIES.md).
 
 ## Living plans
 
-- Active roadmap: [`docs/BUILD_PLAN.md`](docs/BUILD_PLAN.md) — Milestone **X** audit sprint (2026-07-12); prior A–V in COMPLETED_TASKS
-- Completed milestones A–T: [`docs/COMPLETED_TASKS.md`](docs/COMPLETED_TASKS.md)
+- Active roadmap: [`docs/BUILD_PLAN.md`](docs/BUILD_PLAN.md) — Milestone **Y** bootstrap 0.15 alignment (2026-07-21); prior A–X in COMPLETED_TASKS
+- Completed milestones A–X: [`docs/COMPLETED_TASKS.md`](docs/COMPLETED_TASKS.md)
 - ADRs: [`docs/adr/README.md`](docs/adr/README.md)
 - Decision log: [`docs/DECISION_LOG.md`](docs/DECISION_LOG.md)
+- Human backlog: [`HUMAN_BACKLOG.md`](HUMAN_BACKLOG.md)
 
-## Bootstrap agent workspace (v0.11.0)
+## Bootstrap agent workspace (v0.15.0)
 
 | Artifact | Path |
 |----------|------|
@@ -52,11 +53,22 @@ See [`docs/MODULE_BOUNDARIES.md`](docs/MODULE_BOUNDARIES.md).
 | Slash commands (human) | [`docs/help/BATCH_COMMANDS.md`](docs/help/BATCH_COMMANDS.md) |
 | Slash commands (agent) | [`docs/BATCH_COMMANDS.md`](docs/BATCH_COMMANDS.md) |
 | Template map | [`docs/BOOTSTRAP_TEMPLATE_MAP.md`](docs/BOOTSTRAP_TEMPLATE_MAP.md) |
-| Cursor rules | `.cursor/rules/*.mdc` (13 files) |
-| Cursor commands | `.cursor/commands/*.md` (25 files) |
-| Gate scripts | `scripts/validate-bootstrap.sh`, `watch-agent-gates.sh`, `feature-gate.sh` |
-| Template version | `.template-version` → **0.11.0** |
+| Alignment | [`docs/BOOTSTRAP_ALIGNMENT.md`](docs/BOOTSTRAP_ALIGNMENT.md) |
+| Template index | [`TEMPLATE_INDEX.json`](TEMPLATE_INDEX.json) |
+| Cursor rules | `.cursor/rules/*.mdc` (includes `local-compute.mdc`) |
+| Cursor commands | `.cursor/commands/*.md` (26 files: 21 atomic + 5 super) |
+| Skills / agents / hooks | `.cursor/skills/`, `.cursor/agents/`, `.cursor/hooks.json` |
+| Gate scripts | `scripts/validate-bootstrap.sh`, `watch-agent-gates.sh`, `feature-gate.sh`, `agent-run.py` |
+| Template version | `.template-version` → **0.15.0** |
+
 ## Retrospectives
+
+### Milestone Y (2026-07-21)
+
+- Aligned agent surface to bootstrap **0.15.0**: skills, FOSS hooks, agents, `local-compute`, `/cleanup`, TEMPLATE_INDEX, upgrade checker.
+- Kept intentional divergences: board under `docs/`, `android.yml` (no release-please).
+- Added `dependency-review.yml`, `stale.yml`, android-adapted `weekly-health-check.yml`.
+- HUMAN remaining: branch protection confirm, hooks UX review, Dependabot triage, push when approved.
 
 ### Milestone X (2026-07-12)
 

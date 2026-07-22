@@ -2,6 +2,8 @@
 
 > Isolated file scopes for BUILD_PLAN Parallel lane. No two agents may touch the same path prefix.
 
+**MultiAppShare CI naming:** primary workflow is `.github/workflows/android.yml` (**Android CI**), not template `ci.yml`. Release APK lives in that workflow (no separate `release.yml`). Archived template-maintainer tables below may still mention `ci.yml` / `examples/*` for historical reference.
+
 ## Rules
 
 1. One branch per agent: `feature/agent-<task-slug>`
@@ -13,12 +15,10 @@
 
 | Stack | Isolated scope |
 |-------|----------------|
-| web | `examples/web/**` |
-| python | `examples/python/**` |
-| android | `examples/android/**` |
-| node | `examples/node/**` |
-| multi | One scope per stack row; no overlap |
-| none | Match `AGENT_MEMORY.md` checked modules |
+| android (this repo) | `app/**`, `feature-dashboard/**`, `core-domain/**`, `core-database/**`, `core-ui/**` (non-overlapping prefixes per agent) |
+| web / python / node | Not present — do not invent `examples/*` scopes |
+
+**Sequential-only (no Parallel):** `docs/BUILD_PLAN.md`, `docs/COMPLETED_TASKS.md`, `app/.../MainActivity.kt`, Room schema / shared domain interfaces
 
 ## Sprint M13 (template maintainer) — archived
 

@@ -1,25 +1,17 @@
 #!/usr/bin/env bash
-# Fail when .template-version drifts from .release-please-manifest.json
+# Android child: .template-version must match TEMPLATE_INDEX.json (no release-please)
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"
 
-if [ ! -f .release-please-manifest.json ] || [ ! -f .template-version ]; then
-  echo "MISSING: version manifest or .template-version"
+if [ ! -f .template-version ] || [ ! -f TEMPLATE_INDEX.json ]; then
+  echo "MISSING: .template-version or TEMPLATE_INDEX.json"
   exit 1
 fi
 
-MANIFEST="$(python3 -c "import json; print(json.load(open('.release-please-manifest.json'))['.'].strip())")"
 VERSION="$(tr -d '[:space:]' < .template-version)"
-
-if [ "$MANIFEST" != "$VERSION" ]; then
-  echo "FAIL: .template-version ($VERSION) != manifest ($MANIFEST)"
-  echo "Fix: bash scripts/sync-template-version.sh"
-  exit 1
-fi
-
-IDX="$(python3 -c "import json; print(json.load(open('TEMPLATE_INDEX.json'))['template_version'])")"
+IDX="$(python3 -c "import json; print(json.load(open('TEMPLATE_INDEX.json', encoding='utf-8'))['template_version'])")"
 if [ "$IDX" != "$VERSION" ]; then
   echo "FAIL: TEMPLATE_INDEX template_version ($IDX) != .template-version ($VERSION)"
   echo "Fix: bash scripts/sync-template-version.sh"

@@ -1,0 +1,191 @@
+{
+  "template_version": "0.15.0",
+  "child_profile": "android",
+  "notes": "MultiAppShare android child: board files under docs/; production Gradle at repo root. Index lists paths that exist in this repo.",
+  "entry_points": {
+    "bootstrap": "docs/START_HERE.md",
+    "reference": "docs/FOR_AGENTS.md",
+    "initialization_prompt": "docs/INITIALIZATION_PROMPT.md",
+    "cursor_modes": "docs/CURSOR_MODES.md",
+    "batch_commands_help": "docs/help/BATCH_COMMANDS.md",
+    "batch_commands_catalog": "docs/BATCH_COMMANDS.md",
+    "alignment": "docs/BOOTSTRAP_ALIGNMENT.md",
+    "build_plan": "docs/BUILD_PLAN.md"
+  },
+  "files": [
+    {
+      "path": "docs/START_HERE.md",
+      "purpose": "Single entry point for humans and agents",
+      "read_when": "session_start",
+      "update_when": "milestone_boundary",
+      "owner": "maintainer"
+    },
+    {
+      "path": "docs/CURSOR_MODES.md",
+      "purpose": "Cursor Ask/Plan/Agent/Debug mode router",
+      "read_when": "session_start",
+      "update_when": "milestone_boundary",
+      "owner": "maintainer"
+    },
+    {
+      "path": "docs/FOR_AGENTS.md",
+      "purpose": "Reference-mode agent ops doctrine",
+      "read_when": "session_start",
+      "update_when": "milestone_boundary",
+      "owner": "maintainer"
+    },
+    {
+      "path": "docs/BUILD_PLAN.md",
+      "purpose": "Living sprint board (Sequential before Parallel)",
+      "read_when": "session_start",
+      "update_when": "every_task",
+      "owner": "agent"
+    },
+    {
+      "path": "docs/BOOTSTRAP_ALIGNMENT.md",
+      "purpose": "0.11→0.15 gap analysis and migration notes",
+      "read_when": "upgrade",
+      "update_when": "milestone_boundary",
+      "owner": "maintainer"
+    },
+    {
+      "path": "docs/BOOTSTRAP_TEMPLATE_MAP.md",
+      "purpose": "Template path → MultiAppShare path map",
+      "read_when": "session_start",
+      "update_when": "milestone_boundary",
+      "owner": "maintainer"
+    },
+    {
+      "path": "docs/UPGRADING_FROM_TEMPLATE.md",
+      "purpose": "Cherry-pick guide when update checker notifies",
+      "read_when": "upgrade",
+      "update_when": "milestone_boundary",
+      "owner": "maintainer"
+    },
+    {
+      "path": "AGENTS.md",
+      "purpose": "Agent router",
+      "read_when": "session_start",
+      "update_when": "milestone_boundary",
+      "owner": "maintainer"
+    },
+    {
+      "path": "AGENT_MEMORY.md",
+      "purpose": "Living memory index",
+      "read_when": "milestone_boundary",
+      "update_when": "milestone_boundary",
+      "owner": "agent"
+    },
+    {
+      "path": "HUMAN_BACKLOG.md",
+      "purpose": "Non-automatable human items",
+      "read_when": "build",
+      "update_when": "every_task",
+      "owner": "human"
+    },
+    {
+      "path": "docs/DECISION_LOG.md",
+      "purpose": "Append-only major decisions",
+      "read_when": "milestone_boundary",
+      "update_when": "milestone_boundary",
+      "owner": "agent"
+    },
+    {
+      "path": "docs/COMPLETED_TASKS.md",
+      "purpose": "Archived sprints",
+      "read_when": "cleanup",
+      "update_when": "cleanup",
+      "owner": "agent"
+    },
+    {
+      "path": "docs/BATCH_COMMANDS.md",
+      "purpose": "Agent registry for batch slash commands",
+      "read_when": "prompt_needed",
+      "update_when": "milestone_boundary",
+      "owner": "maintainer"
+    },
+    {
+      "path": "docs/help/BATCH_COMMANDS.md",
+      "purpose": "Human cheat sheet for slash commands",
+      "read_when": "bootstrap_session_start",
+      "update_when": "milestone_boundary",
+      "owner": "maintainer"
+    },
+    {
+      "path": ".cursor/rules/local-compute.mdc",
+      "purpose": "Prefer local parallel Agent/worktrees over Cloud",
+      "read_when": "session_start",
+      "update_when": "milestone_boundary",
+      "owner": "maintainer"
+    },
+    {
+      "path": ".cursor/hooks.json",
+      "purpose": "FOSS Cursor hooks (encoding + shell guard)",
+      "read_when": "cursor_setup",
+      "update_when": "milestone_boundary",
+      "owner": "maintainer"
+    },
+    {
+      "path": "scripts/validate-bootstrap.sh",
+      "purpose": "Android-child bootstrap validation",
+      "read_when": "validation",
+      "update_when": "milestone_boundary",
+      "owner": "maintainer"
+    },
+    {
+      "path": "scripts/sync-template-version.sh",
+      "purpose": "Sync TEMPLATE_INDEX from .template-version (no release-please)",
+      "read_when": "validation",
+      "update_when": "milestone_boundary",
+      "owner": "maintainer"
+    },
+    {
+      "path": "scripts/check-template-version-sync.sh",
+      "purpose": "Fail if template version drifts",
+      "read_when": "validation",
+      "update_when": "milestone_boundary",
+      "owner": "maintainer"
+    },
+    {
+      "path": "scripts/check-template-updates.sh",
+      "purpose": "Notify when upstream bootstrap releases a new version",
+      "read_when": "upgrade",
+      "update_when": "milestone_boundary",
+      "owner": "maintainer"
+    },
+    {
+      "path": "scripts/agent-run.py",
+      "purpose": "Run repo scripts without putting .sh paths in agent shell strings",
+      "read_when": "validation",
+      "update_when": "milestone_boundary",
+      "owner": "maintainer"
+    },
+    {
+      "path": "scripts/lib/run_checks_parallel.py",
+      "purpose": "Multi-core runner for independent bootstrap checks",
+      "read_when": "validation",
+      "update_when": "milestone_boundary",
+      "owner": "maintainer"
+    },
+    {
+      "path": "modules/android/MODULE.md",
+      "purpose": "Android stack module guide for this child",
+      "read_when": "feature_work",
+      "update_when": "milestone_boundary",
+      "owner": "maintainer"
+    },
+    {
+      "path": ".github/workflows/android.yml",
+      "purpose": "Primary Android CI (not template ci.yml)",
+      "read_when": "ci",
+      "update_when": "milestone_boundary",
+      "owner": "maintainer"
+    }
+  ],
+  "modules": {
+    "android": {
+      "guide": "modules/android/MODULE.md",
+      "example": null
+    }
+  }
+}

@@ -1,9 +1,10 @@
-# MultiAppShare BUILD PLAN – Living Checklist
+# MultiAppShare BUILD PLAN - Living Checklist
 
-> **Completed milestones:** A–T, **U**, **W**, **V**, **X** — [`COMPLETED_TASKS.md`](COMPLETED_TASKS.md)  
-> **Agent workspace:** [`AGENTS.md`](../AGENTS.md) · [`AGENT_MEMORY.md`](../AGENT_MEMORY.md) · [`docs/START_HERE.md`](START_HERE.md)  
-> **Gate log:** [`docs/GATES.md`](GATES.md)  
-> **Audit:** [`CODE_REVIEW.md`](../CODE_REVIEW.md) (2026-07-12, gitignored)
+> **Completed milestones:** A-T, **U**, **W**, **V**, **X** - [`COMPLETED_TASKS.md`](COMPLETED_TASKS.md)
+> **Active:** Milestone **Y** - Bootstrap 0.15.0 alignment - [`BOOTSTRAP_ALIGNMENT.md`](BOOTSTRAP_ALIGNMENT.md)
+> **Agent workspace:** [`AGENTS.md`](../AGENTS.md) / [`AGENT_MEMORY.md`](../AGENT_MEMORY.md) / [`START_HERE.md`](START_HERE.md)
+> **Human backlog:** [`HUMAN_BACKLOG.md`](../HUMAN_BACKLOG.md)
+> **Gate log:** [`GATES.md`](GATES.md)
 
 ---
 
@@ -16,7 +17,9 @@
 | `[ADB]` | Human (Android) | Device/emulator testing, F-Droid |
 | `[AUTO]` | CI / scripts | GitHub Actions, Dependabot, gate scripts |
 
-**Agent rule:** Sequential lane first · after each `[AGENT]` step: `bash scripts/watch-agent-gates.sh --once --autofix`
+**Status markers (active board only):** 🔲 open / ✅ done / ❌ blocked - emoji only (never GitHub checkboxes).
+
+**Agent rule:** Sequential lane first; after each `[AGENT]` step: `bash scripts/watch-agent-gates.sh --once --autofix`
 
 ---
 
@@ -25,7 +28,7 @@
 1. `./gradlew lint test detekt koverXmlReport assembleDebug`
 2. `bash scripts/validate-bootstrap.sh --quick`
 3. `bash scripts/check-file-limits.sh`
-4. Device smoke when UX touched — [`RELEASE_SMOKE.md`](RELEASE_SMOKE.md)
+4. Device smoke when UX touched - [`RELEASE_SMOKE.md`](RELEASE_SMOKE.md)
 5. No untriaged **P1** defects
 
 **Product scope:** Phones and tablets only.
@@ -38,24 +41,45 @@ Per [`PRE_RELEASE_AUDIT.md`](PRE_RELEASE_AUDIT.md). Prefer `/ship`.
 
 ---
 
-## Active board
+## Milestone Y - Bootstrap 0.15.0 alignment
 
-_No active milestone._
+### Sequential
 
-**Scripted follow-ups:**
+| Status | ID | Label | Task |
+|--------|----|-------|------|
+| ✅ | Y.1 | `[AGENT]` | Write `docs/BOOTSTRAP_ALIGNMENT.md`; reshape this board; seed `HUMAN_BACKLOG.md` |
+| ✅ | Y.2 | `[AGENT]` | Port Cursor surface (local-compute, cleanup, skills, agents, FOSS hooks, TEMPLATE_INDEX, upgrade docs); bump `.template-version` |
+| ✅ | Y.3 | `[AGENT]` | Port template-update/sync + parallel gate helpers; green `validate-bootstrap --quick` |
+| ✅ | Y.4 | `[AGENT]` | Add `dependency-review.yml` (+ optional stale/weekly-health); fix `ci.yml` doc drift |
+| ✅ | Y.5 | `[AGENT]` | Refresh `modules/android/MODULE.md` + README agent pointer |
+| ✅ | Y.6 | `[AGENT]` | Run gates; close memory / DECISION_LOG / migration notes |
 
-- After Dependabot recreate finishes: `bash scripts/triage-dependabot-prs.sh --apply` for #29 / #32
-- Commit + push local `security.yml` / `scorecard.yml` to activate on `main`
-- Android gates: `scripts/lib/resolve-java-home.sh` is wired into `feature-gate.sh`
+### Parallel (after Y.2 Sequential lock)
 
-**Toolchain:** Gradle **9.5.1** (PR #31 may bump to **9.6.1** on main) · AGP **9.2.1** · Kotlin **2.4.0** · `compileSdk` **37** · `targetSdk` **36**
+| Status | ID | Label | Task |
+|--------|----|-------|------|
+| ✅ | Y.P1 | `[AGENT]` | Adapt skill/agent path refs to `docs/BUILD_PLAN.md` (non-overlapping with Y.3 scripts) |
+| ✅ | Y.P2 | `[AGENT]` | Doc drift: FEATURE_MODULES / PARALLEL_AGENT_SCOPES to `android.yml` naming |
+
+### Human & device (after automation)
+
+| Status | ID | Label | Task |
+|--------|----|-------|------|
+| 🔲 | Y.H1 | `[HUMAN]` | Confirm branch protection still requires **Android CI** + **CodeQL** (no silent rename) |
+| 🔲 | Y.H2 | `[HUMAN]` | Review FOSS Cursor hooks (encoding + shell denylist) after first Agent session |
+| 🔲 | Y.H3 | `[HUMAN]` | Triage Dependabot PRs (#27-#32 / successors) via `triage-dependabot-prs.sh --apply` |
+| 🔲 | Y.H4 | `[HUMAN]` | Push any unpushed security workflows if still local-only |
+| 🔲 | Y.A1 | `[ADB]` | Device smoke only if UX touched this sprint (expected: N/A for process-only) |
 
 ---
 
 ## Ongoing maintenance
 
-- Weekly: `check-security-triage.sh` · `triage-dependabot-prs.sh` · `/verify`
-- Pre-release: `/ship` · device smoke
+- Weekly: `check-security-triage.sh` / `triage-dependabot-prs.sh` / `/verify`
+- Pre-release: `/ship` / device smoke
+- Template drift: `bash scripts/check-template-updates.sh` (after Y.3)
+
+**Toolchain:** Gradle **9.5.1** / AGP **9.2.1** / Kotlin **2.4.0** / `compileSdk` **37** / `targetSdk` **36**
 
 ---
 
@@ -63,7 +87,7 @@ _No active milestone._
 
 | Sprint | Status | Archive |
 |--------|--------|---------|
-| A–T | Complete | [`COMPLETED_TASKS.md`](COMPLETED_TASKS.md) |
-| U, W | Complete (2026-06-19) | [`BOOTSTRAP_TEMPLATE_MAP.md`](BOOTSTRAP_TEMPLATE_MAP.md) · [`GATES.md`](GATES.md) |
-| V (V.1–V.3b, V.2) | Complete (2026-06-20) | [`TARGET_SDK_REVIEW.md`](TARGET_SDK_REVIEW.md) · [`SECURITY_TRIAGE.md`](SECURITY_TRIAGE.md) |
-| X (audit + automation) | Complete (2026-07-12) | [`COMPLETED_TASKS.md`](COMPLETED_TASKS.md) · automation scripts |
+| A-T | Complete | [`COMPLETED_TASKS.md`](COMPLETED_TASKS.md) |
+| U, W | Complete (2026-06-19) | [`BOOTSTRAP_TEMPLATE_MAP.md`](BOOTSTRAP_TEMPLATE_MAP.md) / [`GATES.md`](GATES.md) |
+| V (V.1-V.3b, V.2) | Complete (2026-06-20) | [`TARGET_SDK_REVIEW.md`](TARGET_SDK_REVIEW.md) / [`SECURITY_TRIAGE.md`](SECURITY_TRIAGE.md) |
+| X (audit + automation) | Complete (2026-07-12) | [`COMPLETED_TASKS.md`](COMPLETED_TASKS.md) / automation scripts |

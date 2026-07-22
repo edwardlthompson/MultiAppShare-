@@ -7,8 +7,21 @@ This project uses Android **`versionCode`**-keyed changelogs for F-Droid/Store m
 
 ### Added
 
-- Agent-project-bootstrap v0.11.0 alignment (Milestone U): Cursor rules, 25 slash commands, gate scripts.
-- `targetSdk` 36 + `enableEdgeToEdge()` in `MainActivity` (Milestone V.3b).
+### Changed
+
+### Fixed
+
+## 1.9.1 (versionCode 177)
+
+### Added
+
+- Agent-project-bootstrap **v0.15.0** alignment (Milestone Y): Cursor skills/hooks/agents, `/cleanup`, `TEMPLATE_INDEX.json`, template update checker, `HUMAN_BACKLOG.md`.
+- GitHub workflows: `dependency-review.yml`, `stale.yml`, android-adapted `weekly-health-check.yml`.
+
+### Changed
+
+- Batch commands: 26 slash commands (21 atomic + 5 super); validate-bootstrap uses parallel local checks.
+- Docs: `BOOTSTRAP_TEMPLATE_MAP` / `BOOTSTRAP_ALIGNMENT` for android-child divergences (`docs/` board paths, `android.yml`).
 
 ## 1.9.0 (versionCode 176)
 
@@ -26,5 +39,4 @@ This project uses Android **`versionCode`**-keyed changelogs for F-Droid/Store m
 - Encrypted JSON backups (passphrase-based AES-GCM) + tests.
 - Hilt + Room migrated to KSP; toolchain and CI hygiene improvements.
 - French + Spanish localizations; locale config.
-- Local signing docs + helper scripts for building signed APKs.
-
+- Local signing docs + helper scripts for building signed release APKs.

@@ -30,8 +30,8 @@ android {
         applicationId = "com.edwardlthompson.multiappshare"
         minSdk = 26
         targetSdk = 36
-        versionCode = 176
-        versionName = "1.9.0"
+        versionCode = 177
+        versionName = "1.9.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }

@@ -71,7 +71,7 @@ Progress file: `.cursor/agent-progress.json` (gitignored). See `.cursor-session-
 | `scripts/agent-progress.sh` | Read/write agent progress JSON |
 | `scripts/smoke-stack.sh` | Alias for `feature-gate.sh` |
 
-**CI-only gates (not in local `feature-gate.sh`):** Playwright e2e, Lighthouse budgets, bundle-size, license compliance — see `.github/workflows/ci.yml`. Use `watch-agent-gates.sh --wait-ci 300` after push.
+**CI-only gates (not in local `feature-gate.sh`):** Paparazzi verify on CI, signed release APK on tags — see `.github/workflows/android.yml` (**Android CI**). Use `watch-agent-gates.sh --wait-ci 300` after push.
 
 ## Anti-patterns
 
