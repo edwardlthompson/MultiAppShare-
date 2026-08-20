@@ -22,6 +22,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
+import com.multiappshare.core.ui.highRefreshScroll
 import com.multiappshare.model.HistoryItem
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -47,7 +48,7 @@ fun DashboardHistoryDialog(
             if (history.isEmpty()) {
                 Text(labels.empty)
             } else {
-                LazyColumn(modifier = Modifier.height(400.dp)) {
+                LazyColumn(modifier = Modifier.height(400.dp).highRefreshScroll()) {
                     items(history, key = { it.id }) { item ->
                         val date = SimpleDateFormat("MMM dd, HH:mm", Locale.getDefault()).format(Date(item.timestamp))
                         Column(modifier = Modifier.padding(vertical = 4.dp)) {

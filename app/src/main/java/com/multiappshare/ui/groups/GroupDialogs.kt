@@ -41,6 +41,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.multiappshare.R
+import com.multiappshare.core.ui.highRefreshScroll
 import com.multiappshare.model.AppGroup
 import com.multiappshare.model.AppInfo
 
@@ -93,7 +94,7 @@ fun ModifyGroupAppsDialog(
             Column {
                 if (selectedApps.isNotEmpty()) {
                     LazyRow(
-                        modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
+                        modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp).highRefreshScroll(),
                         horizontalArrangement = Arrangement.spacedBy(4.dp),
                     ) {
                         items(selectedApps) { app ->
@@ -113,7 +114,7 @@ fun ModifyGroupAppsDialog(
                     singleLine = true,
                 )
                 Spacer(modifier = Modifier.height(8.dp))
-                LazyColumn(modifier = Modifier.height(300.dp)) {
+                LazyColumn(modifier = Modifier.height(300.dp).highRefreshScroll()) {
                     val filteredApps = allApps.filter { it.appName.contains(searchQuery, ignoreCase = true) }
                     items(filteredApps) { app ->
                         val isSelected = selectedApps.any {

@@ -31,6 +31,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
+import com.multiappshare.core.ui.highRefreshScroll
 import com.multiappshare.model.HistoryItem
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -91,7 +92,7 @@ fun HistoryDialog(history: List<HistoryItem>, onDismiss: () -> Unit) {
             if (history.isEmpty()) {
                 Text(stringResource(R.string.history_empty))
             } else {
-                LazyColumn(modifier = Modifier.height(400.dp)) {
+                LazyColumn(modifier = Modifier.height(400.dp).highRefreshScroll()) {
                     items(history) { item ->
                         val locale = LocalLocale.current.platformLocale
                         val date = SimpleDateFormat("MMM dd, HH:mm", locale).format(Date(item.timestamp))

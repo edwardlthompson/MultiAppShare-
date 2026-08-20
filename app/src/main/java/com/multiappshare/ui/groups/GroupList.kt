@@ -43,6 +43,7 @@ import coil.compose.AsyncImagePainter
 import coil.compose.SubcomposeAsyncImage
 import coil.compose.SubcomposeAsyncImageContent
 import com.multiappshare.R
+import com.multiappshare.core.ui.highRefreshScroll
 import com.multiappshare.model.AppGroup
 import com.multiappshare.model.AppInfo
 
@@ -58,7 +59,7 @@ fun GroupList(
     inShareMode: Boolean,
     packageManager: PackageManager,
 ) {
-    LazyColumn {
+    LazyColumn(modifier = Modifier.highRefreshScroll()) {
         items(groups, key = { it.name }) { group ->
             GroupItem(
                 group = group,

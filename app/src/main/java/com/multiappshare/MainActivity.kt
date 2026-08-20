@@ -23,6 +23,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
+import com.multiappshare.display.enableFastestSameResolutionMode
 import com.multiappshare.model.AppGroup
 import com.multiappshare.model.HistoryItem
 import com.multiappshare.ui.theme.MultiAppShareTheme
@@ -75,6 +76,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
+        window.decorView.post { window.enableFastestSameResolutionMode() }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)

@@ -28,6 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.multiappshare.R
+import com.multiappshare.core.ui.highRefreshScroll
 import com.multiappshare.model.AppGroup
 import com.multiappshare.model.AppInfo
 
@@ -43,7 +44,7 @@ fun ReorderAppsDialog(
         onDismissRequest = onDismiss,
         title = { Text(stringResource(R.string.dialog_reorder_apps_title)) },
         text = {
-            LazyColumn(modifier = Modifier.height(400.dp)) {
+            LazyColumn(modifier = Modifier.height(400.dp).highRefreshScroll()) {
                 itemsIndexed(apps, key = { _, app -> app.packageName + "/" + app.activityName }) { index, app ->
                     Row(
                         modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
@@ -99,7 +100,7 @@ fun SortGroupsDialog(
         onDismissRequest = onDismiss,
         title = { Text(stringResource(R.string.dialog_sort_groups_title)) },
         text = {
-            LazyColumn(modifier = Modifier.height(400.dp)) {
+            LazyColumn(modifier = Modifier.height(400.dp).highRefreshScroll()) {
                 itemsIndexed(sortedGroups, key = { _, group -> group.name }) { index, group ->
                     Row(
                         modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
