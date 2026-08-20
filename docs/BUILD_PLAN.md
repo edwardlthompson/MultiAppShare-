@@ -1,7 +1,7 @@
 # MultiAppShare BUILD PLAN - Living Checklist
 
 > **Completed milestones:** A-T, **U**, **W**, **V**, **X** - [`COMPLETED_TASKS.md`](COMPLETED_TASKS.md)
-> **Active:** Milestone **Y** - Bootstrap 0.15.0 alignment - [`BOOTSTRAP_ALIGNMENT.md`](BOOTSTRAP_ALIGNMENT.md)
+> **Active:** Milestone **AA** - Group and share UX (rename, merge, theme, delay)
 > **Agent workspace:** [`AGENTS.md`](../AGENTS.md) / [`AGENT_MEMORY.md`](../AGENT_MEMORY.md) / [`START_HERE.md`](START_HERE.md)
 > **Human backlog:** [`HUMAN_BACKLOG.md`](../HUMAN_BACKLOG.md)
 > **Gate log:** [`GATES.md`](GATES.md)
@@ -16,7 +16,6 @@
 | `[HUMAN]` | Human developer | Approvals, GitHub settings, product decisions |
 | `[ADB]` | Human (Android) | Device/emulator testing, F-Droid |
 | `[AUTO]` | CI / scripts | GitHub Actions, Dependabot, gate scripts |
-
 **Status markers (active board only):** 🔲 open / ✅ done / ❌ blocked - emoji only (never GitHub checkboxes).
 
 **Agent rule:** Sequential lane first; after each `[AGENT]` step: `bash scripts/watch-agent-gates.sh --once --autofix`
@@ -53,14 +52,12 @@ Per [`PRE_RELEASE_AUDIT.md`](PRE_RELEASE_AUDIT.md). Prefer `/ship`.
 | ✅ | Y.4 | `[AGENT]` | Add `dependency-review.yml` (+ optional stale/weekly-health); fix `ci.yml` doc drift |
 | ✅ | Y.5 | `[AGENT]` | Refresh `modules/android/MODULE.md` + README agent pointer |
 | ✅ | Y.6 | `[AGENT]` | Run gates; close memory / DECISION_LOG / migration notes |
-
 ### Parallel (after Y.2 Sequential lock)
 
 | Status | ID | Label | Task |
 |--------|----|-------|------|
 | ✅ | Y.P1 | `[AGENT]` | Adapt skill/agent path refs to `docs/BUILD_PLAN.md` (non-overlapping with Y.3 scripts) |
 | ✅ | Y.P2 | `[AGENT]` | Doc drift: FEATURE_MODULES / PARALLEL_AGENT_SCOPES to `android.yml` naming |
-
 ### Human & device (after automation)
 
 | Status | ID | Label | Task |
@@ -70,7 +67,47 @@ Per [`PRE_RELEASE_AUDIT.md`](PRE_RELEASE_AUDIT.md). Prefer `/ship`.
 | 🔲 | Y.H3 | `[HUMAN]` | Triage Dependabot PRs (#27-#32 / successors) via `triage-dependabot-prs.sh --apply` |
 | 🔲 | Y.H4 | `[HUMAN]` | Push any unpushed security workflows if still local-only |
 | 🔲 | Y.A1 | `[ADB]` | Device smoke only if UX touched this sprint (expected: N/A for process-only) |
+---
 
+## Milestone Z - Share session UX
+
+### Sequential
+
+| Status | ID | Label | Task |
+|--------|----|-------|------|
+| ✅ | Z.1 | `[AGENT]` | Resume in-flight share after process death (DataStore snapshot + nonce) |
+| ✅ | Z.2 | `[AGENT]` | Re-share last payload from History |
+| ✅ | Z.3 | `[AGENT]` | Finish early / skip remaining mid-sequence |
+| ✅ | Z.4 | `[AGENT]` | Duplicate group |
+| ✅ | Z.5 | `[AGENT]` | Tablet two-pane list + editor |
+| ✅ | Z.6 | `[AGENT]` | Predictive Back on share overlay |
+| ✅ | Z.7 | `[AGENT]` | In-app language picker (en/fr/es/system) |
+### Human & device
+
+| Status | ID | Label | Task |
+|--------|----|-------|------|
+| 🔲 | Z.A1 | `[ADB]` | Device smoke: process-death resume, skip remaining, tablet layout, language switch |
+---
+
+## Milestone AA - Group and share UX
+
+### Sequential
+
+| Status | ID | Label | Task |
+|--------|----|-------|------|
+| ✅ | AA.1 | `[AGENT]` | Persist inbound content URI grants |
+| ✅ | AA.2 | `[AGENT]` | Rename group (name-PK rewrite) |
+| ✅ | AA.3 | `[AGENT]` | Theme system / light / dark |
+| ✅ | AA.4 | `[AGENT]` | Notification Next / Skip / Cancel |
+| ✅ | AA.5 | `[AGENT]` | Undo delete group |
+| ✅ | AA.6 | `[AGENT]` | Skip this app only |
+| ✅ | AA.7 | `[AGENT]` | Honor sharingDelay between steps |
+| ✅ | AA.8 | `[AGENT]` | Merge two groups |
+### Human & device
+
+| Status | ID | Label | Task |
+|--------|----|-------|------|
+| 🔲 | AA.A1 | `[ADB]` | Device smoke: persistable URI resume, theme, notification actions, undo, merge |
 ---
 
 ## Ongoing maintenance

@@ -6,16 +6,17 @@ import androidx.test.core.app.ApplicationProvider
 import com.multiappshare.domain.GroupsRepository
 import com.multiappshare.domain.HistoryRepository
 import com.multiappshare.domain.SettingsRepository
+import com.multiappshare.domain.ShareSessionStore
 import com.multiappshare.model.AppGroup
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
@@ -60,6 +61,7 @@ class MainViewModelTest {
         val groupsRepo = mockk<GroupsRepository>()
         val historyRepo = mockk<HistoryRepository>()
         val settingsRepo = mockk<SettingsRepository>()
+        val shareStore = mockk<ShareSessionStore>(relaxed = true)
 
         coEvery { groupsRepo.loadGroups() } returns listOf(
             AppGroup(name = "Low", apps = emptyList(), usageCount = 1),
@@ -67,8 +69,10 @@ class MainViewModelTest {
         )
         coEvery { historyRepo.loadHistory() } returns emptyList()
         every { settingsRepo.isOnboardingCompleted } returns flowOf(true)
+        every { settingsRepo.isDarkThemeEnabled } returns flowOf(null)
+        every { settingsRepo.sharingDelay } returns flowOf(500)
 
-        val vm = MainViewModel(groupsRepo, historyRepo, pm, settingsRepo, context)
+        val vm = MainViewModel(groupsRepo, historyRepo, pm, settingsRepo, shareStore, context)
 
         val success = vm.uiState.filterIsInstance<MainUiState.Success>().first()
         assertEquals(2, success.groups.size)

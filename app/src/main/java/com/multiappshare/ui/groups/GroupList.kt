@@ -58,18 +58,30 @@ fun GroupList(
     onAddShortcutClick: (AppGroup) -> Unit,
     inShareMode: Boolean,
     packageManager: PackageManager,
+    selectedGroupName: String? = null,
+    onSelectClick: ((AppGroup) -> Unit)? = null,
+    onDuplicateClick: (AppGroup) -> Unit = {},
+    onRenameClick: (AppGroup) -> Unit = {},
+    onMergeClick: (AppGroup) -> Unit = {},
 ) {
     LazyColumn(modifier = Modifier.highRefreshScroll()) {
         items(groups, key = { it.name }) { group ->
             GroupItem(
                 group = group,
+                selected = group.name == selectedGroupName,
                 onModifyClick = { onModifyClick(group) },
                 onReorderClick = { onReorderClick(group) },
+                onDuplicateClick = { onDuplicateClick(group) },
+                onRenameClick = { onRenameClick(group) },
+                onMergeClick = { onMergeClick(group) },
                 onDeleteClick = { onDeleteClick(group) },
                 onToggleExpanded = { onToggleExpanded(group) },
-                onGroupClick = { onGroupClick(group) },
+                onGroupClick = {
+                    if (inShareMode) onGroupClick(group) else onSelectClick?.invoke(group)
+                },
                 onAddShortcutClick = { onAddShortcutClick(group) },
                 inShareMode = inShareMode,
+                selectable = inShareMode || onSelectClick != null,
                 packageManager = packageManager,
             )
         }
@@ -87,15 +99,20 @@ fun GroupItem(
     onAddShortcutClick: () -> Unit,
     inShareMode: Boolean,
     packageManager: PackageManager,
+    selected: Boolean = false,
+    onDuplicateClick: () -> Unit = {},
+    onRenameClick: () -> Unit = {},
+    onMergeClick: () -> Unit = {},
+    selectable: Boolean = inShareMode,
 ) {
     var menuExpanded by remember { mutableStateOf(false) }
 
     Card(
-        modifier = Modifier.padding(8.dp).fillMaxWidth().clickable(enabled = inShareMode, onClick = onGroupClick),
-        colors = if (inShareMode) {
-            CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondaryContainer)
-        } else {
-            CardDefaults.cardColors()
+        modifier = Modifier.padding(8.dp).fillMaxWidth().clickable(enabled = selectable, onClick = onGroupClick),
+        colors = when {
+            selected -> CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer)
+            inShareMode -> CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondaryContainer)
+            else -> CardDefaults.cardColors()
         },
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
@@ -138,6 +155,18 @@ fun GroupItem(
                             DropdownMenuItem(
                                 text = { Text(stringResource(R.string.menu_reorder_apps)) },
                                 onClick = { menuExpanded = false; onReorderClick() },
+                            )
+                            DropdownMenuItem(
+                                text = { Text(stringResource(R.string.menu_duplicate_group)) },
+                                onClick = { menuExpanded = false; onDuplicateClick() },
+                            )
+                            DropdownMenuItem(
+                                text = { Text(stringResource(R.string.menu_rename_group)) },
+                                onClick = { menuExpanded = false; onRenameClick() },
+                            )
+                            DropdownMenuItem(
+                                text = { Text(stringResource(R.string.menu_merge_group)) },
+                                onClick = { menuExpanded = false; onMergeClick() },
                             )
                             DropdownMenuItem(
                                 text = { Text(stringResource(R.string.menu_add_home_shortcut)) },

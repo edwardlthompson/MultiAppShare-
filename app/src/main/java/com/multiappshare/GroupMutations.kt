@@ -62,6 +62,19 @@ internal object GroupMutations {
         return updated
     }
 
+    suspend fun duplicateGroup(
+        state: MainUiState.Success,
+        groupsRepository: GroupsRepository,
+        group: AppGroup,
+    ): MainUiState.Success? {
+        val copyName = GroupNameHelper.uniqueCopyName(group.name, state.groups)
+        if (GroupNameHelper.isDuplicate(copyName, state.groups)) return null
+        val copy = group.copy(name = copyName, isExpanded = false, usageCount = 0)
+        val updated = state.copy(groups = state.groups + copy)
+        groupsRepository.saveGroups(updated.groups)
+        return updated
+    }
+
     suspend fun expandByName(
         state: MainUiState.Success,
         groupsRepository: GroupsRepository,

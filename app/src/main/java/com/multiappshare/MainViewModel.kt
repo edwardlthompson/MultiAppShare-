@@ -11,150 +11,130 @@ import androidx.lifecycle.viewModelScope
 import com.multiappshare.domain.GroupsRepository
 import com.multiappshare.domain.HistoryRepository
 import com.multiappshare.domain.SettingsRepository
+import com.multiappshare.domain.ShareSessionStore
+import com.multiappshare.domain.SharingDelay
 import com.multiappshare.model.AppGroup
 import com.multiappshare.model.AppInfo
 import com.multiappshare.model.HistoryItem
+import com.multiappshare.share.ShareSessionCoordinator
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val groupsRepository: GroupsRepository,
-    private val historyRepository: HistoryRepository,
+    groupsRepository: GroupsRepository,
+    historyRepository: HistoryRepository,
     private val packageManager: PackageManager,
-    private val settingsRepository: SettingsRepository,
+    settingsRepository: SettingsRepository,
+    shareSessionStore: ShareSessionStore,
     @ApplicationContext private val context: Context,
 ) : ViewModel() {
 
     var showOnboardingDialog by mutableStateOf(false)
         private set
-
     var importPassphrasePendingUri by mutableStateOf<Uri?>(null)
         private set
-
     var shareSession by mutableStateOf(ShareSessionState())
         private set
-
     var notificationsEnabled by mutableStateOf(true)
         private set
+    var hasLastSharePayload by mutableStateOf(false)
+        private set
+    var lastDeletedGroup by mutableStateOf<AppGroup?>(null)
+        private set
+    var sharingDelayMs by mutableStateOf(500)
+        private set
+    val darkTheme = settingsRepository.isDarkThemeEnabled
 
+    private val session = MainViewModelSession(
+        ShareSessionCoordinator(shareSessionStore),
+        viewModelScope,
+        setSession = { shareSession = it },
+        getSession = { shareSession },
+        setHasLast = { hasLastSharePayload = it },
+    )
     private val compatiblePackagesCache = mutableMapOf<Pair<String, String>, Set<String>>()
     private val _uiState = MutableStateFlow<MainUiState>(MainUiState.Loading)
     val uiState: StateFlow<MainUiState> = _uiState
     private val stateHelper = MainViewModelState(groupsRepository, historyRepository, _uiState, Mutex())
+    private val groups = MainGroupCommands(
+        viewModelScope,
+        stateHelper,
+        settingsRepository,
+        setLastDeleted = { lastDeletedGroup = it },
+        getLastDeleted = { lastDeletedGroup },
+    )
+    private val data = MainDataCommands(
+        MainDataDeps(
+            viewModelScope,
+            context,
+            MainRepoDeps(groupsRepository, historyRepository, settingsRepository),
+            packageManager,
+            _uiState,
+        ),
+        stateHelper,
+        compatiblePackagesCache,
+        setOnboarding = { showOnboardingDialog = it },
+        setImportUri = { importPassphrasePendingUri = it },
+    )
 
     init {
-        loadData()
+        data.loadData()
+        session.refreshLastPayloadFlag()
+        viewModelScope.launch {
+            settingsRepository.sharingDelay.collect { sharingDelayMs = SharingDelay.clamp(it) }
+        }
     }
 
     fun onNotificationsPermissionResult(granted: Boolean) {
         notificationsEnabled = granted
     }
 
-    fun setOnboardingDismissed() {
-        viewModelScope.launch {
-            settingsRepository.setOnboardingCompleted()
-            showOnboardingDialog = false
-        }
-    }
-
-    fun exportGroupsToUri(uri: Uri, passphrase: CharArray) =
-        MainViewModelBackup.export(viewModelScope, context, groupsRepository, uri, passphrase)
-
-    fun importGroupsFromUri(uri: Uri) =
-        MainViewModelBackup.import(
-            viewModelScope,
-            context,
-            groupsRepository,
-            uri,
-            onEncrypted = { importPassphrasePendingUri = it },
-            onComplete = { loadData() },
-        )
-
+    fun setOnboardingDismissed() = data.setOnboardingDismissed()
+    fun exportGroupsToUri(uri: Uri, passphrase: CharArray) = data.exportGroupsToUri(uri, passphrase)
+    fun importGroupsFromUri(uri: Uri) = data.importGroupsFromUri(uri)
     fun dismissImportPassphraseRequest() {
         importPassphrasePendingUri = null
     }
-
     fun importGroupsWithPassphrase(uri: Uri, passphrase: CharArray) =
-        MainViewModelBackup.importWithPassphrase(
-            viewModelScope,
-            context,
-            groupsRepository,
-            uri,
-            passphrase,
-            onSuccess = {
-                importPassphrasePendingUri = null
-                loadData()
-            },
-        )
-
+        data.importGroupsWithPassphrase(uri, passphrase)
     fun createShortcutForGroup(group: AppGroup) = ShortcutHelper.createPinShortcut(context, group)
-
     fun getCompatiblePackages(action: String, mime: String): Set<String> =
         AppListResolver.getCompatiblePackages(packageManager, compatiblePackagesCache, action, mime)
 
-    fun updateShareSession(update: ShareSessionState.() -> ShareSessionState) {
-        shareSession = shareSession.update()
-    }
-
-    fun clearShareSession() {
-        shareSession = ShareSessionState()
-    }
-
-    fun loadData() {
-        compatiblePackagesCache.clear()
-        viewModelScope.launch(Dispatchers.IO) {
-            val (groups, allApps, history) = loadMainUiData(
-                groupsRepository,
-                historyRepository,
-                packageManager,
-                context.packageName,
-            )
-            val showOnboarding = shouldShowOnboarding(groups, settingsRepository)
-            withContext(Dispatchers.Main) {
-                showOnboardingDialog = showOnboarding
-                _uiState.value = MainUiState.Success(groups, allApps, history)
-            }
-            stateHelper.applyPendingExpand { stateHelper.applyExpandByName(it) }
-        }
-    }
-
-    fun autoGroupApps(allApps: List<AppInfo>, append: Boolean, singleCategoryOnly: Int? = null) {
-        viewModelScope.launch(Dispatchers.IO) {
-            val currentState = _uiState.value as? MainUiState.Success
-            val merged = mergeAutoGroups(
-                allApps,
-                append,
-                singleCategoryOnly,
-                currentState?.groups ?: emptyList(),
-                groupsRepository,
-            )
-            if (currentState != null) _uiState.value = currentState.copy(groups = merged)
-        }
-    }
-
+    fun updateShareSession(update: ShareSessionState.() -> ShareSessionState) = session.update(update)
+    fun clearShareSession() = session.clear()
+    fun finishShareSession() = session.finish()
+    fun restoreInflightIfFresh() = session.restoreInflightIfFresh()
+    fun restoreLastPayload(onResult: (Boolean) -> Unit = {}) = session.restoreLastPayload(onResult)
+    fun setAppLanguage(tag: String?) = groups.setAppLanguage(tag)
+    fun setDarkTheme(enabled: Boolean?) = groups.setDarkTheme(enabled)
+    fun setSharingDelay(delayMs: Int) = groups.setSharingDelay(delayMs)
+    fun loadData() = data.loadData()
+    fun autoGroupApps(allApps: List<AppInfo>, append: Boolean, singleCategoryOnly: Int? = null) =
+        data.autoGroupApps(allApps, append, singleCategoryOnly)
     fun createGroup(groupName: String, onResult: (Boolean) -> Unit = {}) =
-        stateHelper.createGroup(viewModelScope, groupName, onResult)
-
-    fun deleteGroup(group: AppGroup) = stateHelper.deleteGroup(viewModelScope, group)
-
-    fun toggleGroupExpanded(group: AppGroup) = stateHelper.toggleGroupExpanded(viewModelScope, group)
-
-    fun updateGroupApps(group: AppGroup, apps: List<AppInfo>) =
-        stateHelper.updateGroupApps(viewModelScope, group, apps)
-
-    fun incrementGroupUsage(group: AppGroup) = stateHelper.incrementGroupUsage(viewModelScope, group)
-
-    fun updateGroupsOrder(groups: List<AppGroup>) = stateHelper.updateGroupsOrder(viewModelScope, groups)
-
-    fun expandGroupByNameIfPresent(name: String) = stateHelper.expandGroupByNameIfPresent(viewModelScope, name)
-
-    fun addHistoryItem(item: HistoryItem) = stateHelper.addHistoryItem(viewModelScope, item)
+        groups.createGroup(groupName, onResult)
+    fun duplicateGroup(group: AppGroup, onResult: (Boolean) -> Unit = {}) =
+        groups.duplicateGroup(group, onResult)
+    fun renameGroup(group: AppGroup, newName: String, onResult: (Boolean) -> Unit = {}) =
+        groups.renameGroup(group, newName, onResult)
+    fun mergeGroups(target: AppGroup, source: AppGroup, onResult: (Boolean) -> Unit = {}) =
+        groups.mergeGroups(target, source, onResult)
+    fun deleteGroup(group: AppGroup) = groups.deleteGroup(group)
+    fun undoDeleteGroup() = groups.undoDeleteGroup()
+    fun clearLastDeletedGroup() {
+        lastDeletedGroup = null
+    }
+    fun toggleGroupExpanded(group: AppGroup) = groups.toggleGroupExpanded(group)
+    fun updateGroupApps(group: AppGroup, apps: List<AppInfo>) = groups.updateGroupApps(group, apps)
+    fun incrementGroupUsage(group: AppGroup) = groups.incrementGroupUsage(group)
+    fun updateGroupsOrder(list: List<AppGroup>) = groups.updateGroupsOrder(list)
+    fun expandGroupByNameIfPresent(name: String) = groups.expandGroupByNameIfPresent(name)
+    fun addHistoryItem(item: HistoryItem) = groups.addHistoryItem(item)
 }

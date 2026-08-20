@@ -77,6 +77,35 @@ internal class MainViewModelState(
         }
     }
 
+    fun duplicateGroup(scope: CoroutineScope, group: AppGroup, onResult: (Boolean) -> Unit = {}) {
+        scope.launch {
+            runMutation({ GroupMutations.duplicateGroup(it, groupsRepository, group) }, onResult)
+        }
+    }
+
+    fun renameGroup(scope: CoroutineScope, group: AppGroup, newName: String, onResult: (Boolean) -> Unit = {}) {
+        scope.launch {
+            runMutation({ GroupMutationsRename.renameGroup(it, groupsRepository, group, newName) }, onResult)
+        }
+    }
+
+    fun mergeGroups(
+        scope: CoroutineScope,
+        target: AppGroup,
+        source: AppGroup,
+        onResult: (Boolean) -> Unit = {},
+    ) {
+        scope.launch {
+            runMutation({ GroupMutationsMerge.mergeGroups(it, groupsRepository, target, source) }, onResult)
+        }
+    }
+
+    fun restoreGroup(scope: CoroutineScope, group: AppGroup, onResult: (Boolean) -> Unit = {}) {
+        scope.launch {
+            runMutation({ GroupMutationsRename.restoreGroup(it, groupsRepository, group) }, onResult)
+        }
+    }
+
     fun deleteGroup(scope: CoroutineScope, group: AppGroup) {
         scope.launch { runMutationNonNull { GroupMutations.deleteGroup(it, groupsRepository, group) } }
     }

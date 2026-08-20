@@ -2,31 +2,19 @@ package com.multiappshare.ui.main
 
 import android.content.pm.PackageManager
 import android.widget.Toast
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.contentDescription
-import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.unit.dp
 import com.multiappshare.DeleteGroupDialog
-import com.multiappshare.EmptyGroupsPlaceholder
 import com.multiappshare.MainUiState
 import com.multiappshare.MainViewModel
 import com.multiappshare.R
-import com.multiappshare.ShareSessionState
 import com.multiappshare.model.AppGroup
 import com.multiappshare.ui.dashboard.AboutDialogLabels
 import com.multiappshare.ui.dashboard.DashboardAboutDialog
 import com.multiappshare.ui.dashboard.DashboardHistoryDialog
 import com.multiappshare.ui.dashboard.HistoryDialogLabels
 import com.multiappshare.ui.groups.CreateGroupDialog
-import com.multiappshare.ui.groups.GroupList
 import com.multiappshare.ui.groups.ModifyGroupAppsDialog
 import com.multiappshare.ui.groups.ReorderAppsDialog
 import com.multiappshare.ui.groups.SortGroupsDialog
@@ -60,9 +48,9 @@ internal fun MainScreenDialogsHost(
         empty = stringResource(R.string.history_empty),
         sharedPrefix = stringResource(R.string.history_shared_prefix),
         close = stringResource(R.string.button_close),
+        reshare = stringResource(R.string.history_reshare_last),
     )
-    val filterGroupsCd = stringResource(R.string.cd_filter_groups)
-
+    val reshareFailedToast = stringResource(R.string.toast_reshare_unavailable)
     if (showCreateGroupDialog) {
         CreateGroupDialog(
             onDismiss = { onShowCreateGroupDialog(false) },
@@ -71,17 +59,12 @@ internal fun MainScreenDialogsHost(
                     if (success) {
                         onShowCreateGroupDialog(false)
                     } else {
-                        Toast.makeText(
-                            context,
-                            duplicateGroupToast,
-                            Toast.LENGTH_SHORT,
-                        ).show()
+                        Toast.makeText(context, duplicateGroupToast, Toast.LENGTH_SHORT).show()
                     }
                 }
             },
         )
     }
-
     if (viewModel.showOnboardingDialog) {
         OnboardingDialog(
             onAutofill = {
@@ -91,7 +74,6 @@ internal fun MainScreenDialogsHost(
             onManual = { viewModel.setOnboardingDismissed() },
         )
     }
-
     showModifyGroupDialog?.let { group ->
         ModifyGroupAppsDialog(
             allApps = state.allApps,
@@ -108,7 +90,6 @@ internal fun MainScreenDialogsHost(
             packageManager = packageManager,
         )
     }
-
     showReorderDialog?.let { group ->
         ReorderAppsDialog(
             group = group,
@@ -119,7 +100,6 @@ internal fun MainScreenDialogsHost(
             },
         )
     }
-
     if (showSortGroupsDialog) {
         SortGroupsDialog(
             groups = state.groups,
@@ -130,7 +110,6 @@ internal fun MainScreenDialogsHost(
             },
         )
     }
-
     groupToDelete?.let { group ->
         DeleteGroupDialog(
             groupName = group.name,
@@ -141,12 +120,24 @@ internal fun MainScreenDialogsHost(
             },
         )
     }
-
     if (showHistoryDialog) {
         DashboardHistoryDialog(
             history = state.history,
             labels = historyLabels,
             onDismiss = { onShowHistoryDialog(false) },
+            onReshare = if (viewModel.hasLastSharePayload) {
+                {
+                    viewModel.restoreLastPayload { ok ->
+                        if (ok) {
+                            onShowHistoryDialog(false)
+                        } else {
+                            Toast.makeText(context, reshareFailedToast, Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+            } else {
+                null
+            },
         )
     }
     if (showAboutDialog) {
@@ -176,76 +167,5 @@ internal fun MainScreenDialogsHost(
             ),
             onDismiss = { onShowAboutDialog(false) },
         )
-    }
-}
-
-@Composable
-internal fun MainScreenGroupsSection(
-    state: MainUiState.Success,
-    viewModel: MainViewModel,
-    shareSession: ShareSessionState,
-    packageManager: PackageManager,
-    groupFilterQuery: String,
-    onGroupFilterChange: (String) -> Unit,
-    onShowCreateGroupDialog: (Boolean) -> Unit,
-    onShowModifyGroupDialog: (AppGroup?) -> Unit,
-    onShowReorderDialog: (AppGroup?) -> Unit,
-    onGroupToDelete: (AppGroup?) -> Unit,
-    onStartSharing: (AppGroup, MainViewModel) -> Unit,
-) {
-    val filterGroupsCd = stringResource(R.string.cd_filter_groups)
-
-    val inShareMode = shareSession.inShareMode
-    val uris = shareSession.uris
-    val mimeType = shareSession.mimeType
-
-    Column {
-        if (inShareMode) ShareOverlayHeader()
-
-        if (!inShareMode && state.groups.size > 8) {
-            OutlinedTextField(
-                value = groupFilterQuery,
-                onValueChange = onGroupFilterChange,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 8.dp)
-                    .semantics { contentDescription = filterGroupsCd },
-                label = { Text(stringResource(R.string.label_filter_groups)) },
-                singleLine = true,
-                placeholder = { Text(stringResource(R.string.label_filter_groups)) },
-            )
-        }
-
-        val filteredGroups = if (inShareMode) {
-            filterCompatibleGroups(state.groups, uris, mimeType, viewModel::getCompatiblePackages)
-        } else {
-            state.groups
-        }
-
-        val displayGroups = if (!inShareMode && state.groups.size > 8) {
-            filteredGroups.filter { it.name.contains(groupFilterQuery, ignoreCase = true) }
-        } else {
-            filteredGroups
-        }
-
-        when {
-            filteredGroups.isEmpty() && inShareMode -> CompatibleGroupsEmptyState(mimeType)
-            filteredGroups.isEmpty() -> EmptyGroupsPlaceholder(
-                onAddGroup = { onShowCreateGroupDialog(true) },
-                onAutoGroup = { viewModel.autoGroupApps(state.allApps, append = false) },
-            )
-            displayGroups.isEmpty() -> FilterEmptyState()
-            else -> GroupList(
-                groups = displayGroups,
-                onModifyClick = { onShowModifyGroupDialog(it) },
-                onReorderClick = { onShowReorderDialog(it) },
-                onDeleteClick = { onGroupToDelete(it) },
-                onToggleExpanded = { viewModel.toggleGroupExpanded(it) },
-                onGroupClick = { onStartSharing(it, viewModel) },
-                onAddShortcutClick = { viewModel.createShortcutForGroup(it) },
-                inShareMode = inShareMode,
-                packageManager = packageManager,
-            )
-        }
     }
 }

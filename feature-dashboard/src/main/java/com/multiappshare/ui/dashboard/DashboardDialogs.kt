@@ -33,6 +33,7 @@ data class HistoryDialogLabels(
     val empty: String,
     val sharedPrefix: String,
     val close: String,
+    val reshare: String = "",
 )
 
 @Composable
@@ -40,6 +41,7 @@ fun DashboardHistoryDialog(
     history: List<HistoryItem>,
     labels: HistoryDialogLabels,
     onDismiss: () -> Unit,
+    onReshare: (() -> Unit)? = null,
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -78,6 +80,11 @@ fun DashboardHistoryDialog(
         },
         confirmButton = {
             Button(onClick = onDismiss) { Text(labels.close) }
+        },
+        dismissButton = {
+            if (onReshare != null && labels.reshare.isNotEmpty()) {
+                Button(onClick = onReshare) { Text(labels.reshare) }
+            }
         },
     )
 }

@@ -23,7 +23,7 @@ class DisplayModeSelectionTest {
     @Test
     fun returnsNullWhenNoMatchingResolution() {
         val current = ModeCandidate(1, 1080, 2400, 60f)
-        val modes = listOf(ModeCandidate(2, 1440, 3200, 120f))
+        val modes = listOf(ModeCandidate(2, 1440, 3200, 90f))
         assertNull(pickFastestSameResolutionMode(current, modes))
     }
 }

@@ -39,6 +39,8 @@ fun SharingInProgress(
     onReplayCurrentStep: () -> Unit = {},
     onPreviousStep: () -> Unit = {},
     onNextStep: () -> Unit,
+    onSkipThisApp: () -> Unit = {},
+    onFinishEarly: () -> Unit = {},
 ) {
     val haptic = LocalHapticFeedback.current
     val currentKey = appComponents.getOrNull(currentIndex).orEmpty()
@@ -137,6 +139,26 @@ fun SharingInProgress(
                     stringResource(R.string.sharing_button_finish)
                 },
             )
+        }
+        if (currentIndex + 1 < totalApps) {
+            Spacer(modifier = Modifier.height(8.dp))
+            OutlinedButton(
+                onClick = onSkipThisApp,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .defaultMinSize(minHeight = 48.dp),
+            ) {
+                Text(stringResource(R.string.sharing_button_skip_app))
+            }
+            Spacer(modifier = Modifier.height(8.dp))
+            OutlinedButton(
+                onClick = onFinishEarly,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .defaultMinSize(minHeight = 48.dp),
+            ) {
+                Text(stringResource(R.string.sharing_button_finish_early))
+            }
         }
     }
 }

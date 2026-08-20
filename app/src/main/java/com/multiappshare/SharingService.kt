@@ -1,8 +1,6 @@
 package com.multiappshare
 
-import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.app.PendingIntent
 import android.app.Service
 import android.content.ClipData
 import android.content.Intent
@@ -11,7 +9,6 @@ import android.net.Uri
 import android.os.Build
 import android.os.IBinder
 import android.widget.Toast
-import androidx.core.app.NotificationCompat
 import timber.log.Timber
 
 /**
@@ -30,10 +27,6 @@ class SharingService : Service() {
         const val ACTION_STOP = "com.multiappshare.ACTION_STOP"
         const val ACTION_SHARE_FAILED = "com.multiappshare.ACTION_SHARE_FAILED"
         const val EXTRA_FAILED_COMPONENT = "com.multiappshare.EXTRA_FAILED_COMPONENT"
-        private const val NOTIFICATION_ID = 1
-        /** New ID so importance can move off IMPORTANCE_HIGH without users being stuck on the old channel. */
-        private const val CHANNEL_ID = "sharing_service_channel_v2"
-        private const val REQUEST_CODE_STOP = 0
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -64,11 +57,15 @@ class SharingService : Service() {
             return START_NOT_STICKY
         }
 
-        val notification = createNotification(appComponents, currentIndex).build()
+        val notification = SharingNotification.builder(this, appComponents, currentIndex).build()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-            startForeground(NOTIFICATION_ID, notification, ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC)
+            startForeground(
+                SharingNotification.NOTIFICATION_ID,
+                notification,
+                ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC,
+            )
         } else {
-            startForeground(NOTIFICATION_ID, notification)
+            startForeground(SharingNotification.NOTIFICATION_ID, notification)
         }
 
         shareWithApp(uris, text, mimeType, appComponents[currentIndex])
@@ -78,32 +75,6 @@ class SharingService : Service() {
 
     private fun stopServiceForeground() {
         stopForeground(STOP_FOREGROUND_REMOVE)
-    }
-
-    private fun createNotification(appComponents: List<String>, currentIndex: Int): NotificationCompat.Builder {
-        val pm = packageManager
-        val key = appComponents.getOrNull(currentIndex).orEmpty()
-        val targetLabel = resolveShareTargetLabel(pm, key).ifBlank { getString(R.string.app_name) }
-        val openHint = getString(R.string.notification_open_to_continue)
-        val body = getString(
-            R.string.notification_sharing_text,
-            targetLabel,
-            currentIndex + 1,
-            appComponents.size,
-            openHint,
-        )
-        val builder = NotificationCompat.Builder(this, CHANNEL_ID)
-            .setContentTitle(getString(R.string.notification_sharing_title))
-            .setContentText(body)
-            .setStyle(NotificationCompat.BigTextStyle().bigText(body))
-            .setSmallIcon(R.drawable.ic_launcher_foreground)
-            .setPriority(NotificationCompat.PRIORITY_LOW)
-            .setSilent(true)
-            .setCategory(NotificationCompat.CATEGORY_PROGRESS)
-            .setOngoing(true)
-            .addAction(0, getString(R.string.notification_action_stop), createStopPendingIntent())
-
-        return builder
     }
 
     private fun shareWithApp(uris: List<Uri>?, text: String?, mimeType: String, componentString: String) {
@@ -160,23 +131,8 @@ class SharingService : Service() {
         }
     }
 
-    private fun createStopPendingIntent(): PendingIntent {
-        val intent = Intent(this, SharingService::class.java).apply {
-            action = ACTION_STOP
-        }
-        return PendingIntent.getService(this, REQUEST_CODE_STOP, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
-    }
-
     private fun createNotificationChannel() {
-        val channel = NotificationChannel(
-            CHANNEL_ID,
-            getString(R.string.notification_channel_sharing_name),
-            NotificationManager.IMPORTANCE_LOW
-        ).apply {
-            description = getString(R.string.notification_channel_sharing_description)
-            setShowBadge(false)
-        }
-        notificationManager.createNotificationChannel(channel)
+        notificationManager.createNotificationChannel(SharingNotification.channel(this))
     }
 
     override fun onBind(intent: Intent?): IBinder? = null

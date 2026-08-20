@@ -11,23 +11,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ExitToApp
-import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Build
-import androidx.compose.material.icons.filled.GetApp
-import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -49,8 +41,12 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.multiappshare.core.ui.ShareSuccessAnimation
 import com.multiappshare.model.AppGroup
-import com.multiappshare.ui.main.MainScreenDialogsHost
-import com.multiappshare.ui.main.MainScreenGroupsSection
+import com.multiappshare.ui.groups.GroupDeleteSnackbarHost
+import com.multiappshare.ui.groups.GroupDeleteUndoEffect
+import com.multiappshare.ui.main.MainScreenOverflowMenu
+import com.multiappshare.ui.main.MainScreenSettingsHost
+import com.multiappshare.ui.main.MainScreenSuccessBody
+import com.multiappshare.ui.main.ShareSessionBackHandler
 import com.multiappshare.ui.sharing.SharingInProgress
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -60,6 +56,9 @@ fun MainScreen(
     onNextStep: () -> Unit,
     onReplayShareStep: () -> Unit = {},
     onPreviousShareStep: () -> Unit = {},
+    onFinishEarly: () -> Unit = {},
+    onSkipThisApp: () -> Unit = {},
+    onCancelShare: () -> Unit = {},
     packageManager: PackageManager,
     onExport: () -> Unit,
     onImport: () -> Unit,
@@ -76,8 +75,14 @@ fun MainScreen(
     var groupToDelete by remember { mutableStateOf<AppGroup?>(null) }
     var showHistoryDialog by remember { mutableStateOf(false) }
     var showAboutDialog by remember { mutableStateOf(false) }
-    var menuExpanded by remember { mutableStateOf(false) }
+    var showLanguageDialog by remember { mutableStateOf(false) }
+    var showThemeDialog by remember { mutableStateOf(false) }
+    var showDelayDialog by remember { mutableStateOf(false) }
+    var groupToRename by remember { mutableStateOf<AppGroup?>(null) }
+    var groupToMerge by remember { mutableStateOf<AppGroup?>(null) }
+    var selectedGroup by remember { mutableStateOf<AppGroup?>(null) }
     var groupFilterQuery by remember { mutableStateOf("") }
+    val snackbarHostState = remember { SnackbarHostState() }
 
     val inShareMode = shareSession.inShareMode
     val isLowRamDevice = remember(context) {
@@ -86,12 +91,29 @@ fun MainScreen(
     val shareBackdropBlur: Dp = if (isLowRamDevice) 0.dp else 20.dp
     val shareBackdropScrimAlpha = if (isLowRamDevice) 0.78f else 0.62f
 
+    ShareSessionBackHandler(shareSession, onFinishEarly, onCancelShare)
+
     viewModel.importPassphrasePendingUri?.let { pendingUri ->
         BackupImportPassphraseDialog(
             onDismiss = { viewModel.dismissImportPassphraseRequest() },
             onConfirm = { chars -> viewModel.importGroupsWithPassphrase(pendingUri, chars) },
         )
     }
+    MainScreenSettingsHost(
+        viewModel = viewModel,
+        showLanguage = showLanguageDialog,
+        onShowLanguage = { showLanguageDialog = it },
+        showTheme = showThemeDialog,
+        onShowTheme = { showThemeDialog = it },
+        showDelay = showDelayDialog,
+        onShowDelay = { showDelayDialog = it },
+    )
+    GroupDeleteUndoEffect(
+        lastDeleted = viewModel.lastDeletedGroup,
+        hostState = snackbarHostState,
+        onUndo = { viewModel.undoDeleteGroup() },
+        onConsumed = { viewModel.clearLastDeletedGroup() },
+    )
 
     Scaffold(
         topBar = {
@@ -99,42 +121,21 @@ fun MainScreen(
                 TopAppBar(
                     title = { Text(stringResource(R.string.groups_title), maxLines = 2) },
                     actions = {
-                        Box {
-                            IconButton(onClick = { menuExpanded = true }) {
-                                Icon(Icons.Default.MoreVert, contentDescription = stringResource(R.string.cd_main_menu))
-                            }
-                            DropdownMenu(expanded = menuExpanded, onDismissRequest = { menuExpanded = false }) {
-                                DropdownMenuItem(
-                                    text = { Text(stringResource(R.string.menu_sort_groups)) },
-                                    leadingIcon = { Icon(Icons.AutoMirrored.Filled.List, null) },
-                                    onClick = { showSortGroupsDialog = true; menuExpanded = false },
-                                )
-                                DropdownMenuItem(
-                                    text = { Text(stringResource(R.string.menu_history)) },
-                                    leadingIcon = { Icon(Icons.Default.Refresh, null) },
-                                    onClick = { showHistoryDialog = true; menuExpanded = false },
-                                )
-                                DropdownMenuItem(
-                                    text = { Text(stringResource(R.string.menu_about)) },
-                                    leadingIcon = { Icon(Icons.Default.Info, null) },
-                                    onClick = { showAboutDialog = true; menuExpanded = false },
-                                )
-                                DropdownMenuItem(
-                                    text = { Text(stringResource(R.string.menu_export_groups)) },
-                                    leadingIcon = { Icon(Icons.AutoMirrored.Filled.ExitToApp, null) },
-                                    onClick = { onExport(); menuExpanded = false },
-                                )
-                                DropdownMenuItem(
-                                    text = { Text(stringResource(R.string.menu_import_groups)) },
-                                    leadingIcon = { Icon(Icons.Default.GetApp, null) },
-                                    onClick = { onImport(); menuExpanded = false },
-                                )
-                            }
-                        }
+                        MainScreenOverflowMenu(
+                            onSortGroups = { showSortGroupsDialog = true },
+                            onHistory = { showHistoryDialog = true },
+                            onAbout = { showAboutDialog = true },
+                            onLanguage = { showLanguageDialog = true },
+                            onTheme = { showThemeDialog = true },
+                            onSharingDelay = { showDelayDialog = true },
+                            onExport = onExport,
+                            onImport = onImport,
+                        )
                     },
                 )
             }
         },
+        snackbarHost = { GroupDeleteSnackbarHost(snackbarHostState) },
         floatingActionButton = {
             val state = uiState
             if (!inShareMode && state is MainUiState.Success) {
@@ -187,6 +188,8 @@ fun MainScreen(
                             packageManager = packageManager,
                             onReplayCurrentStep = onReplayShareStep,
                             onPreviousStep = onPreviousShareStep,
+                            onSkipThisApp = onSkipThisApp,
+                            onFinishEarly = onFinishEarly,
                             onNextStep = {
                                 if (shareSession.currentIndex + 1 == shareSession.appPackages.size) {
                                     showSuccessAnimation = true
@@ -194,41 +197,42 @@ fun MainScreen(
                                 onNextStep()
                             },
                         )
-                    } else when (val state = uiState) {
-                        is MainUiState.Loading -> CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
-                        is MainUiState.Success -> {
-                            MainScreenDialogsHost(
-                                state = state,
-                                viewModel = viewModel,
-                                packageManager = packageManager,
-                                showCreateGroupDialog = showCreateGroupDialog,
-                                onShowCreateGroupDialog = { showCreateGroupDialog = it },
-                                showModifyGroupDialog = showModifyGroupDialog,
-                                onShowModifyGroupDialog = { showModifyGroupDialog = it },
-                                showReorderDialog = showReorderDialog,
-                                onShowReorderDialog = { showReorderDialog = it },
-                                showSortGroupsDialog = showSortGroupsDialog,
-                                onShowSortGroupsDialog = { showSortGroupsDialog = it },
-                                groupToDelete = groupToDelete,
-                                onGroupToDelete = { groupToDelete = it },
-                                showHistoryDialog = showHistoryDialog,
-                                onShowHistoryDialog = { showHistoryDialog = it },
-                                showAboutDialog = showAboutDialog,
-                                onShowAboutDialog = { showAboutDialog = it },
-                            )
-                            MainScreenGroupsSection(
-                                state = state,
-                                viewModel = viewModel,
-                                shareSession = shareSession,
-                                packageManager = packageManager,
-                                groupFilterQuery = groupFilterQuery,
-                                onGroupFilterChange = { groupFilterQuery = it },
-                                onShowCreateGroupDialog = { showCreateGroupDialog = it },
-                                onShowModifyGroupDialog = { showModifyGroupDialog = it },
-                                onShowReorderDialog = { showReorderDialog = it },
-                                onGroupToDelete = { groupToDelete = it },
-                                onStartSharing = onStartSharing,
-                            )
+                    } else {
+                        when (val state = uiState) {
+                            is MainUiState.Loading -> {
+                                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                            }
+                            is MainUiState.Success -> {
+                                MainScreenSuccessBody(
+                                    state = state,
+                                    viewModel = viewModel,
+                                    shareSession = shareSession,
+                                    packageManager = packageManager,
+                                    showCreateGroupDialog = showCreateGroupDialog,
+                                    onShowCreateGroupDialog = { showCreateGroupDialog = it },
+                                    showModifyGroupDialog = showModifyGroupDialog,
+                                    onShowModifyGroupDialog = { showModifyGroupDialog = it },
+                                    showReorderDialog = showReorderDialog,
+                                    onShowReorderDialog = { showReorderDialog = it },
+                                    showSortGroupsDialog = showSortGroupsDialog,
+                                    onShowSortGroupsDialog = { showSortGroupsDialog = it },
+                                    groupToDelete = groupToDelete,
+                                    onGroupToDelete = { groupToDelete = it },
+                                    showHistoryDialog = showHistoryDialog,
+                                    onShowHistoryDialog = { showHistoryDialog = it },
+                                    showAboutDialog = showAboutDialog,
+                                    onShowAboutDialog = { showAboutDialog = it },
+                                    groupFilterQuery = groupFilterQuery,
+                                    onGroupFilterChange = { groupFilterQuery = it },
+                                    selectedGroup = selectedGroup,
+                                    onSelectGroup = { selectedGroup = it },
+                                    groupToRename = groupToRename,
+                                    onGroupToRename = { groupToRename = it },
+                                    groupToMerge = groupToMerge,
+                                    onGroupToMerge = { groupToMerge = it },
+                                    onStartSharing = onStartSharing,
+                                )
+                            }
                         }
                     }
 

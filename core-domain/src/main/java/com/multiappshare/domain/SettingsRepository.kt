@@ -5,6 +5,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -16,6 +17,7 @@ class SettingsRepository(private val context: Context) {
     private val onboardingCompletedKey = booleanPreferencesKey("onboarding_completed")
     private val darkThemeKey = booleanPreferencesKey("dark_theme") // true = Dark, false = Light, null = System
     private val sharingDelayKey = androidx.datastore.preferences.core.intPreferencesKey("sharing_delay")
+    private val appLanguageKey = stringPreferencesKey("app_language")
 
     val isOnboardingCompleted: Flow<Boolean> = context.dataStore.data
         .map { preferences ->
@@ -50,7 +52,21 @@ class SettingsRepository(private val context: Context) {
 
     suspend fun setSharingDelay(delayMs: Int) {
         context.dataStore.edit { preferences ->
-            preferences[sharingDelayKey] = delayMs
+            preferences[sharingDelayKey] = SharingDelay.clamp(delayMs)
+        }
+    }
+
+    val appLanguage: Flow<String?> = context.dataStore.data
+        .map { preferences -> AppLanguageTags.sanitize(preferences[appLanguageKey]) }
+
+    suspend fun setAppLanguage(tag: String?) {
+        val sanitized = AppLanguageTags.sanitize(tag)
+        context.dataStore.edit { preferences ->
+            if (sanitized == null) {
+                preferences.remove(appLanguageKey)
+            } else {
+                preferences[appLanguageKey] = sanitized
+            }
         }
     }
 }

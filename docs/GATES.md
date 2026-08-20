@@ -2,6 +2,22 @@
 
 Record milestone and release gate evidence here.
 
+## Ship — v1.9.3 share/group UX (2026-08-20)
+
+| Step | Result | Notes |
+|------|--------|-------|
+| Metadata sync | ✅ | `versionCode` 179 / `versionName` 1.9.3; F-Droid YAML; fastlane `179.txt`; CHANGELOG; APK `appVersion` matches |
+| `/prerelease` Gradle | ✅ | `lint test detekt koverXmlReport assembleDebug` |
+| Bootstrap | ✅ | `validate-bootstrap.sh --quick` |
+| File limits / encoding | ✅ | `check-file-limits.ps1 -Fail`; UTF-8 |
+| Dependabot | ✅ | 0 Critical/High |
+| Codex | ⏭️ | SKIP — no `OPENAI_API_KEY` / Codex CLI |
+| Device instrumented | ⏭️ | ADB server/client mismatch (41 vs 39); no connected tests |
+| Device smoke (manual) | ⏭️ | Z.A1 / AA.A1 still `[ADB]` |
+| Paparazzi | ⏭️ | Windows host flake; CI `ubuntu-latest` is source of truth |
+| Tag | ✅ | `v1.9.3` (versionCode 179) |
+| Note | ⚠️ | Scorecard latest run failure (optional); Android CI + CodeQL expected after push |
+
 ## Ship — v1.9.2 bootstrap 0.21 + high-refresh (2026-08-20)
 
 | Step | Result | Notes |

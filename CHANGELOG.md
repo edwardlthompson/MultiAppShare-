@@ -11,6 +11,17 @@ This project uses Android **`versionCode`**-keyed changelogs for F-Droid/Store m
 
 ### Fixed
 
+## 1.9.3 (versionCode 179)
+
+### Added
+
+- Resume an in-flight share after process death (DataStore snapshot, 2-hour expiry, payload nonce).
+- Re-share last payload from History.
+- Skip remaining apps mid-sequence; system Back exits overlay or finishes early.
+- Duplicate group; tablet two-pane group editor; in-app language (en/fr/es/system).
+- Persist persistable inbound content URI grants; rename and merge groups; undo delete.
+- Theme (system/light/dark); delay between share steps; skip this app; notification Next/Skip/Cancel.
+
 ## 1.9.2 (versionCode 178)
 
 ### Added

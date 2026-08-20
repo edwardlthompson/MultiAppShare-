@@ -1,11 +1,12 @@
 package com.multiappshare.di
 
 import android.content.Context
+import com.multiappshare.data.local.GroupDao
+import com.multiappshare.data.local.HistoryDao
 import com.multiappshare.domain.GroupsRepository
 import com.multiappshare.domain.HistoryRepository
 import com.multiappshare.domain.SettingsRepository
-import com.multiappshare.data.local.GroupDao
-import com.multiappshare.data.local.HistoryDao
+import com.multiappshare.domain.ShareSessionStore
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -33,5 +34,11 @@ object RepositoryModule {
     @Singleton
     fun provideSettingsRepository(@ApplicationContext context: Context): SettingsRepository {
         return SettingsRepository(context)
+    }
+
+    @Provides
+    @Singleton
+    fun provideShareSessionStore(@ApplicationContext context: Context): ShareSessionStore {
+        return ShareSessionStore(context)
     }
 }

@@ -7,6 +7,12 @@
     <string name="menu_sort_groups">Sort Groups</string>
     <string name="menu_history">History</string>
     <string name="menu_about">About</string>
+    <string name="menu_language">Language</string>
+    <string name="menu_theme">Theme</string>
+    <string name="menu_sharing_delay">Share delay</string>
+    <string name="menu_rename_group">Rename group</string>
+    <string name="menu_merge_group">Merge into…</string>
+    <string name="menu_duplicate_group">Duplicate group</string>
     <string name="menu_export_groups">Export Groups</string>
     <string name="menu_import_groups">Import Groups</string>
     <string name="fab_auto_group">Auto Group</string>
@@ -40,6 +46,8 @@
     <string name="sharing_preview_hint">Preview or adjust the content in each app’s share screen. Tap Next App when you’re ready to continue the sequence.</string>
     <string name="sharing_button_next">Next App</string>
     <string name="sharing_button_finish">Finish</string>
+    <string name="sharing_button_finish_early">Skip remaining</string>
+    <string name="sharing_button_skip_app">Skip this app</string>
     <string name="sharing_replay_current">Replay this app</string>
     <string name="sharing_previous">Previous</string>
 
@@ -51,6 +59,9 @@
     <string name="notification_sharing_text">%1$s · Step %2$d of %3$d. %4$s</string>
     <string name="notification_open_to_continue">Open Multi App Share to continue.</string>
     <string name="notification_action_stop">Stop</string>
+    <string name="notification_action_next">Next</string>
+    <string name="notification_action_skip">Skip</string>
+    <string name="notification_action_cancel">Cancel</string>
     <string name="toast_sharing_failed">Couldn\u2019t open target app: %1$s</string>
 
     <!-- Group list & dialogs -->
@@ -108,6 +119,17 @@
     <!-- MainActivity / history / compatibility notification -->
     <string name="toast_no_apps_for_group">No apps in \"%1$s\" support this content.</string>
     <string name="toast_sharing_complete">Sharing complete!</string>
+    <string name="toast_sharing_finished_early">Stopped remaining apps.</string>
+    <string name="toast_reshare_unavailable">Nothing to re-share. Share something first.</string>
+    <string name="history_finished_early">Finished early (%1$d remaining)</string>
+    <string name="history_reshare_last">Re-share last</string>
+    <string name="language_title">Language</string>
+    <string name="language_system">System default</string>
+    <string name="language_english">English</string>
+    <string name="language_french">Français</string>
+    <string name="language_spanish">Español</string>
+    <string name="tablet_select_group">Select a group to edit</string>
+    <string name="tablet_group_app_count">%1$d apps</string>
     <string name="history_failed_no_compatible">Failed: No compatible apps</string>
     <string name="history_started_sharing_n">Started sharing to %1$d apps</string>
     <string name="notif_channel_compat_name">Compatibility alerts</string>
@@ -136,4 +158,18 @@
     <string name="label_confirm_passphrase">Confirm passphrase</string>
     <string name="backup_choose_location">Choose location</string>
     <string name="backup_import_confirm">Import</string>
+    <string name="theme_title">Theme</string>
+    <string name="theme_system">System default</string>
+    <string name="theme_light">Light</string>
+    <string name="theme_dark">Dark</string>
+    <string name="delay_title">Delay between apps</string>
+    <string name="delay_off">None</string>
+    <string name="delay_ms">%1$d ms</string>
+    <string name="dialog_rename_group_title">Rename group</string>
+    <string name="dialog_merge_group_title">Merge “%1$s”</string>
+    <string name="dialog_merge_into">Merge into</string>
+    <string name="snackbar_group_deleted">Group deleted</string>
+    <string name="snackbar_undo">Undo</string>
+    <string name="toast_rename_shortcuts">Home-screen shortcuts for the old name must be re-added.</string>
+    <string name="history_skipped_app">Skipped this app</string>
 </resources>

@@ -1,0 +1,13 @@
+# Release Notes: MultiAppShare v1.9.3
+
+### Share session
+
+- Resume an in-flight share after the app process is killed (2-hour snapshot).
+- Re-share the last payload from History.
+- Skip this app or skip remaining; notification Next / Skip / Cancel.
+- Optional delay between steps; persistable URI grants when the host allows them.
+
+### Groups and settings
+
+- Rename, duplicate, and merge groups; undo delete.
+- Tablet two-pane editor; in-app language and theme (system / light / dark).
