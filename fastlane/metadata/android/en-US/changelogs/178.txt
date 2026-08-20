@@ -1,0 +1,10 @@
+# Release Notes: MultiAppShare v1.9.2
+
+### Display
+
+- Use the fastest refresh rate that matches the current screen resolution.
+- Scroll lists and dialogs request high refresh during flings.
+
+### Agent tooling
+
+- Aligned repo agent framework to agent-project-bootstrap v0.21.0 (coach/tour/ideas/codex-review, adapters, verify.sh).

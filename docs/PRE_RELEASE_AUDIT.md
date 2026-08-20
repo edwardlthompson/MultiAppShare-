@@ -18,9 +18,9 @@ Run before every **`v*`** tag or production release.
 
 ## Metadata sync (agent)
 
-- [x] `versionCode` / `versionName` in `app/build.gradle.kts` — **177** / **1.9.1**
+- [x] `versionCode` / `versionName` in `app/build.gradle.kts` — **178** / **1.9.2**
 - [x] `metadata/com.edwardlthompson.multiappshare.yml`
-- [x] `fastlane/metadata/android/en-US/changelogs/177.txt`
+- [x] `fastlane/metadata/android/en-US/changelogs/178.txt`
 - [x] [`CHANGELOG.md`](../CHANGELOG.md) (Keep a Changelog)
 
 ## Device smoke (`[ADB]` + human)

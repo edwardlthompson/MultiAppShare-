@@ -11,6 +11,17 @@ This project uses Android **`versionCode`**-keyed changelogs for F-Droid/Store m
 
 ### Fixed
 
+## 1.9.2 (versionCode 178)
+
+### Added
+
+- Prefer the display's fastest refresh rate at the current resolution; mark list/dialog scroll surfaces for high-refresh flings.
+- Agent-project-bootstrap **v0.21.0** sync: `/coach` `/tour` `/ideas` `/codex-review`, multi-agent adapters, `verify.sh`, `bootstrap.config.json`.
+
+### Changed
+
+- Batch commands: 30 slash commands (25 atomic + 5 super).
+
 ## 1.9.1 (versionCode 177)
 
 ### Added

@@ -2,6 +2,19 @@
 
 Record milestone and release gate evidence here.
 
+## Ship — v1.9.2 bootstrap 0.21 + high-refresh (2026-08-20)
+
+| Step | Result | Notes |
+|------|--------|-------|
+| Metadata sync | ✅ | `versionCode` 178 / `versionName` 1.9.2; F-Droid YAML; fastlane `178.txt`; CHANGELOG |
+| `/prerelease` | ✅ | `pre-release-gate.sh` — feature-gate 8/8; 0 Crit/High Dependabot |
+| Codex | ⏭️ | SKIP — no `OPENAI_API_KEY` / Codex CLI |
+| Device instrumented | ✅ | `:app:connectedDebugAndroidTest` 5/5 on CPH2583 (API 16) |
+| Device smoke (manual) | ⏭️ | High-refresh is display-only; full `RELEASE_SMOKE.md` share/backup path unchanged |
+| Paparazzi | ⏭️ | Windows host flake (0.02–0.05% empty-groups; overlay goldens differ vs Linux); CI `ubuntu-latest` is source of truth |
+| Tag | ✅ | `v1.9.2` (versionCode 178) |
+| Note | ⚠️ | Scorecard latest run failure (optional); Android CI + CodeQL expected after push |
+
 ## Pre-release (each `v*` tag)
 
 | Gate | Owner | Evidence |
