@@ -2,13 +2,20 @@
 
 1. **First read:** [`docs/START_HERE.md`](docs/START_HERE.md)
 2. **Cursor modes:** [`docs/CURSOR_MODES.md`](docs/CURSOR_MODES.md) (Ask / Plan / Agent / Debug)
-3. **Reference mode:** [`docs/FOR_AGENTS.md`](docs/FOR_AGENTS.md) + [`docs/BOOTSTRAP_TEMPLATE_MAP.md`](docs/BOOTSTRAP_TEMPLATE_MAP.md)
-4. **Task board:** [`docs/BUILD_PLAN.md`](docs/BUILD_PLAN.md) (Sequential before Parallel)
-5. **Living memory:** update [`AGENT_MEMORY.md`](AGENT_MEMORY.md) only at milestone boundaries
-6. **Slash commands:** type `/` in Agent chat — see [`docs/help/BATCH_COMMANDS.md`](docs/help/BATCH_COMMANDS.md)
-7. **Bootstrap alignment:** [`docs/BOOTSTRAP_ALIGNMENT.md`](docs/BOOTSTRAP_ALIGNMENT.md) (template **v0.15.0**)
+3. **Why / coach:** [`docs/BEST_PRACTICES.md`](docs/BEST_PRACTICES.md) · [`docs/FIRST_30_DAYS.md`](docs/FIRST_30_DAYS.md) · `/coach` · backlog `/ideas` · first-run `/tour` · portability [`docs/AGENT_PORTABILITY.md`](docs/AGENT_PORTABILITY.md)
+4. **Reference mode:** [`docs/FOR_AGENTS.md`](docs/FOR_AGENTS.md) + [`docs/BOOTSTRAP_TEMPLATE_MAP.md`](docs/BOOTSTRAP_TEMPLATE_MAP.md)
+5. **Task board:** [`docs/BUILD_PLAN.md`](docs/BUILD_PLAN.md) (Sequential before Parallel) — status: open / done / blocked (emoji markers)
+6. **Living memory:** update [`AGENT_MEMORY.md`](AGENT_MEMORY.md) only at milestone boundaries
+7. **Slash commands:** type `/` in Agent chat — see [`docs/help/BATCH_COMMANDS.md`](docs/help/BATCH_COMMANDS.md)
+8. **Bootstrap alignment:** [`docs/BOOTSTRAP_ALIGNMENT.md`](docs/BOOTSTRAP_ALIGNMENT.md) (template **v0.21.0**)
 
-> Legacy `.cursorrules` is deprecated. Use `.cursor/rules/*.mdc`, `.cursor/skills/`, FOSS `.cursor/hooks.json`, and this file.
+> Legacy `.cursorrules` is deprecated. Use `.cursor/rules/*.mdc` (including `main.mdc` + `project.mdc`), `.cursor/skills/`, FOSS `.cursor/hooks.json`, and this file.
+
+<!-- bootstrap-project-card -->
+**Product:** Multi App Share
+**Purpose:** Native Android FOSS sequential multi-app sharing
+**Stack:** android
+<!-- /bootstrap-project-card -->
 
 ## Project summary
 
@@ -55,6 +62,8 @@ For non-trivial work, use Plan Mode. Plans must include a **Critique** subsectio
 ## Quality gates (local)
 
 ```bash
+bash scripts/verify.sh
+# or
 bash scripts/validate-bootstrap.sh --quick
 ./gradlew lint test detekt koverXmlReport assembleDebug
 bash scripts/feature-gate.sh --stack android
@@ -62,7 +71,7 @@ bash scripts/feature-gate.sh --stack android
 
 Paparazzi goldens: `./gradlew :app:recordPaparazziDebug` when UI changes intentionally.
 
-Slash shortcuts: `/verify` (docs + gates + CI), `/ship` (prerelease + push + regress).
+Slash shortcuts: `/verify` (docs + gates + CI), `/ship` (prerelease + push + regress), `/coach` / `/tour` / `/ideas`.
 
 ## Pre-release
 
@@ -70,4 +79,8 @@ Run [`docs/PRE_RELEASE_AUDIT.md`](docs/PRE_RELEASE_AUDIT.md) before every `v*` t
 
 ## Branch protection (human)
 
-Maintainer must enable required status checks (`build`, CodeQL) and linear history on `main` in GitHub Settings. Documented in [`CONTRIBUTING.md`](CONTRIBUTING.md).
+Maintainer must enable required status checks (**Android CI**, CodeQL) and linear history on `main` in GitHub Settings. Documented in [`CONTRIBUTING.md`](CONTRIBUTING.md).
+
+## Multi-agent adapters
+
+Canonical spec is this file. After editing: `bash scripts/bootstrap-lifecycle.sh --sync-adapters` (or copy regenerated `CLAUDE.md` / `GEMINI.md` / `CONVENTIONS.md` / `.cursor/rules/main.mdc`). See [`docs/AGENT_PORTABILITY.md`](docs/AGENT_PORTABILITY.md).

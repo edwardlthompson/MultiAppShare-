@@ -38,13 +38,13 @@ See [`docs/MODULE_BOUNDARIES.md`](docs/MODULE_BOUNDARIES.md).
 
 ## Living plans
 
-- Active roadmap: [`docs/BUILD_PLAN.md`](docs/BUILD_PLAN.md) — Milestone **Y** bootstrap 0.15 alignment (2026-07-21); prior A–X in COMPLETED_TASKS
+- Active roadmap: [`docs/BUILD_PLAN.md`](docs/BUILD_PLAN.md) — bootstrap sync **0.21.0** (2026-08-20); prior A–Y in COMPLETED_TASKS / DECISION_LOG
 - Completed milestones A–X: [`docs/COMPLETED_TASKS.md`](docs/COMPLETED_TASKS.md)
 - ADRs: [`docs/adr/README.md`](docs/adr/README.md)
 - Decision log: [`docs/DECISION_LOG.md`](docs/DECISION_LOG.md)
 - Human backlog: [`HUMAN_BACKLOG.md`](HUMAN_BACKLOG.md)
 
-## Bootstrap agent workspace (v0.15.0)
+## Bootstrap agent workspace (v0.21.0)
 
 | Artifact | Path |
 |----------|------|
@@ -53,15 +53,26 @@ See [`docs/MODULE_BOUNDARIES.md`](docs/MODULE_BOUNDARIES.md).
 | Slash commands (human) | [`docs/help/BATCH_COMMANDS.md`](docs/help/BATCH_COMMANDS.md) |
 | Slash commands (agent) | [`docs/BATCH_COMMANDS.md`](docs/BATCH_COMMANDS.md) |
 | Template map | [`docs/BOOTSTRAP_TEMPLATE_MAP.md`](docs/BOOTSTRAP_TEMPLATE_MAP.md) |
+| Sync record | [`docs/BOOTSTRAP_SYNC_0.21.md`](docs/BOOTSTRAP_SYNC_0.21.md) |
 | Alignment | [`docs/BOOTSTRAP_ALIGNMENT.md`](docs/BOOTSTRAP_ALIGNMENT.md) |
 | Template index | [`TEMPLATE_INDEX.json`](TEMPLATE_INDEX.json) |
-| Cursor rules | `.cursor/rules/*.mdc` (includes `local-compute.mdc`) |
-| Cursor commands | `.cursor/commands/*.md` (26 files: 21 atomic + 5 super) |
+| Config | [`bootstrap.config.json`](bootstrap.config.json) · [`.template-version`](.template-version) |
+| Cursor rules | `.cursor/rules/*.mdc` (includes `local-compute.mdc`, `main.mdc`, `commercial-compliance.mdc`) |
+| Cursor commands | `.cursor/commands/*.md` (30 files: 25 atomic + 5 super) |
 | Skills / agents / hooks | `.cursor/skills/`, `.cursor/agents/`, `.cursor/hooks.json` |
-| Gate scripts | `scripts/validate-bootstrap.sh`, `watch-agent-gates.sh`, `feature-gate.sh`, `agent-run.py` |
-| Template version | `.template-version` → **0.15.0** |
+| Adapters | `CLAUDE.md`, `GEMINI.md`, `CONVENTIONS.md`, `.agent/`, `.windsurf/`, `.continue/`, `.clinerules` |
+| Verify | [`scripts/verify.sh`](scripts/verify.sh) |
+| Gate scripts | `scripts/validate-bootstrap.sh`, `watch-agent-gates.sh`, `feature-gate.sh`, `verify.sh` |
+| Template version | `.template-version` → **0.21.0** |
 
 ## Retrospectives
+
+### Bootstrap sync 0.21.0 (2026-08-20)
+
+- Closed gaps from 0.15 → upstream HEAD: coach/tour/ideas/codex-review, multi-agent adapters, `verify.sh`, `bootstrap.config.json`, `docs/features/_handoff.md`.
+- Gates: `validate-bootstrap.sh --quick` + `verify.sh` + encoding — pass.
+- Preserved: `project.mdc`, `docs/` boards, `android.yml`, no release-please.
+- Uncommitted until human asks; working tree may also include unrelated high-refresh display changes — keep separate commit.
 
 ### Milestone Y (2026-07-21)
 

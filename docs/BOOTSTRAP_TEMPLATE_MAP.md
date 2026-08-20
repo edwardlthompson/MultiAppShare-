@@ -1,6 +1,6 @@
 # Bootstrap Template Map - Multi App Share
 
-Maps [agent-project-bootstrap](https://github.com/edwardlthompson/agent-project-bootstrap) v**0.15.0** to this **android** child repo.
+Maps [agent-project-bootstrap](https://github.com/edwardlthompson/agent-project-bootstrap) v**0.21.0** to this **android** child repo.
 
 **Production path locked:** root Gradle modules - do not relocate to `examples/android/`.
 
@@ -71,3 +71,13 @@ Maps [agent-project-bootstrap](https://github.com/edwardlthompson/agent-project-
 | `CODEOWNERS` in `.github/` | `CODEOWNERS` at repo root |
 | Generic file limits script | `check-file-limits.ps1` + bash wrapper |
 | Milestone U (0.11.0) | Milestone **Y** (0.15.0, 2026-07-21) |
+
+## Sync 0.21.0 (2026-08-20)
+
+| Template | MultiAppShare |
+|----------|---------------|
+| Coach layer (`/coach`, `/tour`, `/ideas`) | Ported commands + `docs/help/*` + BEST_PRACTICES / FIRST_30_DAYS |
+| Multi-agent adapters | `CLAUDE.md`, `GEMINI.md`, `CONVENTIONS.md`, `.cursor/rules/main.mdc`, `.agent/`, `.windsurf/`, `.continue/`, `.clinerules/` |
+| `bootstrap.config.json` | Present (`stack: android`) |
+| `verify.sh` | Present (env + validate-bootstrap) |
+| `project.mdc` | **Preserved** alongside `main.mdc` |

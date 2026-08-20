@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "project_name": "Multi App Share",
+  "purpose": "Native Android FOSS sequential multi-app sharing utility",
+  "stack": "android",
+  "license": "MIT",
+  "distribution_tier": "foss",
+  "agent_adapters": {
+    "cursor_rules": true,
+    "claude": true,
+    "copilot": true,
+    "gemini": true,
+    "windsurf": true,
+    "cline": true,
+    "aider": true,
+    "continue": true
+  },
+  "security": {
+    "dependabot": true,
+    "code_scanning": true,
+    "secret_detection": true
+  },
+  "hooks": {
+    "preflight": true,
+    "post_sync_adapters": true,
+    "post_checklist": false,
+    "post_git_init": false,
+    "post_git_commit": false,
+    "post_install_deps": false,
+    "post_run_tests": false,
+    "post_welcome_issue": false
+  },
+  "notes": "Android child: board files under docs/; primary CI is android.yml; no release-please."
+}

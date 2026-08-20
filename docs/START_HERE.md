@@ -4,7 +4,7 @@
 
 ## What is this?
 
-**Multi App Share** is a native Android FOSS app for sequential multi-app sharing. This repo uses the [agent-project-bootstrap](https://github.com/edwardlthompson/agent-project-bootstrap) v**0.15.0** agent framework (Milestone **Y**, 2026-07-21).
+**Multi App Share** is a native Android FOSS app for sequential multi-app sharing. This repo uses the [agent-project-bootstrap](https://github.com/edwardlthompson/agent-project-bootstrap) v**0.21.0** agent framework (sync 2026-08-20).
 
 ## Which repo mode are you in?
 
@@ -23,6 +23,9 @@ Type **`/`** in Cursor Agent chat. Start with **[docs/help/BATCH_COMMANDS.md](he
 |---------|------|
 | `/verify` | Before merge — docs + local gates |
 | `/gates` | Local Gradle + bootstrap checks only |
+| `/coach` | Why / best-practices coaching |
+| `/tour` | First-run orientation |
+| `/ideas` | Human backlog capture |
 | `/prerelease` | Before every `v*` tag |
 | `/ship` | Full release path (human push approval) |
 | `/debug` | Defect investigation (not pre-release audit) |
@@ -35,9 +38,9 @@ Type **`/`** in Cursor Agent chat. Start with **[docs/help/BATCH_COMMANDS.md](he
 4. `AGENTS.md`
 5. `docs/BUILD_PLAN.md` Sequential lane
 6. `docs/BOOTSTRAP_TEMPLATE_MAP.md` (template → this repo)
-7. docs/BOOTSTRAP_ALIGNMENT.md (0.15 migration notes)
+7. `docs/BOOTSTRAP_ALIGNMENT.md` (migration / sync notes)
 8. Active module docs: `docs/MODULE_BOUNDARIES.md`, `docs/GOLDEN_PATH.md`
-8. `KNOWLEDGE_BASE.md` when debugging edge cases
+9. `KNOWLEDGE_BASE.md` when debugging edge cases
 
 ## Do not read yet
 

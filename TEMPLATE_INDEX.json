@@ -1,5 +1,5 @@
 {
-  "template_version": "0.15.0",
+  "template_version": "0.21.0",
   "child_profile": "android",
   "notes": "MultiAppShare android child: board files under docs/; production Gradle at repo root. Index lists paths that exist in this repo.",
   "entry_points": {

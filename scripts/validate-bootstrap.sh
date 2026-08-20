@@ -34,6 +34,16 @@ REQUIRED=(
   docs/BOOTSTRAP_TEMPLATE_MAP.md
   docs/BOOTSTRAP_ALIGNMENT.md
   docs/UPGRADING_FROM_TEMPLATE.md
+  docs/BEST_PRACTICES.md
+  docs/FIRST_30_DAYS.md
+  docs/AGENT_PORTABILITY.md
+  docs/BOOTSTRAP_SYNC_0.21.md
+  CLAUDE.md
+  GEMINI.md
+  CONVENTIONS.md
+  bootstrap.config.json
+  .cursor/rules/main.mdc
+  scratchpad.md.example
   .cursor/rules/cursor-modes.mdc
   .cursor/rules/batch-commands.mdc
   .cursor/rules/local-compute.mdc
@@ -63,6 +73,7 @@ REQUIRED=(
 BATCH_COMMANDS=(
   audit cleanup debug gates triage dependabot push prerelease regress
   feature fix init prune ci docs upgrade setup plan restore compact scope
+  codex-review coach tour ideas
   bootstrap verify build ship maintain
 )
 
