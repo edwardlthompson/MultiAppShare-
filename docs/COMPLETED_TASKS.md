@@ -1,6 +1,69 @@
-# Completed tasks (Milestones A–S)
+# Completed tasks (Milestones A–AB)
 
 Archived from [`BUILD_PLAN.md`](BUILD_PLAN.md). Do not edit historical verdicts; append new milestone completions here when closing a milestone in the active BUILD_PLAN.
+
+---
+
+## Milestone AB — seven product slices (2026-08-20)
+
+- ✅ AB.1 `[AGENT]` Room v2: stable group `id` + history `payloadJson`; Migration 1→2
+- ✅ AB.2 `[AGENT]` Per-row History re-share; persist payload on share start
+- ✅ AB.3 `[AGENT]` Shortcut/deeplink by `id`; heal legacy name-id pins
+- ✅ AB.4 `[AGENT]` BackupWrapper v2 settings + lastPayload; import v1 compat
+- ✅ AB.5 `[AGENT]` Always-on group filter when groups non-empty
+- ✅ AB.6 `[AGENT]` Do not auto-advance on share fail; Retry/Replay stays
+- ✅ AB.7 `[AGENT]` Overflow share-from-clipboard (text or content URI)
+- ✅ AB.8 `[AGENT]` Semantics/48dp/Paparazzi + checklist (TalkBack hardware later)
+- ✅ AB.A1 `[ADB]` CPH2583 API 36 · filter + clipboard + history re-share + fail-then-retry; backup v2 settings + rename keeps id (`MilestoneAbSmokeInstrumentedTest`)
+
+# MILESTONE AB COMPLETE (shipped v1.9.4 @ `0b1880e`)
+
+---
+
+## Milestone AA - Group and share UX (2026-08-20)
+
+- ✅ AA.1 `[AGENT]` Persist inbound content URI grants
+- ✅ AA.2 `[AGENT]` Rename group (name-PK rewrite)
+- ✅ AA.3 `[AGENT]` Theme system / light / dark
+- ✅ AA.4 `[AGENT]` Notification Next / Skip / Cancel
+- ✅ AA.5 `[AGENT]` Undo delete group
+- ✅ AA.6 `[AGENT]` Skip this app only
+- ✅ AA.7 `[AGENT]` Honor sharingDelay between steps
+- ✅ AA.8 `[AGENT]` Merge two groups
+- ✅ AA.A1 `[ADB]` CPH2583 API 36 · persistable URI resume, theme dialog/dark, notification skip extra, undo + merge (`ShareUxSmokeInstrumentedTest`)
+
+# MILESTONE AA COMPLETE (shipped v1.9.3)
+
+---
+
+## Milestone Z - Share session UX (2026-08-20)
+
+- ✅ Z.1 `[AGENT]` Resume in-flight share after process death (DataStore snapshot + nonce)
+- ✅ Z.2 `[AGENT]` Re-share last payload from History
+- ✅ Z.3 `[AGENT]` Finish early / skip remaining mid-sequence
+- ✅ Z.4 `[AGENT]` Duplicate group
+- ✅ Z.5 `[AGENT]` Tablet two-pane list + editor
+- ✅ Z.6 `[AGENT]` Predictive Back on share overlay
+- ✅ Z.7 `[AGENT]` In-app language picker (en/fr/es/system)
+- ✅ Z.A1 `[ADB]` CPH2583 API 36 · debug 1.9.3 (179): process-death resume, language dialog, skip remaining; `ShareUxSmokeInstrumentedTest` tablet + skip
+
+# MILESTONE Z COMPLETE (shipped v1.9.3)
+
+---
+
+## Milestone Y - Bootstrap 0.15.0 alignment (2026-08-20)
+
+- ✅ Y.1 `[AGENT]` Write `docs/BOOTSTRAP_ALIGNMENT.md`; reshape this board; seed `HUMAN_BACKLOG.md`
+- ✅ Y.2 `[AGENT]` Port Cursor surface (local-compute, cleanup, skills, agents, FOSS hooks, TEMPLATE_INDEX, upgrade docs); bump `.template-version`
+- ✅ Y.3 `[AGENT]` Port template-update/sync + parallel gate helpers; green `validate-bootstrap --quick`
+- ✅ Y.4 `[AGENT]` Add `dependency-review.yml` (+ optional stale/weekly-health); fix `ci.yml` doc drift
+- ✅ Y.5 `[AGENT]` Refresh `modules/android/MODULE.md` + README agent pointer
+- ✅ Y.6 `[AGENT]` Run gates; close memory / DECISION_LOG / migration notes
+- ✅ Y.P1 `[AGENT]` Adapt skill/agent path refs to `docs/BUILD_PLAN.md` (non-overlapping with Y.3 scripts)
+- ✅ Y.P2 `[AGENT]` Doc drift: FEATURE_MODULES / PARALLEL_AGENT_SCOPES to `android.yml` naming
+- ✅ Y.A1 `[ADB]` Covered by Z.A1 / AA.A1 (UX was touched)
+
+Human leftovers remain on the active board: Y.H1–Y.H4 (`HUMAN_BACKLOG.md`).
 
 ---
 
