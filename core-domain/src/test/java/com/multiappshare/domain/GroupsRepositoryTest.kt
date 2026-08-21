@@ -48,6 +48,8 @@ class GroupsRepositoryTest {
         assertEquals("A", parsed[0].name)
         assertEquals(2, parsed[0].usageCount)
         assertTrue(parsed[0].isExpanded)
+        assertTrue(parsed[0].id.isNotBlank())
+        assertEquals(2, repo.parseBackupDocument(json).version)
     }
 
     @Test
@@ -57,6 +59,8 @@ class GroupsRepositoryTest {
             """[{"name":"Legacy","apps":[],"isExpanded":false,"usageCount":0}]"""
         val parsed = repo.parsePlaintextBackup(json)
         assertEquals("Legacy", parsed.single().name)
+        assertTrue(parsed.single().id.isNotBlank())
+        assertEquals(1, repo.parseBackupDocument(json).version)
     }
 
     @Test
@@ -78,6 +82,7 @@ class GroupsRepositoryTest {
         assertEquals(1, loaded.size)
         assertEquals("Social", loaded[0].name)
         assertEquals(1, loaded[0].apps.size)
+        assertTrue(loaded[0].id.isNotBlank())
     }
 
     @Test

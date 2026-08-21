@@ -22,7 +22,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -43,9 +42,9 @@ import com.multiappshare.core.ui.ShareSuccessAnimation
 import com.multiappshare.model.AppGroup
 import com.multiappshare.ui.groups.GroupDeleteSnackbarHost
 import com.multiappshare.ui.groups.GroupDeleteUndoEffect
-import com.multiappshare.ui.main.MainScreenOverflowMenu
 import com.multiappshare.ui.main.MainScreenSettingsHost
 import com.multiappshare.ui.main.MainScreenSuccessBody
+import com.multiappshare.ui.main.MainScreenTopBar
 import com.multiappshare.ui.main.ShareSessionBackHandler
 import com.multiappshare.ui.sharing.SharingInProgress
 
@@ -118,20 +117,16 @@ fun MainScreen(
     Scaffold(
         topBar = {
             if (!inShareMode) {
-                TopAppBar(
-                    title = { Text(stringResource(R.string.groups_title), maxLines = 2) },
-                    actions = {
-                        MainScreenOverflowMenu(
-                            onSortGroups = { showSortGroupsDialog = true },
-                            onHistory = { showHistoryDialog = true },
-                            onAbout = { showAboutDialog = true },
-                            onLanguage = { showLanguageDialog = true },
-                            onTheme = { showThemeDialog = true },
-                            onSharingDelay = { showDelayDialog = true },
-                            onExport = onExport,
-                            onImport = onImport,
-                        )
-                    },
+                MainScreenTopBar(
+                    viewModel = viewModel,
+                    onSortGroups = { showSortGroupsDialog = true },
+                    onHistory = { showHistoryDialog = true },
+                    onAbout = { showAboutDialog = true },
+                    onLanguage = { showLanguageDialog = true },
+                    onTheme = { showThemeDialog = true },
+                    onSharingDelay = { showDelayDialog = true },
+                    onExport = onExport,
+                    onImport = onImport,
                 )
             }
         },
@@ -185,6 +180,7 @@ fun MainScreen(
                             currentIndex = shareSession.currentIndex,
                             totalApps = shareSession.appPackages.size,
                             appComponents = shareSession.appPackages,
+                            lastShareFailed = shareSession.lastShareFailed,
                             packageManager = packageManager,
                             onReplayCurrentStep = onReplayShareStep,
                             onPreviousStep = onPreviousShareStep,

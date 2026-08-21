@@ -123,6 +123,12 @@
     <string name="toast_reshare_unavailable">Nothing to re-share. Share something first.</string>
     <string name="history_finished_early">Finished early (%1$d remaining)</string>
     <string name="history_reshare_last">Re-share last</string>
+    <string name="history_reshare_row">Re-share</string>
+    <string name="menu_share_clipboard">Share clipboard</string>
+    <string name="toast_clipboard_empty">Clipboard is empty.</string>
+    <string name="toast_pin_unsupported">This launcher cannot pin shortcuts.</string>
+    <string name="sharing_retry">Retry</string>
+    <string name="sharing_open_failed">Couldn\'t open %1$s</string>
     <string name="language_title">Language</string>
     <string name="language_system">System default</string>
     <string name="language_english">English</string>

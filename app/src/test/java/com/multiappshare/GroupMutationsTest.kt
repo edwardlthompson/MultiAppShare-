@@ -8,7 +8,9 @@ import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertNull
+import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class GroupMutationsTest {
@@ -37,13 +39,14 @@ class GroupMutationsTest {
         )
         val result = GroupMutations.createGroup(state, repo, "  Work  ")
         assertEquals("Work", result?.groups?.single()?.name)
+        assertTrue(result?.groups?.single()?.id?.isNotBlank() == true)
     }
 
     @Test
     fun duplicateGroup_copiesAppsWithUniqueName() = runBlocking {
         val repo = mockk<GroupsRepository>(relaxed = true)
         coEvery { repo.saveGroups(any()) } returns Unit
-        val original = AppGroup(name = "Social", apps = emptyList(), usageCount = 4)
+        val original = AppGroup(name = "Social", apps = emptyList(), usageCount = 4, id = "id-social")
         val state = MainUiState.Success(
             groups = listOf(original),
             allApps = emptyList(),
@@ -53,13 +56,15 @@ class GroupMutationsTest {
         assertEquals(2, result?.groups?.size)
         assertEquals("Social (copy)", result?.groups?.last()?.name)
         assertEquals(0, result?.groups?.last()?.usageCount)
+        assertNotEquals(original.id, result?.groups?.last()?.id)
+        assertTrue(result?.groups?.last()?.id?.isNotBlank() == true)
     }
 
     @Test
     fun renameGroup_rewritesNameAndKeepsApps() = runBlocking {
         val repo = mockk<GroupsRepository>(relaxed = true)
         coEvery { repo.saveGroups(any()) } returns Unit
-        val original = AppGroup(name = "Social", apps = emptyList(), usageCount = 3)
+        val original = AppGroup(name = "Social", apps = emptyList(), usageCount = 3, id = "keep-me")
         val state = MainUiState.Success(
             groups = listOf(original),
             allApps = emptyList(),
@@ -68,6 +73,7 @@ class GroupMutationsTest {
         val result = GroupMutationsRename.renameGroup(state, repo, original, "  Friends  ")
         assertEquals("Friends", result?.groups?.single()?.name)
         assertEquals(3, result?.groups?.single()?.usageCount)
+        assertEquals("keep-me", result?.groups?.single()?.id)
     }
 
     @Test
@@ -90,8 +96,8 @@ class GroupMutationsTest {
         coEvery { repo.saveGroups(any()) } returns Unit
         val shared = AppInfo(appName = "A", packageName = "a", activityName = "A")
         val extra = AppInfo(appName = "B", packageName = "b", activityName = "B")
-        val target = AppGroup(name = "Work", apps = listOf(shared), usageCount = 2)
-        val source = AppGroup(name = "Social", apps = listOf(shared, extra), usageCount = 1)
+        val target = AppGroup(name = "Work", apps = listOf(shared), usageCount = 2, id = "target-id")
+        val source = AppGroup(name = "Social", apps = listOf(shared, extra), usageCount = 1, id = "source-id")
         val state = MainUiState.Success(
             groups = listOf(target, source),
             allApps = emptyList(),
@@ -102,6 +108,7 @@ class GroupMutationsTest {
         assertEquals("Work", result?.groups?.single()?.name)
         assertEquals(2, result?.groups?.single()?.apps?.size)
         assertEquals(3, result?.groups?.single()?.usageCount)
+        assertEquals("target-id", result?.groups?.single()?.id)
     }
 
     @Test

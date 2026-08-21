@@ -105,6 +105,12 @@
     <string name="toast_reshare_unavailable">Rien à partager à nouveau. Partagez d’abord du contenu.</string>
     <string name="history_finished_early">Terminé plus tôt (%1$d restantes)</string>
     <string name="history_reshare_last">Repartager le dernier</string>
+    <string name="history_reshare_row">Repartager</string>
+    <string name="menu_share_clipboard">Partager le presse-papiers</string>
+    <string name="toast_clipboard_empty">Le presse-papiers est vide.</string>
+    <string name="toast_pin_unsupported">Cet écran d’accueil ne peut pas épingler de raccourcis.</string>
+    <string name="sharing_retry">Réessayer</string>
+    <string name="sharing_open_failed">Impossible d’ouvrir %1$s</string>
     <string name="menu_theme">Thème</string>
     <string name="menu_sharing_delay">Délai de partage</string>
     <string name="menu_rename_group">Renommer le groupe</string>

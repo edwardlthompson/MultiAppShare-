@@ -9,6 +9,7 @@ data class ShareSessionState(
     val appPackages: List<String>? = null,
     val currentIndex: Int = 0,
     val sharingStarted: Boolean = false,
+    val lastShareFailed: Boolean = false,
 ) {
     val inShareMode: Boolean get() = !uris.isNullOrEmpty() || text != null
 }

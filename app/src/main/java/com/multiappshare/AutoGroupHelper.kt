@@ -1,5 +1,6 @@
 package com.multiappshare
 
+import com.multiappshare.domain.GroupIds
 import com.multiappshare.model.AppGroup
 import com.multiappshare.model.AppInfo
 
@@ -48,12 +49,11 @@ internal object AutoGroupHelper {
         val newGroups = categoryToApps.map { (name, apps) ->
             val existing = existingGroups.find { it.name == name }
             if (existing != null && append) {
-                AppGroup(
-                    name = name,
+                existing.copy(
                     apps = (existing.apps + apps).distinctBy { it.packageName + "/" + it.activityName },
                 )
             } else {
-                AppGroup(name = name, apps = apps)
+                AppGroup(name = name, apps = apps, id = GroupIds.newId())
             }
         }
 

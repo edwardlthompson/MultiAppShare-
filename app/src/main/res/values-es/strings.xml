@@ -105,6 +105,12 @@
     <string name="toast_reshare_unavailable">No hay nada para volver a compartir. Comparte algo primero.</string>
     <string name="history_finished_early">Terminado antes (%1$d restantes)</string>
     <string name="history_reshare_last">Volver a compartir</string>
+    <string name="history_reshare_row">Volver a compartir</string>
+    <string name="menu_share_clipboard">Compartir portapapeles</string>
+    <string name="toast_clipboard_empty">El portapapeles está vacío.</string>
+    <string name="toast_pin_unsupported">Este launcher no puede fijar accesos.</string>
+    <string name="sharing_retry">Reintentar</string>
+    <string name="sharing_open_failed">No se pudo abrir %1$s</string>
     <string name="menu_theme">Tema</string>
     <string name="menu_sharing_delay">Retraso al compartir</string>
     <string name="menu_rename_group">Renombrar grupo</string>

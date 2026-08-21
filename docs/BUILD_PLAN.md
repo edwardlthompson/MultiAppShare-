@@ -66,7 +66,7 @@ Per [`PRE_RELEASE_AUDIT.md`](PRE_RELEASE_AUDIT.md). Prefer `/ship`.
 | 🔲 | Y.H2 | `[HUMAN]` | Review FOSS Cursor hooks (encoding + shell denylist) after first Agent session |
 | 🔲 | Y.H3 | `[HUMAN]` | Triage Dependabot PRs (#27-#32 / successors) via `triage-dependabot-prs.sh --apply` |
 | 🔲 | Y.H4 | `[HUMAN]` | Push any unpushed security workflows if still local-only |
-| 🔲 | Y.A1 | `[ADB]` | Device smoke only if UX touched this sprint (expected: N/A for process-only) |
+| ✅ | Y.A1 | `[ADB]` | Covered by Z.A1 / AA.A1 (UX was touched) |
 ---
 
 ## Milestone Z - Share session UX
@@ -86,7 +86,7 @@ Per [`PRE_RELEASE_AUDIT.md`](PRE_RELEASE_AUDIT.md). Prefer `/ship`.
 
 | Status | ID | Label | Task |
 |--------|----|-------|------|
-| 🔲 | Z.A1 | `[ADB]` | Device smoke: process-death resume, skip remaining, tablet layout, language switch |
+| ✅ | Z.A1 | `[ADB]` | CPH2583 API 36 · debug 1.9.3 (179): process-death resume, language dialog, skip remaining; `ShareUxSmokeInstrumentedTest` tablet + skip |
 ---
 
 ## Milestone AA - Group and share UX
@@ -107,7 +107,32 @@ Per [`PRE_RELEASE_AUDIT.md`](PRE_RELEASE_AUDIT.md). Prefer `/ship`.
 
 | Status | ID | Label | Task |
 |--------|----|-------|------|
-| 🔲 | AA.A1 | `[ADB]` | Device smoke: persistable URI resume, theme, notification actions, undo, merge |
+| ✅ | AA.A1 | `[ADB]` | CPH2583 API 36 · persistable URI resume, theme dialog/dark, notification skip extra, undo + merge (`ShareUxSmokeInstrumentedTest`) |
+---
+
+## Milestone AB — seven product slices
+
+Spec: [`docs/features/milestone-ab.md`](features/milestone-ab.md). Room **v1→v2** Sequential lock first.
+
+### Sequential
+
+| Status | ID | Label | Task |
+|--------|----|-------|------|
+| ✅ | AB.1 | `[AGENT]` | Room v2: stable group `id` + history `payloadJson`; Migration 1→2 |
+| ✅ | AB.2 | `[AGENT]` | Per-row History re-share; persist payload on share start |
+| ✅ | AB.3 | `[AGENT]` | Shortcut/deeplink by `id`; heal legacy name-id pins |
+| ✅ | AB.4 | `[AGENT]` | BackupWrapper v2 settings + lastPayload; import v1 compat |
+| ✅ | AB.5 | `[AGENT]` | Always-on group filter when groups non-empty |
+| ✅ | AB.6 | `[AGENT]` | Do not auto-advance on share fail; Retry/Replay stays |
+| ✅ | AB.7 | `[AGENT]` | Overflow share-from-clipboard (text or content URI) |
+| ✅ | AB.8 | `[AGENT]` | Semantics/48dp/Paparazzi + checklist (TalkBack hardware later) |
+
+### Human & device
+
+| Status | ID | Label | Task |
+|--------|----|-------|------|
+| ✅ | AB.A1 | `[ADB]` | CPH2583 API 36 · filter + clipboard + history re-share + fail-then-retry; backup v2 settings + rename keeps id (`MilestoneAbSmokeInstrumentedTest`) |
+
 ---
 
 ## Ongoing maintenance

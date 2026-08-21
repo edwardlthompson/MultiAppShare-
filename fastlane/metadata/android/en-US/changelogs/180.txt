@@ -1,0 +1,13 @@
+# Release Notes: MultiAppShare v1.9.4
+
+### Groups and history
+
+- Stable group IDs so home shortcuts survive rename.
+- Re-share a specific History row when a payload was saved.
+- Encrypted backup can include theme, language, share delay, and last payload.
+
+### Sharing
+
+- Filter groups even when you only have a few.
+- Failed handoff stays on that app so you can Retry.
+- Share text or a file from the clipboard via the menu.

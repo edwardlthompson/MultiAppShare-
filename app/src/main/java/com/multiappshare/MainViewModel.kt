@@ -73,7 +73,7 @@ class MainViewModel @Inject constructor(
         MainDataDeps(
             viewModelScope,
             context,
-            MainRepoDeps(groupsRepository, historyRepository, settingsRepository),
+            MainRepoDeps(groupsRepository, historyRepository, settingsRepository, shareSessionStore),
             packageManager,
             _uiState,
         ),
@@ -103,7 +103,7 @@ class MainViewModel @Inject constructor(
     }
     fun importGroupsWithPassphrase(uri: Uri, passphrase: CharArray) =
         data.importGroupsWithPassphrase(uri, passphrase)
-    fun createShortcutForGroup(group: AppGroup) = ShortcutHelper.createPinShortcut(context, group)
+    fun createShortcutForGroup(group: AppGroup) = MainViewModelPins.pinShortcut(context, group)
     fun getCompatiblePackages(action: String, mime: String): Set<String> =
         AppListResolver.getCompatiblePackages(packageManager, compatiblePackagesCache, action, mime)
 
@@ -112,6 +112,9 @@ class MainViewModel @Inject constructor(
     fun finishShareSession() = session.finish()
     fun restoreInflightIfFresh() = session.restoreInflightIfFresh()
     fun restoreLastPayload(onResult: (Boolean) -> Unit = {}) = session.restoreLastPayload(onResult)
+    fun restoreHistoryPayload(item: HistoryItem, onResult: (Boolean) -> Unit = {}) =
+        session.restoreHistoryPayload(item.payloadJson, onResult)
+    fun shareFromClipboard(host: Context = context) = MainViewModelPins.shareClipboard(host, context, session)
     fun setAppLanguage(tag: String?) = groups.setAppLanguage(tag)
     fun setDarkTheme(enabled: Boolean?) = groups.setDarkTheme(enabled)
     fun setSharingDelay(delayMs: Int) = groups.setSharingDelay(delayMs)
@@ -123,7 +126,10 @@ class MainViewModel @Inject constructor(
     fun duplicateGroup(group: AppGroup, onResult: (Boolean) -> Unit = {}) =
         groups.duplicateGroup(group, onResult)
     fun renameGroup(group: AppGroup, newName: String, onResult: (Boolean) -> Unit = {}) =
-        groups.renameGroup(group, newName, onResult)
+        groups.renameGroup(group, newName) { ok ->
+            if (ok) MainViewModelPins.afterRename(context, group, newName)
+            onResult(ok)
+        }
     fun mergeGroups(target: AppGroup, source: AppGroup, onResult: (Boolean) -> Unit = {}) =
         groups.mergeGroups(target, source, onResult)
     fun deleteGroup(group: AppGroup) = groups.deleteGroup(group)
@@ -136,5 +142,6 @@ class MainViewModel @Inject constructor(
     fun incrementGroupUsage(group: AppGroup) = groups.incrementGroupUsage(group)
     fun updateGroupsOrder(list: List<AppGroup>) = groups.updateGroupsOrder(list)
     fun expandGroupByNameIfPresent(name: String) = groups.expandGroupByNameIfPresent(name)
+    fun expandGroupIfPresent(id: String?, name: String?) = groups.expandGroupIfPresent(id, name)
     fun addHistoryItem(item: HistoryItem) = groups.addHistoryItem(item)
 }

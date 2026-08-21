@@ -30,6 +30,7 @@ fun MainScreenOverflowMenu(
     onLanguage: () -> Unit,
     onTheme: () -> Unit,
     onSharingDelay: () -> Unit,
+    onShareClipboard: () -> Unit,
     onExport: () -> Unit,
     onImport: () -> Unit,
 ) {
@@ -84,6 +85,14 @@ fun MainScreenOverflowMenu(
                 leadingIcon = { Icon(Icons.Default.Info, null) },
                 onClick = {
                     onAbout()
+                    menuExpanded = false
+                },
+            )
+            DropdownMenuItem(
+                text = { Text(stringResource(R.string.menu_share_clipboard)) },
+                leadingIcon = { Icon(Icons.Default.Refresh, null) },
+                onClick = {
+                    onShareClipboard()
                     menuExpanded = false
                 },
             )

@@ -4,13 +4,12 @@ import android.content.Context
 import android.net.Uri
 import android.widget.Toast
 import com.multiappshare.crypto.BackupCipher
-import com.multiappshare.domain.GroupsRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import javax.crypto.AEADBadTagException
 import timber.log.Timber
+import javax.crypto.AEADBadTagException
 
 internal object BackupOperations {
 
@@ -19,14 +18,18 @@ internal object BackupOperations {
     fun exportGroupsToUri(
         scope: CoroutineScope,
         context: Context,
-        groupsRepository: GroupsRepository,
+        repos: MainRepoDeps,
         uri: Uri,
         passphrase: CharArray,
     ) {
         scope.launch(Dispatchers.IO) {
             try {
-                val groups = groupsRepository.loadGroups()
-                val payload = groupsRepository.encodeBackupPayload(groups)
+                val groups = repos.groups.loadGroups()
+                val payload = repos.groups.encodeBackupPayload(
+                    groups,
+                    repos.settings.snapshotSettings(),
+                    repos.shareSession.loadLastPayload(),
+                )
                 val encrypted = BackupCipher.encryptUtf8(payload, passphrase)
                 val outputStream = context.contentResolver.openOutputStream(uri)
                 if (outputStream == null) {
@@ -50,7 +53,7 @@ internal object BackupOperations {
     fun importGroupsFromUri(
         scope: CoroutineScope,
         context: Context,
-        groupsRepository: GroupsRepository,
+        repos: MainRepoDeps,
         uri: Uri,
         onEncryptedDetected: (Uri) -> Unit,
         onImportComplete: () -> Unit,
@@ -63,8 +66,7 @@ internal object BackupOperations {
                         withContext(Dispatchers.Main) { onEncryptedDetected(uri) }
                     }
                     else -> {
-                        val importedGroups = groupsRepository.parsePlaintextBackup(text)
-                        groupsRepository.saveGroups(importedGroups)
+                        applyImportedBackup(repos.groups, repos.settings, repos.shareSession, text)
                         withContext(Dispatchers.Main) { onImportComplete() }
                     }
                 }
@@ -80,7 +82,7 @@ internal object BackupOperations {
     fun importGroupsWithPassphrase(
         scope: CoroutineScope,
         context: Context,
-        groupsRepository: GroupsRepository,
+        repos: MainRepoDeps,
         uri: Uri,
         passphrase: CharArray,
         onSuccess: () -> Unit,
@@ -96,8 +98,7 @@ internal object BackupOperations {
                     }
                     return@launch
                 }
-                val importedGroups = groupsRepository.parsePlaintextBackup(plain)
-                groupsRepository.saveGroups(importedGroups)
+                applyImportedBackup(repos.groups, repos.settings, repos.shareSession, plain)
                 withContext(Dispatchers.Main) {
                     onSuccess()
                     Toast.makeText(context, context.getString(R.string.toast_import_complete), Toast.LENGTH_SHORT).show()

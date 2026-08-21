@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.multiappshare.core.database.BuildConfig
 import com.multiappshare.data.local.AppDatabase
+import com.multiappshare.data.local.AppDatabaseMigrations
 import com.multiappshare.data.local.GroupDao
 import com.multiappshare.data.local.HistoryDao
 import dagger.Module
@@ -24,7 +25,7 @@ object DatabaseModule {
             context,
             AppDatabase::class.java,
             "multiappshare_db"
-        )
+        ).addMigrations(AppDatabaseMigrations.MIGRATION_1_2)
         // Release: never wipe user groups/history on schema mismatch — add Migration X→Y when bumping DB version.
         // Debug: destructive rebuild OK for fast iteration (see BUILD_PLAN F.3).
         if (BuildConfig.DEBUG) {

@@ -13,7 +13,7 @@ plugins {
 
 
 
-val appVersion = "1.9.3"
+val appVersion = "1.9.4"
 
 /** Local signing: copy `keystore.properties.example` → `keystore.properties` (gitignored). Env vars override file. */
 val keystoreProperties = Properties().apply {
@@ -30,8 +30,8 @@ android {
         applicationId = "com.edwardlthompson.multiappshare"
         minSdk = 26
         targetSdk = 36
-        versionCode = 179
-        versionName = "1.9.3"
+        versionCode = 180
+        versionName = "1.9.4"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }

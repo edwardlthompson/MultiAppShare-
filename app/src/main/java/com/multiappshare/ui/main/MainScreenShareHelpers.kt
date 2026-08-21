@@ -38,11 +38,13 @@ internal fun ShareOverlayHeader() {
             Text(
                 stringResource(R.string.share_overlay_title),
                 style = MaterialTheme.typography.titleLarge,
+                maxLines = 2,
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 stringResource(R.string.share_overlay_subtitle),
                 style = MaterialTheme.typography.bodyMedium,
+                maxLines = 6,
                 color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.92f),
             )
         }

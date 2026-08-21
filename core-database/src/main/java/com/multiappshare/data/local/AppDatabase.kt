@@ -83,7 +83,7 @@ internal class Converters {
     }
 }
 
-@Database(entities = [AppGroup::class, HistoryItem::class], version = 1, exportSchema = true)
+@Database(entities = [AppGroup::class, HistoryItem::class], version = 2, exportSchema = true)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun groupDao(): GroupDao

@@ -20,34 +20,41 @@ internal class MainViewModelState(
     private val mutationMutex: Mutex,
 ) {
     var pendingExpandGroupName: String? = null
+    var pendingExpandGroupId: String? = null
 
-    suspend fun applyPendingExpand(applyExpand: suspend (String) -> Unit) {
-        pendingExpandGroupName?.let { name ->
-            pendingExpandGroupName = null
-            applyExpand(name)
-        }
+    suspend fun applyPendingExpand() {
+        val id = pendingExpandGroupId
+        val name = pendingExpandGroupName
+        pendingExpandGroupId = null
+        pendingExpandGroupName = null
+        if (id != null || name != null) applyExpand(id, name)
     }
 
-    suspend fun applyExpandByName(name: String) {
+    suspend fun applyExpand(id: String?, name: String?) {
         mutationMutex.withLock {
             val updated = runGroupMutation(uiState.value) {
-                GroupMutations.expandByName(it, groupsRepository, name)
+                GroupMutations.expandByIdOrName(it, groupsRepository, id, name)
             }
             if (updated != null) uiState.value = updated
         }
     }
 
-    fun expandGroupByNameIfPresent(scope: CoroutineScope, name: String) {
+    fun expandGroupIfPresent(scope: CoroutineScope, id: String?, name: String?) {
         scope.launch {
-            val normalized = GroupNameHelper.normalize(name)
-            if (normalized.isEmpty()) return@launch
+            val normalized = name?.let { GroupNameHelper.normalize(it) }.orEmpty()
+            val trimmedId = id?.trim().orEmpty()
+            if (trimmedId.isEmpty() && normalized.isEmpty()) return@launch
             if (uiState.value is MainUiState.Loading) {
-                pendingExpandGroupName = normalized
+                pendingExpandGroupId = trimmedId.takeIf { it.isNotEmpty() }
+                pendingExpandGroupName = normalized.takeIf { it.isNotEmpty() }
                 return@launch
             }
-            applyExpandByName(normalized)
+            applyExpand(trimmedId.takeIf { it.isNotEmpty() }, normalized.takeIf { it.isNotEmpty() })
         }
     }
+
+    fun expandGroupByNameIfPresent(scope: CoroutineScope, name: String) =
+        expandGroupIfPresent(scope, id = null, name = name)
 
     suspend fun runMutation(
         block: suspend (MainUiState.Success) -> MainUiState.Success?,

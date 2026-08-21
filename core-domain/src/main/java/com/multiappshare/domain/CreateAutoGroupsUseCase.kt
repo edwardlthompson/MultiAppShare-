@@ -45,9 +45,9 @@ class CreateAutoGroupsUseCase @Inject constructor(
         val newGroups = categoryToApps.map { (name, apps) ->
             val existing = existingGroups.find { it.name == name }
             if (existing != null && append) {
-                AppGroup(name = name, apps = (existing.apps + apps).distinctBy { it.packageName + "/" + it.activityName })
+                existing.copy(apps = (existing.apps + apps).distinctBy { it.packageName + "/" + it.activityName })
             } else {
-                AppGroup(name = name, apps = apps)
+                AppGroup(name = name, apps = apps, id = GroupIds.newId())
             }
         }
 

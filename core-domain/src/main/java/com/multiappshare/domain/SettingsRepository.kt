@@ -8,6 +8,7 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
@@ -58,6 +59,21 @@ class SettingsRepository(private val context: Context) {
 
     val appLanguage: Flow<String?> = context.dataStore.data
         .map { preferences -> AppLanguageTags.sanitize(preferences[appLanguageKey]) }
+
+    suspend fun snapshotSettings(): BackupSettings {
+        val prefs = context.dataStore.data.first()
+        return BackupSettings(
+            darkTheme = prefs[darkThemeKey],
+            appLanguage = AppLanguageTags.sanitize(prefs[appLanguageKey]),
+            sharingDelay = prefs[sharingDelayKey],
+        )
+    }
+
+    suspend fun restoreSettings(settings: BackupSettings) {
+        setDarkTheme(settings.darkTheme)
+        setAppLanguage(settings.appLanguage)
+        settings.sharingDelay?.let { setSharingDelay(it) }
+    }
 
     suspend fun setAppLanguage(tag: String?) {
         val sanitized = AppLanguageTags.sanitize(tag)

@@ -54,6 +54,26 @@ class DeeplinkInstrumentedTest {
     }
 
     @Test
+    fun deeplinkGroup_existingId_expandsGroup() {
+        val groupName = "SmokeIdGroup"
+        val id = seedGroup(groupName)
+        val uri = Uri.Builder()
+            .scheme(DeeplinkContract.SCHEME)
+            .authority(DeeplinkContract.HOST_GROUP)
+            .appendQueryParameter(DeeplinkContract.QUERY_GROUP_ID, id)
+            .build()
+        val intent = Intent(Intent.ACTION_VIEW, uri).apply {
+            setClass(appContext, MainActivity::class.java)
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        }
+        ActivityScenario.launch<MainActivity>(intent).use {
+            dismissOnboardingIfPresent()
+            assertTrue(device.wait(Until.hasObject(By.text(groupsTitle)), 15_000))
+            assertTrue(device.wait(Until.hasObject(By.text(groupName)), 10_000))
+        }
+    }
+
+    @Test
     fun deeplinkGroup_existingName_expandsGroup() {
         val groupName = "SmokeTestGroup"
         seedGroup(groupName)
@@ -73,17 +93,26 @@ class DeeplinkInstrumentedTest {
         }
     }
 
-    private fun seedGroup(name: String) {
+    private fun seedGroup(name: String): String {
         val db = androidx.room.Room.databaseBuilder(
             appContext,
             com.multiappshare.data.local.AppDatabase::class.java,
-            "multiappshare.db",
-        ).build()
+            "multiappshare_db",
+        ).addMigrations(com.multiappshare.data.local.AppDatabaseMigrations.MIGRATION_1_2).build()
+        var id = ""
         kotlinx.coroutines.runBlocking {
             val repo = com.multiappshare.domain.GroupsRepository(db.groupDao(), appContext)
-            repo.saveGroups(listOf(com.multiappshare.model.AppGroup(name = name, apps = emptyList(), isExpanded = false)))
+            val group = com.multiappshare.model.AppGroup(
+                name = name,
+                apps = emptyList(),
+                isExpanded = false,
+                id = com.multiappshare.domain.GroupIds.newId(),
+            )
+            id = group.id
+            repo.saveGroups(listOf(group))
         }
         db.close()
+        return id
     }
 
     private fun dismissOnboardingIfPresent() {

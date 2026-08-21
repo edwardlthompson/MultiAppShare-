@@ -1,6 +1,7 @@
 package com.multiappshare.share
 
 import com.multiappshare.ShareSessionState
+import com.multiappshare.domain.HistoryPayload
 import com.multiappshare.domain.ShareSessionStore
 import com.multiappshare.domain.canRestore
 import com.multiappshare.domain.hasPayload
@@ -44,4 +45,9 @@ internal class ShareSessionCoordinator(
     }
 
     suspend fun hasLastPayload(): Boolean = store.loadLastPayload()?.hasPayload() == true
+
+    fun restoreHistoryPayload(payloadJson: String?): ShareSessionState? {
+        val snapshot = HistoryPayload.decode(payloadJson)?.takeIf { it.hasPayload() } ?: return null
+        return snapshot.toState().copy(sharingStarted = false, currentIndex = 0)
+    }
 }

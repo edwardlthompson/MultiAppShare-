@@ -50,6 +50,19 @@ internal class MainViewModelSession(
         }
     }
 
+    fun restoreHistoryPayload(payloadJson: String?, onResult: (Boolean) -> Unit) {
+        scope.launch {
+            val restored = coordinator.restoreHistoryPayload(payloadJson)
+            if (restored == null) {
+                onResult(false)
+                return@launch
+            }
+            setSession(restored)
+            coordinator.persistInflight(this, restored)
+            onResult(true)
+        }
+    }
+
     fun refreshLastPayloadFlag() {
         scope.launch { setHasLast(coordinator.hasLastPayload()) }
     }

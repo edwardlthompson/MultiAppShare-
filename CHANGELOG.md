@@ -11,6 +11,19 @@ This project uses Android **`versionCode`**-keyed changelogs for F-Droid/Store m
 
 ### Fixed
 
+## 1.9.4 (versionCode 180)
+
+### Added
+
+- Stable group `id` (Room v2) so shortcuts and deeplinks survive rename; history rows can store a re-share payload.
+- Per-row History re-share; overflow share-from-clipboard (text or content URI).
+- Encrypted backup wrapper v2: settings (theme, language, delay) and last payload; v1 import still works.
+
+### Changed
+
+- Group filter shows whenever any groups exist (not only when there are more than eight).
+- Failed share handoff no longer auto-advances; Retry stays on the same app.
+
 ## 1.9.3 (versionCode 179)
 
 ### Added

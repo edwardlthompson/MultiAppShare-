@@ -48,32 +48,32 @@ internal object MainViewModelBackup {
     fun export(
         viewModelScope: kotlinx.coroutines.CoroutineScope,
         context: Context,
-        repo: GroupsRepository,
+        repos: MainRepoDeps,
         uri: Uri,
         passphrase: CharArray,
     ) {
-        BackupOperations.exportGroupsToUri(viewModelScope, context, repo, uri, passphrase)
+        BackupOperations.exportGroupsToUri(viewModelScope, context, repos, uri, passphrase)
     }
 
     fun import(
         viewModelScope: kotlinx.coroutines.CoroutineScope,
         context: Context,
-        repo: GroupsRepository,
+        repos: MainRepoDeps,
         uri: Uri,
         onEncrypted: (Uri) -> Unit,
         onComplete: () -> Unit,
     ) {
-        BackupOperations.importGroupsFromUri(viewModelScope, context, repo, uri, onEncrypted, onComplete)
+        BackupOperations.importGroupsFromUri(viewModelScope, context, repos, uri, onEncrypted, onComplete)
     }
 
     fun importWithPassphrase(
         viewModelScope: kotlinx.coroutines.CoroutineScope,
         context: Context,
-        repo: GroupsRepository,
+        repos: MainRepoDeps,
         uri: Uri,
         passphrase: CharArray,
         onSuccess: () -> Unit,
     ) {
-        BackupOperations.importGroupsWithPassphrase(viewModelScope, context, repo, uri, passphrase, onSuccess)
+        BackupOperations.importGroupsWithPassphrase(viewModelScope, context, repos, uri, passphrase, onSuccess)
     }
 }

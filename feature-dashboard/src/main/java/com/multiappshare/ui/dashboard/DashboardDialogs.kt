@@ -3,30 +3,22 @@ package com.multiappshare.ui.dashboard
 import android.content.Intent
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import com.multiappshare.core.ui.highRefreshScroll
 import com.multiappshare.model.HistoryItem
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 
 data class HistoryDialogLabels(
     val title: String,
@@ -34,6 +26,7 @@ data class HistoryDialogLabels(
     val sharedPrefix: String,
     val close: String,
     val reshare: String = "",
+    val reshareRow: String = "",
 )
 
 @Composable
@@ -42,6 +35,7 @@ fun DashboardHistoryDialog(
     labels: HistoryDialogLabels,
     onDismiss: () -> Unit,
     onReshare: (() -> Unit)? = null,
+    onReshareItem: ((HistoryItem) -> Unit)? = null,
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -52,28 +46,7 @@ fun DashboardHistoryDialog(
             } else {
                 LazyColumn(modifier = Modifier.height(400.dp).highRefreshScroll()) {
                     items(history, key = { it.id }) { item ->
-                        val date = SimpleDateFormat("MMM dd, HH:mm", Locale.getDefault()).format(Date(item.timestamp))
-                        Column(modifier = Modifier.padding(vertical = 4.dp)) {
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                Text(
-                                    text = item.groupName,
-                                    fontWeight = FontWeight.Bold,
-                                    color = if (item.isError) Color.Red else MaterialTheme.colorScheme.onSurface,
-                                )
-                                Spacer(modifier = Modifier.weight(1f))
-                                Text(text = date, style = MaterialTheme.typography.bodySmall)
-                            }
-                            Text(
-                                text = String.format(labels.sharedPrefix, item.contentDescription),
-                                style = MaterialTheme.typography.bodySmall,
-                            )
-                            Text(
-                                text = item.status,
-                                style = MaterialTheme.typography.bodySmall,
-                                color = if (item.isError) Color.Red else MaterialTheme.colorScheme.primary,
-                            )
-                            HorizontalDivider(modifier = Modifier.padding(top = 4.dp))
-                        }
+                        DashboardHistoryRow(item = item, labels = labels, onReshareItem = onReshareItem)
                     }
                 }
             }

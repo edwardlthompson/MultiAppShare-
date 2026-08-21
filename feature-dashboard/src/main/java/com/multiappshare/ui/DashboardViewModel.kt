@@ -94,7 +94,11 @@ class DashboardViewModel @Inject constructor(
                     onResult(false)
                     return@launch
                 }
-                val updatedGroups = currentState.groups + AppGroup(name = normalized, apps = emptyList())
+                val updatedGroups = currentState.groups + AppGroup(
+                    name = normalized,
+                    apps = emptyList(),
+                    id = com.multiappshare.domain.GroupIds.newId(),
+                )
                 groupsRepository.saveGroups(updatedGroups)
                 _uiState.value = currentState.copy(groups = updatedGroups)
                 onResult(true)

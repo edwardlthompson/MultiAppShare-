@@ -8,14 +8,18 @@ Use this for **K.4** / **L.13** regression passes and **Milestone Q.1** in **`do
 - [USER-SKIP] **Group rows**: Expand/collapse control has a clear **content description**; **Drag handle** icon announces **share order** hint; **More** menu lists modify / reorder / shortcut / delete.
 - [USER-SKIP] **Share overlay**: **Choose a group** card is read before the list; each group card is focusable in share mode.
 - [USER-SKIP] **Sequential overlay**: **Next App** / **Finish**, **Replay**, **Previous** labels are distinct; step and **Next: {app}** are readable in order.
-- [USER-SKIP] **Search groups** (when more than 8 groups): field has **content description**; empty filter state announces **no_groups_match_filter**.
+- [USER-SKIP] **Search groups** (when any groups exist): field has **content description**; empty filter state announces **no_groups_match_filter**.
+- [USER-SKIP] **History row Re-share**: 48dp; announces **history_reshare_row**; hidden when the row has no payload.
+- [USER-SKIP] **Share clipboard** overflow item announces **menu_share_clipboard**.
+- [USER-SKIP] **Retry** after a failed handoff is distinct from **Replay this app**; error line **Couldn't open {app}** is read.
 
 ## Display size and font scale (~200%)
 
 - [USER-SKIP] **Groups** title in **TopAppBar** does not clip (**maxLines = 2**).
 - [USER-SKIP] **Share overlay** instruction **ElevatedCard** wraps body text without truncation of critical lines (scroll if needed).
 - [USER-SKIP] **SharingInProgress** body copy remains scrollable if the column exceeds viewport (verify on small phone + largest font).
-- [USER-SKIP] Touch targets for **Next**, **Replay**, **Previous** remain at least **48dp** height.
+- [USER-SKIP] Touch targets for **Next**, **Replay** / **Retry**, **Previous**, History **Re-share**, and overflow items remain at least **48dp** height.
+- [USER-SKIP] **History** dialog and **SharingInProgress** remain scrollable at ~200% font.
 
 ## Contrast (L.15)
 

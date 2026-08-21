@@ -4,10 +4,12 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.widget.Toast
+import com.multiappshare.domain.HistoryPayload
 import com.multiappshare.model.AppGroup
 import com.multiappshare.model.HistoryItem
 import com.multiappshare.share.PersistableShareUris
 import com.multiappshare.share.ShareNotificationIntents
+import com.multiappshare.share.toSnapshot
 
 internal class MainActivitySharing(
     private val activity: MainActivity,
@@ -51,6 +53,7 @@ internal class MainActivitySharing(
                     contentDescription = contentDesc,
                     status = activity.getString(R.string.history_failed_no_compatible),
                     isError = true,
+                    payloadJson = sessionPayloadJson(),
                 ),
             )
             Toast.makeText(
@@ -69,11 +72,13 @@ internal class MainActivitySharing(
                 groupName = group.name,
                 contentDescription = contentDesc,
                 status = activity.getString(R.string.history_started_sharing_n, compatible.size),
+                payloadJson = sessionPayloadJson(),
             ),
         )
     }
 
     fun replayShareStep() {
+        viewModel.updateShareSession { copy(lastShareFailed = false) }
         val session = viewModel.shareSession
         val packages = session.appPackages ?: return
         steps.shareStep(session.uris, session.text, session.mimeType ?: "*/*", packages, session.currentIndex)
@@ -125,7 +130,9 @@ internal class MainActivitySharing(
 
     fun cancelShareOverlay() = clearSessionShareState()
 
-    fun onShareFailedAdvance() = advanceAfterCurrent(null)
+    fun onShareFailedAdvance() {
+        viewModel.updateShareSession { copy(lastShareFailed = true) }
+    }
 
     private fun applyShareCommand(intent: Intent): Boolean {
         if (!viewModel.shareSession.sharingStarted) return false
@@ -151,7 +158,7 @@ internal class MainActivitySharing(
         val packages = session.appPackages ?: return
         val next = session.currentIndex + 1
         if (next < packages.size) {
-            viewModel.updateShareSession { copy(currentIndex = next) }
+            viewModel.updateShareSession { copy(currentIndex = next, lastShareFailed = false) }
             steps.shareStep(session.uris, session.text, session.mimeType ?: "*/*", packages, next)
         } else {
             completeSharing(R.string.toast_sharing_complete)
@@ -196,9 +203,15 @@ internal class MainActivitySharing(
     private fun applyDeepLink(uri: Uri) {
         clearSessionShareState()
         if (uri.host == DeeplinkContract.HOST_GROUP) {
-            val raw = uri.getQueryParameter(DeeplinkContract.QUERY_GROUP_NAME)?.trim().orEmpty()
-            if (raw.isNotEmpty()) viewModel.expandGroupByNameIfPresent(raw)
+            val id = uri.getQueryParameter(DeeplinkContract.QUERY_GROUP_ID)?.trim()
+            val raw = uri.getQueryParameter(DeeplinkContract.QUERY_GROUP_NAME)?.trim()
+            viewModel.expandGroupIfPresent(id, raw)
         }
+    }
+
+    private fun sessionPayloadJson(): String? {
+        val snap = viewModel.shareSession.toSnapshot(0L)
+        return if (snap.uris.isNotEmpty() || !snap.text.isNullOrBlank()) HistoryPayload.encode(snap) else null
     }
 
     private fun clearSessionShareState() {

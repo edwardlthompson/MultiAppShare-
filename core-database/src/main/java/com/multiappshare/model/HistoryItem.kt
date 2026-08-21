@@ -12,5 +12,6 @@ data class HistoryItem(
     val groupName: String,
     val contentDescription: String,
     val status: String,
-    val isError: Boolean = false
+    val isError: Boolean = false,
+    val payloadJson: String? = null,
 )

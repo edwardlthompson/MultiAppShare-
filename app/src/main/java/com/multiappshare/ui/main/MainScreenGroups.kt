@@ -21,6 +21,25 @@ import com.multiappshare.model.AppGroup
 import com.multiappshare.ui.groups.GroupWorkspace
 
 @Composable
+internal fun GroupFilterField(
+    query: String,
+    onChange: (String) -> Unit,
+    contentDescription: String,
+) {
+    OutlinedTextField(
+        value = query,
+        onValueChange = onChange,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 8.dp)
+            .semantics { this.contentDescription = contentDescription },
+        label = { Text(stringResource(R.string.label_filter_groups)) },
+        singleLine = true,
+        placeholder = { Text(stringResource(R.string.label_filter_groups)) },
+    )
+}
+
+@Composable
 internal fun MainScreenGroupsSection(
     state: MainUiState.Success,
     viewModel: MainViewModel,
@@ -45,17 +64,11 @@ internal fun MainScreenGroupsSection(
     val mimeType = shareSession.mimeType
     Column {
         if (inShareMode) ShareOverlayHeader()
-        if (!inShareMode && state.groups.size > 8) {
-            OutlinedTextField(
-                value = groupFilterQuery,
-                onValueChange = onGroupFilterChange,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 8.dp)
-                    .semantics { contentDescription = filterGroupsCd },
-                label = { Text(stringResource(R.string.label_filter_groups)) },
-                singleLine = true,
-                placeholder = { Text(stringResource(R.string.label_filter_groups)) },
+        if (!inShareMode && state.groups.isNotEmpty()) {
+            GroupFilterField(
+                query = groupFilterQuery,
+                onChange = onGroupFilterChange,
+                contentDescription = filterGroupsCd,
             )
         }
         val filteredGroups = if (inShareMode) {
@@ -63,7 +76,7 @@ internal fun MainScreenGroupsSection(
         } else {
             state.groups
         }
-        val displayGroups = if (!inShareMode && state.groups.size > 8) {
+        val displayGroups = if (!inShareMode && state.groups.isNotEmpty()) {
             filteredGroups.filter { it.name.contains(groupFilterQuery, ignoreCase = true) }
         } else {
             filteredGroups

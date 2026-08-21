@@ -23,7 +23,6 @@ internal fun MainScreenGroupEditHost(
 ) {
     val context = LocalContext.current
     val duplicateToast = stringResource(R.string.toast_duplicate_group_name)
-    val shortcutToast = stringResource(R.string.toast_rename_shortcuts)
     groupToRename?.let { group ->
         RenameGroupDialog(
             group = group,
@@ -33,7 +32,6 @@ internal fun MainScreenGroupEditHost(
                     if (ok) {
                         onRenamed(group, newName.trim())
                         onGroupToRename(null)
-                        Toast.makeText(context, shortcutToast, Toast.LENGTH_SHORT).show()
                     } else {
                         Toast.makeText(context, duplicateToast, Toast.LENGTH_SHORT).show()
                     }

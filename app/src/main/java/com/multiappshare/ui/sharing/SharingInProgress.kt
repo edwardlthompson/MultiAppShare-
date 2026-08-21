@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -35,6 +37,7 @@ fun SharingInProgress(
     currentIndex: Int,
     totalApps: Int,
     appComponents: List<String>,
+    lastShareFailed: Boolean = false,
     packageManager: PackageManager,
     onReplayCurrentStep: () -> Unit = {},
     onPreviousStep: () -> Unit = {},
@@ -49,7 +52,7 @@ fun SharingInProgress(
     }
 
     Column(
-        modifier = Modifier.fillMaxSize().padding(16.dp),
+        modifier = Modifier.fillMaxSize().padding(16.dp).verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {
@@ -97,6 +100,14 @@ fun SharingInProgress(
             textAlign = TextAlign.Center,
             style = MaterialTheme.typography.bodyLarge,
         )
+        if (lastShareFailed && currentLabel.isNotEmpty()) {
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                stringResource(R.string.sharing_open_failed, currentLabel),
+                color = MaterialTheme.colorScheme.error,
+                textAlign = TextAlign.Center,
+            )
+        }
         Spacer(modifier = Modifier.height(16.dp))
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -108,7 +119,10 @@ fun SharingInProgress(
                     .weight(1f)
                     .defaultMinSize(minHeight = 48.dp),
             ) {
-                Text(stringResource(R.string.sharing_replay_current), textAlign = TextAlign.Center)
+                Text(
+                    stringResource(if (lastShareFailed) R.string.sharing_retry else R.string.sharing_replay_current),
+                    textAlign = TextAlign.Center,
+                )
             }
             OutlinedButton(
                 onClick = onPreviousStep,

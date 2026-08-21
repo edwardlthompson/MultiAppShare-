@@ -3,70 +3,48 @@ package com.multiappshare.domain
 import android.content.Context
 import com.multiappshare.data.local.GroupDao
 import com.multiappshare.model.AppGroup
-import kotlinx.serialization.Serializable
-import kotlinx.serialization.SerializationException
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 import timber.log.Timber
 import java.io.File
 
-@Serializable
-internal data class BackupWrapper(
-    val version: Int = 1,
-    val groups: List<AppGroup>
-)
-
 class GroupsRepository(
     private val groupDao: GroupDao,
-    context: Context
+    context: Context,
 ) {
     private val file = File(context.filesDir, "groups.json")
 
     suspend fun saveGroups(groups: List<AppGroup>) {
-        groupDao.replaceAllGroups(groups)
-        saveToJsonBackup(groups)
+        val withIds = groups.map { GroupIds.ensure(it) }
+        groupDao.replaceAllGroups(withIds)
+        saveToJsonBackup(withIds)
     }
 
     private fun saveToJsonBackup(groups: List<AppGroup>) {
         try {
-            val backup = BackupWrapper(version = 1, groups = groups)
-            val jsonString = Json.encodeToString(backup)
-            file.writeText(jsonString)
+            file.writeText(BackupCodec.encode(groups))
         } catch (e: Exception) {
             Timber.e(e, "Failed to write groups.json shadow backup")
         }
     }
 
-    /** Plain JSON payload for encrypted export (same shape as legacy backup file). */
-    fun encodeBackupPayload(groups: List<AppGroup>): String {
-        val backup = BackupWrapper(version = 1, groups = groups)
-        return Json.encodeToString(backup)
-    }
+    fun encodeBackupPayload(
+        groups: List<AppGroup>,
+        settings: BackupSettings? = null,
+        lastPayload: ShareSessionSnapshot? = null,
+    ): String = BackupCodec.encode(groups, settings, lastPayload)
 
-    /**
-     * Parses legacy plaintext imports: [BackupWrapper], raw list, or legacy JSON array.
-     */
-    fun parsePlaintextBackup(jsonText: String): List<AppGroup> {
-        val trimmed = jsonText.trim()
-        return try {
-            Json.decodeFromString<BackupWrapper>(trimmed).groups
-        } catch (_: SerializationException) {
-            Json.decodeFromString<List<AppGroup>>(trimmed)
-        }
-    }
+    fun parsePlaintextBackup(jsonText: String): List<AppGroup> =
+        BackupCodec.parse(jsonText).groups.map { GroupIds.ensure(it) }
+
+    fun parseBackupDocument(jsonText: String): BackupWrapper = BackupCodec.parse(jsonText)
 
     suspend fun loadGroups(): List<AppGroup> {
         val dbGroups = groupDao.getAllGroups()
         if (dbGroups.isNotEmpty()) {
             return dbGroups
         }
-        
-        // Fallback or Migration from Legacy JSON
         if (!file.exists()) return emptyList()
         return try {
-            val jsonText = file.readText()
-            val groups = parsePlaintextBackup(jsonText)
-            // Migrate to Room
+            val groups = parsePlaintextBackup(file.readText())
             if (groups.isNotEmpty()) {
                 groupDao.insertGroups(groups)
             }

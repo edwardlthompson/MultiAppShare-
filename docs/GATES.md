@@ -2,6 +2,31 @@
 
 Record milestone and release gate evidence here.
 
+## Ship — v1.9.4 Milestone AB (2026-08-20)
+
+| Step | Result | Notes |
+|------|--------|-------|
+| Metadata sync | ✅ | `versionCode` 180 / `versionName` 1.9.4; F-Droid YAML; fastlane `180.txt`; CHANGELOG |
+| `/prerelease` Gradle | ✅ | `lint test detekt koverXmlReport assembleDebug` |
+| Bootstrap | ✅ | `validate-bootstrap.sh --quick` |
+| File limits / encoding / hygiene | ✅ | `check-file-limits.ps1 -Fail`; UTF-8; `check-repo-hygiene` |
+| Dependabot | ✅ | 0 Critical/High |
+| Codex | ⏭️ | SKIP — no `OPENAI_API_KEY` / Codex CLI |
+| Device instrumented | ✅ | SDK adb 1.0.41; `:app:connectedDebugAndroidTest` **9/9** on CPH2583 (API 36) including `MilestoneAbSmokeInstrumentedTest` |
+| Paparazzi | ⏭️ | Windows host flake; CI `ubuntu-latest` is source of truth |
+| Tag | 🔲 | `v1.9.4` (after push) |
+| GitHub CI | 🔲 | After push |
+| Note | ⚠️ | Scorecard optional; TalkBack still `[HUMAN]`; F-Droid GitLab MR leftover |
+
+## Milestone AB — device smoke (2026-08-20)
+
+| Step | Result | Notes |
+|------|--------|-------|
+| Device | ✅ | CPH2583 (OnePlus) API 36 · SDK adb 1.0.41 |
+| AB.A1 instrumented | ✅ | `MilestoneAbSmokeInstrumentedTest` — filter with 2 groups, clipboard overlay, history row re-share (`sharingStarted=false`), fail broadcast stays on index 0 + Retry, backup v2 restores settings/last payload (v1 does not wipe theme), rename keeps `id` + `updateShortcuts` |
+| Other connected | ✅ | `:app:connectedDebugAndroidTest` **9/9** including deeplink `id=` and `ShareUxSmoke` |
+| Leftover | ⚠️ | Hardware TalkBack still `[HUMAN]` / `[USER-SKIP]` |
+
 ## Ship — v1.9.3 share/group UX (2026-08-20)
 
 | Step | Result | Notes |
@@ -12,11 +37,12 @@ Record milestone and release gate evidence here.
 | File limits / encoding | ✅ | `check-file-limits.ps1 -Fail`; UTF-8 |
 | Dependabot | ✅ | 0 Critical/High |
 | Codex | ⏭️ | SKIP — no `OPENAI_API_KEY` / Codex CLI |
-| Device instrumented | ⏭️ | ADB server/client mismatch (41 vs 39); no connected tests |
-| Device smoke (manual) | ⏭️ | Z.A1 / AA.A1 still `[ADB]` |
+| Device instrumented | ✅ | SDK adb 1.0.41 (PATH had Essential 1.0.39); `:app:connectedDebugAndroidTest` **6/6** on CPH2583 (API 36) |
+| Device smoke (Z.A1 / AA.A1) | ✅ | Process-death + persistable URI resume; language/theme dialogs; tablet two-pane; skip / undo / merge |
 | Paparazzi | ⏭️ | Windows host flake; CI `ubuntu-latest` is source of truth |
 | Tag | ✅ | `v1.9.3` (versionCode 179) |
-| Note | ⚠️ | Scorecard latest run failure (optional); Android CI + CodeQL expected after push |
+| GitHub CI | ✅ | Android CI + CodeQL + Security Scan green @ `fec647e` |
+| Note | ⚠️ | Scorecard latest run failure (optional); TalkBack still `[HUMAN]` |
 
 ## Ship — v1.9.2 bootstrap 0.21 + high-refresh (2026-08-20)
 

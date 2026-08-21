@@ -55,5 +55,6 @@ internal class MainGroupCommands(
     fun incrementGroupUsage(group: AppGroup) = stateHelper.incrementGroupUsage(scope, group)
     fun updateGroupsOrder(groups: List<AppGroup>) = stateHelper.updateGroupsOrder(scope, groups)
     fun expandGroupByNameIfPresent(name: String) = stateHelper.expandGroupByNameIfPresent(scope, name)
+    fun expandGroupIfPresent(id: String?, name: String?) = stateHelper.expandGroupIfPresent(scope, id, name)
     fun addHistoryItem(item: HistoryItem) = stateHelper.addHistoryItem(scope, item)
 }

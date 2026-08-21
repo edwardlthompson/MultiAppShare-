@@ -6,6 +6,7 @@ import android.net.Uri
 import com.multiappshare.domain.GroupsRepository
 import com.multiappshare.domain.HistoryRepository
 import com.multiappshare.domain.SettingsRepository
+import com.multiappshare.domain.ShareSessionStore
 import com.multiappshare.model.AppInfo
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -17,6 +18,7 @@ internal class MainRepoDeps(
     val groups: GroupsRepository,
     val history: HistoryRepository,
     val settings: SettingsRepository,
+    val shareSession: ShareSessionStore,
 )
 
 internal class MainDataDeps(
@@ -42,13 +44,13 @@ internal class MainDataCommands(
     }
 
     fun exportGroupsToUri(uri: Uri, passphrase: CharArray) =
-        MainViewModelBackup.export(deps.scope, deps.context, deps.repos.groups, uri, passphrase)
+        MainViewModelBackup.export(deps.scope, deps.context, deps.repos, uri, passphrase)
 
     fun importGroupsFromUri(uri: Uri) =
         MainViewModelBackup.import(
             deps.scope,
             deps.context,
-            deps.repos.groups,
+            deps.repos,
             uri,
             onEncrypted = { setImportUri(it) },
             onComplete = { loadData() },
@@ -58,7 +60,7 @@ internal class MainDataCommands(
         MainViewModelBackup.importWithPassphrase(
             deps.scope,
             deps.context,
-            deps.repos.groups,
+            deps.repos,
             uri,
             passphrase,
             onSuccess = {
@@ -81,7 +83,8 @@ internal class MainDataCommands(
                 setOnboarding(showOnboarding)
                 deps.uiState.value = MainUiState.Success(groups, allApps, history)
             }
-            stateHelper.applyPendingExpand { stateHelper.applyExpandByName(it) }
+            ShortcutHelper.syncAfterLoad(deps.context, groups)
+            stateHelper.applyPendingExpand()
         }
     }
 

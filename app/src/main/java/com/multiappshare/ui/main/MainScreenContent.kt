@@ -49,6 +49,7 @@ internal fun MainScreenDialogsHost(
         sharedPrefix = stringResource(R.string.history_shared_prefix),
         close = stringResource(R.string.button_close),
         reshare = stringResource(R.string.history_reshare_last),
+        reshareRow = stringResource(R.string.history_reshare_row),
     )
     val reshareFailedToast = stringResource(R.string.toast_reshare_unavailable)
     if (showCreateGroupDialog) {
@@ -137,6 +138,15 @@ internal fun MainScreenDialogsHost(
                 }
             } else {
                 null
+            },
+            onReshareItem = { item ->
+                viewModel.restoreHistoryPayload(item) { ok ->
+                    if (ok) {
+                        onShowHistoryDialog(false)
+                    } else {
+                        Toast.makeText(context, reshareFailedToast, Toast.LENGTH_SHORT).show()
+                    }
+                }
             },
         )
     }
