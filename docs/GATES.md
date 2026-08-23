@@ -12,10 +12,11 @@ Record milestone and release gate evidence here.
 | File limits / encoding / hygiene | ✅ | `check-file-limits.ps1 -Fail`; UTF-8; `check-repo-hygiene` |
 | Dependabot | ✅ | 0 Critical/High |
 | Codex | ⏭️ | SKIP — no `OPENAI_API_KEY` / Codex CLI |
-| Device instrumented | ✅ | CPH2583 API 36; `:app:connectedDebugAndroidTest` **8/9** then **ShareUxSmoke** retry **1/1** |
+| Device instrumented | ✅ | CPH2583 API 36; `/prerelease` **8/9** + ShareUxSmoke retry **1/1**; `/regress` **8/9** then **MilestoneAb** retry **2/2** |
 | Paparazzi | ⏭️ | Windows host flake (empty-groups / create-group goldens); CI `ubuntu-latest` is source of truth |
-| Tag | 🔲 | `v1.9.5` (after push) |
-| GitHub CI | 🔲 | After push |
+| Tag | ✅ | `v1.9.5` @ `47f8f46` · [GitHub Release](https://github.com/edwardlthompson/MultiAppShare-/releases/tag/v1.9.5) |
+| GitHub CI | ✅ | Android CI + CodeQL + Security Scan green @ `47f8f46`; tag `release-apk` uploaded `MultiAppShare-v1.9.5-release.apk` |
+| `/regress` Gradle | ✅ | `lint test detekt koverXmlReport assembleDebug`; `validate-bootstrap --quick` |
 | Note | ⚠️ | Auto donate/update prompts are **release-only** (`BuildConfig.DEBUG` skip) so instrumented tests stay quiet; menu donate still works on debug. Scorecard optional fail; TalkBack still `[HUMAN]`; WSL `pre-release-gate.sh` cannot read `gradle-wrapper.jar` |
 
 ## Ship — v1.9.4 Milestone AB (2026-08-20)

@@ -65,6 +65,12 @@ See [`docs/MODULE_BOUNDARIES.md`](docs/MODULE_BOUNDARIES.md).
 | Template version | `.template-version` → **0.21.0** |
 ## Retrospectives
 
+### Ship v1.9.5 — donations + updates (2026-08-22)
+
+- Quiet Venmo donate (menu/About only) and once-daily GitHub `releases/latest` APK check.
+- Auto donate/update prompts are **release-only** (`BuildConfig.DEBUG` skip) so instrumented tests stay quiet.
+- Leftover: AC.3 `[ADB]` release-APK smoke; TalkBack `[HUMAN]`; F-Droid GitLab `fdroiddata` MR for 181 / `v1.9.5`.
+
 ### Bootstrap sync 0.21.0 (2026-08-20)
 
 - Closed gaps from 0.15 → upstream HEAD: coach/tour/ideas/codex-review, multi-agent adapters, `verify.sh`, `bootstrap.config.json`, `docs/features/_handoff.md`.
