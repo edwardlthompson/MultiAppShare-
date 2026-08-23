@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import com.multiappshare.core.ui.highRefreshScroll
 import com.multiappshare.model.HistoryItem
+import com.multiappshare.updates.ProductUpdate
 import java.text.SimpleDateFormat
 import java.util.Date
 
@@ -169,10 +170,10 @@ fun AboutDialog(onDismiss: () -> Unit) {
                 Spacer(modifier = Modifier.height(16.dp))
                 Text(stringResource(R.string.about_support_developer), fontWeight = FontWeight.Bold)
                 Text(
-                    text = stringResource(R.string.about_venmo_link),
+                    text = stringResource(R.string.about_donate),
                     color = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.clickable {
-                        context.startActivity(Intent(Intent.ACTION_VIEW, "https://venmo.com/code?user_id=1857304970395648420".toUri()))
+                        context.startActivity(Intent(Intent.ACTION_VIEW, ProductUpdate.VENMO_URL.toUri()))
                     },
                 )
             }

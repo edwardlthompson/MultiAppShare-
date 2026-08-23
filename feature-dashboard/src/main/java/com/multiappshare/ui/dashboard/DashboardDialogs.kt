@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import com.multiappshare.core.ui.highRefreshScroll
 import com.multiappshare.model.HistoryItem
+import com.multiappshare.updates.ProductUpdate
 
 data class HistoryDialogLabels(
     val title: String,
@@ -108,7 +109,7 @@ fun DashboardAboutDialog(labels: AboutDialogLabels, onDismiss: () -> Unit) {
                     color = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.clickable {
                         context.startActivity(
-                            Intent(Intent.ACTION_VIEW, "https://venmo.com/code?user_id=1857304970395648420".toUri()),
+                            Intent(Intent.ACTION_VIEW, ProductUpdate.VENMO_URL.toUri()),
                         )
                     },
                 )

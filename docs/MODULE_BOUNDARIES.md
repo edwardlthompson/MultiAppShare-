@@ -2,7 +2,7 @@
 
 Ongoing discipline—not a one-time task.
 
-- **`:core-domain`**: repositories, use cases, crypto/backup helpers, pure Kotlin logic testable without Compose.
+- **`:core-domain`**: repositories, use cases, crypto/backup helpers, donate/update decision logic (`updates/`), pure Kotlin logic testable without Compose.
 - **`:core-database`**: Room entities, DAOs, `AppDatabase`, DI modules that construct DB; schema exports under **`core-database/schemas/`**.
 - **`:feature-dashboard`**: dashboard feature UI + **`DashboardViewModel`** aligned with domain.
 - **`:app`**: `MainActivity` orchestration, `MainScreen` / share overlay wiring, app-level ViewModels, navigation glue.

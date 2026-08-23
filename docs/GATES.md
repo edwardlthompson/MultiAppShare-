@@ -2,6 +2,22 @@
 
 Record milestone and release gate evidence here.
 
+## Ship — v1.9.5 donations + updates (2026-08-22)
+
+| Step | Result | Notes |
+|------|--------|-------|
+| Metadata sync | ✅ | `versionCode` 181 / `versionName` 1.9.5; F-Droid YAML; fastlane `181.txt`; CHANGELOG |
+| `/prerelease` Gradle | ✅ | `lint test detekt koverXmlReport assembleDebug` |
+| Bootstrap | ✅ | `validate-bootstrap --quick` |
+| File limits / encoding / hygiene | ✅ | `check-file-limits.ps1 -Fail`; UTF-8; `check-repo-hygiene` |
+| Dependabot | ✅ | 0 Critical/High |
+| Codex | ⏭️ | SKIP — no `OPENAI_API_KEY` / Codex CLI |
+| Device instrumented | ✅ | CPH2583 API 36; `:app:connectedDebugAndroidTest` **8/9** then **ShareUxSmoke** retry **1/1** |
+| Paparazzi | ⏭️ | Windows host flake (empty-groups / create-group goldens); CI `ubuntu-latest` is source of truth |
+| Tag | 🔲 | `v1.9.5` (after push) |
+| GitHub CI | 🔲 | After push |
+| Note | ⚠️ | Auto donate/update prompts are **release-only** (`BuildConfig.DEBUG` skip) so instrumented tests stay quiet; menu donate still works on debug. Scorecard optional fail; TalkBack still `[HUMAN]`; WSL `pre-release-gate.sh` cannot read `gradle-wrapper.jar` |
+
 ## Ship — v1.9.4 Milestone AB (2026-08-20)
 
 | Step | Result | Notes |

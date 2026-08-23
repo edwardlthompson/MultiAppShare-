@@ -8,6 +8,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import com.multiappshare.MainViewModel
 import com.multiappshare.R
+import com.multiappshare.updates.ProductUpdate
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -30,6 +31,7 @@ internal fun MainScreenTopBar(
                 onSortGroups = onSortGroups,
                 onHistory = onHistory,
                 onAbout = onAbout,
+                onDonate = { openUrl(context, ProductUpdate.VENMO_URL) },
                 onLanguage = onLanguage,
                 onTheme = onTheme,
                 onSharingDelay = onSharingDelay,

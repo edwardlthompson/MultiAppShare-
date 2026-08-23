@@ -53,6 +53,7 @@ internal fun MainScreenSuccessBody(
             if (selectedGroup?.name == sourceName) onSelectGroup(null)
         },
     )
+    AppUpdatesHost(enabled = !shareSession.inShareMode)
     MainScreenDialogsHost(
         state = state,
         viewModel = viewModel,

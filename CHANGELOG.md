@@ -11,6 +11,14 @@ This project uses Android **`versionCode`**-keyed changelogs for F-Droid/Store m
 
 ### Fixed
 
+## 1.9.5 (versionCode 181)
+
+### Added
+
+- Quiet **Donate via Venmo** in the app menu and About (never on the update dialog).
+- One optional post-update donate note per installed version.
+- Once-daily GitHub Releases check that compares product APK filenames and offers **Install** | **Later**.
+
 ## 1.9.4 (versionCode 180)
 
 ### Added

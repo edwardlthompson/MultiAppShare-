@@ -13,8 +13,9 @@ alwaysApply: true
 
 ## Network
 
-- **No `INTERNET` permission** in release manifest
-- External links via `ACTION_VIEW` only (donate, changelog)
+- **`INTERNET` is allowed only** for the optional once-daily GitHub `releases/latest` check (User-Agent + 10s timeout; silent on failure)
+- Donate, changelog, and Telegram stay `ACTION_VIEW` — never mix donate into the update dialog
+- No analytics, crash reporters, or other phone-home endpoints
 
 ## Privacy
 

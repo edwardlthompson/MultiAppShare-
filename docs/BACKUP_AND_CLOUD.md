@@ -9,7 +9,8 @@ This app stores **groups**, **share history**, and **settings** on device. Under
 | Groups | Room (`multiappshare_db`) + mirror `groups.json` | `groups.json` (auto-updated when groups change) |
 | History | Room + mirror `history.json` | `history.json` |
 | Preferences | DataStore | — |
-
+| Donate / update check | SharedPreferences `mas_updates` (device-local; excluded from Auto Backup) | — |
+| Donate / update check | SharedPreferences `mas_updates` (device-local; excluded from Auto Backup) | — |
 Room database files live under the app’s **internal storage** (same filesystem domain as `files/`).
 
 ## Cloud backup & device transfer (`data_extraction_rules.xml`)

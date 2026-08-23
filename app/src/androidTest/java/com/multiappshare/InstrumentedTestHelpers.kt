@@ -26,6 +26,13 @@ object InstrumentedTestHelpers {
         val manual = context.getString(R.string.onboarding_manual)
         device.wait(Until.findObject(By.text(manual)), 5_000)?.click()
         device.waitForIdle()
+
+        val notNow = context.getString(R.string.donate_not_now)
+        device.wait(Until.findObject(By.text(notNow)), 800)?.click()
+        device.waitForIdle()
+        val later = context.getString(R.string.update_later)
+        device.wait(Until.findObject(By.text(later)), 800)?.click()
+        device.waitForIdle()
     }
 
     fun dismissStartupDialogsCompose(composeRule: ComposeContentTestRule, context: Context) {
@@ -38,6 +45,16 @@ object InstrumentedTestHelpers {
         val manual = context.getString(R.string.onboarding_manual)
         if (composeRule.onAllNodesWithText(manual).fetchSemanticsNodes().isNotEmpty()) {
             composeRule.onNodeWithText(manual).performClick()
+            composeRule.waitForIdle()
+        }
+        val notNow = context.getString(R.string.donate_not_now)
+        if (composeRule.onAllNodesWithText(notNow).fetchSemanticsNodes().isNotEmpty()) {
+            composeRule.onNodeWithText(notNow).performClick()
+            composeRule.waitForIdle()
+        }
+        val later = context.getString(R.string.update_later)
+        if (composeRule.onAllNodesWithText(later).fetchSemanticsNodes().isNotEmpty()) {
+            composeRule.onNodeWithText(later).performClick()
             composeRule.waitForIdle()
         }
     }

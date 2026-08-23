@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ExitToApp
 import androidx.compose.material.icons.automirrored.filled.List
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.GetApp
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.MoreVert
@@ -27,6 +28,7 @@ fun MainScreenOverflowMenu(
     onSortGroups: () -> Unit,
     onHistory: () -> Unit,
     onAbout: () -> Unit,
+    onDonate: () -> Unit,
     onLanguage: () -> Unit,
     onTheme: () -> Unit,
     onSharingDelay: () -> Unit,
@@ -85,6 +87,14 @@ fun MainScreenOverflowMenu(
                 leadingIcon = { Icon(Icons.Default.Info, null) },
                 onClick = {
                     onAbout()
+                    menuExpanded = false
+                },
+            )
+            DropdownMenuItem(
+                text = { Text(stringResource(R.string.about_donate)) },
+                leadingIcon = { Icon(Icons.Default.Favorite, null) },
+                onClick = {
+                    onDonate()
                     menuExpanded = false
                 },
             )

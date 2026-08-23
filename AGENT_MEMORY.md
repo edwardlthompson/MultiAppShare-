@@ -11,7 +11,6 @@ Central index for persistent context. Append at milestone boundaries only.
 | **Distribution** | MIT; [GitHub Releases](https://github.com/edwardlthompson/MultiAppShare-/releases); [F-Droid](https://f-droid.org/packages/com.edwardlthompson.multiappshare/) via [`metadata/com.edwardlthompson.multiappshare.yml`](metadata/com.edwardlthompson.multiappshare.yml) |
 | **App ID** | `com.edwardlthompson.multiappshare` |
 | **Out of scope** | Wear OS, Android TV, web client, GMS/Firebase |
-
 ## Module map
 
 `:core-domain` → `:core-database`, `:core-ui` → `:feature-dashboard` → `:app`
@@ -38,7 +37,7 @@ See [`docs/MODULE_BOUNDARIES.md`](docs/MODULE_BOUNDARIES.md).
 
 ## Living plans
 
-- Active roadmap: [`docs/BUILD_PLAN.md`](docs/BUILD_PLAN.md) — bootstrap sync **0.21.0** (2026-08-20); prior A–Y in COMPLETED_TASKS / DECISION_LOG
+- Active roadmap: [`docs/BUILD_PLAN.md`](docs/BUILD_PLAN.md) — **AC** donations + GitHub APK updates (2026-08-20); bootstrap sync **0.21.0**; prior A–Y in COMPLETED_TASKS / DECISION_LOG
 - Completed milestones A–X: [`docs/COMPLETED_TASKS.md`](docs/COMPLETED_TASKS.md)
 - ADRs: [`docs/adr/README.md`](docs/adr/README.md)
 - Decision log: [`docs/DECISION_LOG.md`](docs/DECISION_LOG.md)
@@ -64,7 +63,6 @@ See [`docs/MODULE_BOUNDARIES.md`](docs/MODULE_BOUNDARIES.md).
 | Verify | [`scripts/verify.sh`](scripts/verify.sh) |
 | Gate scripts | `scripts/validate-bootstrap.sh`, `watch-agent-gates.sh`, `feature-gate.sh`, `verify.sh` |
 | Template version | `.template-version` → **0.21.0** |
-
 ## Retrospectives
 
 ### Bootstrap sync 0.21.0 (2026-08-20)

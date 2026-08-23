@@ -172,7 +172,7 @@ internal fun MainScreenDialogsHost(
                 developerContact = stringResource(R.string.about_developer_contact),
                 telegramLabel = stringResource(R.string.about_telegram_label),
                 supportDeveloper = stringResource(R.string.about_support_developer),
-                venmoLink = stringResource(R.string.about_venmo_link),
+                venmoLink = stringResource(R.string.about_donate),
                 ok = stringResource(R.string.button_ok),
             ),
             onDismiss = { onShowAboutDialog(false) },

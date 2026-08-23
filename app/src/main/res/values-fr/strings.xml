@@ -7,6 +7,7 @@
     <string name="menu_sort_groups">Trier les groupes</string>
     <string name="menu_history">Historique</string>
     <string name="menu_about">À propos</string>
+    <string name="about_donate">Faire un don via Venmo</string>
     <string name="menu_language">Langue</string>
     <string name="menu_duplicate_group">Dupliquer le groupe</string>
     <string name="menu_export_groups">Exporter les groupes</string>
@@ -89,11 +90,17 @@
     <string name="button_close">Fermer</string>
     <string name="about_title">À propos de Multi App Share</string>
     <string name="about_tagline">Simplifiez le partage de contenu entre plusieurs applications, dans l’ordre.</string>
-    <string name="about_privacy">Confidentialité : pas d’analytique, pas de traceurs propriétaires, pas d’envoi vers le cloud. Les notifications et le service de premier plan servent uniquement au partage séquentiel pendant que vous changez d’application.</string>
+    <string name="about_privacy">Confidentialité : pas d’analytique ni de traceurs propriétaires. Une fois par jour, l’application peut demander à GitHub s’il existe un APK plus récent ; un échec reste silencieux. Les notifications et le service de premier plan servent uniquement au partage séquentiel pendant que vous changez d’application.</string>
     <string name="about_developer_contact">Contact développeur :</string>
     <string name="about_telegram_label">Telegram : @EdwardLeeThompson</string>
     <string name="about_support_developer">Soutenir le développeur :</string>
-    <string name="about_venmo_link">Lien de don Venmo</string>
+    <string name="donate_nudge_title">Le développement continue</string>
+    <string name="donate_nudge_body">Vous venez d’obtenir une nouvelle version. Si cette application vous aide, vous pouvez soutenir le travail sur Venmo. C’est facultatif et cela n’apparaîtra plus avant la prochaine mise à jour.</string>
+    <string name="donate_not_now">Pas maintenant</string>
+    <string name="update_available_title">Mise à jour disponible</string>
+    <string name="update_available_body">Multi App Share %1$s est sur GitHub. Installez-la quand vous voulez.</string>
+    <string name="update_install">Installer</string>
+    <string name="update_later">Plus tard</string>
     <string name="button_ok">OK</string>
     <string name="version_line">Version : %1$s</string>
     <string name="version_unknown">Inconnue</string>

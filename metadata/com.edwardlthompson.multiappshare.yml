@@ -12,14 +12,14 @@ RepoType: git
 Repo: https://github.com/edwardlthompson/MultiAppShare-
 
 Builds:
-  - versionName: 1.9.4
-    versionCode: 180
-    commit: v1.9.4
+  - versionName: 1.9.5
+    versionCode: 181
+    commit: v1.9.5
     subdir: app
     gradle:
       - yes
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 1.9.4
-CurrentVersionCode: 180
+CurrentVersion: 1.9.5
+CurrentVersionCode: 181

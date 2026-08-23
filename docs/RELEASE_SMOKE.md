@@ -11,5 +11,5 @@ Run before tagging a release when changes touch **R8**, **Hilt**, **kotlinx.seri
 | 5 | **Failed share target** (S.7.1): share to a group with a disabled/incompatible app → skip or error UI; no hang. |
 | 6 | **Encrypted backup**: export with passphrase → import / verify groups (or spot-check JSON decrypt path). |
 | 7 | **Deeplink expand** (S.6.1): cold launch `multiappshare://group?name=…` for an existing group → group visible/expanded. |
-
+| 8 | **Donate / update** (AC): Menu → **Donate via Venmo** opens Venmo; About has the same link; first launch after install has no donate popup; update dialog (if shown) has **Install** / **Later** only. |
 Note failures with device/OS and link to the release commit or tag.

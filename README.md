@@ -47,7 +47,7 @@ The application follows a modular Clean Architecture pattern to enforce separati
 ```mermaid
 graph TD
     subgraph App_Layer
-        A[":app"] 
+        A[":app"]
     end
 
     subgraph Feature_Layer
@@ -66,6 +66,7 @@ graph TD
     B -->|Depends On| C
     B -->|Depends On| E
     C -->|Depends On| D
+
 ```
 
 Primary **home / share-overlay Compose UI** in `:app` lives in `MainScreen.kt`, `ui/groups/`, `ui/sharing/`, and `ui/main/`; dashboard history/about dialogs live in `:feature-dashboard` (see [`docs/adr/0001-feature-dashboard.md`](docs/adr/0001-feature-dashboard.md)).
@@ -80,7 +81,6 @@ To enforce layout encapsulation and prevent leakage, candidate node sets consume
 | **`:core-domain`** | RepositoryImpls, **RepositoryModule** | UseCases & Repo Interfaces |
 | **`:core-database`** | `DatabaseModule` | Entity schemas, DAOs, `AppDatabase` |
 | **`:core-ui`** | Themes & generic styles | Layout resource styles |
-
 ---
 
 ### 📂 Modules
@@ -94,7 +94,7 @@ To enforce layout encapsulation and prevent leakage, candidate node sets consume
 
 ## 🛡 FOSS & Privacy
 
-This application is built with **Privacy-by-Design** and contains **NO Analytics, NO Trackers, and NO Proprietary SDKs** (e.g., GMS/Firebase). 
+This application is built with **Privacy-by-Design** and contains **NO Analytics, NO Trackers, and NO Proprietary SDKs** (e.g., GMS/Firebase).
 
 - **100% Free and Open-Source** under the [MIT License](LICENSE).
 - **F-Droid Readiness**: Fastlane metadata inclusive of reproducible building recipes included.
@@ -108,7 +108,7 @@ This application is built with **Privacy-by-Design** and contains **NO Analytics
 ## 📦 Installation & Setup
 
 ### 📥 Download the APK (Recommended)
-You can download the latest pre-built, optimized version of the app from the [Releases](https://github.com/edwardlthompson/MultiAppShare-/releases) page. 
+You can download the latest pre-built, optimized version of the app from the [Releases](https://github.com/edwardlthompson/MultiAppShare-/releases) page.
 
 1. Download the latest `MultiAppShare-v1.9.1-release.apk` from [Releases](https://github.com/edwardlthompson/MultiAppShare-/releases).
 2. Open the file to install.
@@ -129,8 +129,10 @@ If you prefer to build that app yourself from scratch:
 
 ### 🔍 CI/CD & Diagnostics
 A custom PowerShell script is provided to fetch GitHub Actions logs locally for easier debugging:
+
 ```powershell
 .\scripts\get-ci-logs.ps1
+
 ```
 Ensure you have a valid `GITHUB_TOKEN` in `scripts/.env.local`.
 
@@ -153,7 +155,7 @@ Contributions are welcome! Please read our [CONTRIBUTING.md](CONTRIBUTING.md) fo
 If you find this tool useful, consider supporting the development!
 
 - **Telegram**: [@EdwardLeeThompson](https://t.me/EdwardLeeThompson)
-- **Donate**: [Venmo](https://venmo.com/code?user_id=1857304970395648420)
+- **Donate**: [Venmo](https://venmo.com/code?user_id=1857304970395648420) — also **Donate via Venmo** in the app menu and About. After an update, one optional reminder; not mixed with the daily GitHub update prompt.
 
 ## 📄 License
 

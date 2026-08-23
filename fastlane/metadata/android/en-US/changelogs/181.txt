@@ -1,0 +1,7 @@
+# Release Notes: MultiAppShare v1.9.5
+
+### Support and updates
+
+- Donate via Venmo from the menu or About. Optional, never on the update dialog.
+- After you install a new version, one optional reminder. It will not appear again until the next update.
+- Once a day the app may check GitHub for a newer APK. Install or Later; Later silences that version.

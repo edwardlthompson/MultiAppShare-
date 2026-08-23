@@ -1,7 +1,7 @@
 # MultiAppShare BUILD PLAN - Living Checklist
 
 > **Completed milestones:** A-T, **U**, **W**, **V**, **X**, **Y** (agent/auto), **Z**, **AA**, **AB** - [`COMPLETED_TASKS.md`](COMPLETED_TASKS.md)
-> **Active:** Human leftovers (Y.H1–Y.H4)
+> **Active:** **AC** (donations + updates) · Human leftovers (Y.H1–Y.H4)
 > **Agent workspace:** [`AGENTS.md`](../AGENTS.md) / [`AGENT_MEMORY.md`](../AGENT_MEMORY.md) / [`START_HERE.md`](START_HERE.md)
 > **Human backlog:** [`HUMAN_BACKLOG.md`](../HUMAN_BACKLOG.md)
 > **Gate log:** [`GATES.md`](GATES.md)
@@ -45,6 +45,17 @@ Per [`PRE_RELEASE_AUDIT.md`](PRE_RELEASE_AUDIT.md). Prefer `/ship`.
 > **AA** archived in docs/COMPLETED_TASKS.md @ `0b1880e`.
 > **AB** archived in docs/COMPLETED_TASKS.md @ `0b1880e`.
 
+## Milestone AC — Donations and product updates
+
+Reuse Continuum Calendar’s quiet donate + daily GitHub APK check. Spec: [`docs/features/donations-and-updates.md`](features/donations-and-updates.md).
+
+| Status | ID | Label | Task |
+|--------|----|-------|------|
+| ✅ | AC.1 | `[AGENT]` | Pure logic + tests: daily interval, APK filename version, newer-than-current, dismiss, donate nudge only on version change |
+| ✅ | AC.2 | `[AGENT]` | Device-local prefs, GitHub `releases/latest` fetch (UA + 10s timeout), About/Menu Venmo, post-update donate note, Install/Later prompt |
+| 🔲 | AC.3 | `[ADB]` | Release-APK smoke: first-run silent, menu donate, update dialog has no donate button (instrumented suite passed on debug) |
+---
+
 ## Milestone Y leftovers
 
 Human items stay open until cleared. See [`HUMAN_BACKLOG.md`](../HUMAN_BACKLOG.md).
@@ -57,7 +68,6 @@ Human items stay open until cleared. See [`HUMAN_BACKLOG.md`](../HUMAN_BACKLOG.m
 | 🔲 | Y.H2 | `[HUMAN]` | Review FOSS Cursor hooks (encoding + shell denylist) after first Agent session |
 | 🔲 | Y.H3 | `[HUMAN]` | Triage Dependabot PRs (#27-#32 / successors) via `triage-dependabot-prs.sh --apply` |
 | 🔲 | Y.H4 | `[HUMAN]` | Push any unpushed security workflows if still local-only |
-
 ---
 
 ## Ongoing maintenance
