@@ -50,7 +50,7 @@ class SanitizeReportTest {
         repeat(8) {
             val candidate = File(dir, "schemas/golden-path/sanitize-fixtures.json")
             if (candidate.isFile) return candidate
-            dir = dir.parentFile ?: return candidate
+            dir = dir.parentFile ?: return@repeat
         }
         return File("schemas/golden-path/sanitize-fixtures.json")
     }

@@ -19,15 +19,16 @@ object IssueFormUrl {
     fun build(repo: String, title: String, body: String, labels: String = "bug"): Built {
         if (isPlaceholderRepo(repo)) return Built("")
         val base = "https://github.com/${repo.trim()}/issues/new"
-        val params = linkedMapOf(
-            "title" to title,
-            "labels" to labels,
-            "body" to body,
+        val full = base + "?" + encode(
+            linkedMapOf("title" to title, "labels" to labels, "body" to body),
         )
-        val full = base + "?" + encode(params)
-        if (full.length <= MAX_QUERY_CHARS) return Built(full)
-        val short = linkedMapOf("title" to title, "labels" to labels)
-        return Built(base + "?" + encode(short), bodyTooLarge = true)
+        val tooLarge = full.length > MAX_QUERY_CHARS
+        val url = if (tooLarge) {
+            base + "?" + encode(linkedMapOf("title" to title, "labels" to labels))
+        } else {
+            full
+        }
+        return Built(url, bodyTooLarge = tooLarge)
     }
 
     private fun encode(params: Map<String, String>): String =
