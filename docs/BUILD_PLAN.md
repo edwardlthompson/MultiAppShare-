@@ -90,7 +90,7 @@ Child slices from `/allideas`. **One `/feature` task per row.** Sequential only 
 | ✅ | AE.10 | `[AGENT]` | `/feature` **mime-mismatch-sheet** — Explain why a group is hidden for the current MIME |
 | ✅ | AE.11 | `[AGENT]` | `/feature` **share-step-deeplink** — Notification tap resumes the exact share step |
 | ✅ | AE.12 | `[AGENT]` | `/feature` **qs-share-clipboard** — Quick Settings tile for clipboard share |
-| 🔲 | AE.13 | `[AGENT]` | `/feature` **repair-missing-packages** — One-tap remove uninstalled apps from groups |
+| ✅ | AE.13 | `[AGENT]` | `/feature` **repair-missing-packages** — One-tap remove uninstalled apps from groups |
 | 🔲 | AE.14 | `[AGENT]` | `/feature` **package-change-listener** — Refresh icons/groups on install or uninstall |
 | 🔲 | AE.15 | `[AGENT]` | `/feature` **group-editor-search** — Filter installed apps in the group editor |
 | 🔲 | AE.16 | `[AGENT]` | `/feature` **duplicate-app-warning** — Warn when the same package is in two groups |
