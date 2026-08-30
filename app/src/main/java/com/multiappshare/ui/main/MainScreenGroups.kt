@@ -24,7 +24,9 @@ import com.multiappshare.ShareSessionState
 import com.multiappshare.model.AppGroup
 import com.multiappshare.payloadpreview.PayloadPreview
 import com.multiappshare.ui.groups.GroupWorkspace
+import com.multiappshare.payloadpreview.PayloadReorder
 import com.multiappshare.ui.share.PayloadPreviewDialog
+import com.multiappshare.ui.share.ReorderAttachmentsDialog
 
 @Composable
 internal fun GroupFilterField(
@@ -67,6 +69,7 @@ internal fun MainScreenGroupsSection(
     val filterGroupsCd = stringResource(R.string.cd_filter_groups)
     val inShareMode = shareSession.inShareMode
     var previewGroup by remember { mutableStateOf<AppGroup?>(null) }
+    var reorderGroup by remember { mutableStateOf<AppGroup?>(null) }
     val uris = shareSession.uris
     val mimeType = shareSession.mimeType
     Column {
@@ -126,9 +129,25 @@ internal fun MainScreenGroupsSection(
             uriCount = PayloadPreview.uriCount(uris),
             onConfirm = {
                 previewGroup = null
-                onStartSharing(group, viewModel)
+                if (PayloadReorder.shouldOffer(PayloadPreview.uriCount(uris))) {
+                    reorderGroup = group
+                } else {
+                    onStartSharing(group, viewModel)
+                }
             },
             onDismiss = { previewGroup = null },
+        )
+    }
+    reorderGroup?.let { group ->
+        val current = uris.orEmpty()
+        ReorderAttachmentsDialog(
+            uris = current,
+            onConfirm = { ordered ->
+                reorderGroup = null
+                viewModel.updateShareSession { copy(uris = ordered) }
+                onStartSharing(group, viewModel)
+            },
+            onDismiss = { reorderGroup = null },
         )
     }
 }

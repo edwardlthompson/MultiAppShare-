@@ -125,6 +125,9 @@
     <string name="preview_uris">Attachments: %1$d</string>
     <string name="preview_text">Text: %1$s</string>
     <string name="preview_continue">Continue</string>
+    <string name="preview_reorder_title">Attachment order</string>
+    <string name="preview_move_up">Move up</string>
+    <string name="preview_move_down">Move down</string>
     <string name="update_later">Later</string>
     <string name="button_ok">OK</string>
     <string name="version_line">Version: %1$s</string>

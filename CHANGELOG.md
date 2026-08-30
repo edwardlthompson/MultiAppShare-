@@ -12,6 +12,7 @@ This project uses Android **`versionCode`**-keyed changelogs for F-Droid/Store m
 - Theme/settings toggles for crash-save (default off) and high refresh rate (safe fallback).
 - F-Droid installs get an F-Droid listing prompt, never a GitHub APK Install button.
 - Share payload preview (MIME, attachment count, text snippet) before the first handoff.
+- Reorder multiple share attachments before the first handoff.
 
 ### Changed
 

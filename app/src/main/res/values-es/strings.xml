@@ -107,6 +107,9 @@
     <string name="preview_uris">Adjuntos: %1$d</string>
     <string name="preview_text">Texto: %1$s</string>
     <string name="preview_continue">Continuar</string>
+    <string name="preview_reorder_title">Orden de adjuntos</string>
+    <string name="preview_move_up">Subir</string>
+    <string name="preview_move_down">Bajar</string>
     <string name="update_later">Más tarde</string>
     <string name="button_ok">Aceptar</string>
     <string name="version_line">Versión: %1$s</string>
