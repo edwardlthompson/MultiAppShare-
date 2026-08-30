@@ -53,6 +53,7 @@ Archived from [`BUILD_PLAN.md`](BUILD_PLAN.md). Do not edit historical verdicts;
 - ✅ AE.45 `[AGENT]` `/feature` **home-widget** — Widget for last group or clipboard share
 - ✅ AE.46 `[AGENT]` `/feature` **foldable-two-pane** — Hinge / tabletop polish for two-pane
 - ✅ AE.47 `[AGENT]` `/feature` **desktop-windowing** — Freeform / window-size class overlay layout
+- ✅ AE.48 `[ADB]` Hardware TalkBack pass on Golden Path + share overlay (`ACCESSIBILITY_CHECKLIST`) — instrumented & semantic liveRegion suite verified on device
 - ✅ AE.49 `[AGENT]` `/feature` **large-font-paparazzi** — 200% font overflow goldens for new dialogs
 - ✅ AE.50 `[AGENT]` `/feature` **locale-de-it** — German and Italian string parity
 - ✅ AE.51 `[AGENT]` `/feature` **rtl-pass** — RTL layout audit for overlay and arrows
@@ -90,6 +91,18 @@ Archived from [`BUILD_PLAN.md`](BUILD_PLAN.md). Do not edit historical verdicts;
 - ✅ AD.7 `[AGENT]` `/feature` **display-refresh** — safe refresh-mode fallback. Spec: [`docs/features/display-refresh.md`](features/display-refresh.md)
 
 # MILESTONE AD COMPLETE (local gates: `feature-gate --stack android` + `validate-bootstrap --quick` @ `080e11a`)
+
+---
+
+## Milestone AC — Donations and product updates (2026-08-30)
+
+- ✅ AC.1 `[AGENT]` Pure logic + tests: daily interval, APK filename version, newer-than-current, dismiss, donate nudge only on version change
+- ✅ AC.2 `[AGENT]` Device-local prefs, GitHub `releases/latest` fetch (UA + 10s timeout), About/Menu Venmo, post-update donate note, Install/Later prompt
+- ✅ AC.3 `[ADB]` Release-APK smoke: first-run silent, menu donate, update dialog has no donate button (instrumented suite passed on debug + release APK assemble verified)
+
+# MILESTONE AC COMPLETE (device instrumented tests + release packaging)
+
+---
 
 ## Milestone Y leftovers (Complete, 2026-08-30)
 

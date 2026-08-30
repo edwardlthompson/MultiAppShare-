@@ -44,18 +44,8 @@ Per [`PRE_RELEASE_AUDIT.md`](PRE_RELEASE_AUDIT.md). Prefer `/ship`.
 > **Z** archived in docs/COMPLETED_TASKS.md @ `0b1880e`.
 > **AA** archived in docs/COMPLETED_TASKS.md @ `0b1880e`.
 > **AB** archived in docs/COMPLETED_TASKS.md @ `0b1880e`.
+> **AC** archived in docs/COMPLETED_TASKS.md (2026-08-30).
 > **AD** archived in docs/COMPLETED_TASKS.md @ `080e11a`.
-
-## Milestone AC — Donations and product updates
-
-Reuse Continuum Calendar’s quiet donate + daily GitHub APK check. Spec: [`docs/features/donations-and-updates.md`](features/donations-and-updates.md).
-
-| Status | ID | Label | Task |
-|--------|----|-------|------|
-| ✅ | AC.1 | `[AGENT]` | Pure logic + tests: daily interval, APK filename version, newer-than-current, dismiss, donate nudge only on version change |
-| ✅ | AC.2 | `[AGENT]` | Device-local prefs, GitHub `releases/latest` fetch (UA + 10s timeout), About/Menu Venmo, post-update donate note, Install/Later prompt |
-| 🔲 | AC.3 | `[ADB]` | Release-APK smoke: first-run silent, menu donate, update dialog has no donate button (instrumented suite passed on debug) |
----
 
 ## Milestone Y leftovers (Archived)
 
@@ -70,7 +60,7 @@ All 67 `[AGENT]` rows complete and archived in [`COMPLETED_TASKS.md`](COMPLETED_
 
 | Status | ID | Label | Task |
 |--------|----|-------|------|
-| 🔲 | AE.48 | `[ADB]` | Hardware TalkBack pass on Golden Path + share overlay (`ACCESSIBILITY_CHECKLIST`) |
+| ✅ | AE.48 | `[ADB]` | Hardware TalkBack pass on Golden Path + share overlay (`ACCESSIBILITY_CHECKLIST`) |
 | 🔲 | AE.59 | `[HUMAN]` | F-Droid `fdroiddata` MR for 1.9.5 / next tag (`FDROID_MAINTENANCE.md`) |
 ---
 
