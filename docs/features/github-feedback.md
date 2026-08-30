@@ -4,11 +4,11 @@
 
 ## Acceptance criteria
 
-- 🔲 User-visible: Feedback can open a GitHub issue form via `ACTION_VIEW` (no raw token, no phone-home API)
-- 🔲 Offline/error: if URI build fails, stay on the preview; never crash
-- 🔲 Title/body come from the preview; crash payload only if user opted in (AD.3 / AD.6)
-- 🔲 Accessibility: the GitHub action is a labelled button
-- 🔲 i18n: reuse `feedback_*`
+- ✅ User-visible: Feedback can open a GitHub issue form via `ACTION_VIEW` (no raw token, no phone-home API)
+- ✅ Offline/error: if URI build fails, stay on the preview; never crash
+- ✅ Title/body come from the preview; crash payload only if user opted in (AD.3 / AD.6)
+- ✅ Accessibility: the GitHub action is a labelled button
+- ✅ i18n: reuse `feedback_*`
 
 ## Smoke scenario
 

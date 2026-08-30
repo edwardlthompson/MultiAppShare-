@@ -4,11 +4,11 @@
 
 ## Acceptance criteria
 
-- 🔲 User-visible: Settings (or equivalent) from main navigation; theme light/dark/system persists
-- 🔲 Optional **Save crash details for me to review** toggle (default off) — wires later to AD.3
-- 🔲 Daily GitHub installer checks are not gated here (see `donations-and-updates.md`)
-- 🔲 Offline: last persisted values; no network required
-- 🔲 i18n: `settings_*` / existing `theme_*` in `en` / `es` / `fr`
+- ✅ User-visible: Settings (or equivalent) from main navigation; theme light/dark/system persists
+- ✅ Optional **Save crash details for me to review** toggle (default off) — wires later to AD.3
+- ✅ Daily GitHub installer checks are not gated here (see `donations-and-updates.md`)
+- ✅ Offline: last persisted values; no network required
+- ✅ i18n: `settings_*` / existing `theme_*` in `en` / `es` / `fr`
 
 ## Smoke scenario
 

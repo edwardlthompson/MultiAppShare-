@@ -37,8 +37,8 @@ See [`docs/MODULE_BOUNDARIES.md`](docs/MODULE_BOUNDARIES.md).
 
 ## Living plans
 
-- Active roadmap: [`docs/BUILD_PLAN.md`](docs/BUILD_PLAN.md) — **AC** donations + GitHub APK updates; bootstrap sync **1.0.0** (2026-08-30); prior A–Y in COMPLETED_TASKS / DECISION_LOG
-- Completed milestones A–X: [`docs/COMPLETED_TASKS.md`](docs/COMPLETED_TASKS.md)
+- Active roadmap: [`docs/BUILD_PLAN.md`](docs/BUILD_PLAN.md) — **AC** ADB leftover + Y human leftovers; **AD** Golden Path 1–7 archived 2026-08-30; bootstrap sync **1.0.0**
+- Completed milestones A–AD: [`docs/COMPLETED_TASKS.md`](docs/COMPLETED_TASKS.md)
 - ADRs: [`docs/adr/README.md`](docs/adr/README.md)
 - Decision log: [`docs/DECISION_LOG.md`](docs/DECISION_LOG.md)
 - Human backlog: [`HUMAN_BACKLOG.md`](HUMAN_BACKLOG.md)

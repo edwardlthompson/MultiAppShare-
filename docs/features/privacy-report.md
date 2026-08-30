@@ -4,11 +4,11 @@
 
 ## Acceptance criteria
 
-- 🔲 User-visible: any persisted or GitHub-bound crash/feedback text is sanitized (emails, tokens, prompt-injection phrases redacted)
-- 🔲 Offline: sanitizer is local; no network
-- 🔲 Fail-safe: sanitizer errors drop the payload rather than write raw text
-- 🔲 Accessibility: N/A for logic; any export UI stays labelled
-- 🔲 i18n: user-facing copy under `privacy_*` if a report screen is added
+- ✅ User-visible: any persisted or GitHub-bound crash/feedback text is sanitized (emails, tokens, prompt-injection phrases redacted)
+- ✅ Offline: sanitizer is local; no network
+- ✅ Fail-safe: sanitizer errors drop the payload rather than write raw text
+- ✅ Accessibility: N/A for logic; any export UI stays labelled
+- ✅ i18n: user-facing copy under `privacy_*` if a report screen is added
 
 ## Smoke scenario
 

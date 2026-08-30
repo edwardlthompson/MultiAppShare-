@@ -4,11 +4,11 @@
 
 ## Acceptance criteria
 
-- 🔲 User-visible: optional display-refresh preference (system default vs high) if the device supports it
-- 🔲 Offline: preference is local; no network
-- 🔲 Safe fallback: unsupported devices keep default refresh; no crash
-- 🔲 Accessibility: setting control is labelled
-- 🔲 i18n: `display_*` in `en` / `es` / `fr`
+- ✅ User-visible: optional display-refresh preference (system default vs high) if the device supports it
+- ✅ Offline: preference is local; no network
+- ✅ Safe fallback: unsupported devices keep default refresh; no crash
+- ✅ Accessibility: setting control is labelled
+- ✅ i18n: `display_*` in `en` / `es` / `fr`
 
 ## Smoke scenario
 

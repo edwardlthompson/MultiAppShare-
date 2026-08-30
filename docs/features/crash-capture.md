@@ -4,11 +4,11 @@
 
 ## Acceptance criteria
 
-- 🔲 User-visible: when save-crashes is on, one review dialog after a captured crash; never auto-open GitHub
-- 🔲 Setting off: nothing persisted; turning off deletes any stored record
-- 🔲 Offline/error: write failure drops the record; handler errors do not re-enter
-- 🔲 Accessibility: same dialog contract as Feedback
-- 🔲 i18n: `feedback_*` / `crash_*` in `en` / `es` / `fr`
+- ✅ User-visible: when save-crashes is on, one review dialog after a captured crash; never auto-open GitHub
+- ✅ Setting off: nothing persisted; turning off deletes any stored record
+- ✅ Offline/error: write failure drops the record; handler errors do not re-enter
+- ✅ Accessibility: same dialog contract as Feedback
+- ✅ i18n: `feedback_*` / `crash_*` in `en` / `es` / `fr`
 
 ## Smoke scenario
 

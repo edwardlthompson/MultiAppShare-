@@ -4,11 +4,11 @@
 
 ## Acceptance criteria
 
-- 🔲 User-visible: Feedback entry from About or overflow; preview before send
-- 🔲 Offline/error: preview works offline; send failure does not crash the app
-- 🔲 No PII in the default body; user must opt in to attach crash text (AD.3)
-- 🔲 Accessibility: dialog role + labelled buttons
-- 🔲 i18n: `feedback_*` in `en` / `es` / `fr`
+- ✅ User-visible: Feedback entry from About or overflow; preview before send
+- ✅ Offline/error: preview works offline; send failure does not crash the app
+- ✅ No PII in the default body; user must opt in to attach crash text (AD.3)
+- ✅ Accessibility: dialog role + labelled buttons
+- ✅ i18n: `feedback_*` in `en` / `es` / `fr`
 
 ## Smoke scenario
 

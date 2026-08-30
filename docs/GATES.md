@@ -2,6 +2,16 @@
 
 Record milestone and release gate evidence here.
 
+## Milestone AD — Golden Path 1–7 (2026-08-30)
+
+| Step | Result | Notes |
+|------|--------|-------|
+| Feature gate | ✅ | `feature-gate --stack android` (10 stages: hygiene, encoding, lint, unit tests, detekt, …) |
+| Bootstrap | ✅ | `validate-bootstrap --quick` |
+| File limits / encoding / hygiene | ✅ | `check-file-limits`; UTF-8; `check-repo-hygiene` |
+| Device | ⏭️ | No emulator in this environment; AC.3 ADB leftover remains |
+| Note | ℹ️ | Implemented in existing About/theme hosts; did not copy `examples/android/` over the product |
+
 ## Ship — v1.9.5 donations + updates (2026-08-22)
 
 | Step | Result | Notes |

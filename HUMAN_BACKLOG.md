@@ -5,8 +5,8 @@
 
 | Deferred | Sprint | Owner | Task | Reason |
 |----------|--------|-------|------|--------|
-| Y.H1 | Y | [HUMAN] | Confirm branch protection: required checks **Android CI** + **CodeQL** | GitHub Settings — agent cannot change protection |
-| Y.H2 | Y | [HUMAN] | Review FOSS Cursor hooks after first Agent session with hooks enabled | Runtime UX judgment |
-| Y.H3 | Y | [HUMAN] | Triage Dependabot PRs (#27–#32 / successors) | Needs gh auth + merge decisions |
-| Y.H4 | Y | [HUMAN] | Push security workflows if still local-only on disk | Destructive-ops: push needs approval |
+| AC.3 | Milestone AC — Donations and product updates | ADB | Release-APK smoke: first-run silent, menu donate, update dialog has no donate button (instrumented suite passed on debug) | no authorized device in this environment |
+| Y.H1 | Milestone Y leftovers | HUMAN | Confirm branch protection still requires **Android CI** + **CodeQL** (no silent rename) | GitHub Settings — agent cannot change protection |
+| Y.H2 | Milestone Y leftovers | HUMAN | Review FOSS Cursor hooks (encoding + shell denylist) after first Agent session | No automation rule; runtime UX judgment |
+| Y.H4 | Milestone Y leftovers | HUMAN | Push any unpushed security workflows if still local-only | No automation rule; destructive-ops push needs human |
 | X.JAVA | X | [HUMAN] | Ensure JAVA_HOME usable for agent Git Bash Gradle | Machine env |

@@ -4,11 +4,11 @@
 
 ## Acceptance criteria
 
-- 🔲 User-visible: a dedicated About surface (version, license/privacy, changelog, Donate via Venmo) reachable from the overflow menu
-- 🔲 Donate stays off the update/install dialog (AC invariant)
-- 🔲 Offline/error: About renders with no network; failed update check stays silent
-- 🔲 Accessibility: dialog/screen is labelled; donate is a real button/link
-- 🔲 i18n: `about_*` in `en` / `es` / `fr`
+- ✅ User-visible: a dedicated About surface (version, license/privacy, changelog, Donate via Venmo) reachable from the overflow menu
+- ✅ Donate stays off the update/install dialog (AC invariant)
+- ✅ Offline/error: About renders with no network; failed update check stays silent
+- ✅ Accessibility: dialog/screen is labelled; donate is a real button/link
+- ✅ i18n: `about_*` in `en` / `es` / `fr`
 
 ## Smoke scenario
 

@@ -4,6 +4,24 @@ Archived from [`BUILD_PLAN.md`](BUILD_PLAN.md). Do not edit historical verdicts;
 
 ---
 
+## Milestone AD — Golden Path slices (template v1.0.0) (2026-08-30)
+
+- ✅ AD.1 `[AGENT]` `/feature` **about** — GP About surface on existing dialog/donate. Spec: [`docs/features/about.md`](features/about.md)
+- ✅ AD.2 `[AGENT]` `/feature` **settings** — theme persist + crash-save toggle. Spec: [`docs/features/settings.md`](features/settings.md)
+- ✅ AD.3 `[AGENT]` `/feature` **crash-capture** — opt-in local queue; never auto-send. Spec: [`docs/features/crash-capture.md`](features/crash-capture.md)
+- ✅ AD.4 `[AGENT]` `/feature` **feedback** — in-app feedback dialogs. Spec: [`docs/features/feedback.md`](features/feedback.md)
+- ✅ AD.5 `[AGENT]` `/feature` **github-feedback** — `ACTION_VIEW` issue form URL. Spec: [`docs/features/github-feedback.md`](features/github-feedback.md)
+- ✅ AD.6 `[AGENT]` `/feature` **privacy-report** — on-device sanitizer. Spec: [`docs/features/privacy-report.md`](features/privacy-report.md)
+- ✅ AD.7 `[AGENT]` `/feature` **display-refresh** — safe refresh-mode fallback. Spec: [`docs/features/display-refresh.md`](features/display-refresh.md)
+
+# MILESTONE AD COMPLETE (local gates: `feature-gate --stack android` + `validate-bootstrap --quick` @ `080e11a`)
+
+## Milestone Y leftovers (partial, 2026-08-30)
+
+- ✅ Y.H3 `[HUMAN]` Triage Dependabot PRs (#27-#32 / successors) via `triage-dependabot-prs.sh --apply` — automated merge of #46, #45, #44, #43, #32, #29 into `main`
+
+---
+
 ## Milestone AB — seven product slices (2026-08-20)
 
 - ✅ AB.1 `[AGENT]` Room v2: stable group `id` + history `payloadJson`; Migration 1→2
