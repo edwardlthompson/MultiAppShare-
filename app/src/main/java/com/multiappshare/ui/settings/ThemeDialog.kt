@@ -64,7 +64,7 @@ fun ThemeDialog(
                     ),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    Checkbox(checked = crashDraft, onCheckedChange = { crashDraft = it })
+                    Checkbox(checked = crashDraft, onCheckedChange = null)
                     Text(stringResource(R.string.settings_crash_capture))
                 }
                 Row(
@@ -75,7 +75,7 @@ fun ThemeDialog(
                     ),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    Checkbox(checked = refreshDraft, onCheckedChange = { refreshDraft = it })
+                    Checkbox(checked = refreshDraft, onCheckedChange = null)
                     Text(stringResource(R.string.display_high_refresh))
                 }
                 Row(
@@ -86,7 +86,7 @@ fun ThemeDialog(
                     ),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    Checkbox(checked = hapticsDraft, onCheckedChange = { hapticsDraft = it })
+                    Checkbox(checked = hapticsDraft, onCheckedChange = null)
                     Text(stringResource(R.string.settings_share_haptics))
                 }
             }
