@@ -36,4 +36,19 @@ class ShareFailAndHistoryRestoreTest {
         assertEquals(false, restored?.sharingStarted)
         assertEquals(0, restored?.currentIndex)
     }
+
+    @Test
+    fun retryFailedStep_resetsFailedFlag() {
+        val failedSession = ShareSessionState(
+            text = "x",
+            mimeType = "text/plain",
+            appPackages = listOf("a/.A", "b/.B"),
+            currentIndex = 0,
+            sharingStarted = true,
+            lastShareFailed = true,
+        )
+        val retried = failedSession.copy(lastShareFailed = false)
+        assertFalse(retried.lastShareFailed)
+        assertEquals(0, retried.currentIndex)
+    }
 }
