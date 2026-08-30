@@ -1,7 +1,7 @@
 package com.multiappshare.domain
 
 object PrivacyPolicyText {
-    val TITLE = "Privacy Policy"
+    const val TITLE = "Privacy Policy"
 
     val SECTIONS = listOf(
         "Zero Telemetry" to "Multi App Share does not include third-party tracking or analytics.",
