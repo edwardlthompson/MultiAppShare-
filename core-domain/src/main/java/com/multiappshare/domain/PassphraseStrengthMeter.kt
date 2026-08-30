@@ -10,31 +10,28 @@ enum class PassphraseStrengthLevel {
 object PassphraseStrengthMeter {
     fun evaluate(passphrase: CharArray?): PassphraseStrengthLevel {
         if (passphrase == null || passphrase.isEmpty()) return PassphraseStrengthLevel.EMPTY
+        val variety = countVariety(passphrase)
         val length = passphrase.size
-        var hasDigit = false
-        var hasUpper = false
-        var hasLower = false
-        var hasSpecial = false
-
-        for (c in passphrase) {
-            when {
-                c.isDigit() -> hasDigit = true
-                c.isUpperCase() -> hasUpper = true
-                c.isLowerCase() -> hasLower = true
-                else -> hasSpecial = true
-            }
-        }
-
-        var varietyCount = 0
-        if (hasDigit) varietyCount++
-        if (hasUpper) varietyCount++
-        if (hasLower) varietyCount++
-        if (hasSpecial) varietyCount++
-
         return when {
-            length >= 12 && varietyCount >= 3 -> PassphraseStrengthLevel.STRONG
-            length >= 8 && varietyCount >= 2 -> PassphraseStrengthLevel.FAIR
+            length >= 12 && variety >= 3 -> PassphraseStrengthLevel.STRONG
+            length >= 8 && variety >= 2 -> PassphraseStrengthLevel.FAIR
             else -> PassphraseStrengthLevel.WEAK
         }
+    }
+
+    private fun countVariety(passphrase: CharArray): Int {
+        var digit = 0
+        var upper = 0
+        var lower = 0
+        var special = 0
+        for (c in passphrase) {
+            when {
+                c.isDigit() -> digit = 1
+                c.isUpperCase() -> upper = 1
+                c.isLowerCase() -> lower = 1
+                else -> special = 1
+            }
+        }
+        return digit + upper + lower + special
     }
 }
