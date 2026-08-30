@@ -23,7 +23,7 @@ object GroupTemplateCodec {
 
     fun exportTemplate(group: AppGroup): String {
         val sanitizedGroup = group.copy(
-            id = if (group.id.isBlank()) GroupIds.generateId() else group.id,
+            id = if (group.id.isBlank()) GroupIds.newId() else group.id,
             usageCount = 0,
         )
         val template = GroupTemplate(
