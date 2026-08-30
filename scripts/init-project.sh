@@ -296,8 +296,11 @@ Suggested for GitHub discoverability (Settings → About).
 )
 PY
 
+# shellcheck source=lib/resolve-python.sh
+. "$(cd "$(dirname "$0")" && pwd)/lib/resolve-python.sh"
+
 if [ -n "$TOPICS" ]; then
-  python3 - "$ROOT" "$TOPICS" << 'PY'
+  "$PY" - "$ROOT" "$TOPICS" << 'PY'
 import sys
 from pathlib import Path
 from init_extras import gh_topics_command, write_topics
@@ -311,6 +314,17 @@ if cmd:
     print(f"Human: apply topics with: {cmd}")
 PY
 fi
+
+export PYTHONPATH="$ROOT/scripts/lib${PYTHONPATH:+:$PYTHONPATH}"
+"$PY" - "$ROOT" "$STACK" << 'PY'
+import sys
+from pathlib import Path
+from bootstrap_lifecycle import sync_project_files
+
+root = Path(sys.argv[1])
+stack = sys.argv[2]
+sync_project_files(root, stack)
+PY
 
 # Prune unused examples/modules
 PRUNED=false

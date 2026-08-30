@@ -46,22 +46,13 @@ Per [`PRE_RELEASE_AUDIT.md`](PRE_RELEASE_AUDIT.md). Prefer `/ship`.
 > **AB** archived in docs/COMPLETED_TASKS.md @ `0b1880e`.
 > **AC** archived in docs/COMPLETED_TASKS.md (2026-08-30).
 > **AD** archived in docs/COMPLETED_TASKS.md @ `080e11a`.
+> **AE** archived in docs/COMPLETED_TASKS.md (2026-08-30).
 
-## Milestone Y leftovers (Archived)
-
-All Human leftovers (Y.H1–Y.H4) verified via automation and archived in [`COMPLETED_TASKS.md`](COMPLETED_TASKS.md).
----
-
-## Milestone AE — Product backlog (allideas 2026-08-30) (Archived)
-
-All 67 `[AGENT]` rows complete and archived in [`COMPLETED_TASKS.md`](COMPLETED_TASKS.md).
-
-### Human & device (after automation)
+## Human & device backlog (Unreleased)
 
 | Status | ID | Label | Task |
 |--------|----|-------|------|
-| ✅ | AE.48 | `[ADB]` | Hardware TalkBack pass on Golden Path + share overlay (`ACCESSIBILITY_CHECKLIST`) |
-| 🔲 | AE.59 | `[HUMAN]` | F-Droid `fdroiddata` MR for 1.9.5 / next tag (`FDROID_MAINTENANCE.md`) |
+| 🔲 | AE.59 | `[HUMAN]` | F-Droid `fdroiddata` MR for 1.10.0 / next tag (`FDROID_MAINTENANCE.md`) |
 ---
 
 ## Ongoing maintenance
@@ -86,4 +77,6 @@ All 67 `[AGENT]` rows complete and archived in [`COMPLETED_TASKS.md`](COMPLETED_
 | Z | Complete (2026-08-20) | [`COMPLETED_TASKS.md`](COMPLETED_TASKS.md) |
 | AA | Complete (2026-08-20) | [`COMPLETED_TASKS.md`](COMPLETED_TASKS.md) |
 | AB | Complete (2026-08-20) | [`COMPLETED_TASKS.md`](COMPLETED_TASKS.md) |
+| AC | Complete (2026-08-30) | [`COMPLETED_TASKS.md`](COMPLETED_TASKS.md) |
 | AD | Complete (2026-08-30) | [`COMPLETED_TASKS.md`](COMPLETED_TASKS.md) |
+| AE | Complete (2026-08-30) | [`COMPLETED_TASKS.md`](COMPLETED_TASKS.md) |
