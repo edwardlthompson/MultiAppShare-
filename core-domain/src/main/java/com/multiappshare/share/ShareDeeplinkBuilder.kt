@@ -10,8 +10,7 @@ object ShareDeeplinkBuilder {
     }
 
     fun parseStepIndex(uriString: String?): Int? {
-        if (uriString == null) return null
-        if (!uriString.startsWith("$SCHEME://$HOST_SHARE_STEP")) return null
+        if (uriString == null || !uriString.startsWith("$SCHEME://$HOST_SHARE_STEP")) return null
         val queryPart = uriString.substringAfter("?", "")
         val params = queryPart.split("&").associate {
             val parts = it.split("=")
