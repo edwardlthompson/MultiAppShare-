@@ -27,4 +27,14 @@ object SettingsCatalog {
 
     fun filterBySection(section: SettingsSection): List<SettingsEntry> =
         ENTRIES.filter { it.section == section }
+
+    fun search(query: String?): List<SettingsEntry> {
+        val trimmed = query?.trim().orEmpty()
+        if (trimmed.isEmpty()) return ENTRIES
+        return ENTRIES.filter {
+            it.title.contains(trimmed, ignoreCase = true) ||
+                it.id.contains(trimmed, ignoreCase = true) ||
+                it.section.name.contains(trimmed, ignoreCase = true)
+        }
+    }
 }

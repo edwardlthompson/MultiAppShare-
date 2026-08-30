@@ -23,4 +23,14 @@ class SettingsCatalogTest {
         assertTrue(appearance.any { it.id == "theme" })
         assertTrue(appearance.any { it.id == "language" })
     }
+
+    @Test
+    fun searchesEntriesByQuery() {
+        val results = SettingsCatalog.search("haptic")
+        assertEquals(1, results.size)
+        assertEquals("haptics", results[0].id)
+
+        val empty = SettingsCatalog.search(null)
+        assertEquals(SettingsCatalog.ENTRIES.size, empty.size)
+    }
 }
