@@ -12,7 +12,7 @@ class BatteryOptimizationExplainerTest {
         assertTrue(BatteryOptimizationExplainer.EXPLANATION.contains("battery optimization"))
         assertEquals(
             "android.settings.IGNORE_BATTERY_OPTIMIZATION_SETTINGS",
-            BatteryOptimizationExplainer.getSettingsIntentAction(),
+            BatteryOptimizationExplainer.SETTINGS_INTENT_ACTION,
         )
     }
 }
