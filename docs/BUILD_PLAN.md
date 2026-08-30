@@ -110,7 +110,7 @@ Child slices from `/allideas`. **One `/feature` task per row.** Sequential only 
 | ✅ | AE.30 | `[AGENT]` | `/feature` **history-open-uri** — Open original URI when persistable grant remains |
 | ✅ | AE.31 | `[AGENT]` | `/feature` **backup-payload-opt-in** — Toggle including last payload in backup |
 | ✅ | AE.32 | `[AGENT]` | `/feature` **passphrase-strength** — Strength meter on backup passphrase |
-| 🔲 | AE.33 | `[AGENT]` | `/feature` **oss-license-screen** — In-app third-party license list |
+| ✅ | AE.33 | `[AGENT]` | `/feature` **oss-license-screen** — In-app third-party license list |
 | 🔲 | AE.34 | `[AGENT]` | `/feature` **privacy-policy-screen** — Scrollable local privacy screen |
 | 🔲 | AE.35 | `[AGENT]` | `/feature` **backup-crash-pref-opt-in** — Optional backup of crash-save preference |
 | 🔲 | AE.36 | `[AGENT]` | `/feature` **settings-screen** — Dedicated Settings screen (unclutter overflow) |
