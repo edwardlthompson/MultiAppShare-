@@ -20,14 +20,17 @@ ERRORS=0
 MAX_REPORT=20
 reported=0
 
-while IFS= read -r file; do
-  [ -z "$file" ] && continue
+large_sizes="$(git cat-file --batch-check='%(objectsize) %(rest)' < <(git ls-files | awk '{print "HEAD:" $0 " " $0}') 2>/dev/null || true)"
+while IFS=' ' read -r size file; do
+  [ -z "${file:-}" ] || [ -z "${size:-}" ] && continue
+  case "$size" in
+    ''|*[!0-9]*) continue ;;
+  esac
   skip=false
   for allowed in "${ALLOWLIST[@]}"; do
     if [ "$file" = "$allowed" ]; then skip=true; break; fi
   done
   if [ "$skip" = true ]; then continue; fi
-  size=$(git cat-file -s "HEAD:$file" 2>/dev/null || echo 0)
   if [ "$size" -gt "$MAX_BYTES" ]; then
     kb=$((size / 1024))
     echo "LARGE TRACKED FILE: $file (${kb} KB > ${MAX_KB} KB)"
@@ -38,7 +41,7 @@ while IFS= read -r file; do
       break
     fi
   fi
-done < <(git ls-files)
+done <<< "$large_sizes"
 
 if [ "$ERRORS" -gt 0 ]; then
   echo "$ERRORS tracked file(s) exceed ${MAX_KB} KB"
