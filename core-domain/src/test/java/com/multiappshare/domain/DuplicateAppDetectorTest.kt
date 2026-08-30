@@ -30,7 +30,8 @@ class DuplicateAppDetectorTest {
 
     @Test
     fun findsMultipleDuplicatePackages() {
-        val dups = DuplicateAppDetector.findDuplicatePackages(allGroups, "NewGroup", setOf("org.signal", "org.telegram"))
+        val targets = setOf("org.signal", "org.telegram")
+        val dups = DuplicateAppDetector.findDuplicatePackages(allGroups, "NewGroup", targets)
         assertEquals(listOf("Chat"), dups["org.signal"])
         assertEquals(listOf("Chat", "Social"), dups["org.telegram"])
     }
