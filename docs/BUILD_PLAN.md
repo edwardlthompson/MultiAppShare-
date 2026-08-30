@@ -87,7 +87,7 @@ Child slices from `/allideas`. **One `/feature` task per row.** Sequential only 
 | ✅ | AE.7 | `[AGENT]` | `/feature` **reduce-motion-burst** — Honor reduced-motion / animator scale on success burst |
 | ✅ | AE.8 | `[AGENT]` | `/feature` **haptics-toggle** — Settings toggle for sequential share haptics |
 | ✅ | AE.9 | `[AGENT]` | `/feature` **per-group-delay** — Optional share delay override per group |
-| 🔲 | AE.10 | `[AGENT]` | `/feature` **mime-mismatch-sheet** — Explain why a group is hidden for the current MIME |
+| ✅ | AE.10 | `[AGENT]` | `/feature` **mime-mismatch-sheet** — Explain why a group is hidden for the current MIME |
 | 🔲 | AE.11 | `[AGENT]` | `/feature` **share-step-deeplink** — Notification tap resumes the exact share step |
 | 🔲 | AE.12 | `[AGENT]` | `/feature` **qs-share-clipboard** — Quick Settings tile for clipboard share |
 | 🔲 | AE.13 | `[AGENT]` | `/feature` **repair-missing-packages** — One-tap remove uninstalled apps from groups |
