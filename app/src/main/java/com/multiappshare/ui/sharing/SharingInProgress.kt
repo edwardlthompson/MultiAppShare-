@@ -24,11 +24,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.LiveRegionMode
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.liveRegion
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.multiappshare.R
 import com.multiappshare.resolveShareTargetLabel
 import com.multiappshare.sharedefer.ShareDefer
+import com.multiappshare.shareprogress.ShareProgressAnnounce
 
 @Composable
 fun SharingInProgress(
@@ -78,9 +83,26 @@ fun SharingInProgress(
             textAlign = TextAlign.Center,
         )
         Spacer(modifier = Modifier.height(8.dp))
+        val progress = ShareProgressAnnounce.snapshot(currentIndex, totalApps, currentLabel)
+        val progressSpoken = if (progress == null) {
+            ""
+        } else if (progress.target.isEmpty()) {
+            stringResource(R.string.sharing_step_format, progress.step, progress.total)
+        } else {
+            stringResource(
+                R.string.sharing_progress_announce,
+                progress.step,
+                progress.total,
+                progress.target,
+            )
+        }
         Text(
             stringResource(R.string.sharing_step_format, currentIndex + 1, totalApps),
             style = MaterialTheme.typography.titleMedium,
+            modifier = Modifier.semantics {
+                liveRegion = LiveRegionMode.Polite
+                if (progressSpoken.isNotEmpty()) contentDescription = progressSpoken
+            },
         )
         if (currentLabel.isNotEmpty()) {
             Spacer(modifier = Modifier.height(4.dp))
