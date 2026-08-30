@@ -173,4 +173,14 @@
     <string name="label_confirm_passphrase">Confirmar contraseña</string>
     <string name="backup_choose_location">Elegir ubicación</string>
     <string name="backup_import_confirm">Importar</string>
+    <string name="about_changelog">Registro de cambios</string>
+    <string name="feedback_title">Comentarios</string>
+    <string name="feedback_body_hint">Describe lo que pasó. Los secretos se quitan antes de abrir GitHub.</string>
+    <string name="feedback_title_label">Título</string>
+    <string name="feedback_message_label">Mensaje</string>
+    <string name="feedback_github">Abrir incidencia en GitHub</string>
+    <string name="crash_review_title">Detalles de fallo guardados</string>
+    <string name="crash_review_body">Hay un informe de fallo sanitizado. Puedes enviarlo como comentario o descartarlo. Nada se sube automáticamente.</string>
+    <string name="settings_crash_capture">Guardar detalles de fallos para revisarlos</string>
+    <string name="display_high_refresh">Preferir alta tasa de refresco</string>
 </resources>

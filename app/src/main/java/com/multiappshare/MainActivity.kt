@@ -15,6 +15,7 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -61,7 +62,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
-        window.decorView.post { window.enableFastestSameResolutionMode() }
+        window.decorView.post { window.enableFastestSameResolutionMode() } // default until prefs load
         sharing = MainActivitySharing(this, viewModel, MainActivityShareStep(this, viewModel))
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -72,7 +73,17 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             val darkPref by viewModel.darkTheme.collectAsState(initial = null)
+            val highRefresh by viewModel.highRefreshEnabled.collectAsState(initial = true)
             val systemDark = isSystemInDarkTheme()
+            LaunchedEffect(highRefresh) {
+                if (highRefresh) {
+                    window.enableFastestSameResolutionMode()
+                } else {
+                    val lp = window.attributes
+                    lp.preferredDisplayModeId = 0
+                    window.attributes = lp
+                }
+            }
             MultiAppShareTheme(darkTheme = darkPref ?: systemDark) {
                 Box(modifier = Modifier.fillMaxSize()) {
                     MainScreen(

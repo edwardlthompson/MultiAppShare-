@@ -19,6 +19,8 @@ class SettingsRepository(private val context: Context) {
     private val darkThemeKey = booleanPreferencesKey("dark_theme") // true = Dark, false = Light, null = System
     private val sharingDelayKey = androidx.datastore.preferences.core.intPreferencesKey("sharing_delay")
     private val appLanguageKey = stringPreferencesKey("app_language")
+    private val crashCaptureKey = booleanPreferencesKey("crash_capture_enabled")
+    private val highRefreshKey = booleanPreferencesKey("high_refresh_enabled")
 
     val isOnboardingCompleted: Flow<Boolean> = context.dataStore.data
         .map { preferences ->
@@ -34,6 +36,12 @@ class SettingsRepository(private val context: Context) {
         .map { preferences ->
             preferences[sharingDelayKey] ?: 500
         }
+
+    val isCrashCaptureEnabled: Flow<Boolean> = context.dataStore.data
+        .map { preferences -> preferences[crashCaptureKey] ?: SettingsDefaults.CRASH_CAPTURE_ENABLED }
+
+    val isHighRefreshEnabled: Flow<Boolean> = context.dataStore.data
+        .map { preferences -> preferences[highRefreshKey] ?: SettingsDefaults.HIGH_REFRESH_ENABLED }
 
     suspend fun setOnboardingCompleted() {
         context.dataStore.edit { preferences ->
@@ -54,6 +62,18 @@ class SettingsRepository(private val context: Context) {
     suspend fun setSharingDelay(delayMs: Int) {
         context.dataStore.edit { preferences ->
             preferences[sharingDelayKey] = SharingDelay.clamp(delayMs)
+        }
+    }
+
+    suspend fun setCrashCaptureEnabled(enabled: Boolean) {
+        context.dataStore.edit { preferences ->
+            preferences[crashCaptureKey] = enabled
+        }
+    }
+
+    suspend fun setHighRefreshEnabled(enabled: Boolean) {
+        context.dataStore.edit { preferences ->
+            preferences[highRefreshKey] = enabled
         }
     }
 

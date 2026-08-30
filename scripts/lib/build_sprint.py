@@ -49,8 +49,15 @@ def _child_status(text: str, progress: dict, backlog_keys: set[str]) -> dict:
     return idle
 
 
+def build_plan_path(root: Path) -> Path:
+    child = root / "docs" / "BUILD_PLAN.md"
+    if child.is_file():
+        return child
+    return root / "BUILD_PLAN.md"
+
+
 def build_status(root: Path, *, lane: str = "auto") -> dict:
-    text = (root / "BUILD_PLAN.md").read_text(encoding="utf-8")
+    text = build_plan_path(root).read_text(encoding="utf-8")
     progress = load_progress(root)
     backlog_keys = load_backlog_keys(root)
     template = is_template_repo(root)

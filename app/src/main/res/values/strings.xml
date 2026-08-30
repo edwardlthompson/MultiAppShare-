@@ -175,6 +175,16 @@
     <string name="theme_system">System default</string>
     <string name="theme_light">Light</string>
     <string name="theme_dark">Dark</string>
+    <string name="about_changelog">Changelog</string>
+    <string name="feedback_title">Feedback</string>
+    <string name="feedback_body_hint">Describe what happened. Secrets are removed before GitHub opens.</string>
+    <string name="feedback_title_label">Title</string>
+    <string name="feedback_message_label">Message</string>
+    <string name="feedback_github">Open GitHub issue</string>
+    <string name="crash_review_title">Saved crash details</string>
+    <string name="crash_review_body">A sanitized crash report is waiting. You can send it as feedback or discard it. Nothing is uploaded automatically.</string>
+    <string name="settings_crash_capture">Save crash details for me to review</string>
+    <string name="display_high_refresh">Prefer high refresh rate</string>
     <string name="delay_title">Delay between apps</string>
     <string name="delay_off">None</string>
     <string name="delay_ms">%1$d ms</string>

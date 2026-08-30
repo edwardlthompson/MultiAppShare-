@@ -3,6 +3,10 @@ package com.multiappshare.ui.main
 import android.content.pm.PackageManager
 import android.widget.Toast
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import com.multiappshare.DeleteGroupDialog
@@ -41,6 +45,8 @@ internal fun MainScreenDialogsHost(
     onShowAboutDialog: (Boolean) -> Unit,
 ) {
     val context = LocalContext.current
+    var showFeedback by remember { mutableStateOf(false) }
+    MainScreenGoldenPathHost(showFeedback = showFeedback, onShowFeedback = { showFeedback = it })
     val duplicateGroupToast = stringResource(R.string.toast_duplicate_group_name)
     val refreshingAppsToast = stringResource(R.string.toast_refreshing_apps)
     val historyLabels = HistoryDialogLabels(
@@ -173,9 +179,12 @@ internal fun MainScreenDialogsHost(
                 telegramLabel = stringResource(R.string.about_telegram_label),
                 supportDeveloper = stringResource(R.string.about_support_developer),
                 venmoLink = stringResource(R.string.about_donate),
+                changelog = stringResource(R.string.about_changelog),
+                feedback = stringResource(R.string.feedback_title),
                 ok = stringResource(R.string.button_ok),
             ),
             onDismiss = { onShowAboutDialog(false) },
+            onFeedback = { showFeedback = true },
         )
     }
 }

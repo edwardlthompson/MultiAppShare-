@@ -50,6 +50,8 @@ class MainViewModel @Inject constructor(
     var sharingDelayMs by mutableStateOf(500)
         private set
     val darkTheme = settingsRepository.isDarkThemeEnabled
+    val crashCaptureEnabled = settingsRepository.isCrashCaptureEnabled
+    val highRefreshEnabled = settingsRepository.isHighRefreshEnabled
 
     private val session = MainViewModelSession(
         ShareSessionCoordinator(shareSessionStore),
@@ -118,6 +120,8 @@ class MainViewModel @Inject constructor(
     fun setAppLanguage(tag: String?) = groups.setAppLanguage(tag)
     fun setDarkTheme(enabled: Boolean?) = groups.setDarkTheme(enabled)
     fun setSharingDelay(delayMs: Int) = groups.setSharingDelay(delayMs)
+    fun setCrashCaptureEnabled(enabled: Boolean) = groups.setCrashCaptureEnabled(enabled)
+    fun setHighRefreshEnabled(enabled: Boolean) = groups.setHighRefreshEnabled(enabled)
     fun loadData() = data.loadData()
     fun autoGroupApps(allApps: List<AppInfo>, append: Boolean, singleCategoryOnly: Int? = null) =
         data.autoGroupApps(allApps, append, singleCategoryOnly)
@@ -134,9 +138,7 @@ class MainViewModel @Inject constructor(
         groups.mergeGroups(target, source, onResult)
     fun deleteGroup(group: AppGroup) = groups.deleteGroup(group)
     fun undoDeleteGroup() = groups.undoDeleteGroup()
-    fun clearLastDeletedGroup() {
-        lastDeletedGroup = null
-    }
+    fun clearLastDeletedGroup() { lastDeletedGroup = null }
     fun toggleGroupExpanded(group: AppGroup) = groups.toggleGroupExpanded(group)
     fun updateGroupApps(group: AppGroup, apps: List<AppInfo>) = groups.updateGroupApps(group, apps)
     fun incrementGroupUsage(group: AppGroup) = groups.incrementGroupUsage(group)
