@@ -121,7 +121,7 @@ Child slices from `/allideas`. **One `/feature` task per row.** Sequential only 
 | ✅ | AE.41 | `[AGENT]` | `/feature` **battery-explainer** — User-initiated battery-optimization copy and link |
 | ✅ | AE.42 | `[AGENT]` | `/feature` **fgs-timeout** — Survive Android 15 foreground-service timeout |
 | ✅ | AE.43 | `[AGENT]` | `/feature` **notification-channel-link** — Deep link to system notification settings |
-| 🔲 | AE.44 | `[AGENT]` | `/feature` **dynamic-shortcuts** — Rank launcher shortcuts by group usage |
+| ✅ | AE.44 | `[AGENT]` | `/feature` **dynamic-shortcuts** — Rank launcher shortcuts by group usage |
 | 🔲 | AE.45 | `[AGENT]` | `/feature` **home-widget** — Widget for last group or clipboard share |
 | 🔲 | AE.46 | `[AGENT]` | `/feature` **foldable-two-pane** — Hinge / tabletop polish for two-pane |
 | 🔲 | AE.47 | `[AGENT]` | `/feature` **desktop-windowing** — Freeform / window-size class overlay layout |
