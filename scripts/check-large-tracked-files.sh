@@ -7,12 +7,26 @@ cd "$ROOT"
 
 MAX_KB=500
 MAX_BYTES=$((MAX_KB * 1024))
+# Android store assets and design references (pre-existing product repo)
+ALLOWLIST=(
+  "fastlane/metadata/android/en-US/images/icon.png"
+  "docs/design/icon-reference-512.png"
+  "icon.png"
+  "app/src/main/res/drawable/ic_launcher.png"
+  "app/src/main/generated/baselineProfiles/baseline-prof.txt"
+  "app/src/main/generated/baselineProfiles/startup-prof.txt"
+)
 ERRORS=0
 MAX_REPORT=20
 reported=0
 
 while IFS= read -r file; do
   [ -z "$file" ] && continue
+  skip=false
+  for allowed in "${ALLOWLIST[@]}"; do
+    if [ "$file" = "$allowed" ]; then skip=true; break; fi
+  done
+  if [ "$skip" = true ]; then continue; fi
   size=$(git cat-file -s "HEAD:$file" 2>/dev/null || echo 0)
   if [ "$size" -gt "$MAX_BYTES" ]; then
     kb=$((size / 1024))
