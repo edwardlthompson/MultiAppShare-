@@ -131,7 +131,7 @@ Child slices from `/allideas`. **One `/feature` task per row.** Sequential only 
 | ✅ | AE.52 | `[AGENT]` | `/feature` **theme-toggle-labels** — Full-row TalkBack names on crash/refresh toggles |
 | ✅ | AE.53 | `[AGENT]` | `/feature` **about-install-source** — Show F-Droid vs sideload on About |
 | ✅ | AE.54 | `[AGENT]` | `/feature` **optional-emulator-ci** — Optional instrumented job when emulator exists |
-| 🔲 | AE.55 | `[AGENT]` | `/feature` **kover-share-gaps** — Coverage report focus on share/retry path |
+| ✅ | AE.55 | `[AGENT]` | `/feature` **kover-share-gaps** — Coverage report focus on share/retry path |
 | 🔲 | AE.56 | `[AGENT]` | `/feature` **paparazzi-ad-dialogs** — Goldens for About, Feedback, crash review |
 | 🔲 | AE.57 | `[AGENT]` | `/feature` **baseline-overlay** — Baseline profile for share overlay startup |
 | 🔲 | AE.58 | `[AGENT]` | `/feature` **unreleased-ship-prep** — Version/changelog/fastlane prep for next `v*` |
