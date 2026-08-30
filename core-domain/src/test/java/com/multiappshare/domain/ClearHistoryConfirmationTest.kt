@@ -16,7 +16,9 @@ class ClearHistoryConfirmationTest {
 
     @Test
     fun formatsConfirmationPromptCorrectly() {
-        assertEquals("Are you sure you want to delete 1 history record?", ClearHistoryConfirmation.formatConfirmationPrompt(1))
-        assertEquals("Are you sure you want to delete all 5 history records?", ClearHistoryConfirmation.formatConfirmationPrompt(5))
+        val singleExpected = "Are you sure you want to delete 1 history record?"
+        val pluralExpected = "Are you sure you want to delete all 5 history records?"
+        assertEquals(singleExpected, ClearHistoryConfirmation.formatConfirmationPrompt(1))
+        assertEquals(pluralExpected, ClearHistoryConfirmation.formatConfirmationPrompt(5))
     }
 }
