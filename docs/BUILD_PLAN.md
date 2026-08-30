@@ -140,7 +140,7 @@ Child slices from `/allideas`. **One `/feature` task per row.** Sequential only 
 | ✅ | AE.62 | `[AGENT]` | `/feature` **overflow-sections** — Group overflow into Share / Data / About |
 | ✅ | AE.63 | `[AGENT]` | `/feature` **import-confirm** — Confirm before destructive backup import |
 | ✅ | AE.64 | `[AGENT]` | `/feature` **empty-groups-cta** — Autofill vs create when the list is empty |
-| 🔲 | AE.65 | `[AGENT]` | `/feature` **whats-new-local** — Offline what’s-new after version change |
+| ✅ | AE.65 | `[AGENT]` | `/feature` **whats-new-local** — Offline what’s-new after version change |
 | 🔲 | AE.66 | `[AGENT]` | `/feature` **work-profile-labels** — Disambiguate work vs personal share targets |
 | 🔲 | AE.67 | `[AGENT]` | `/feature` **copy-group-names** — Copy group app list to clipboard |
 | 🔲 | AE.68 | `[AGENT]` | `/feature` **app-info-shortcut** — Open system app-info from a group row |
