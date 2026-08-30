@@ -1,7 +1,7 @@
 # Bootstrap Alignment - Multi App Share
 
-> Gap analysis and migration record: agent-project-bootstrap **0.11.0 -> 0.15.0**.
-> Written 2026-07-21. Active sprint: Milestone **Y** in [`BUILD_PLAN.md`](BUILD_PLAN.md).
+> Gap analysis and migration record: agent-project-bootstrap **0.11.0 -> 1.0.0**.
+> Written 2026-07-21. Catch-up to **v1.0.0** on 2026-08-30. Active sprint: Milestone **AC** in [`BUILD_PLAN.md`](BUILD_PLAN.md).
 
 ## Stack selection
 
@@ -73,3 +73,20 @@
 - release-please / Pages / renaming `android.yml` to `ci.yml`
 - Commercial Bugbot/cloud MCP activation
 - Copying `examples/web`, `examples/python`, `examples/node`
+
+## Sync 1.0.0 (2026-08-30)
+
+### What changed (agent/process only)
+
+1. Template version **0.21.0 -> 1.0.0** (`.template-version`, `TEMPLATE_INDEX.json`).
+2. Canon: `.cursor/commands/` (35 files), rules/skills/agents/hooks, `docs/help/` (including `UPGRADE.md`), template `scripts/`.
+3. Mixed: `.gitignore`, security/stale/scorecard/dependency-review workflows, `PROJECT_CHECKLIST.md`, child-adapted `required-checks.json`.
+4. Sacred left untouched: `AGENTS.md` (still stamps v0.21.0 in the router until a human edits it), `docs/INITIALIZATION_PROMPT.md`, `LICENSE`, product `app/` / `feature-*` / `core-*`.
+5. Child-adapted gates kept: `validate-bootstrap.sh`, `check-file-limits.sh`, `check-github-ci.sh` (**Android CI**), `pre-release-gate.sh`, `sync-template-version.sh`, `foss-compliance.mdc`, `ci-gates.mdc`, `project.mdc`.
+
+### Intentionally not adopted (1.0.0)
+
+- `ci.yml`, `pages.yml`, `release-please*.yml`, `release.yml`
+- `dependabot-automerge.yml` (needs extra secrets)
+- Overwriting Sacred `AGENTS.md` or copying `examples/android/` over the product
+- Implementing Golden Path slices (about/settings/feedback/crash-capture/…) in this pass

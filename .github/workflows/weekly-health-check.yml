@@ -5,14 +5,15 @@ on:
     - cron: "0 7 * * 1"
   workflow_dispatch:
 
-permissions:
-  contents: read
-  actions: write
+permissions: read-all
 
 jobs:
   health:
     name: Weekly Workflow Health
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: write
     steps:
       - uses: actions/checkout@v7
 

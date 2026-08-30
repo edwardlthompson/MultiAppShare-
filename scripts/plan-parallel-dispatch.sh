@@ -2,7 +2,7 @@
 # Build parallel agent dispatch manifest from BUILD_PLAN Parallel tables.
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-BUILD_PLAN="$ROOT/docs/BUILD_PLAN.md"
+BUILD_PLAN="$ROOT/BUILD_PLAN.md"
 JSON=false
 SUGGEST=false
 REQUIRE_SEQ=false

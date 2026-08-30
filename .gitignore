@@ -32,5 +32,36 @@ coverage/
 
 # Cursor ephemeral (rules/commands are tracked)
 .cursor/agent-progress.json
+.cursor/last-feature-gate.json
+.cursor/parallel-scope-lock.json
+.cursor/worktrees/
+.cursor/mcp.json
+.cursor/mcp-audit.log
+.cursor/environment.json
+.cursor/sandbox.json
+.cursor/gates-status.md
+.cursor/upd-status.md
+.cursor/encoding-strict
+.cursor/handoff-*.md
 .cursor-session-state
+.cursor-session-state.json
 CODE_REVIEW.md
+RELEASE_NOTES.md
+scratchpad.md
+CURSOR_RADAR_REPORT.md
+CURSOR_RADAR_BACKLOG.md
+CURSOR_RADAR_SUGGESTIONS.md
+
+# Live user configs (examples committed; copies from init)
+.app-update.json
+donations.json
+openvex.json
+
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Optional Nix
+result
+.direnv/
