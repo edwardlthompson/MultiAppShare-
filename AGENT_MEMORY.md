@@ -65,6 +65,12 @@ See [`docs/MODULE_BOUNDARIES.md`](docs/MODULE_BOUNDARIES.md).
 | Template version | `.template-version` → **0.21.0** |
 ## Retrospectives
 
+### Ship v1.10.0 — Product backlog Milestone AE complete (2026-08-30)
+
+- Completed 70 vertical slice features across Milestone AE: granular sharing controls, TalkBack live regions, reduce motion, haptics, per-group delay, QS tile, dynamic shortcuts, widget state, foldable two-pane, desktop windowing, German/Italian translations, offline licenses/privacy/changelog, and uninstalled package cleanup.
+- Automated human leftovers and passed all physical ADB instrumented tests on device.
+- Merged PR #47 into main; Android CI, CodeQL, and Security Scan green on main.
+
 ### Ship v1.9.5 — donations + updates (2026-08-22)
 
 - Quiet Venmo donate (menu/About only) and once-daily GitHub `releases/latest` APK check.
