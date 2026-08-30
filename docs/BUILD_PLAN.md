@@ -106,7 +106,7 @@ Child slices from `/allideas`. **One `/feature` task per row.** Sequential only 
 | ✅ | AE.26 | `[AGENT]` | `/feature` **history-retention** — 30/90-day local history prune |
 | ✅ | AE.27 | `[AGENT]` | `/feature` **clear-history-confirm** — Confirm before clearing history |
 | ✅ | AE.28 | `[AGENT]` | `/feature` **history-filter-group** — Filter history rows by group |
-| 🔲 | AE.29 | `[AGENT]` | `/feature` **history-export-local** — Sanitized local JSON export of history |
+| ✅ | AE.29 | `[AGENT]` | `/feature` **history-export-local** — Sanitized local JSON export of history |
 | 🔲 | AE.30 | `[AGENT]` | `/feature` **history-open-uri** — Open original URI when persistable grant remains |
 | 🔲 | AE.31 | `[AGENT]` | `/feature` **backup-payload-opt-in** — Toggle including last payload in backup |
 | 🔲 | AE.32 | `[AGENT]` | `/feature` **passphrase-strength** — Strength meter on backup passphrase |
