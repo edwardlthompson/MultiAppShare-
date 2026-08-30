@@ -102,7 +102,7 @@ Child slices from `/allideas`. **One `/feature` task per row.** Sequential only 
 | ✅ | AE.22 | `[AGENT]` | `/feature` **autogroup-dry-run** — Preview auto-group buckets before commit |
 | ✅ | AE.23 | `[AGENT]` | `/feature` **hide-unused-apps** — Global hide list for the app picker |
 | ✅ | AE.24 | `[AGENT]` | `/feature` **sort-apps-last-success** — Order group apps by last successful share |
-| 🔲 | AE.25 | `[AGENT]` | `/feature` **collapse-unused-overlay-groups** — Collapse groups with no MIME match |
+| ✅ | AE.25 | `[AGENT]` | `/feature` **collapse-unused-overlay-groups** — Collapse groups with no MIME match |
 | 🔲 | AE.26 | `[AGENT]` | `/feature` **history-retention** — 30/90-day local history prune |
 | 🔲 | AE.27 | `[AGENT]` | `/feature` **clear-history-confirm** — Confirm before clearing history |
 | 🔲 | AE.28 | `[AGENT]` | `/feature` **history-filter-group** — Filter history rows by group |
