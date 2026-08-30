@@ -83,7 +83,7 @@ Child slices from `/allideas`. **One `/feature` task per row.** Sequential only 
 | ✅ | AE.3 | `[AGENT]` | `/feature` **reorder-attachments** — Reorder `ACTION_SEND_MULTIPLE` URIs before share |
 | ✅ | AE.4 | `[AGENT]` | `/feature` **pause-resume-share** — Pause and resume mid-sequence without Skip remaining |
 | ✅ | AE.5 | `[AGENT]` | `/feature` **try-later-step** — Defer a failed step without counting it as skip |
-| 🔲 | AE.6 | `[AGENT]` | `/feature` **share-progress-live-region** — TalkBack announces step N of M and target app |
+| ✅ | AE.6 | `[AGENT]` | `/feature` **share-progress-live-region** — TalkBack announces step N of M and target app |
 | 🔲 | AE.7 | `[AGENT]` | `/feature` **reduce-motion-burst** — Honor reduced-motion / animator scale on success burst |
 | 🔲 | AE.8 | `[AGENT]` | `/feature` **haptics-toggle** — Settings toggle for sequential share haptics |
 | 🔲 | AE.9 | `[AGENT]` | `/feature` **per-group-delay** — Optional share delay override per group |
