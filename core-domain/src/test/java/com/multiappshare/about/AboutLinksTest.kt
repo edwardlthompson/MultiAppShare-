@@ -10,6 +10,8 @@ class AboutLinksTest {
     fun changelogAndDonateAreHttps() {
         assertTrue(AboutLinks.isHttpsUrl(AboutLinks.CHANGELOG))
         assertTrue(AboutLinks.isHttpsUrl(AboutLinks.VENMO))
+        assertTrue(AboutLinks.isHttpsUrl(AboutLinks.GITHUB_SPONSORS))
+        assertTrue(AboutLinks.isHttpsUrl(AboutLinks.LIBERAPAY))
         assertTrue(AboutLinks.isHttpsUrl(AboutLinks.TELEGRAM))
     }
 
