@@ -30,4 +30,13 @@ class InstallChannelTest {
         assertEquals(InstallChannel.FDROID_LISTING, InstallChannel.updateUrl(false, apk))
         assertTrue(InstallChannel.FDROID_LISTING.startsWith("https://"))
     }
+
+    @Test
+    fun returnsAccurateSourceLabels() {
+        assertEquals("Sideload / Direct APK", InstallChannel.getSourceLabel(null))
+        assertEquals("Sideload / Direct APK", InstallChannel.getSourceLabel(""))
+        assertEquals("F-Droid", InstallChannel.getSourceLabel("org.fdroid.fdroid"))
+        assertEquals("F-Droid", InstallChannel.getSourceLabel("com.looker.droidify"))
+        assertEquals("Installer (com.custom.store)", InstallChannel.getSourceLabel("com.custom.store"))
+    }
 }

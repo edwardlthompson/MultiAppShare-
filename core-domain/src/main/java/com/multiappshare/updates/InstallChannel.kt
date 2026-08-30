@@ -24,4 +24,14 @@ object InstallChannel {
 
     fun updateUrl(allowDirectApk: Boolean, apkUrl: String): String =
         if (allowDirectApk) apkUrl else FDROID_LISTING
+
+    fun getSourceLabel(installerPackage: String?): String {
+        val pkg = installerPackage?.trim().orEmpty()
+        return when {
+            pkg.isEmpty() -> "Sideload / Direct APK"
+            pkg in fdroidInstallers || pkg.contains("fdroid", ignoreCase = true) -> "F-Droid"
+            pkg.contains("google", ignoreCase = true) -> "Google Play"
+            else -> "Installer ($pkg)"
+        }
+    }
 }
