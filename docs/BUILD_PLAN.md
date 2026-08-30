@@ -144,7 +144,7 @@ Child slices from `/allideas`. **One `/feature` task per row.** Sequential only 
 | ✅ | AE.66 | `[AGENT]` | `/feature` **work-profile-labels** — Disambiguate work vs personal share targets |
 | ✅ | AE.67 | `[AGENT]` | `/feature` **copy-group-names** — Copy group app list to clipboard |
 | ✅ | AE.68 | `[AGENT]` | `/feature` **app-info-shortcut** — Open system app-info from a group row |
-| 🔲 | AE.69 | `[AGENT]` | `/feature` **group-last-share-time** — Show last-share timestamp on group rows |
+| ✅ | AE.69 | `[AGENT]` | `/feature` **group-last-share-time** — Show last-share timestamp on group rows |
 | 🔲 | AE.70 | `[AGENT]` | `/feature` **crash-review-snooze** — Don’t ask again this version (still never auto-send) |
 
 ### Human & device (after automation)
