@@ -23,8 +23,8 @@ import com.multiappshare.R
 import com.multiappshare.ShareSessionState
 import com.multiappshare.model.AppGroup
 import com.multiappshare.payloadpreview.PayloadPreview
-import com.multiappshare.ui.groups.GroupWorkspace
 import com.multiappshare.payloadpreview.PayloadReorder
+import com.multiappshare.ui.groups.GroupWorkspace
 import com.multiappshare.ui.share.PayloadPreviewDialog
 import com.multiappshare.ui.share.ReorderAttachmentsDialog
 

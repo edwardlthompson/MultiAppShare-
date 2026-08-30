@@ -36,7 +36,7 @@ fun ReorderAttachmentsDialog(
         title = { Text(stringResource(R.string.preview_reorder_title)) },
         text = {
             LazyColumn(modifier = Modifier.height(280.dp)) {
-                itemsIndexed(items, key = { index, uri -> "$index:${uri}" }) { index, uri ->
+                itemsIndexed(items, key = { index, uri -> "$index:$uri" }) { index, uri ->
                     Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
                         Text(uri.lastPathSegment ?: uri.toString(), modifier = Modifier.weight(1f))
                         IconButton(
