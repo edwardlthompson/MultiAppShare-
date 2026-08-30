@@ -26,6 +26,14 @@ internal class MainGroupCommands(
         scope.launch { settingsRepository.setSharingDelay(delayMs) }
     }
 
+    fun setCrashCaptureEnabled(enabled: Boolean) {
+        scope.launch { settingsRepository.setCrashCaptureEnabled(enabled) }
+    }
+
+    fun setHighRefreshEnabled(enabled: Boolean) {
+        scope.launch { settingsRepository.setHighRefreshEnabled(enabled) }
+    }
+
     fun createGroup(groupName: String, onResult: (Boolean) -> Unit = {}) =
         stateHelper.createGroup(scope, groupName, onResult)
 

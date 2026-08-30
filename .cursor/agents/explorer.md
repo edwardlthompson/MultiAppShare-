@@ -14,4 +14,4 @@ Use for:
 
 Return: concise findings with `@filepath` references and suggested non-overlapping scopes for `plan-parallel-dispatch.sh`.
 
-Do not modify `docs/BUILD_PLAN.md` or run destructive shell commands.
+Do not modify `BUILD_PLAN.md` or run destructive shell commands.

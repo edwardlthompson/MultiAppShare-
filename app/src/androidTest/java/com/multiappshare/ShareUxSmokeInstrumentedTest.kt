@@ -76,6 +76,9 @@ class ShareUxSmokeInstrumentedTest {
         sendText("skip-smoke")
         assertTrue(device.wait(Until.hasObject(By.text(appContext.getString(R.string.share_overlay_title))), 8_000))
         tap("ZSmokeA")
+        if (device.wait(Until.hasObject(By.text(appContext.getString(R.string.preview_continue))), 2_000)) {
+            tap(appContext.getString(R.string.preview_continue))
+        }
         Thread.sleep(1_200)
         appContext.startActivity(
             Intent(appContext, MainActivity::class.java).apply {
@@ -88,6 +91,18 @@ class ShareUxSmokeInstrumentedTest {
             8_000,
         ) || device.wait(
             Until.hasObject(By.text(appContext.getString(R.string.sharing_button_finish_early))),
+            2_000,
+        ) || device.wait(
+            Until.hasObject(By.text(appContext.getString(R.string.sharing_button_next))),
+            2_000,
+        ) || device.wait(
+            Until.hasObject(By.text(appContext.getString(R.string.sharing_pause))),
+            2_000,
+        ) || device.wait(
+            Until.hasObject(By.text(appContext.getString(R.string.sharing_replay_current))),
+            2_000,
+        ) || device.wait(
+            Until.hasObject(By.text(appContext.getString(R.string.sharing_retry))),
             2_000,
         )
         appContext.startActivity(

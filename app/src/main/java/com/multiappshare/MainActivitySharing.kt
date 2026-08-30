@@ -10,6 +10,7 @@ import com.multiappshare.model.HistoryItem
 import com.multiappshare.share.PersistableShareUris
 import com.multiappshare.share.ShareNotificationIntents
 import com.multiappshare.share.toSnapshot
+import com.multiappshare.sharepause.SharePause
 
 internal class MainActivitySharing(
     private val activity: MainActivity,
@@ -31,6 +32,11 @@ internal class MainActivitySharing(
             }
             intent.action == Intent.ACTION_VIEW && intent.data?.scheme == DeeplinkContract.SCHEME -> {
                 applyDeepLink(intent.data!!)
+            }
+            intent.action == com.multiappshare.qs.ShareClipboardTileService.ACTION_QS_SHARE_CLIPBOARD -> {
+                clearSessionShareState()
+                viewModel.shareFromClipboard(activity)
+                consumedShare = true
             }
             !intent.getStringExtra("GROUP_NAME").isNullOrBlank() -> {
                 viewModel.expandGroupByNameIfPresent(intent.getStringExtra("GROUP_NAME")!!)
@@ -94,9 +100,13 @@ internal class MainActivitySharing(
         }
     }
 
-    fun nextShareStep() = advanceAfterCurrent(null)
+    fun nextShareStep() {
+        if (!SharePause.nextAllowed(viewModel.shareSession.paused)) return
+        advanceAfterCurrent(null)
+    }
 
     fun skipThisApp() {
+        if (!SharePause.nextAllowed(viewModel.shareSession.paused)) return
         val session = viewModel.shareSession
         if (session.sharingStarted && session.appPackages != null) {
             viewModel.addHistoryItem(

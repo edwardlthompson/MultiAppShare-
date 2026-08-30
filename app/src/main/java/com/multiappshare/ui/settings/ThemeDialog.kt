@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -21,10 +22,16 @@ import com.multiappshare.R
 @Composable
 fun ThemeDialog(
     selected: Boolean?,
+    crashCapture: Boolean,
+    highRefresh: Boolean,
+    shareHaptics: Boolean,
     onDismiss: () -> Unit,
-    onConfirm: (Boolean?) -> Unit,
+    onConfirm: (Boolean?, Boolean, Boolean, Boolean) -> Unit,
 ) {
     var draft by remember(selected) { mutableStateOf(selected) }
+    var crashDraft by remember(crashCapture) { mutableStateOf(crashCapture) }
+    var refreshDraft by remember(highRefresh) { mutableStateOf(highRefresh) }
+    var hapticsDraft by remember(shareHaptics) { mutableStateOf(shareHaptics) }
     val options = listOf<Pair<Boolean?, Int>>(
         null to R.string.theme_system,
         false to R.string.theme_light,
@@ -49,10 +56,45 @@ fun ThemeDialog(
                         Text(stringResource(label))
                     }
                 }
+                Row(
+                    modifier = Modifier.selectable(
+                        selected = crashDraft,
+                        onClick = { crashDraft = !crashDraft },
+                        role = Role.Checkbox,
+                    ),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Checkbox(checked = crashDraft, onCheckedChange = null)
+                    Text(stringResource(R.string.settings_crash_capture))
+                }
+                Row(
+                    modifier = Modifier.selectable(
+                        selected = refreshDraft,
+                        onClick = { refreshDraft = !refreshDraft },
+                        role = Role.Checkbox,
+                    ),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Checkbox(checked = refreshDraft, onCheckedChange = null)
+                    Text(stringResource(R.string.display_high_refresh))
+                }
+                Row(
+                    modifier = Modifier.selectable(
+                        selected = hapticsDraft,
+                        onClick = { hapticsDraft = !hapticsDraft },
+                        role = Role.Checkbox,
+                    ),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Checkbox(checked = hapticsDraft, onCheckedChange = null)
+                    Text(stringResource(R.string.settings_share_haptics))
+                }
             }
         },
         confirmButton = {
-            TextButton(onClick = { onConfirm(draft) }) { Text(stringResource(R.string.button_save)) }
+            TextButton(onClick = { onConfirm(draft, crashDraft, refreshDraft, hapticsDraft) }) {
+                Text(stringResource(R.string.button_save))
+            }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) { Text(stringResource(R.string.button_cancel)) }

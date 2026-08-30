@@ -1,10 +1,13 @@
 """Split BUILD_PLAN text into sprint and maintenance row groups."""
 from __future__ import annotations
 
+import re
+
 from build_sprint_model import (
     HUMAN_GROUP_HEADER,
     PARALLEL_HEADER,
     ROW_BULLET,
+    ROW_NUMBERED,
     SEQUENTIAL_HEADER,
     SPRINT_HEADER,
     PlanRow,
@@ -43,9 +46,13 @@ def split_sprint_phases(
     return pre, parallel, post, human
 
 
+MILESTONE_HEADER = re.compile(r"^##\s+Milestone\s+", re.I)
+
+
 def parse_sprint_blocks(text: str) -> list[tuple[str, list[str]]]:
     blocks: list[tuple[str, list[str]]] = []
     in_child = False
+    playbook = "## Child Repo Playbook" in text
     i = 0
     lines = text.splitlines()
     while i < len(lines):
@@ -54,17 +61,18 @@ def parse_sprint_blocks(text: str) -> list[tuple[str, list[str]]]:
             in_child = True
             i += 1
             continue
-        if not in_child:
+        if playbook and not in_child:
             i += 1
             continue
         if line.startswith("## Ongoing Maintenance"):
             break
-        if SPRINT_HEADER.match(line):
+        if SPRINT_HEADER.match(line) or MILESTONE_HEADER.match(line):
             title = line.strip().lstrip("#").strip()
             block_lines: list[str] = [line]
             i += 1
             while i < len(lines) and not (
                 SPRINT_HEADER.match(lines[i])
+                or MILESTONE_HEADER.match(lines[i])
                 or (lines[i].startswith("## ") and not lines[i].startswith("### "))
             ):
                 block_lines.append(lines[i])
@@ -105,3 +113,41 @@ def parse_maintenance_rows(text: str) -> tuple[list[PlanRow], list[PlanRow]]:
         else:
             auto_rows.append(row)
     return auto_rows, human_rows
+
+
+def parse_maintainer_active_board(text: str) -> tuple[list[PlanRow], list[PlanRow]]:
+    aa: list[PlanRow] = []
+    ha: list[PlanRow] = []
+    in_board = False
+    sprint = "Template Maintainer"
+    for line in text.splitlines():
+        if line.startswith("## Template Maintainer"):
+            in_board = True
+            continue
+        if in_board and line.startswith("## ") and not line.startswith("## Template Maintainer"):
+            break
+        if not in_board:
+            continue
+        if line.startswith("### "):
+            sprint = line.strip().lstrip("#").strip()
+            continue
+        match = ROW_NUMBERED.match(line)
+        if not match:
+            continue
+        row = PlanRow(
+            owner=match.group("owner"),
+            task=match.group("task").strip(),
+            sprint=sprint,
+            phase="maintainer_board",
+        )
+        if row.owner in ("HUMAN", "ADB"):
+            ha.append(row)
+        elif row.owner in ("AGENT", "AUTO"):
+            aa.append(row)
+    return aa, ha
+
+
+def parse_maintainer_queue(text: str) -> tuple[list[PlanRow], list[PlanRow]]:
+    board_aa, board_ha = parse_maintainer_active_board(text)
+    maint_auto, maint_human = parse_maintenance_rows(text)
+    return board_aa + maint_auto, board_ha + maint_human

@@ -99,7 +99,21 @@
     <string name="donate_not_now">Ahora no</string>
     <string name="update_available_title">Actualización disponible</string>
     <string name="update_available_body">Multi App Share %1$s está en GitHub. Instálala cuando quieras.</string>
+    <string name="update_available_body_fdroid">Multi App Share %1$s está en F-Droid. Abre la ficha cuando quieras.</string>
     <string name="update_install">Instalar</string>
+    <string name="update_open_fdroid">Abrir F-Droid</string>
+    <string name="preview_title">Revisar antes de compartir</string>
+    <string name="preview_mime">Tipo: %1$s</string>
+    <string name="preview_uris">Adjuntos: %1$d</string>
+    <string name="preview_text">Texto: %1$s</string>
+    <string name="preview_continue">Continuar</string>
+    <string name="preview_reorder_title">Orden de adjuntos</string>
+    <string name="preview_move_up">Subir</string>
+    <string name="preview_move_down">Bajar</string>
+    <string name="sharing_pause">Pausar</string>
+    <string name="sharing_resume">Reanudar</string>
+    <string name="sharing_try_later">Intentar más tarde</string>
+    <string name="sharing_progress_announce">Paso %1$d de %2$d, %3$s</string>
     <string name="update_later">Más tarde</string>
     <string name="button_ok">Aceptar</string>
     <string name="version_line">Versión: %1$s</string>
@@ -173,4 +187,15 @@
     <string name="label_confirm_passphrase">Confirmar contraseña</string>
     <string name="backup_choose_location">Elegir ubicación</string>
     <string name="backup_import_confirm">Importar</string>
+    <string name="about_changelog">Registro de cambios</string>
+    <string name="feedback_title">Comentarios</string>
+    <string name="feedback_body_hint">Describe lo que pasó. Los secretos se quitan antes de abrir GitHub.</string>
+    <string name="feedback_title_label">Título</string>
+    <string name="feedback_message_label">Mensaje</string>
+    <string name="feedback_github">Abrir incidencia en GitHub</string>
+    <string name="crash_review_title">Detalles de fallo guardados</string>
+    <string name="crash_review_body">Hay un informe de fallo sanitizado. Puedes enviarlo como comentario o descartarlo. Nada se sube automáticamente.</string>
+    <string name="settings_crash_capture">Guardar detalles de fallos para revisarlos</string>
+    <string name="display_high_refresh">Preferir alta tasa de refresco</string>
+    <string name="settings_share_haptics">Vibración al terminar el uso compartido</string>
 </resources>

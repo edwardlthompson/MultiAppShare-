@@ -24,10 +24,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.LiveRegionMode
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.liveRegion
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.multiappshare.R
 import com.multiappshare.resolveShareTargetLabel
+import com.multiappshare.sharedefer.ShareDefer
+import com.multiappshare.sharehaptics.ShareHaptics
+import com.multiappshare.shareprogress.ShareProgressAnnounce
 
 @Composable
 fun SharingInProgress(
@@ -38,12 +45,16 @@ fun SharingInProgress(
     totalApps: Int,
     appComponents: List<String>,
     lastShareFailed: Boolean = false,
+    paused: Boolean = false,
+    hapticsEnabled: Boolean = true,
     packageManager: PackageManager,
     onReplayCurrentStep: () -> Unit = {},
     onPreviousStep: () -> Unit = {},
     onNextStep: () -> Unit,
     onSkipThisApp: () -> Unit = {},
     onFinishEarly: () -> Unit = {},
+    onTogglePause: () -> Unit = {},
+    onTryLater: () -> Unit = {},
 ) {
     val haptic = LocalHapticFeedback.current
     val currentKey = appComponents.getOrNull(currentIndex).orEmpty()
@@ -74,9 +85,26 @@ fun SharingInProgress(
             textAlign = TextAlign.Center,
         )
         Spacer(modifier = Modifier.height(8.dp))
+        val progress = ShareProgressAnnounce.snapshot(currentIndex, totalApps, currentLabel)
+        val progressSpoken = if (progress == null) {
+            ""
+        } else if (progress.target.isEmpty()) {
+            stringResource(R.string.sharing_step_format, progress.step, progress.total)
+        } else {
+            stringResource(
+                R.string.sharing_progress_announce,
+                progress.step,
+                progress.total,
+                progress.target,
+            )
+        }
         Text(
             stringResource(R.string.sharing_step_format, currentIndex + 1, totalApps),
             style = MaterialTheme.typography.titleMedium,
+            modifier = Modifier.semantics {
+                liveRegion = LiveRegionMode.Polite
+                if (progressSpoken.isNotEmpty()) contentDescription = progressSpoken
+            },
         )
         if (currentLabel.isNotEmpty()) {
             Spacer(modifier = Modifier.height(4.dp))
@@ -108,6 +136,18 @@ fun SharingInProgress(
                 textAlign = TextAlign.Center,
             )
         }
+        if (ShareDefer.shouldOffer(lastShareFailed, totalApps - currentIndex - 1)) {
+            Spacer(modifier = Modifier.height(8.dp))
+            OutlinedButton(
+                onClick = onTryLater,
+                enabled = !paused,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .defaultMinSize(minHeight = 48.dp),
+            ) {
+                Text(stringResource(R.string.sharing_try_later), textAlign = TextAlign.Center)
+            }
+        }
         Spacer(modifier = Modifier.height(16.dp))
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -135,13 +175,26 @@ fun SharingInProgress(
             }
         }
         Spacer(modifier = Modifier.height(12.dp))
+        OutlinedButton(
+            onClick = onTogglePause,
+            modifier = Modifier
+                .fillMaxWidth()
+                .defaultMinSize(minHeight = 48.dp),
+        ) {
+            Text(
+                stringResource(if (paused) R.string.sharing_resume else R.string.sharing_pause),
+                textAlign = TextAlign.Center,
+            )
+        }
+        Spacer(modifier = Modifier.height(8.dp))
         Button(
             onClick = {
-                if (currentIndex + 1 >= totalApps) {
+                if (currentIndex + 1 >= totalApps && ShareHaptics.shouldPerform(hapticsEnabled)) {
                     haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                 }
                 onNextStep()
             },
+            enabled = !paused,
             modifier = Modifier
                 .fillMaxWidth()
                 .defaultMinSize(minHeight = 48.dp),
@@ -158,6 +211,7 @@ fun SharingInProgress(
             Spacer(modifier = Modifier.height(8.dp))
             OutlinedButton(
                 onClick = onSkipThisApp,
+                enabled = !paused,
                 modifier = Modifier
                     .fillMaxWidth()
                     .defaultMinSize(minHeight = 48.dp),

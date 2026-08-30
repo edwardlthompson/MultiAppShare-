@@ -18,6 +18,9 @@ PARALLEL_HEADER = re.compile(r"^#{3,4}\s+.*Parallel", re.I)
 SEQUENTIAL_HEADER = re.compile(r"^#{3,4}\s+.*Sequential", re.I)
 HUMAN_GROUP_HEADER = re.compile(r"^#{3,4}\s+.*Human.*after automation", re.I)
 TABLE_ROW = re.compile(r"^\|([^|]+)\|([^|]+)\|([^|]+)\|")
+TABLE_OPEN = re.compile(
+    r"^\|\s*(?:🔲|⬜|\[ \])\s*\|\s*(?P<id>[^|]+)\|\s*`\[(?P<owner>AGENT|AUTO|HUMAN|ADB)\]`\s*\|\s*(?P<task>.+?)\s*\|$"
+)
 PARALLEL_EXCEPTION = re.compile(r"<!--\s*parallel_exception:\s*(.+?)\s*-->", re.I)
 
 
@@ -101,6 +104,17 @@ def parse_open_numbered(lines: list[str], sprint: str, phase: str) -> list[PlanR
                 PlanRow(
                     owner=match.group("owner"),
                     task=match.group("task").strip(),
+                    sprint=sprint,
+                    phase=phase,
+                )
+            )
+            continue
+        table = TABLE_OPEN.match(line)
+        if table:
+            rows.append(
+                PlanRow(
+                    owner=table.group("owner"),
+                    task=table.group("task").strip(),
                     sprint=sprint,
                     phase=phase,
                 )

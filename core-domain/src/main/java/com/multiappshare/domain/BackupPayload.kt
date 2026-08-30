@@ -11,6 +11,7 @@ data class BackupSettings(
     val darkTheme: Boolean? = null,
     val appLanguage: String? = null,
     val sharingDelay: Int? = null,
+    val crashCaptureEnabled: Boolean? = null,
 )
 
 @Serializable

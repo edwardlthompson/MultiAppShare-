@@ -99,7 +99,21 @@
     <string name="donate_not_now">Pas maintenant</string>
     <string name="update_available_title">Mise à jour disponible</string>
     <string name="update_available_body">Multi App Share %1$s est sur GitHub. Installez-la quand vous voulez.</string>
+    <string name="update_available_body_fdroid">Multi App Share %1$s est sur F-Droid. Ouvrez la fiche quand vous voulez.</string>
     <string name="update_install">Installer</string>
+    <string name="update_open_fdroid">Ouvrir F-Droid</string>
+    <string name="preview_title">Vérifier avant de partager</string>
+    <string name="preview_mime">Type : %1$s</string>
+    <string name="preview_uris">Pièces jointes : %1$d</string>
+    <string name="preview_text">Texte : %1$s</string>
+    <string name="preview_continue">Continuer</string>
+    <string name="preview_reorder_title">Ordre des pièces jointes</string>
+    <string name="preview_move_up">Monter</string>
+    <string name="preview_move_down">Descendre</string>
+    <string name="sharing_pause">Pause</string>
+    <string name="sharing_resume">Reprendre</string>
+    <string name="sharing_try_later">Essayer plus tard</string>
+    <string name="sharing_progress_announce">Étape %1$d sur %2$d, %3$s</string>
     <string name="update_later">Plus tard</string>
     <string name="button_ok">OK</string>
     <string name="version_line">Version : %1$s</string>
@@ -173,4 +187,15 @@
     <string name="label_confirm_passphrase">Confirmer la phrase secrète</string>
     <string name="backup_choose_location">Choisir l’emplacement</string>
     <string name="backup_import_confirm">Importer</string>
+    <string name="about_changelog">Journal des versions</string>
+    <string name="feedback_title">Retour</string>
+    <string name="feedback_body_hint">Décrivez ce qui s’est passé. Les secrets sont retirés avant l’ouverture de GitHub.</string>
+    <string name="feedback_title_label">Titre</string>
+    <string name="feedback_message_label">Message</string>
+    <string name="feedback_github">Ouvrir une issue GitHub</string>
+    <string name="crash_review_title">Détails de plantage enregistrés</string>
+    <string name="crash_review_body">Un rapport sanitizé est en attente. Envoyez-le en retour ou ignorez-le. Rien n’est envoyé automatiquement.</string>
+    <string name="settings_crash_capture">Enregistrer les plantages pour que je les relise</string>
+    <string name="display_high_refresh">Préférer un taux de rafraîchissement élevé</string>
+    <string name="settings_share_haptics">Vibration à la fin du partage</string>
 </resources>

@@ -28,12 +28,17 @@ import kotlinx.coroutines.delay
 @Composable
 fun ShareSuccessAnimation(
     modifier: Modifier = Modifier,
-    onAnimationEnd: () -> Unit = {}
+    skipBurst: Boolean = false,
+    onAnimationEnd: () -> Unit = {},
 ) {
     val scale = remember { Animatable(0f) }
     val checkmarkProgress = remember { Animatable(0f) }
 
-    LaunchedEffect(Unit) {
+    LaunchedEffect(skipBurst) {
+        if (skipBurst) {
+            onAnimationEnd()
+            return@LaunchedEffect
+        }
         scale.animateTo(
             targetValue = 1f,
             animationSpec = tween(durationMillis = 400, easing = FastOutSlowInEasing)
@@ -45,6 +50,8 @@ fun ShareSuccessAnimation(
         delay(300) // Hold animation frame
         onAnimationEnd()
     }
+
+    if (skipBurst) return
 
     Box(modifier = modifier, contentAlignment = Alignment.Center) {
         Canvas(modifier = Modifier.size(100.dp)) {

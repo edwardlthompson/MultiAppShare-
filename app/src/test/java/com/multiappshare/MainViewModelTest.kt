@@ -70,6 +70,8 @@ class MainViewModelTest {
         coEvery { historyRepo.loadHistory() } returns emptyList()
         every { settingsRepo.isOnboardingCompleted } returns flowOf(true)
         every { settingsRepo.isDarkThemeEnabled } returns flowOf(null)
+        every { settingsRepo.isCrashCaptureEnabled } returns flowOf(false)
+        every { settingsRepo.isHighRefreshEnabled } returns flowOf(true)
         every { settingsRepo.sharingDelay } returns flowOf(500)
 
         val vm = MainViewModel(groupsRepo, historyRepo, pm, settingsRepo, shareStore, context)

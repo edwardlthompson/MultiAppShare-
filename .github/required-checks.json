@@ -1,0 +1,6 @@
+{
+  "required_status_checks": [
+    "Android CI",
+    "CodeQL"
+  ]
+}

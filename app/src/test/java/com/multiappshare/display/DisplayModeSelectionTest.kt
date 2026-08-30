@@ -21,6 +21,14 @@ class DisplayModeSelectionTest {
     }
 
     @Test
+    fun highRefreshOffReturnsNull() {
+        val current = ModeCandidate(1, 1080, 2400, 60f)
+        val modes = listOf(ModeCandidate(2, 1080, 2400, 120f))
+        assertNull(selectRefreshMode(false, current, modes))
+        assertEquals(2, selectRefreshMode(true, current, modes)?.modeId)
+    }
+
+    @Test
     fun returnsNullWhenNoMatchingResolution() {
         val current = ModeCandidate(1, 1080, 2400, 60f)
         val modes = listOf(ModeCandidate(2, 1440, 3200, 90f))

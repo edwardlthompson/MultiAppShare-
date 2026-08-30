@@ -1,21 +1,11 @@
-# Post-release regression — Multi App Share
+# Post-release regression
 
-After a `v*` tag or release candidate:
+After merging a Release Please release PR or tagging vX.Y.Z:
 
-```bash
-./gradlew :app:verifyPaparazziDebug
-./gradlew lint test detekt koverXmlReport assembleDebug
-bash scripts/validate-bootstrap.sh --quick
-```
-
-With device/emulator (`[ADB]`):
-
-```bash
-./gradlew :app:connectedDebugAndroidTest
-```
-
-Manual checklist when UX changed: [`docs/MANUAL_SHARE_CHECKLIST.md`](docs/MANUAL_SHARE_CHECKLIST.md), [`docs/ACCESSIBILITY_CHECKLIST.md`](docs/ACCESSIBILITY_CHECKLIST.md).
-
-Optional CI poll: `bash scripts/check-github-ci.sh HEAD --wait 300`
+1. Run `python3 scripts/agent-run.py pre-release-gate` and confirm CI + Security Scan + CodeQL green.
+2. Verify GitHub Release includes SBOM assets (`python3 scripts/agent-run.py wait-release-sbom -- --wait 300`); review @THIRD_PARTY_LICENSES.md.
+3. Confirm GitHub Pages demo deployed (web stack) with no tracking scripts. **Hard fail:** `python3 scripts/agent-run.py check-pages-analytics` (or `bash scripts/check-pages-analytics.sh`) must exit 0.
+4. Run `python3 scripts/agent-run.py simulate-template-upgrade` or confirm CI upgrade-simulation job passed.
+5. Append regressions to @KNOWLEDGE_BASE.md and BUILD_PLAN [AUTO] items.
 
 Begin now.

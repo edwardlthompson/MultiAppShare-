@@ -6,7 +6,7 @@ disable-model-invocation: false
 
 # Sprint 0 sign-off
 
-See also: `.cursor/commands/gates.md`, `docs/BUILD_PLAN.md` Child Repo Playbook
+See also: `.cursor/commands/gates.md`, `BUILD_PLAN.md` Child Repo Playbook
 
 From repo root, all green on `main` (or active branch before merge):
 

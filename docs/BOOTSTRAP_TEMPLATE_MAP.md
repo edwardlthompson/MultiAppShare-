@@ -1,6 +1,6 @@
 # Bootstrap Template Map - Multi App Share
 
-Maps [agent-project-bootstrap](https://github.com/edwardlthompson/agent-project-bootstrap) v**0.21.0** to this **android** child repo.
+Maps [agent-project-bootstrap](https://github.com/edwardlthompson/agent-project-bootstrap) v**1.0.0** to this **android** child repo.
 
 **Production path locked:** root Gradle modules - do not relocate to `examples/android/`.
 
@@ -81,3 +81,13 @@ Maps [agent-project-bootstrap](https://github.com/edwardlthompson/agent-project-
 | `bootstrap.config.json` | Present (`stack: android`) |
 | `verify.sh` | Present (env + validate-bootstrap) |
 | `project.mdc` | **Preserved** alongside `main.mdc` |
+
+## Sync 1.0.0 (2026-08-30)
+
+| Template | MultiAppShare |
+|----------|---------------|
+| `/upgrade` + `docs/help/UPGRADE.md` | Child catch-up plan (Canon/Mixed/Sacred/Golden Path) |
+| New atomics | `/adr`, `/allideas`, `/best-of-n`, `/emulator`, `/update-deps` |
+| Security workflow | Trivy + Gitleaks + Semgrep FOSS + **Security Scan** rollup |
+| Child gates | `validate-bootstrap.sh` stays android-child; `feature-gate.sh` keeps root `gradlew` |
+| Not adopted | `ci.yml`, release-please, GitHub Pages, `examples/` overwrite |

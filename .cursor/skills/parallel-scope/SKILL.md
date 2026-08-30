@@ -17,4 +17,4 @@ Write manifest to `.cursor/parallel-scope-lock.json`. When `agent_count >= 2`, l
 
 Optional: `python3 scripts/agent-run.py setup-agent-worktrees` or native `/worktree` / `/best-of-n` for hard isolation.
 
-Forbidden paths: `docs/BUILD_PLAN.md`, composition roots — see `docs/PARALLEL_AGENT_SCOPES.md`.
+Forbidden paths: `BUILD_PLAN.md`, composition roots — see `docs/PARALLEL_AGENT_SCOPES.md`.

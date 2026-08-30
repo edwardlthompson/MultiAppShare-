@@ -19,9 +19,10 @@ done
 
 ERRORS=0
 
-# shellcheck source=lib/resolve-gh.sh
-source "$ROOT/scripts/lib/resolve-gh.sh"
-require_gh || exit 1
+if ! command -v gh >/dev/null 2>&1; then
+  echo "ERROR: gh CLI required"
+  exit 1
+fi
 
 REPO="$(gh repo view --json nameWithOwner -q .nameWithOwner 2>/dev/null || true)"
 if [ -z "$REPO" ]; then
@@ -47,7 +48,7 @@ fi
 
 if [ "$WAIT_CI" -gt 0 ]; then
   if bash scripts/check-github-ci.sh HEAD --wait "$WAIT_CI"; then
-    echo "OK   Required GitHub workflows green on HEAD"
+    echo "OK   CI, Security Scan, CodeQL green on HEAD"
   else
     echo "FAIL: required workflows not green"
     ERRORS=$((ERRORS + 1))
@@ -62,31 +63,20 @@ fi
 
 echo ""
 echo "=== OpenSSF Scorecard (latest run) ==="
-HAS_SCORECARD=false
-for wf in .github/workflows/scorecard.yml .github/workflows/openssf-scorecard.yml; do
-  if [ -f "$wf" ]; then
-    HAS_SCORECARD=true
-    break
-  fi
-done
-if [ "$HAS_SCORECARD" = false ]; then
-  echo "SKIP Scorecard — no workflow in repo (Android CI + Dependabot only)"
-else
-  SCORECARD_CONC="$(gh run list --repo "$REPO" --workflow "OpenSSF Scorecard" --limit 1 \
-    --json conclusion -q '.[0].conclusion' 2>/dev/null || echo "")"
-  if [ -z "$SCORECARD_CONC" ] || [ "$SCORECARD_CONC" = "null" ]; then
-    if [ "$STRICT" = true ]; then
-      echo "FAIL: no Scorecard workflow run found (dispatch scorecard.yml or wait for schedule)"
-      ERRORS=$((ERRORS + 1))
-    else
-      echo "WARN: no Scorecard workflow run found (dispatch scorecard.yml or wait for schedule)"
-    fi
-  elif [ "$SCORECARD_CONC" = "success" ]; then
-    echo "OK   Scorecard workflow: success"
-  else
-    echo "FAIL: Scorecard workflow conclusion=${SCORECARD_CONC}"
+SCORECARD_CONC="$(gh run list --repo "$REPO" --workflow "OpenSSF Scorecard" --limit 1 \
+  --json conclusion -q '.[0].conclusion' 2>/dev/null || echo "")"
+if [ -z "$SCORECARD_CONC" ] || [ "$SCORECARD_CONC" = "null" ]; then
+  if [ "$STRICT" = true ]; then
+    echo "FAIL: no Scorecard workflow run found (dispatch scorecard.yml or wait for schedule)"
     ERRORS=$((ERRORS + 1))
+  else
+    echo "WARN: no Scorecard workflow run found (dispatch scorecard.yml or wait for schedule)"
   fi
+elif [ "$SCORECARD_CONC" = "success" ]; then
+  echo "OK   Scorecard workflow: success"
+else
+  echo "FAIL: Scorecard workflow conclusion=${SCORECARD_CONC}"
+  ERRORS=$((ERRORS + 1))
 fi
 
 if [ "$ERRORS" -gt 0 ]; then

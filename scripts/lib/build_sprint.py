@@ -12,7 +12,7 @@ from build_sprint_model import (
     next_actionable_row,
     row_action,
 )
-from build_sprint_parse import parse_maintenance_rows, parse_sprint_blocks
+from build_sprint_parse import parse_maintainer_queue, parse_sprint_blocks
 from build_sprint_resolve import resolve_sprint
 from weekly_health import is_recurring_weekly_auto, weekly_health_succeeded_this_week
 
@@ -49,8 +49,15 @@ def _child_status(text: str, progress: dict, backlog_keys: set[str]) -> dict:
     return idle
 
 
+def build_plan_path(root: Path) -> Path:
+    child = root / "docs" / "BUILD_PLAN.md"
+    if child.is_file():
+        return child
+    return root / "BUILD_PLAN.md"
+
+
 def build_status(root: Path, *, lane: str = "auto") -> dict:
-    text = (root / "BUILD_PLAN.md").read_text(encoding="utf-8")
+    text = build_plan_path(root).read_text(encoding="utf-8")
     progress = load_progress(root)
     backlog_keys = load_backlog_keys(root)
     template = is_template_repo(root)
@@ -60,7 +67,7 @@ def build_status(root: Path, *, lane: str = "auto") -> dict:
         child_status = _child_status(text, progress, backlog_keys)
         if not child_status.get("all_sprints_agent_auto_complete") or lane == "child":
             return child_status
-    maint_auto, maint_human = parse_maintenance_rows(text)
+    maint_auto, maint_human = parse_maintainer_queue(text)
     if template and weekly_health_succeeded_this_week(root):
         maint_auto = [row for row in maint_auto if not is_recurring_weekly_auto(row)]
     maint_aa_next = next_actionable_row(maint_auto, backlog_keys)
@@ -74,7 +81,7 @@ def build_status(root: Path, *, lane: str = "auto") -> dict:
     act = row_action(maint_next.owner) if maint_next.owner in ("HUMAN", "ADB") else "execute"
     return {
         "lane": "maintainer",
-        "sprint": "Ongoing Maintenance",
+        "sprint": maint_next.sprint,
         "sprint_agent_auto_complete": False,
         "sprint_complete": False,
         "open_agent_auto": len([r for r in maint_auto if r.owner in ("AGENT", "AUTO")]),
@@ -84,8 +91,8 @@ def build_status(root: Path, *, lane: str = "auto") -> dict:
         "next_row": {
             "owner": maint_next.owner,
             "task": maint_next.task,
-            "sprint": "Ongoing Maintenance",
-            "phase": "maintenance",
+            "sprint": maint_next.sprint,
+            "phase": maint_next.phase,
             "action": act,
         },
         "action": act,

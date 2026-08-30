@@ -43,10 +43,11 @@ import com.multiappshare.model.AppGroup
 import com.multiappshare.ui.groups.GroupDeleteSnackbarHost
 import com.multiappshare.ui.groups.GroupDeleteUndoEffect
 import com.multiappshare.ui.main.MainScreenSettingsHost
+import com.multiappshare.ui.main.MainScreenSharingHost
 import com.multiappshare.ui.main.MainScreenSuccessBody
 import com.multiappshare.ui.main.MainScreenTopBar
 import com.multiappshare.ui.main.ShareSessionBackHandler
-import com.multiappshare.ui.sharing.SharingInProgress
+import com.multiappshare.ui.main.rememberSkipSuccessBurst
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -173,25 +174,16 @@ fun MainScreen(
                 }
                 Box(modifier = Modifier.fillMaxSize()) {
                     if (inShareMode && shareSession.sharingStarted && shareSession.appPackages != null) {
-                        SharingInProgress(
-                            mimeType = shareSession.mimeType,
-                            text = shareSession.text,
-                            uris = shareSession.uris,
-                            currentIndex = shareSession.currentIndex,
-                            totalApps = shareSession.appPackages.size,
-                            appComponents = shareSession.appPackages,
-                            lastShareFailed = shareSession.lastShareFailed,
+                        MainScreenSharingHost(
+                            shareSession = shareSession,
                             packageManager = packageManager,
-                            onReplayCurrentStep = onReplayShareStep,
-                            onPreviousStep = onPreviousShareStep,
-                            onSkipThisApp = onSkipThisApp,
+                            viewModel = viewModel,
+                            onNextStep = onNextStep,
+                            onReplayShareStep = onReplayShareStep,
+                            onPreviousShareStep = onPreviousShareStep,
                             onFinishEarly = onFinishEarly,
-                            onNextStep = {
-                                if (shareSession.currentIndex + 1 == shareSession.appPackages.size) {
-                                    showSuccessAnimation = true
-                                }
-                                onNextStep()
-                            },
+                            onSkipThisApp = onSkipThisApp,
+                            onMarkSuccess = { showSuccessAnimation = true },
                         )
                     } else {
                         when (val state = uiState) {
@@ -234,7 +226,10 @@ fun MainScreen(
 
                     if (showSuccessAnimation) {
                         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                            ShareSuccessAnimation(onAnimationEnd = { showSuccessAnimation = false })
+                            ShareSuccessAnimation(
+                                skipBurst = rememberSkipSuccessBurst(),
+                                onAnimationEnd = { showSuccessAnimation = false },
+                            )
                         }
                     }
                 }

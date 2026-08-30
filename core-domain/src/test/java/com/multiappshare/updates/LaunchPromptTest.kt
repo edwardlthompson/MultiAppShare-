@@ -88,6 +88,26 @@ class LaunchPromptTest {
     }
 
     @Test
+    fun fdroidChannelUsesListingNeverApk() = runTest {
+        val prompt = LaunchPromptDecider.decide(
+            currentVersion = "1.9.4",
+            lastSeenVersion = "1.9.4",
+            lastCheckAt = 0L,
+            dismissedVersion = null,
+            now = ProductUpdate.MS_DAY,
+            fetchLatest = { release("1.9.5") },
+            markSeen = {},
+            markChecked = {},
+            allowDirectApk = false,
+        )
+        val update = prompt as LaunchPrompt.Update
+        assertEquals("1.9.5", update.version)
+        assertEquals(InstallChannel.FDROID_LISTING, update.url)
+        assertTrue(update.listingOnly)
+        assertTrue(!update.url.endsWith(".apk"))
+    }
+
+    @Test
     fun dismissedVersionStaysSilent() = runTest {
         val prompt = LaunchPromptDecider.decide(
             currentVersion = "1.9.4",

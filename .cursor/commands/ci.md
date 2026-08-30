@@ -1,15 +1,11 @@
-# CI poll — Multi App Share
+# Post-push CI poll
 
-Poll GitHub Actions for the current commit (requires `gh` auth):
+After pushing to main, poll required GitHub workflows until green:
 
 ```bash
-bash scripts/check-github-ci.sh HEAD --wait 300
+python3 scripts/agent-run.py check-github-ci --wait 300
 ```
 
-Primary workflows: **Android CI** (`.github/workflows/android.yml`), **CodeQL**.
-
-For local CI log fetch: `pwsh scripts/get-ci-logs.ps1` (see `scripts/.env.local.example`).
-
-Report workflow URL and conclusion for each required check.
+Required: CI, Security Scan, CodeQL. Do not mark release or Sprint 0 complete while any fail.
 
 Begin now.

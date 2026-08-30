@@ -62,9 +62,17 @@ REQUIRED=(
   THIRD_PARTY_LICENSES.md
   .env.example
   docs/help/BATCH_COMMANDS.md
+  docs/help/UPGRADE.md
+  docs/help/ADR.md
+  docs/help/ALLIDEAS.md
+  docs/help/DEBUG.md
+  docs/help/batch-commands-print.html
   docs/BATCH_COMMANDS.md
   CODE_REVIEW.md.example
   RELEASE_NOTES.md.example
+  schemas/batch-commands-print.json
+  docs/features/_handoff.md
+  .cursor/rules/local-deps.mdc
   modules/android/MODULE.md
   gradlew
   app/build.gradle.kts
@@ -73,7 +81,7 @@ REQUIRED=(
 BATCH_COMMANDS=(
   audit cleanup debug gates triage dependabot push prerelease regress
   feature fix init prune ci docs upgrade setup plan restore compact scope
-  codex-review coach tour ideas
+  codex-review coach tour ideas allideas update-deps best-of-n emulator adr
   bootstrap verify build ship maintain
 )
 

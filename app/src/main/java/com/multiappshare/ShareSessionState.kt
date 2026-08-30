@@ -10,6 +10,7 @@ data class ShareSessionState(
     val currentIndex: Int = 0,
     val sharingStarted: Boolean = false,
     val lastShareFailed: Boolean = false,
+    val paused: Boolean = false,
 ) {
     val inShareMode: Boolean get() = !uris.isNullOrEmpty() || text != null
 }

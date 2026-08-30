@@ -4,7 +4,7 @@
 
 ## What is this?
 
-**Multi App Share** is a native Android FOSS app for sequential multi-app sharing. This repo uses the [agent-project-bootstrap](https://github.com/edwardlthompson/agent-project-bootstrap) v**0.21.0** agent framework (sync 2026-08-20).
+**Multi App Share** is a native Android FOSS app for sequential multi-app sharing. This repo uses the [agent-project-bootstrap](https://github.com/edwardlthompson/agent-project-bootstrap) v**1.0.0** agent framework (sync 2026-08-30).
 
 ## Which repo mode are you in?
 

@@ -10,7 +10,12 @@ class BackupCodecTest {
     @Test
     fun encodeV2_includesSettingsAndLastPayload() {
         val groups = listOf(AppGroup(name = "A", apps = emptyList(), id = "gid"))
-        val settings = BackupSettings(darkTheme = true, appLanguage = "fr", sharingDelay = 250)
+        val settings = BackupSettings(
+            darkTheme = true,
+            appLanguage = "fr",
+            sharingDelay = 250,
+            crashCaptureEnabled = true,
+        )
         val last = ShareSessionSnapshot(text = "hi", mimeType = "text/plain")
         val json = BackupCodec.encode(groups, settings, last)
         val parsed = BackupCodec.parse(json)
@@ -19,6 +24,7 @@ class BackupCodecTest {
         assertEquals(true, parsed.settings?.darkTheme)
         assertEquals("fr", parsed.settings?.appLanguage)
         assertEquals(250, parsed.settings?.sharingDelay)
+        assertEquals(true, parsed.settings?.crashCaptureEnabled)
         assertEquals("hi", parsed.lastPayload?.text)
     }
 

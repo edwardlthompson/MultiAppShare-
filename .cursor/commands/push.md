@@ -1,19 +1,43 @@
-# Release push — Multi App Share
+# Release: commit, push, and update docs
 
-**Explicit push approval granted** by invoking this command.
+Framework: AGENT/HUMAN/ADB/AUTO; semver via Release Please / `.template-version`.
+**User invoked `/push` — explicit approval for `git push origin main`.** When running `/compact` before push, set `"destructive_ops_approved": ["git push"]` in session state so `.cursor/hooks` permits the push.
 
-1. Confirm [`docs/PRE_RELEASE_AUDIT.md`](docs/PRE_RELEASE_AUDIT.md) complete.
-2. Bump `versionCode` / `versionName` in `app/build.gradle.kts`, F-Droid metadata, fastlane changelogs, `CHANGELOG.md`.
-3. Run `/prerelease` gates locally.
-4. Commit with Conventional Commits message (e.g. `chore(release): v1.x.x`).
-5. Push and create tag per [`FDROID_MAINTENANCE.md`](FDROID_MAINTENANCE.md).
+## Step 1 — Pre-release validation
+
+- **Child repo:** `validate-bootstrap.sh --quick`, `feature-gate.sh --stack <active>`, `check-license-compliance.sh` after locked installs
+- **Template maintainer:** also `run-maintainer-gates.sh` and `pre-release-gate.sh` per @docs/MAINTAINING_THE_TEMPLATE.md
+- Verify @README.md via `check-readme-health.sh`
+- Fold any `[Unreleased]` notes into the versioned CHANGELOG section (or leave them for Release Please). Do **not** `git push` with a dirty Unreleased.
+
+## Step 2 — Release notes
+
+Create/update RELEASE_NOTES.md from CHANGELOG, BUILD_PLAN rows, recent commits (use @RELEASE_NOTES.md.example).
+
+## Step 3 — Commit and push
+
+- Stage **explicit paths only** (never `git add .`)
+- Commit: `chore(release): prepare vX.Y.Z release` with key changes in body
+- Halt unless this exits 0 (Unreleased must be empty):
 
 ```bash
-bash scripts/pre-release-gate.sh
-git push origin main
-git push origin vX.Y.Z
+python3 scripts/agent-run.py check-changelog-unreleased -- --require-empty
+
 ```
 
-Never commit signing secrets (`keystore.properties`, keystores).
+- Only then: `git push origin main`
+- `python3 scripts/agent-run.py check-github-ci --wait 600`
+- Zero open Critical/High Dependabot alerts
 
-Begin now.
+## Step 4 — Release
+
+- Merge Release Please PR: `python3 scripts/agent-run.py merge-release-please-pr --wait 300` (auto-merge queue, then `--admin` fallback; requires admin `gh auth`)
+- Update @AGENT_MEMORY.md and @DECISION_LOG.md at milestone boundary
+
+## Step 5 — Cleanup
+
+Read @.cursor/commands/cleanup.md — execute fully when sprint or release rows are complete.
+
+Do not force-push, amend published tags, or disable hooks. Halt and escalate [HUMAN] on failure.
+
+Start executing now.

@@ -12,6 +12,7 @@ fun ShareSessionState.toSnapshot(nowMillis: Long): ShareSessionSnapshot =
         appPackages = appPackages.orEmpty(),
         currentIndex = currentIndex,
         sharingStarted = sharingStarted,
+        paused = paused,
         savedAtMillis = nowMillis,
     )
 
@@ -26,5 +27,6 @@ fun ShareSessionSnapshot.toState(): ShareSessionState {
         appPackages = appPackages.takeIf { it.isNotEmpty() },
         currentIndex = currentIndex.coerceAtLeast(0),
         sharingStarted = sharingStarted,
+        paused = paused,
     )
 }

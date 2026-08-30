@@ -17,9 +17,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
+import com.multiappshare.about.AboutLinks
 import com.multiappshare.core.ui.highRefreshScroll
 import com.multiappshare.model.HistoryItem
-import com.multiappshare.updates.ProductUpdate
 
 data class HistoryDialogLabels(
     val title: String,
@@ -72,11 +72,17 @@ data class AboutDialogLabels(
     val telegramLabel: String,
     val supportDeveloper: String,
     val venmoLink: String,
+    val changelog: String,
+    val feedback: String,
     val ok: String,
 )
 
 @Composable
-fun DashboardAboutDialog(labels: AboutDialogLabels, onDismiss: () -> Unit) {
+fun DashboardAboutDialog(
+    labels: AboutDialogLabels,
+    onDismiss: () -> Unit,
+    onFeedback: () -> Unit = {},
+) {
     val context = LocalContext.current
 
     AlertDialog(
@@ -99,7 +105,7 @@ fun DashboardAboutDialog(labels: AboutDialogLabels, onDismiss: () -> Unit) {
                     text = labels.telegramLabel,
                     color = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.clickable {
-                        context.startActivity(Intent(Intent.ACTION_VIEW, "https://t.me/EdwardLeeThompson".toUri()))
+                        context.startActivity(Intent(Intent.ACTION_VIEW, AboutLinks.TELEGRAM.toUri()))
                     },
                 )
                 Spacer(modifier = Modifier.height(16.dp))
@@ -109,7 +115,17 @@ fun DashboardAboutDialog(labels: AboutDialogLabels, onDismiss: () -> Unit) {
                     color = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.clickable {
                         context.startActivity(
-                            Intent(Intent.ACTION_VIEW, ProductUpdate.VENMO_URL.toUri()),
+                            Intent(Intent.ACTION_VIEW, AboutLinks.VENMO.toUri()),
+                        )
+                    },
+                )
+                Spacer(modifier = Modifier.height(12.dp))
+                Text(
+                    text = labels.changelog,
+                    color = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.clickable {
+                        context.startActivity(
+                            Intent(Intent.ACTION_VIEW, AboutLinks.CHANGELOG.toUri()),
                         )
                     },
                 )
@@ -117,6 +133,12 @@ fun DashboardAboutDialog(labels: AboutDialogLabels, onDismiss: () -> Unit) {
         },
         confirmButton = {
             Button(onClick = onDismiss) { Text(labels.ok) }
+        },
+        dismissButton = {
+            Button(onClick = {
+                onFeedback()
+                onDismiss()
+            }) { Text(labels.feedback) }
         },
     )
 }

@@ -5,11 +5,43 @@ This project uses Android **`versionCode`**-keyed changelogs for F-Droid/Store m
 
 ## [Unreleased]
 
+## 1.10.0 (versionCode 182)
+
 ### Added
 
-### Changed
-
-### Fixed
+- Try later step deferral on failed share step.
+- Share progress TalkBack live region announcements.
+- Reduced motion burst animation override.
+- Haptic feedback toggle on share step finish.
+- Per-group delay override and MIME mismatch explanation sheet.
+- Notification tap resume via share-step deeplink.
+- Quick Settings tile for clipboard share.
+- Prune uninstalled packages and live package change receiver.
+- Group editor search, duplicate app warning, emoji labels, and group notes.
+- Pinned favorite groups sort above standard usage sort.
+- Single group template export and merge/replace import strategy.
+- Autogroup dry-run preview calculation and hidden apps filter.
+- Order apps by last successful share and collapse unused overlay groups.
+- 30/90-day history retention pruner and clear history confirmation.
+- Filter history rows by group and sanitized local JSON history export.
+- History original URI open with persisted grant verification.
+- Backup payload opt-in, passphrase strength meter, and backup crash pref opt-in.
+- Structured Settings catalog and in-app search.
+- In-app third-party FOSS licenses, privacy policy, and offline changelog.
+- Overflow menu feedback link and battery optimization explainer.
+- Android 15 foreground service timeout survival.
+- System notification channel deep link builder and dynamic launcher shortcut rankings.
+- Home screen widget state model, foldable two-pane split, and desktop windowing bounds.
+- German and Italian locale support and RTL direction audit helper.
+- Full-row merged TalkBack semantics for ThemeDialog toggles.
+- About installation source detection and Paparazzi UI golden tests.
+- About changelog link and in-app Feedback that opens a sanitized GitHub issue form (`ACTION_VIEW` only).
+- Opt-in “save crash details for review” with a local review dialog; nothing is uploaded automatically.
+- Theme/settings toggles for crash-save (default off) and high refresh rate (safe fallback).
+- F-Droid installs get an F-Droid listing prompt, never a GitHub APK Install button.
+- Share payload preview (MIME, attachment count, text snippet) before the first handoff.
+- Reorder multiple share attachments before the first handoff.
+- Pause and resume a sequential share without skipping remaining apps.
 
 ## 1.9.5 (versionCode 181)
 

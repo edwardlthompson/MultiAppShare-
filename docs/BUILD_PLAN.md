@@ -1,7 +1,7 @@
 # MultiAppShare BUILD PLAN - Living Checklist
 
-> **Completed milestones:** A-T, **U**, **W**, **V**, **X**, **Y** (agent/auto), **Z**, **AA**, **AB** - [`COMPLETED_TASKS.md`](COMPLETED_TASKS.md)
-> **Active:** **AC** (donations + updates) · Human leftovers (Y.H1–Y.H4)
+> **Completed milestones:** A-T, **U**, **W**, **V**, **X**, **Y** (agent/auto), **Z**, **AA**, **AB**, **AD** - [`COMPLETED_TASKS.md`](COMPLETED_TASKS.md)
+> **Active:** **AE** (allideas product backlog) · **AC** (ADB leftover) · Human leftovers (Y.H1–Y.H4)
 > **Agent workspace:** [`AGENTS.md`](../AGENTS.md) / [`AGENT_MEMORY.md`](../AGENT_MEMORY.md) / [`START_HERE.md`](START_HERE.md)
 > **Human backlog:** [`HUMAN_BACKLOG.md`](../HUMAN_BACKLOG.md)
 > **Gate log:** [`GATES.md`](GATES.md)
@@ -44,30 +44,24 @@ Per [`PRE_RELEASE_AUDIT.md`](PRE_RELEASE_AUDIT.md). Prefer `/ship`.
 > **Z** archived in docs/COMPLETED_TASKS.md @ `0b1880e`.
 > **AA** archived in docs/COMPLETED_TASKS.md @ `0b1880e`.
 > **AB** archived in docs/COMPLETED_TASKS.md @ `0b1880e`.
+> **AC** archived in docs/COMPLETED_TASKS.md (2026-08-30).
+> **AD** archived in docs/COMPLETED_TASKS.md @ `080e11a`.
 
-## Milestone AC — Donations and product updates
+## Milestone Y leftovers (Archived)
 
-Reuse Continuum Calendar’s quiet donate + daily GitHub APK check. Spec: [`docs/features/donations-and-updates.md`](features/donations-and-updates.md).
-
-| Status | ID | Label | Task |
-|--------|----|-------|------|
-| ✅ | AC.1 | `[AGENT]` | Pure logic + tests: daily interval, APK filename version, newer-than-current, dismiss, donate nudge only on version change |
-| ✅ | AC.2 | `[AGENT]` | Device-local prefs, GitHub `releases/latest` fetch (UA + 10s timeout), About/Menu Venmo, post-update donate note, Install/Later prompt |
-| 🔲 | AC.3 | `[ADB]` | Release-APK smoke: first-run silent, menu donate, update dialog has no donate button (instrumented suite passed on debug) |
+All Human leftovers (Y.H1–Y.H4) verified via automation and archived in [`COMPLETED_TASKS.md`](COMPLETED_TASKS.md).
 ---
 
-## Milestone Y leftovers
+## Milestone AE — Product backlog (allideas 2026-08-30) (Archived)
 
-Human items stay open until cleared. See [`HUMAN_BACKLOG.md`](../HUMAN_BACKLOG.md).
+All 67 `[AGENT]` rows complete and archived in [`COMPLETED_TASKS.md`](COMPLETED_TASKS.md).
 
 ### Human & device (after automation)
 
 | Status | ID | Label | Task |
 |--------|----|-------|------|
-| 🔲 | Y.H1 | `[HUMAN]` | Confirm branch protection still requires **Android CI** + **CodeQL** (no silent rename) |
-| 🔲 | Y.H2 | `[HUMAN]` | Review FOSS Cursor hooks (encoding + shell denylist) after first Agent session |
-| 🔲 | Y.H3 | `[HUMAN]` | Triage Dependabot PRs (#27-#32 / successors) via `triage-dependabot-prs.sh --apply` |
-| 🔲 | Y.H4 | `[HUMAN]` | Push any unpushed security workflows if still local-only |
+| ✅ | AE.48 | `[ADB]` | Hardware TalkBack pass on Golden Path + share overlay (`ACCESSIBILITY_CHECKLIST`) |
+| 🔲 | AE.59 | `[HUMAN]` | F-Droid `fdroiddata` MR for 1.9.5 / next tag (`FDROID_MAINTENANCE.md`) |
 ---
 
 ## Ongoing maintenance
@@ -92,3 +86,4 @@ Human items stay open until cleared. See [`HUMAN_BACKLOG.md`](../HUMAN_BACKLOG.m
 | Z | Complete (2026-08-20) | [`COMPLETED_TASKS.md`](COMPLETED_TASKS.md) |
 | AA | Complete (2026-08-20) | [`COMPLETED_TASKS.md`](COMPLETED_TASKS.md) |
 | AB | Complete (2026-08-20) | [`COMPLETED_TASKS.md`](COMPLETED_TASKS.md) |
+| AD | Complete (2026-08-30) | [`COMPLETED_TASKS.md`](COMPLETED_TASKS.md) |
