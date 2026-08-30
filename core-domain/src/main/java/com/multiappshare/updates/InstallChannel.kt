@@ -19,8 +19,7 @@ object InstallChannel {
     fun allowsDirectApk(installerPackage: String?): Boolean {
         val pkg = installerPackage?.trim().orEmpty()
         if (pkg.isEmpty()) return true
-        if (pkg in fdroidInstallers) return false
-        return !pkg.contains("fdroid", ignoreCase = true)
+        return pkg !in fdroidInstallers && !pkg.contains("fdroid", ignoreCase = true)
     }
 
     fun updateUrl(allowDirectApk: Boolean, apkUrl: String): String =
