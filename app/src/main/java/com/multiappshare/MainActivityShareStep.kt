@@ -10,7 +10,6 @@ import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.multiappshare.domain.GroupDelayOverride
-import com.multiappshare.domain.SharingDelay
 import com.multiappshare.model.AppGroup
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
