@@ -124,7 +124,7 @@ Child slices from `/allideas`. **One `/feature` task per row.** Sequential only 
 | ✅ | AE.44 | `[AGENT]` | `/feature` **dynamic-shortcuts** — Rank launcher shortcuts by group usage |
 | ✅ | AE.45 | `[AGENT]` | `/feature` **home-widget** — Widget for last group or clipboard share |
 | ✅ | AE.46 | `[AGENT]` | `/feature` **foldable-two-pane** — Hinge / tabletop polish for two-pane |
-| 🔲 | AE.47 | `[AGENT]` | `/feature` **desktop-windowing** — Freeform / window-size class overlay layout |
+| ✅ | AE.47 | `[AGENT]` | `/feature` **desktop-windowing** — Freeform / window-size class overlay layout |
 | 🔲 | AE.49 | `[AGENT]` | `/feature` **large-font-paparazzi** — 200% font overflow goldens for new dialogs |
 | 🔲 | AE.50 | `[AGENT]` | `/feature` **locale-de-it** — German and Italian string parity |
 | 🔲 | AE.51 | `[AGENT]` | `/feature` **rtl-pass** — RTL layout audit for overlay and arrows |
