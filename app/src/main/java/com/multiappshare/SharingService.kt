@@ -135,5 +135,12 @@ class SharingService : Service() {
         notificationManager.createNotificationChannel(SharingNotification.channel(this))
     }
 
+    override fun onTimeout(startId: Int) {
+        super.onTimeout(startId)
+        Timber.w("SharingService timed out on Android 15, stopping foreground service")
+        stopServiceForeground()
+        stopSelf()
+    }
+
     override fun onBind(intent: Intent?): IBinder? = null
 }
