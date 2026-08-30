@@ -112,6 +112,7 @@
     <string name="preview_move_down">Bajar</string>
     <string name="sharing_pause">Pausar</string>
     <string name="sharing_resume">Reanudar</string>
+    <string name="sharing_try_later">Intentar más tarde</string>
     <string name="update_later">Más tarde</string>
     <string name="button_ok">Aceptar</string>
     <string name="version_line">Versión: %1$s</string>

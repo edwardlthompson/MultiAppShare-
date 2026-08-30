@@ -28,6 +28,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.multiappshare.R
 import com.multiappshare.resolveShareTargetLabel
+import com.multiappshare.sharedefer.ShareDefer
 
 @Composable
 fun SharingInProgress(
@@ -46,6 +47,7 @@ fun SharingInProgress(
     onSkipThisApp: () -> Unit = {},
     onFinishEarly: () -> Unit = {},
     onTogglePause: () -> Unit = {},
+    onTryLater: () -> Unit = {},
 ) {
     val haptic = LocalHapticFeedback.current
     val currentKey = appComponents.getOrNull(currentIndex).orEmpty()
@@ -109,6 +111,18 @@ fun SharingInProgress(
                 color = MaterialTheme.colorScheme.error,
                 textAlign = TextAlign.Center,
             )
+        }
+        if (ShareDefer.shouldOffer(lastShareFailed, totalApps - currentIndex - 1)) {
+            Spacer(modifier = Modifier.height(8.dp))
+            OutlinedButton(
+                onClick = onTryLater,
+                enabled = !paused,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .defaultMinSize(minHeight = 48.dp),
+            ) {
+                Text(stringResource(R.string.sharing_try_later), textAlign = TextAlign.Center)
+            }
         }
         Spacer(modifier = Modifier.height(16.dp))
         Row(
