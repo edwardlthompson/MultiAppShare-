@@ -1,7 +1,7 @@
 package com.multiappshare.domain
 
 object AppLanguageTags {
-    val supported = setOf("en", "fr", "es")
+    val supported = setOf("en", "fr", "es", "de", "it")
 
     fun sanitize(tag: String?): String? {
         val primary = tag?.trim()?.lowercase()?.substringBefore('-') ?: return null
