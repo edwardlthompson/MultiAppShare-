@@ -37,19 +37,18 @@ object AutoGroupDryRun {
         return labelByKeywords ?: labelFromSystemCategory(app.category)
     }
 
-    private fun labelFromKeywords(nameLower: String, pkgLower: String): String? {
-        val isMessaging = nameLower.contains("message") || nameLower.contains("chat") ||
+    private fun labelFromKeywords(nameLower: String, pkgLower: String): String? = when {
+        nameLower.contains("message") || nameLower.contains("chat") ||
             nameLower.contains("messenger") || pkgLower.contains("messenger") ||
-            pkgLower.contains("telegram") || pkgLower.contains("whatsapp")
-        if (isMessaging) return "Messaging"
+            pkgLower.contains("telegram") || pkgLower.contains("whatsapp") -> "Messaging"
 
-        val isEmail = nameLower.contains("mail") || pkgLower.contains("email") ||
-            pkgLower.contains("gmail") || pkgLower.contains("outlook")
-        if (isEmail) return "Email"
+        nameLower.contains("mail") || pkgLower.contains("email") ||
+            pkgLower.contains("gmail") || pkgLower.contains("outlook") -> "Email"
 
-        val isContacts = nameLower.contains("contact") || pkgLower.contains("contact") ||
-            nameLower.contains("people")
-        return if (isContacts) "Contacts" else null
+        nameLower.contains("contact") || pkgLower.contains("contact") ||
+            nameLower.contains("people") -> "Contacts"
+
+        else -> null
     }
 
     private fun labelFromSystemCategory(category: Int): String? = when (category) {
