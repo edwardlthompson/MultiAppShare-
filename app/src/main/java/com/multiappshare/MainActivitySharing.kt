@@ -33,6 +33,11 @@ internal class MainActivitySharing(
             intent.action == Intent.ACTION_VIEW && intent.data?.scheme == DeeplinkContract.SCHEME -> {
                 applyDeepLink(intent.data!!)
             }
+            intent.action == com.multiappshare.qs.ShareClipboardTileService.ACTION_QS_SHARE_CLIPBOARD -> {
+                clearSessionShareState()
+                viewModel.shareFromClipboard(activity)
+                consumedShare = true
+            }
             !intent.getStringExtra("GROUP_NAME").isNullOrBlank() -> {
                 viewModel.expandGroupByNameIfPresent(intent.getStringExtra("GROUP_NAME")!!)
                 clearSessionShareState()
