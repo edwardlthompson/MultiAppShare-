@@ -33,31 +33,34 @@ object AutoGroupDryRun {
     }
 
     private fun determineCategoryLabel(app: AppInfo): String? {
-        val nameLower = app.appName.lowercase()
-        val pkgLower = app.packageName.lowercase()
+        val labelByKeywords = labelFromKeywords(app.appName.lowercase(), app.packageName.lowercase())
+        return labelByKeywords ?: labelFromSystemCategory(app.category)
+    }
 
-        return when {
-            nameLower.contains("message") || nameLower.contains("chat") ||
-                nameLower.contains("messenger") || pkgLower.contains("messenger") ||
-                pkgLower.contains("telegram") || pkgLower.contains("whatsapp") -> "Messaging"
+    private fun labelFromKeywords(nameLower: String, pkgLower: String): String? {
+        val isMessaging = nameLower.contains("message") || nameLower.contains("chat") ||
+            nameLower.contains("messenger") || pkgLower.contains("messenger") ||
+            pkgLower.contains("telegram") || pkgLower.contains("whatsapp")
+        if (isMessaging) return "Messaging"
 
-            nameLower.contains("mail") || pkgLower.contains("email") ||
-                pkgLower.contains("gmail") || pkgLower.contains("outlook") -> "Email"
+        val isEmail = nameLower.contains("mail") || pkgLower.contains("email") ||
+            pkgLower.contains("gmail") || pkgLower.contains("outlook")
+        if (isEmail) return "Email"
 
-            nameLower.contains("contact") || pkgLower.contains("contact") ||
-                nameLower.contains("people") -> "Contacts"
+        val isContacts = nameLower.contains("contact") || pkgLower.contains("contact") ||
+            nameLower.contains("people")
+        return if (isContacts) "Contacts" else null
+    }
 
-            else -> when (app.category) {
-                android.content.pm.ApplicationInfo.CATEGORY_SOCIAL -> "Social Media"
-                android.content.pm.ApplicationInfo.CATEGORY_GAME -> "Games"
-                android.content.pm.ApplicationInfo.CATEGORY_VIDEO -> "Video"
-                android.content.pm.ApplicationInfo.CATEGORY_AUDIO -> "Audio"
-                android.content.pm.ApplicationInfo.CATEGORY_IMAGE -> "Photography"
-                android.content.pm.ApplicationInfo.CATEGORY_MAPS -> "Maps"
-                android.content.pm.ApplicationInfo.CATEGORY_NEWS -> "News"
-                android.content.pm.ApplicationInfo.CATEGORY_PRODUCTIVITY -> "Productivity"
-                else -> null
-            }
-        }
+    private fun labelFromSystemCategory(category: Int): String? = when (category) {
+        android.content.pm.ApplicationInfo.CATEGORY_SOCIAL -> "Social Media"
+        android.content.pm.ApplicationInfo.CATEGORY_GAME -> "Games"
+        android.content.pm.ApplicationInfo.CATEGORY_VIDEO -> "Video"
+        android.content.pm.ApplicationInfo.CATEGORY_AUDIO -> "Audio"
+        android.content.pm.ApplicationInfo.CATEGORY_IMAGE -> "Photography"
+        android.content.pm.ApplicationInfo.CATEGORY_MAPS -> "Maps"
+        android.content.pm.ApplicationInfo.CATEGORY_NEWS -> "News"
+        android.content.pm.ApplicationInfo.CATEGORY_PRODUCTIVITY -> "Productivity"
+        else -> null
     }
 }
