@@ -114,7 +114,7 @@ Child slices from `/allideas`. **One `/feature` task per row.** Sequential only 
 | ✅ | AE.34 | `[AGENT]` | `/feature` **privacy-policy-screen** — Scrollable local privacy screen |
 | ✅ | AE.35 | `[AGENT]` | `/feature` **backup-crash-pref-opt-in** — Optional backup of crash-save preference |
 | ✅ | AE.36 | `[AGENT]` | `/feature` **settings-screen** — Dedicated Settings screen (unclutter overflow) |
-| 🔲 | AE.37 | `[AGENT]` | `/feature` **overflow-feedback** — Feedback entry on the overflow menu |
+| ✅ | AE.37 | `[AGENT]` | `/feature` **overflow-feedback** — Feedback entry on the overflow menu |
 | 🔲 | AE.38 | `[AGENT]` | `/feature` **in-app-changelog** — Cached changelog readable offline |
 | 🔲 | AE.39 | `[AGENT]` | `/feature` **settings-search** — Filter rows on the Settings screen |
 | 🔲 | AE.40 | `[AGENT]` | `/feature` **monochrome-icon** — Android 13 themed / monochrome launcher icon |
