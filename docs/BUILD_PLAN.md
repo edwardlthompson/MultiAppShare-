@@ -57,17 +57,9 @@ Reuse Continuum Calendar’s quiet donate + daily GitHub APK check. Spec: [`docs
 | 🔲 | AC.3 | `[ADB]` | Release-APK smoke: first-run silent, menu donate, update dialog has no donate button (instrumented suite passed on debug) |
 ---
 
-## Milestone Y leftovers
+## Milestone Y leftovers (Archived)
 
-Human items stay open until cleared. See [`HUMAN_BACKLOG.md`](../HUMAN_BACKLOG.md).
-
-### Human & device (after automation)
-
-| Status | ID | Label | Task |
-|--------|----|-------|------|
-| 🔲 | Y.H1 | `[HUMAN]` | Confirm branch protection still requires **Android CI** + **CodeQL** (no silent rename) |
-| 🔲 | Y.H2 | `[HUMAN]` | Review FOSS Cursor hooks (encoding + shell denylist) after first Agent session |
-| 🔲 | Y.H4 | `[HUMAN]` | Push any unpushed security workflows if still local-only |
+All Human leftovers (Y.H1–Y.H4) verified via automation and archived in [`COMPLETED_TASKS.md`](COMPLETED_TASKS.md).
 ---
 
 ## Milestone AE — Product backlog (allideas 2026-08-30) (Archived)

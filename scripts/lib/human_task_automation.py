@@ -20,10 +20,12 @@ from human_task_leftovers import (
     automate_cii_badge,
     automate_codeowners_about,
     automate_crash_proxy_off,
+    automate_cursor_hooks_review,
     automate_dependabot_weekly,
     automate_mcp_copy,
     automate_ollama,
     automate_scorecard_badge,
+    automate_security_workflows_pushed,
 )
 from human_task_rows import (
     automate_approve_adr,
@@ -54,6 +56,8 @@ HUMAN_RULES: list[tuple[re.Pattern[str], str, object]] = [
     (re.compile(r"mcp\.foss\.example|mcp\.json", re.I), "human", automate_mcp_copy),
     (re.compile(r"Dependabot interval|disable automerge", re.I), "human", automate_dependabot_weekly),
     (re.compile(r"CODEOWNERS|Watch repo Issues", re.I), "human", automate_codeowners_about),
+    (re.compile(r"Review FOSS Cursor hooks|Cursor hooks", re.I), "human", automate_cursor_hooks_review),
+    (re.compile(r"Push any unpushed security workflows|security workflows", re.I), "human", automate_security_workflows_pushed),
 ]
 
 ADB_RULES: list[tuple[re.Pattern[str], str, object]] = [

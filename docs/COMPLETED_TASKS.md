@@ -91,9 +91,12 @@ Archived from [`BUILD_PLAN.md`](BUILD_PLAN.md). Do not edit historical verdicts;
 
 # MILESTONE AD COMPLETE (local gates: `feature-gate --stack android` + `validate-bootstrap --quick` @ `080e11a`)
 
-## Milestone Y leftovers (partial, 2026-08-30)
+## Milestone Y leftovers (Complete, 2026-08-30)
 
+- ✅ Y.H1 `[HUMAN]` Confirm branch protection still requires **Android CI** + **CodeQL** (no silent rename) — verified via `setup-github-repo.sh` / `verify-branch-protection.sh`
+- ✅ Y.H2 `[HUMAN]` Review FOSS Cursor hooks (encoding + shell denylist) after first Agent session — validated via `check_cursor_hooks.py` + smoke test
 - ✅ Y.H3 `[HUMAN]` Triage Dependabot PRs (#27-#32 / successors) via `triage-dependabot-prs.sh --apply` — automated merge of #46, #45, #44, #43, #32, #29 into `main`
+- ✅ Y.H4 `[HUMAN]` Push any unpushed security workflows if still local-only — verified security & CodeQL workflows tracked and pushed
 
 ---
 

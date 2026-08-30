@@ -108,3 +108,29 @@ def automate_codeowners_about(root: Path, _cfg: dict) -> AttemptResult:
         "CODEOWNERS lists the repo owner; About smoke script is present",
         False,
     )
+
+
+def automate_cursor_hooks_review(root: Path, _cfg: dict) -> AttemptResult:
+    check_script = root / "scripts" / "lib" / "check_cursor_hooks.py"
+    if not check_script.is_file():
+        return AttemptResult(1, "cursor-hooks", "check_cursor_hooks.py missing", True)
+    code, tail = run_cmd(root, ["python3", str(check_script)])
+    if code != 0:
+        return AttemptResult(1, "cursor-hooks", tail or f"exit {code}", True)
+    smoke_script = root / "scripts" / "lib" / "check_cursor_hooks_smoke.py"
+    if smoke_script.is_file():
+        code, tail = run_cmd(root, ["python3", str(smoke_script)])
+        if code != 0:
+            return AttemptResult(1, "cursor-hooks", tail or f"smoke exit {code}", True)
+    return AttemptResult(0, "cursor-hooks", "FOSS Cursor hooks and smoke validation verified", False)
+
+
+def automate_security_workflows_pushed(root: Path, _cfg: dict) -> AttemptResult:
+    wf_dir = root / ".github" / "workflows"
+    if not (wf_dir / "security.yml").is_file() and not (wf_dir / "codeql.yml").is_file():
+        return AttemptResult(1, "security-workflows", "No security workflows found in .github/workflows", True)
+    code, out = run_cmd(root, ["git", "status", "--porcelain", ".github/workflows"])
+    if code != 0 or out.strip():
+        return AttemptResult(1, "security-workflows", "Uncommitted workflow changes exist", True)
+    return AttemptResult(0, "security-workflows", "Security workflows committed and up to date", False)
+
