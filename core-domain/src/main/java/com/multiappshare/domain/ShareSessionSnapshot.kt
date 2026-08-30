@@ -12,6 +12,7 @@ data class ShareSessionSnapshot(
     val appPackages: List<String> = emptyList(),
     val currentIndex: Int = 0,
     val sharingStarted: Boolean = false,
+    val paused: Boolean = false,
     val savedAtMillis: Long = 0L,
 )
 

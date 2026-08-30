@@ -13,6 +13,7 @@ This project uses Android **`versionCode`**-keyed changelogs for F-Droid/Store m
 - F-Droid installs get an F-Droid listing prompt, never a GitHub APK Install button.
 - Share payload preview (MIME, attachment count, text snippet) before the first handoff.
 - Reorder multiple share attachments before the first handoff.
+- Pause and resume a sequential share without skipping remaining apps.
 
 ### Changed
 

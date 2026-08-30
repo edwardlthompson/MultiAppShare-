@@ -10,6 +10,7 @@ import com.multiappshare.model.HistoryItem
 import com.multiappshare.share.PersistableShareUris
 import com.multiappshare.share.ShareNotificationIntents
 import com.multiappshare.share.toSnapshot
+import com.multiappshare.sharepause.SharePause
 
 internal class MainActivitySharing(
     private val activity: MainActivity,
@@ -94,9 +95,13 @@ internal class MainActivitySharing(
         }
     }
 
-    fun nextShareStep() = advanceAfterCurrent(null)
+    fun nextShareStep() {
+        if (!SharePause.nextAllowed(viewModel.shareSession.paused)) return
+        advanceAfterCurrent(null)
+    }
 
     fun skipThisApp() {
+        if (!SharePause.nextAllowed(viewModel.shareSession.paused)) return
         val session = viewModel.shareSession
         if (session.sharingStarted && session.appPackages != null) {
             viewModel.addHistoryItem(

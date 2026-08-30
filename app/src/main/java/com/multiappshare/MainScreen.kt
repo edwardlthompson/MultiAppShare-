@@ -181,11 +181,15 @@ fun MainScreen(
                             totalApps = shareSession.appPackages.size,
                             appComponents = shareSession.appPackages,
                             lastShareFailed = shareSession.lastShareFailed,
+                            paused = shareSession.paused,
                             packageManager = packageManager,
                             onReplayCurrentStep = onReplayShareStep,
                             onPreviousStep = onPreviousShareStep,
                             onSkipThisApp = onSkipThisApp,
                             onFinishEarly = onFinishEarly,
+                            onTogglePause = {
+                                viewModel.updateShareSession { copy(paused = !paused) }
+                            },
                             onNextStep = {
                                 if (shareSession.currentIndex + 1 == shareSession.appPackages.size) {
                                     showSuccessAnimation = true

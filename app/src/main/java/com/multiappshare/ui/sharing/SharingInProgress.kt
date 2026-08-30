@@ -38,12 +38,14 @@ fun SharingInProgress(
     totalApps: Int,
     appComponents: List<String>,
     lastShareFailed: Boolean = false,
+    paused: Boolean = false,
     packageManager: PackageManager,
     onReplayCurrentStep: () -> Unit = {},
     onPreviousStep: () -> Unit = {},
     onNextStep: () -> Unit,
     onSkipThisApp: () -> Unit = {},
     onFinishEarly: () -> Unit = {},
+    onTogglePause: () -> Unit = {},
 ) {
     val haptic = LocalHapticFeedback.current
     val currentKey = appComponents.getOrNull(currentIndex).orEmpty()
@@ -135,6 +137,18 @@ fun SharingInProgress(
             }
         }
         Spacer(modifier = Modifier.height(12.dp))
+        OutlinedButton(
+            onClick = onTogglePause,
+            modifier = Modifier
+                .fillMaxWidth()
+                .defaultMinSize(minHeight = 48.dp),
+        ) {
+            Text(
+                stringResource(if (paused) R.string.sharing_resume else R.string.sharing_pause),
+                textAlign = TextAlign.Center,
+            )
+        }
+        Spacer(modifier = Modifier.height(8.dp))
         Button(
             onClick = {
                 if (currentIndex + 1 >= totalApps) {
@@ -142,6 +156,7 @@ fun SharingInProgress(
                 }
                 onNextStep()
             },
+            enabled = !paused,
             modifier = Modifier
                 .fillMaxWidth()
                 .defaultMinSize(minHeight = 48.dp),
@@ -158,6 +173,7 @@ fun SharingInProgress(
             Spacer(modifier = Modifier.height(8.dp))
             OutlinedButton(
                 onClick = onSkipThisApp,
+                enabled = !paused,
                 modifier = Modifier
                     .fillMaxWidth()
                     .defaultMinSize(minHeight = 48.dp),
