@@ -5,4 +5,7 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"
 
-python3 "$(dirname "$0")/check-file-encoding.py" "$ROOT" "$@"
+# shellcheck source=lib/resolve-python.sh
+. "$(cd "$(dirname "$0")" && pwd)/lib/resolve-python.sh"
+
+"$PY" "$(dirname "$0")/check-file-encoding.py" "$ROOT" "$@"
