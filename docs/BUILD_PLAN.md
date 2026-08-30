@@ -78,7 +78,7 @@ Child slices from `/allideas`. **One `/feature` task per row.** Sequential only 
 
 | Status | ID | Label | Task |
 |--------|----|-------|------|
-| 🔲 | AE.1 | `[AGENT]` | `/feature` **fdroid-aware-updates** — Detect F-Droid installer; listing only, never GitHub APK Install |
+| ✅ | AE.1 | `[AGENT]` | `/feature` **fdroid-aware-updates** — Detect F-Droid installer; listing only, never GitHub APK Install |
 | 🔲 | AE.2 | `[AGENT]` | `/feature` **payload-preview** — Show text/URI/MIME before the first sequential handoff |
 | 🔲 | AE.3 | `[AGENT]` | `/feature` **reorder-attachments** — Reorder `ACTION_SEND_MULTIPLE` URIs before share |
 | 🔲 | AE.4 | `[AGENT]` | `/feature` **pause-resume-share** — Pause and resume mid-sequence without Skip remaining |

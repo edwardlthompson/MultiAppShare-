@@ -102,6 +102,11 @@
     <string name="update_available_body_fdroid">Multi App Share %1$s está en F-Droid. Abre la ficha cuando quieras.</string>
     <string name="update_install">Instalar</string>
     <string name="update_open_fdroid">Abrir F-Droid</string>
+    <string name="preview_title">Revisar antes de compartir</string>
+    <string name="preview_mime">Tipo: %1$s</string>
+    <string name="preview_uris">Adjuntos: %1$d</string>
+    <string name="preview_text">Texto: %1$s</string>
+    <string name="preview_continue">Continuar</string>
     <string name="update_later">Más tarde</string>
     <string name="button_ok">Aceptar</string>
     <string name="version_line">Versión: %1$s</string>
