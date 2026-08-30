@@ -94,7 +94,7 @@ Child slices from `/allideas`. **One `/feature` task per row.** Sequential only 
 | ✅ | AE.14 | `[AGENT]` | `/feature` **package-change-listener** — Refresh icons/groups on install or uninstall |
 | ✅ | AE.15 | `[AGENT]` | `/feature` **group-editor-search** — Filter installed apps in the group editor |
 | ✅ | AE.16 | `[AGENT]` | `/feature` **duplicate-app-warning** — Warn when the same package is in two groups |
-| 🔲 | AE.17 | `[AGENT]` | `/feature` **group-color-label** — Optional color or emoji label on a group |
+| ✅ | AE.17 | `[AGENT]` | `/feature` **group-color-label** — Optional color or emoji label on a group |
 | 🔲 | AE.18 | `[AGENT]` | `/feature` **group-notes** — Optional short description on a group |
 | 🔲 | AE.19 | `[AGENT]` | `/feature` **pin-favorite-groups** — Manual pin above usage sort |
 | 🔲 | AE.20 | `[AGENT]` | `/feature` **group-template-export** — Export one group as local JSON with no secrets |
