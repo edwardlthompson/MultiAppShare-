@@ -47,6 +47,7 @@ import com.multiappshare.ui.main.MainScreenSharingHost
 import com.multiappshare.ui.main.MainScreenSuccessBody
 import com.multiappshare.ui.main.MainScreenTopBar
 import com.multiappshare.ui.main.ShareSessionBackHandler
+import com.multiappshare.ui.main.rememberSkipSuccessBurst
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -225,7 +226,10 @@ fun MainScreen(
 
                     if (showSuccessAnimation) {
                         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                            ShareSuccessAnimation(onAnimationEnd = { showSuccessAnimation = false })
+                            ShareSuccessAnimation(
+                                skipBurst = rememberSkipSuccessBurst(),
+                                onAnimationEnd = { showSuccessAnimation = false },
+                            )
                         }
                     }
                 }
