@@ -4,21 +4,9 @@ object PrivacyPolicyText {
     val TITLE = "Privacy Policy"
 
     val SECTIONS = listOf(
-        "Zero Telemetry" to (
-            "Multi App Share does not include any third-party tracking, crash reporting services, " +
-                "or analytics frameworks."
-        ),
-        "Local Storage" to (
-            "All groups, preferences, and share histories are stored exclusively in your device's " +
-                "private storage database."
-        ),
-        "Network Access" to (
-            "The app only uses internet access for the optional daily update checker against " +
-                "official GitHub Releases."
-        ),
-        "Clipboard Safety" to (
-            "Clipboard data is only accessed when you explicitly tap the clipboard share button " +
-                "or Quick Settings tile."
-        ),
+        "Zero Telemetry" to "Multi App Share does not include third-party tracking or analytics.",
+        "Local Storage" to "All groups and share histories are stored exclusively on your device.",
+        "Network Access" to "Internet access is used only for the optional daily update checker.",
+        "Clipboard Safety" to "Clipboard data is only accessed when you explicitly tap share.",
     )
 }
