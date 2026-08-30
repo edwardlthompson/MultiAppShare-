@@ -115,7 +115,7 @@ fun ModifyGroupAppsDialog(
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 LazyColumn(modifier = Modifier.height(300.dp).highRefreshScroll()) {
-                    val filteredApps = allApps.filter { it.appName.contains(searchQuery, ignoreCase = true) }
+                    val filteredApps = com.multiappshare.domain.GroupEditorSearch.filter(allApps, searchQuery)
                     items(filteredApps) { app ->
                         val isSelected = selectedApps.any {
                             it.packageName == app.packageName && it.activityName == app.activityName
