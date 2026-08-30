@@ -41,7 +41,7 @@ class GroupNameHelperTest {
     fun sanitizeLanguageRejectsUnknown() {
         assertEquals("fr", AppLanguageTags.sanitize(" FR "))
         assertEquals("en", AppLanguageTags.sanitize("en-US"))
-        assertEquals(null, AppLanguageTags.sanitize("de"))
+        assertEquals(null, AppLanguageTags.sanitize("ja"))
         assertTrue(AppLanguageTags.sanitize(null) == null)
     }
 }
