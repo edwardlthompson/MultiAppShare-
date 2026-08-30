@@ -96,7 +96,7 @@ Child slices from `/allideas`. **One `/feature` task per row.** Sequential only 
 | ✅ | AE.16 | `[AGENT]` | `/feature` **duplicate-app-warning** — Warn when the same package is in two groups |
 | ✅ | AE.17 | `[AGENT]` | `/feature` **group-color-label** — Optional color or emoji label on a group |
 | ✅ | AE.18 | `[AGENT]` | `/feature` **group-notes** — Optional short description on a group |
-| 🔲 | AE.19 | `[AGENT]` | `/feature` **pin-favorite-groups** — Manual pin above usage sort |
+| ✅ | AE.19 | `[AGENT]` | `/feature` **pin-favorite-groups** — Manual pin above usage sort |
 | 🔲 | AE.20 | `[AGENT]` | `/feature` **group-template-export** — Export one group as local JSON with no secrets |
 | 🔲 | AE.21 | `[AGENT]` | `/feature` **import-merge-replace** — Choose merge vs replace on backup import |
 | 🔲 | AE.22 | `[AGENT]` | `/feature` **autogroup-dry-run** — Preview auto-group buckets before commit |
