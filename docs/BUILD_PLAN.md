@@ -99,7 +99,7 @@ Child slices from `/allideas`. **One `/feature` task per row.** Sequential only 
 | ✅ | AE.19 | `[AGENT]` | `/feature` **pin-favorite-groups** — Manual pin above usage sort |
 | ✅ | AE.20 | `[AGENT]` | `/feature` **group-template-export** — Export one group as local JSON with no secrets |
 | ✅ | AE.21 | `[AGENT]` | `/feature` **import-merge-replace** — Choose merge vs replace on backup import |
-| 🔲 | AE.22 | `[AGENT]` | `/feature` **autogroup-dry-run** — Preview auto-group buckets before commit |
+| ✅ | AE.22 | `[AGENT]` | `/feature` **autogroup-dry-run** — Preview auto-group buckets before commit |
 | 🔲 | AE.23 | `[AGENT]` | `/feature` **hide-unused-apps** — Global hide list for the app picker |
 | 🔲 | AE.24 | `[AGENT]` | `/feature` **sort-apps-last-success** — Order group apps by last successful share |
 | 🔲 | AE.25 | `[AGENT]` | `/feature` **collapse-unused-overlay-groups** — Collapse groups with no MIME match |
