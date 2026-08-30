@@ -58,6 +58,7 @@ class MainActivity : ComponentActivity() {
             if (intent?.action == SharingService.ACTION_SHARE_FAILED) sharing.onShareFailedAdvance()
         }
     }
+    private val packageChangeReceiver = PackageChangeReceiver { viewModel.loadData() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
@@ -126,11 +127,18 @@ class MainActivity : ComponentActivity() {
             IntentFilter(SharingService.ACTION_SHARE_FAILED),
             ContextCompat.RECEIVER_NOT_EXPORTED,
         )
+        ContextCompat.registerReceiver(
+            this,
+            packageChangeReceiver,
+            PackageChangeReceiver.createIntentFilter(),
+            ContextCompat.RECEIVER_NOT_EXPORTED,
+        )
     }
 
     override fun onStop() {
         super.onStop()
         unregisterReceiver(shareFailedReceiver)
+        unregisterReceiver(packageChangeReceiver)
     }
 
     override fun onNewIntent(intent: Intent) {
