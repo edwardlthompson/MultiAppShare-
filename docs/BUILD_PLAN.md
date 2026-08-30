@@ -117,7 +117,7 @@ Child slices from `/allideas`. **One `/feature` task per row.** Sequential only 
 | ✅ | AE.37 | `[AGENT]` | `/feature` **overflow-feedback** — Feedback entry on the overflow menu |
 | ✅ | AE.38 | `[AGENT]` | `/feature` **in-app-changelog** — Cached changelog readable offline |
 | ✅ | AE.39 | `[AGENT]` | `/feature` **settings-search** — Filter rows on the Settings screen |
-| 🔲 | AE.40 | `[AGENT]` | `/feature` **monochrome-icon** — Android 13 themed / monochrome launcher icon |
+| ✅ | AE.40 | `[AGENT]` | `/feature` **monochrome-icon** — Android 13 themed / monochrome launcher icon |
 | 🔲 | AE.41 | `[AGENT]` | `/feature` **battery-explainer** — User-initiated battery-optimization copy and link |
 | 🔲 | AE.42 | `[AGENT]` | `/feature` **fgs-timeout** — Survive Android 15 foreground-service timeout |
 | 🔲 | AE.43 | `[AGENT]` | `/feature` **notification-channel-link** — Deep link to system notification settings |
