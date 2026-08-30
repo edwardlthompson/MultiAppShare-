@@ -135,7 +135,7 @@ Child slices from `/allideas`. **One `/feature` task per row.** Sequential only 
 | ✅ | AE.56 | `[AGENT]` | `/feature` **paparazzi-ad-dialogs** — Goldens for About, Feedback, crash review |
 | ✅ | AE.57 | `[AGENT]` | `/feature` **baseline-overlay** — Baseline profile for share overlay startup |
 | ✅ | AE.58 | `[AGENT]` | `/feature` **unreleased-ship-prep** — Version/changelog/fastlane prep for next `v*` |
-| 🔲 | AE.60 | `[AGENT]` | `/feature` **foss-funding-links** — Liberapay or GitHub Sponsors beside Venmo |
+| ✅ | AE.60 | `[AGENT]` | `/feature` **foss-funding-links** — Liberapay or GitHub Sponsors beside Venmo |
 | 🔲 | AE.61 | `[AGENT]` | `/feature` **repro-verify-prerelease** — Wire unsigned APK verify into `/prerelease` |
 | 🔲 | AE.62 | `[AGENT]` | `/feature` **overflow-sections** — Group overflow into Share / Data / About |
 | 🔲 | AE.63 | `[AGENT]` | `/feature` **import-confirm** — Confirm before destructive backup import |
