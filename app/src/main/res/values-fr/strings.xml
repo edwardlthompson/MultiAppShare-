@@ -99,7 +99,9 @@
     <string name="donate_not_now">Pas maintenant</string>
     <string name="update_available_title">Mise à jour disponible</string>
     <string name="update_available_body">Multi App Share %1$s est sur GitHub. Installez-la quand vous voulez.</string>
+    <string name="update_available_body_fdroid">Multi App Share %1$s est sur F-Droid. Ouvrez la fiche quand vous voulez.</string>
     <string name="update_install">Installer</string>
+    <string name="update_open_fdroid">Ouvrir F-Droid</string>
     <string name="update_later">Plus tard</string>
     <string name="button_ok">OK</string>
     <string name="version_line">Version : %1$s</string>

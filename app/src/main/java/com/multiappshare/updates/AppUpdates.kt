@@ -14,6 +14,7 @@ object AppUpdates {
             fetchLatest = { GithubReleaseFetcher.fetchLatest(currentVersion) },
             markSeen = { prefs.markVersionSeen(it) },
             markChecked = { prefs.markChecked(it) },
+            allowDirectApk = InstallChannel.allowsDirectApk(InstallSource.installerPackage(context)),
         )
     }
 }

@@ -10,6 +10,7 @@ This project uses Android **`versionCode`**-keyed changelogs for F-Droid/Store m
 - About changelog link and in-app Feedback that opens a sanitized GitHub issue form (`ACTION_VIEW` only).
 - Opt-in “save crash details for review” with a local review dialog; nothing is uploaded automatically.
 - Theme/settings toggles for crash-save (default off) and high refresh rate (safe fallback).
+- F-Droid installs get an F-Droid listing prompt, never a GitHub APK Install button.
 
 ### Changed
 

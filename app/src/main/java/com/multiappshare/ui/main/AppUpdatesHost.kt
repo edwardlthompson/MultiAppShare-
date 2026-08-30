@@ -55,8 +55,17 @@ internal fun AppUpdatesHost(enabled: Boolean) {
         is LaunchPrompt.Update -> DashboardUpdateDialog(
             labels = UpdateDialogLabels(
                 title = stringResource(R.string.update_available_title),
-                body = stringResource(R.string.update_available_body, current.version),
-                install = stringResource(R.string.update_install),
+                body = stringResource(
+                    if (current.listingOnly) {
+                        R.string.update_available_body_fdroid
+                    } else {
+                        R.string.update_available_body
+                    },
+                    current.version,
+                ),
+                install = stringResource(
+                    if (current.listingOnly) R.string.update_open_fdroid else R.string.update_install,
+                ),
                 later = stringResource(R.string.update_later),
             ),
             onInstall = {

@@ -2,7 +2,11 @@ package com.multiappshare.updates
 
 sealed class LaunchPrompt {
     data object Donate : LaunchPrompt()
-    data class Update(val version: String, val url: String) : LaunchPrompt()
+    data class Update(
+        val version: String,
+        val url: String,
+        val listingOnly: Boolean = false,
+    ) : LaunchPrompt()
 }
 
 object LaunchPromptDecider {
@@ -15,12 +19,21 @@ object LaunchPromptDecider {
         fetchLatest: suspend () -> GithubRelease?,
         markSeen: (String) -> Unit,
         markChecked: (Long) -> Unit,
+        allowDirectApk: Boolean = true,
     ): LaunchPrompt? {
         if (currentVersion.isBlank() || ProductUpdate.shouldNudgeDonate(lastSeenVersion, currentVersion)) {
             return donateOrNull(currentVersion, lastSeenVersion)
         }
         markSeen(currentVersion)
-        return checkForUpdate(lastCheckAt, dismissedVersion, now, currentVersion, fetchLatest, markChecked)
+        return checkForUpdate(
+            lastCheckAt,
+            dismissedVersion,
+            now,
+            currentVersion,
+            fetchLatest,
+            markChecked,
+            allowDirectApk,
+        )
     }
 
     private fun donateOrNull(currentVersion: String, lastSeenVersion: String?): LaunchPrompt? {
@@ -38,12 +51,13 @@ object LaunchPromptDecider {
         currentVersion: String,
         fetchLatest: suspend () -> GithubRelease?,
         markChecked: (Long) -> Unit,
+        allowDirectApk: Boolean,
     ): LaunchPrompt? {
         if (!ProductUpdate.shouldCheckDaily(lastCheckAt, now)) {
             return null
         }
         val release = runCatching { fetchLatest() }.getOrNull()
-        val prompt = updateFromRelease(currentVersion, dismissedVersion, release)
+        val prompt = updateFromRelease(currentVersion, dismissedVersion, release, allowDirectApk)
         if (prompt == null) {
             markChecked(now)
         }
@@ -54,16 +68,18 @@ object LaunchPromptDecider {
         currentVersion: String,
         dismissedVersion: String?,
         release: GithubRelease?,
+        allowDirectApk: Boolean,
     ): LaunchPrompt? {
         val asset = release?.let { ProductUpdate.selectApkAsset(it.assets) } ?: return null
         val latest = asset.version
         return if (!ProductUpdate.shouldPromptUpdate(currentVersion, latest, dismissedVersion)) {
             null
         } else {
-            val url = asset.url.ifBlank { null }
+            val apk = asset.url.ifBlank { null }
                 ?: release.htmlUrl.ifBlank { null }
                 ?: ProductUpdate.RELEASES_PAGE
-            LaunchPrompt.Update(latest, url)
+            val url = InstallChannel.updateUrl(allowDirectApk, apk)
+            LaunchPrompt.Update(latest, url, listingOnly = !allowDirectApk)
         }
     }
 }
