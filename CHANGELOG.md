@@ -5,6 +5,8 @@ This project uses Android **`versionCode`**-keyed changelogs for F-Droid/Store m
 
 ## [Unreleased]
 
+## 1.10.0 (versionCode 182)
+
 ### Added
 
 - Try later step deferral on failed share step.
@@ -40,10 +42,6 @@ This project uses Android **`versionCode`**-keyed changelogs for F-Droid/Store m
 - Share payload preview (MIME, attachment count, text snippet) before the first handoff.
 - Reorder multiple share attachments before the first handoff.
 - Pause and resume a sequential share without skipping remaining apps.
-
-### Changed
-
-### Fixed
 
 ## 1.9.5 (versionCode 181)
 

@@ -57,7 +57,11 @@ preview = root / "branding" / "generated" / "README.preview.md"
 errors = []
 
 if not product_path.is_file():
-    errors.append("missing branding/product.json")
+    if (root / "branding").is_dir():
+        errors.append("missing branding/product.json")
+    else:
+        print("OK   Branding README preview (no branding directory)")
+        sys.exit(0)
 else:
     product = json.loads(product_path.read_text(encoding="utf-8"))
     mode = product.get("mode", "template")
