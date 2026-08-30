@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import com.multiappshare.R
 import com.multiappshare.resolveShareTargetLabel
 import com.multiappshare.sharedefer.ShareDefer
+import com.multiappshare.sharehaptics.ShareHaptics
 import com.multiappshare.shareprogress.ShareProgressAnnounce
 
 @Composable
@@ -45,6 +46,7 @@ fun SharingInProgress(
     appComponents: List<String>,
     lastShareFailed: Boolean = false,
     paused: Boolean = false,
+    hapticsEnabled: Boolean = true,
     packageManager: PackageManager,
     onReplayCurrentStep: () -> Unit = {},
     onPreviousStep: () -> Unit = {},
@@ -187,7 +189,7 @@ fun SharingInProgress(
         Spacer(modifier = Modifier.height(8.dp))
         Button(
             onClick = {
-                if (currentIndex + 1 >= totalApps) {
+                if (currentIndex + 1 >= totalApps && ShareHaptics.shouldPerform(hapticsEnabled)) {
                     haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                 }
                 onNextStep()

@@ -24,12 +24,14 @@ fun ThemeDialog(
     selected: Boolean?,
     crashCapture: Boolean,
     highRefresh: Boolean,
+    shareHaptics: Boolean,
     onDismiss: () -> Unit,
-    onConfirm: (Boolean?, Boolean, Boolean) -> Unit,
+    onConfirm: (Boolean?, Boolean, Boolean, Boolean) -> Unit,
 ) {
     var draft by remember(selected) { mutableStateOf(selected) }
     var crashDraft by remember(crashCapture) { mutableStateOf(crashCapture) }
     var refreshDraft by remember(highRefresh) { mutableStateOf(highRefresh) }
+    var hapticsDraft by remember(shareHaptics) { mutableStateOf(shareHaptics) }
     val options = listOf<Pair<Boolean?, Int>>(
         null to R.string.theme_system,
         false to R.string.theme_light,
@@ -76,10 +78,21 @@ fun ThemeDialog(
                     Checkbox(checked = refreshDraft, onCheckedChange = { refreshDraft = it })
                     Text(stringResource(R.string.display_high_refresh))
                 }
+                Row(
+                    modifier = Modifier.selectable(
+                        selected = hapticsDraft,
+                        onClick = { hapticsDraft = !hapticsDraft },
+                        role = Role.Checkbox,
+                    ),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Checkbox(checked = hapticsDraft, onCheckedChange = { hapticsDraft = it })
+                    Text(stringResource(R.string.settings_share_haptics))
+                }
             }
         },
         confirmButton = {
-            TextButton(onClick = { onConfirm(draft, crashDraft, refreshDraft) }) {
+            TextButton(onClick = { onConfirm(draft, crashDraft, refreshDraft, hapticsDraft) }) {
                 Text(stringResource(R.string.button_save))
             }
         },

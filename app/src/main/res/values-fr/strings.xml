@@ -197,4 +197,5 @@
     <string name="crash_review_body">Un rapport sanitizé est en attente. Envoyez-le en retour ou ignorez-le. Rien n’est envoyé automatiquement.</string>
     <string name="settings_crash_capture">Enregistrer les plantages pour que je les relise</string>
     <string name="display_high_refresh">Préférer un taux de rafraîchissement élevé</string>
+    <string name="settings_share_haptics">Vibration à la fin du partage</string>
 </resources>

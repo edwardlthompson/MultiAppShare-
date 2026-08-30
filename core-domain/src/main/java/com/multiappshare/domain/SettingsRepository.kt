@@ -21,6 +21,7 @@ class SettingsRepository(private val context: Context) {
     private val appLanguageKey = stringPreferencesKey("app_language")
     private val crashCaptureKey = booleanPreferencesKey("crash_capture_enabled")
     private val highRefreshKey = booleanPreferencesKey("high_refresh_enabled")
+    private val shareHapticsKey = booleanPreferencesKey("share_haptics_enabled")
 
     val isOnboardingCompleted: Flow<Boolean> = context.dataStore.data
         .map { preferences ->
@@ -42,6 +43,9 @@ class SettingsRepository(private val context: Context) {
 
     val isHighRefreshEnabled: Flow<Boolean> = context.dataStore.data
         .map { preferences -> preferences[highRefreshKey] ?: SettingsDefaults.HIGH_REFRESH_ENABLED }
+
+    val isShareHapticsEnabled: Flow<Boolean> = context.dataStore.data
+        .map { preferences -> preferences[shareHapticsKey] ?: SettingsDefaults.SHARE_HAPTICS_ENABLED }
 
     suspend fun setOnboardingCompleted() {
         context.dataStore.edit { preferences ->
@@ -74,6 +78,12 @@ class SettingsRepository(private val context: Context) {
     suspend fun setHighRefreshEnabled(enabled: Boolean) {
         context.dataStore.edit { preferences ->
             preferences[highRefreshKey] = enabled
+        }
+    }
+
+    suspend fun setShareHapticsEnabled(enabled: Boolean) {
+        context.dataStore.edit { preferences ->
+            preferences[shareHapticsKey] = enabled
         }
     }
 

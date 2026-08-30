@@ -197,4 +197,5 @@
     <string name="crash_review_body">Hay un informe de fallo sanitizado. Puedes enviarlo como comentario o descartarlo. Nada se sube automáticamente.</string>
     <string name="settings_crash_capture">Guardar detalles de fallos para revisarlos</string>
     <string name="display_high_refresh">Preferir alta tasa de refresco</string>
+    <string name="settings_share_haptics">Vibración al terminar el uso compartido</string>
 </resources>

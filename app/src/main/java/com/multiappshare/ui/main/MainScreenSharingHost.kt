@@ -2,9 +2,13 @@ package com.multiappshare.ui.main
 
 import android.content.pm.PackageManager
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.multiappshare.MainViewModel
 import com.multiappshare.ShareSessionState
 import com.multiappshare.sharedefer.ShareDefer
+import com.multiappshare.sharehaptics.ShareHapticsViewModel
 import com.multiappshare.ui.sharing.SharingInProgress
 
 @Composable
@@ -19,6 +23,8 @@ internal fun MainScreenSharingHost(
     onSkipThisApp: () -> Unit,
     onMarkSuccess: () -> Unit,
 ) {
+    val hapticsVm: ShareHapticsViewModel = hiltViewModel()
+    val hapticsOn by hapticsVm.enabled.collectAsState(initial = true)
     val packages = shareSession.appPackages
     if (packages != null) {
         SharingInProgress(
@@ -30,6 +36,7 @@ internal fun MainScreenSharingHost(
             appComponents = packages,
             lastShareFailed = shareSession.lastShareFailed,
             paused = shareSession.paused,
+            hapticsEnabled = hapticsOn,
             packageManager = packageManager,
             onReplayCurrentStep = onReplayShareStep,
             onPreviousStep = onPreviousShareStep,

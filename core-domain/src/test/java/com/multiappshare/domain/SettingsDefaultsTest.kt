@@ -10,5 +10,6 @@ class SettingsDefaultsTest {
     fun crashSaveDefaultsOffAndHighRefreshOn() {
         assertFalse(SettingsDefaults.CRASH_CAPTURE_ENABLED)
         assertTrue(SettingsDefaults.HIGH_REFRESH_ENABLED)
+        assertTrue(SettingsDefaults.SHARE_HAPTICS_ENABLED)
     }
 }

@@ -199,6 +199,7 @@
     <string name="crash_review_body">A sanitized crash report is waiting. You can send it as feedback or discard it. Nothing is uploaded automatically.</string>
     <string name="settings_crash_capture">Save crash details for me to review</string>
     <string name="display_high_refresh">Prefer high refresh rate</string>
+    <string name="settings_share_haptics">Share finish vibration</string>
     <string name="delay_title">Delay between apps</string>
     <string name="delay_off">None</string>
     <string name="delay_ms">%1$d ms</string>

@@ -5,10 +5,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.multiappshare.MainViewModel
 import com.multiappshare.crashcapture.CrashStore
 import com.multiappshare.domain.AppLanguageTags
 import com.multiappshare.locale.AppLanguage
+import com.multiappshare.sharehaptics.ShareHapticsViewModel
 import com.multiappshare.ui.settings.LanguageDialog
 import com.multiappshare.ui.settings.SharingDelayDialog
 import com.multiappshare.ui.settings.ThemeDialog
@@ -39,16 +41,20 @@ internal fun MainScreenSettingsHost(
         val selected by viewModel.darkTheme.collectAsState(initial = null)
         val crashOn by viewModel.crashCaptureEnabled.collectAsState(initial = false)
         val refreshOn by viewModel.highRefreshEnabled.collectAsState(initial = true)
+        val hapticsVm: ShareHapticsViewModel = hiltViewModel()
+        val hapticsOn by hapticsVm.enabled.collectAsState(initial = true)
         val context = LocalContext.current
         ThemeDialog(
             selected = selected,
             crashCapture = crashOn,
             highRefresh = refreshOn,
+            shareHaptics = hapticsOn,
             onDismiss = { onShowTheme(false) },
-            onConfirm = { enabled, crash, refresh ->
+            onConfirm = { enabled, crash, refresh, haptics ->
                 viewModel.setDarkTheme(enabled)
                 viewModel.setCrashCaptureEnabled(crash)
                 viewModel.setHighRefreshEnabled(refresh)
+                hapticsVm.setEnabled(haptics)
                 CrashStore.setEnabled(context, crash)
                 onShowTheme(false)
             },
