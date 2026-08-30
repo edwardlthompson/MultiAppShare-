@@ -51,6 +51,15 @@ fun MainScreenOverflowMenu(
                 },
             )
             DropdownMenuItem(
+                text = { Text(stringResource(R.string.menu_share_clipboard)) },
+                leadingIcon = { Icon(Icons.Default.Refresh, null) },
+                onClick = {
+                    onShareClipboard()
+                    menuExpanded = false
+                },
+            )
+            androidx.compose.material3.HorizontalDivider()
+            DropdownMenuItem(
                 text = { Text(stringResource(R.string.menu_history)) },
                 leadingIcon = { Icon(Icons.Default.Refresh, null) },
                 onClick = {
@@ -58,6 +67,23 @@ fun MainScreenOverflowMenu(
                     menuExpanded = false
                 },
             )
+            DropdownMenuItem(
+                text = { Text(stringResource(R.string.menu_export_groups)) },
+                leadingIcon = { Icon(Icons.AutoMirrored.Filled.ExitToApp, null) },
+                onClick = {
+                    onExport()
+                    menuExpanded = false
+                },
+            )
+            DropdownMenuItem(
+                text = { Text(stringResource(R.string.menu_import_groups)) },
+                leadingIcon = { Icon(Icons.Default.GetApp, null) },
+                onClick = {
+                    onImport()
+                    menuExpanded = false
+                },
+            )
+            androidx.compose.material3.HorizontalDivider()
             DropdownMenuItem(
                 text = { Text(stringResource(R.string.menu_language)) },
                 leadingIcon = { Icon(Icons.Default.Settings, null) },
@@ -95,30 +121,6 @@ fun MainScreenOverflowMenu(
                 leadingIcon = { Icon(Icons.Default.Favorite, null) },
                 onClick = {
                     onDonate()
-                    menuExpanded = false
-                },
-            )
-            DropdownMenuItem(
-                text = { Text(stringResource(R.string.menu_share_clipboard)) },
-                leadingIcon = { Icon(Icons.Default.Refresh, null) },
-                onClick = {
-                    onShareClipboard()
-                    menuExpanded = false
-                },
-            )
-            DropdownMenuItem(
-                text = { Text(stringResource(R.string.menu_export_groups)) },
-                leadingIcon = { Icon(Icons.AutoMirrored.Filled.ExitToApp, null) },
-                onClick = {
-                    onExport()
-                    menuExpanded = false
-                },
-            )
-            DropdownMenuItem(
-                text = { Text(stringResource(R.string.menu_import_groups)) },
-                leadingIcon = { Icon(Icons.Default.GetApp, null) },
-                onClick = {
-                    onImport()
                     menuExpanded = false
                 },
             )
