@@ -1,7 +1,6 @@
 package com.multiappshare.domain
 
 import com.multiappshare.model.AppGroup
-import com.multiappshare.model.AppInfo
 
 object GroupRepair {
     fun pruneUninstalled(groups: List<AppGroup>, installedPackageNames: Set<String>): List<AppGroup> {
