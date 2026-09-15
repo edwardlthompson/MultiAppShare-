@@ -39,10 +39,12 @@ coverage/
 .cursor/mcp-audit.log
 .cursor/environment.json
 .cursor/sandbox.json
+.cursor/automations.yaml
 .cursor/gates-status.md
 .cursor/upd-status.md
 .cursor/encoding-strict
 .cursor/handoff-*.md
+.cursor/sprint-smoke.json
 .cursor-session-state
 .cursor-session-state.json
 CODE_REVIEW.md
@@ -51,6 +53,7 @@ scratchpad.md
 CURSOR_RADAR_REPORT.md
 CURSOR_RADAR_BACKLOG.md
 CURSOR_RADAR_SUGGESTIONS.md
+CURSOR_RADAR_BUILD_PLAN_DRAFT.md
 
 # Live user configs (examples committed; copies from init)
 .app-update.json
@@ -61,7 +64,39 @@ openvex.json
 .env
 .env.*
 !.env.example
+.envrc
+!.envrc.example
 
 # Optional Nix
 result
 .direnv/
+
+# Template extras (1.6.0)
+.venv/
+*.py[cod]
+.uv/
+*.egg-info/
+.coverage
+htmlcov/
+Thumbs.db
+*.swp
+*.tmp
+*.temp
+*.log
+*.aab
+*.jks
+*.p12
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.turbo/
+.parcel-cache/
+*.tsbuildinfo
+test-results/
+playwright-report/
+.lighthouseci/
+target/
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/extensions.json

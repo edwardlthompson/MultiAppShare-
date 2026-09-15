@@ -8,18 +8,6 @@ import org.junit.Test
 class MimeMismatchExplanationTest {
 
     @Test
-    fun formatsExplanationString() {
-        val exp = MimeMismatchExplanation.formatExplanation("Social", "image/png")
-        assertEquals("No apps in \"Social\" support content type image/png", exp)
-    }
-
-    @Test
-    fun formatsExplanationStringFallbackMime() {
-        val exp = MimeMismatchExplanation.formatExplanation("Social", "")
-        assertEquals("No apps in \"Social\" support content type */*", exp)
-    }
-
-    @Test
     fun checksGroupCompatibility() {
         assertTrue(
             MimeMismatchExplanation.isGroupCompatible(
@@ -39,5 +27,14 @@ class MimeMismatchExplanationTest {
                 compatiblePackageKeys = setOf("com.other/Main"),
             ),
         )
+    }
+
+    @Test
+    fun humanizesMimeKinds() {
+        assertEquals("image", MimeMismatchExplanation.mimeKind("image/jpeg"))
+        assertEquals("video", MimeMismatchExplanation.mimeKind("video/mp4"))
+        assertEquals("text", MimeMismatchExplanation.mimeKind("text/plain"))
+        assertEquals("other", MimeMismatchExplanation.mimeKind("*/*"))
+        assertEquals("other", MimeMismatchExplanation.mimeKind(null))
     }
 }

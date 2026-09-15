@@ -2,13 +2,11 @@ package com.multiappshare.ui.main
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ExitToApp
 import androidx.compose.material.icons.automirrored.filled.List
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.GetApp
-import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.AutoAwesome
+import androidx.compose.material.icons.filled.ContentPaste
+import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -22,19 +20,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.stringResource
 import com.multiappshare.R
+import com.multiappshare.domain.OverflowDestination
+import com.multiappshare.domain.OverflowMenuPolicy
 
 @Composable
 fun MainScreenOverflowMenu(
     onSortGroups: () -> Unit,
-    onHistory: () -> Unit,
-    onAbout: () -> Unit,
-    onDonate: () -> Unit,
-    onLanguage: () -> Unit,
-    onTheme: () -> Unit,
-    onSharingDelay: () -> Unit,
+    onAutoGroup: () -> Unit,
     onShareClipboard: () -> Unit,
-    onExport: () -> Unit,
-    onImport: () -> Unit,
+    onHistory: () -> Unit,
+    onSettings: () -> Unit,
 ) {
     var menuExpanded by remember { mutableStateOf(false) }
     Box {
@@ -42,88 +37,46 @@ fun MainScreenOverflowMenu(
             Icon(Icons.Default.MoreVert, contentDescription = stringResource(R.string.cd_main_menu))
         }
         DropdownMenu(expanded = menuExpanded, onDismissRequest = { menuExpanded = false }) {
-            DropdownMenuItem(
-                text = { Text(stringResource(R.string.menu_sort_groups)) },
-                leadingIcon = { Icon(Icons.AutoMirrored.Filled.List, null) },
-                onClick = {
-                    onSortGroups()
-                    menuExpanded = false
-                },
-            )
-            DropdownMenuItem(
-                text = { Text(stringResource(R.string.menu_share_clipboard)) },
-                leadingIcon = { Icon(Icons.Default.Refresh, null) },
-                onClick = {
-                    onShareClipboard()
-                    menuExpanded = false
-                },
-            )
-            androidx.compose.material3.HorizontalDivider()
-            DropdownMenuItem(
-                text = { Text(stringResource(R.string.menu_history)) },
-                leadingIcon = { Icon(Icons.Default.Refresh, null) },
-                onClick = {
-                    onHistory()
-                    menuExpanded = false
-                },
-            )
-            DropdownMenuItem(
-                text = { Text(stringResource(R.string.menu_export_groups)) },
-                leadingIcon = { Icon(Icons.AutoMirrored.Filled.ExitToApp, null) },
-                onClick = {
-                    onExport()
-                    menuExpanded = false
-                },
-            )
-            DropdownMenuItem(
-                text = { Text(stringResource(R.string.menu_import_groups)) },
-                leadingIcon = { Icon(Icons.Default.GetApp, null) },
-                onClick = {
-                    onImport()
-                    menuExpanded = false
-                },
-            )
-            androidx.compose.material3.HorizontalDivider()
-            DropdownMenuItem(
-                text = { Text(stringResource(R.string.menu_language)) },
-                leadingIcon = { Icon(Icons.Default.Settings, null) },
-                onClick = {
-                    onLanguage()
-                    menuExpanded = false
-                },
-            )
-            DropdownMenuItem(
-                text = { Text(stringResource(R.string.menu_theme)) },
-                leadingIcon = { Icon(Icons.Default.Settings, null) },
-                onClick = {
-                    onTheme()
-                    menuExpanded = false
-                },
-            )
-            DropdownMenuItem(
-                text = { Text(stringResource(R.string.menu_sharing_delay)) },
-                leadingIcon = { Icon(Icons.Default.Settings, null) },
-                onClick = {
-                    onSharingDelay()
-                    menuExpanded = false
-                },
-            )
-            DropdownMenuItem(
-                text = { Text(stringResource(R.string.menu_about)) },
-                leadingIcon = { Icon(Icons.Default.Info, null) },
-                onClick = {
-                    onAbout()
-                    menuExpanded = false
-                },
-            )
-            DropdownMenuItem(
-                text = { Text(stringResource(R.string.about_donate)) },
-                leadingIcon = { Icon(Icons.Default.Favorite, null) },
-                onClick = {
-                    onDonate()
-                    menuExpanded = false
-                },
-            )
+            OverflowMenuPolicy.items.forEach { item ->
+                val label: Int
+                val icon = when (item.destination) {
+                    OverflowDestination.SORT_GROUPS -> {
+                        label = R.string.menu_sort_groups
+                        Icons.AutoMirrored.Filled.List
+                    }
+                    OverflowDestination.AUTO_GROUP -> {
+                        label = R.string.fab_auto_group
+                        Icons.Default.AutoAwesome
+                    }
+                    OverflowDestination.SHARE_CLIPBOARD -> {
+                        label = R.string.menu_share_clipboard
+                        Icons.Default.ContentPaste
+                    }
+                    OverflowDestination.HISTORY -> {
+                        label = R.string.menu_history
+                        Icons.Default.History
+                    }
+                    OverflowDestination.SETTINGS -> {
+                        label = R.string.menu_settings
+                        Icons.Default.Settings
+                    }
+                }
+                val action = when (item.destination) {
+                    OverflowDestination.SORT_GROUPS -> onSortGroups
+                    OverflowDestination.AUTO_GROUP -> onAutoGroup
+                    OverflowDestination.SHARE_CLIPBOARD -> onShareClipboard
+                    OverflowDestination.HISTORY -> onHistory
+                    OverflowDestination.SETTINGS -> onSettings
+                }
+                DropdownMenuItem(
+                    text = { Text(stringResource(label)) },
+                    leadingIcon = { Icon(icon, contentDescription = stringResource(label)) },
+                    onClick = {
+                        action()
+                        menuExpanded = false
+                    },
+                )
+            }
         }
     }
 }

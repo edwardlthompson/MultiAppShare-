@@ -51,11 +51,13 @@ class ListInstalledAppsUseCase @Inject constructor(
                     -1
                 }
 
+                val userId = WorkProfileDisambiguation.userIdFromUid(info.activityInfo.applicationInfo.uid)
                 AppInfo(
                     appName = finalName,
                     packageName = info.activityInfo.packageName,
                     activityName = info.activityInfo.name,
                     category = category,
+                    isWorkProfile = WorkProfileDisambiguation.isWorkProfileUser(userId),
                 )
             }
             .filter { it.packageName != excludePackage }

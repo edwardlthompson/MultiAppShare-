@@ -16,10 +16,14 @@ internal class MainActivitySharing(
     private val activity: MainActivity,
     private val viewModel: MainViewModel,
     private val steps: MainActivityShareStep,
+    private val onShareSessionStarted: () -> Unit,
 ) {
     fun handleIntent(intent: Intent?, restoreIfColdStart: Boolean) {
         if (intent == null) {
-            if (restoreIfColdStart) viewModel.restoreInflightIfFresh()
+            if (restoreIfColdStart) {
+                viewModel.restoreInflightIfFresh()
+                promptIfSharing()
+            }
             return
         }
         if (applyShareCommand(intent)) return
@@ -39,11 +43,20 @@ internal class MainActivitySharing(
                 consumedShare = true
             }
             !intent.getStringExtra("GROUP_NAME").isNullOrBlank() -> {
-                viewModel.expandGroupByNameIfPresent(intent.getStringExtra("GROUP_NAME")!!)
+                viewModel.expandGroupIfPresent(null, intent.getStringExtra("GROUP_NAME")!!)
                 clearSessionShareState()
             }
         }
-        if (restoreIfColdStart && !consumedShare) viewModel.restoreInflightIfFresh()
+        if (consumedShare) {
+            onShareSessionStarted()
+        } else if (restoreIfColdStart) {
+            viewModel.restoreInflightIfFresh()
+            promptIfSharing()
+        }
+    }
+
+    private fun promptIfSharing() {
+        if (viewModel.shareSession.inShareMode) onShareSessionStarted()
     }
 
     fun startSharingForGroup(group: AppGroup) {
@@ -70,6 +83,7 @@ internal class MainActivitySharing(
             return
         }
         viewModel.updateShareSession { copy(appPackages = compatible, currentIndex = 0, sharingStarted = true) }
+        onShareSessionStarted()
         steps.shareStep(session.uris, session.text, mime, compatible, 0)
         viewModel.incrementGroupUsage(group)
         viewModel.addHistoryItem(
@@ -84,6 +98,7 @@ internal class MainActivitySharing(
     }
 
     fun replayShareStep() {
+        if (!SharePause.replayAllowed(viewModel.shareSession.paused)) return
         viewModel.updateShareSession { copy(lastShareFailed = false) }
         val session = viewModel.shareSession
         val packages = session.appPackages ?: return

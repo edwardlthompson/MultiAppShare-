@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.Uri
 import android.widget.Toast
 import com.multiappshare.crypto.BackupCipher
+import com.multiappshare.domain.ImportStrategy
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -57,24 +58,24 @@ internal object BackupOperations {
         uri: Uri,
         onEncryptedDetected: (Uri) -> Unit,
         onImportComplete: () -> Unit,
+        strategy: ImportStrategy = ImportStrategy.REPLACE,
+        onError: (Int) -> Unit = {},
     ) {
         scope.launch(Dispatchers.IO) {
             try {
-                val text = readBackupText(context, uri) ?: return@launch
+                val text = readBackupText(context, uri, onError) ?: return@launch
                 when {
                     BackupCipher.isEncryptedEnvelope(text) -> {
                         withContext(Dispatchers.Main) { onEncryptedDetected(uri) }
                     }
                     else -> {
-                        applyImportedBackup(repos.groups, repos.settings, repos.shareSession, text)
+                        applyImportedBackup(repos.groups, repos.settings, repos.shareSession, text, strategy)
                         withContext(Dispatchers.Main) { onImportComplete() }
                     }
                 }
             } catch (e: Exception) {
                 Timber.e(e, "Import failed")
-                withContext(Dispatchers.Main) {
-                    Toast.makeText(context, context.getString(R.string.toast_import_failed), Toast.LENGTH_LONG).show()
-                }
+                withContext(Dispatchers.Main) { onError(R.string.toast_import_failed) }
             }
         }
     }
@@ -86,55 +87,57 @@ internal object BackupOperations {
         uri: Uri,
         passphrase: CharArray,
         onSuccess: () -> Unit,
+        strategy: ImportStrategy = ImportStrategy.REPLACE,
+        onError: (Int) -> Unit = {},
     ) {
         scope.launch(Dispatchers.IO) {
             try {
-                val text = readBackupText(context, uri) ?: return@launch
+                val text = readBackupText(context, uri, onError) ?: return@launch
                 val plain = try {
                     BackupCipher.decryptUtf8(text, passphrase)
                 } catch (_: AEADBadTagException) {
-                    withContext(Dispatchers.Main) {
-                        Toast.makeText(context, context.getString(R.string.toast_wrong_passphrase), Toast.LENGTH_SHORT).show()
-                    }
+                    withContext(Dispatchers.Main) { onError(R.string.toast_wrong_passphrase) }
                     return@launch
                 }
-                applyImportedBackup(repos.groups, repos.settings, repos.shareSession, plain)
+                applyImportedBackup(repos.groups, repos.settings, repos.shareSession, plain, strategy)
                 withContext(Dispatchers.Main) {
                     onSuccess()
                     Toast.makeText(context, context.getString(R.string.toast_import_complete), Toast.LENGTH_SHORT).show()
                 }
             } catch (e: Exception) {
                 Timber.e(e, "Decrypt/import failed")
-                withContext(Dispatchers.Main) {
-                    Toast.makeText(context, context.getString(R.string.toast_could_not_read_backup), Toast.LENGTH_SHORT).show()
-                }
+                withContext(Dispatchers.Main) { onError(R.string.toast_could_not_read_backup) }
             } finally {
                 passphrase.fill('\u0000')
             }
         }
     }
 
-    private suspend fun readBackupText(context: Context, uri: Uri): String? {
-        val stream = context.contentResolver.openInputStream(uri) ?: return null
+    private suspend fun readBackupText(
+        context: Context,
+        uri: Uri,
+        onError: (Int) -> Unit,
+    ): String? {
+        val stream = context.contentResolver.openInputStream(uri) ?: run {
+            withContext(Dispatchers.Main) { onError(R.string.toast_could_not_read_backup) }
+            return null
+        }
         return stream.use { input ->
             val buffer = ByteArray(MAX_IMPORT_BYTES + 1)
             var total = 0
-            while (true) {
+            var overflow = false
+            while (!overflow) {
                 val read = input.read(buffer, total, buffer.size - total)
                 if (read <= 0) break
                 total += read
-                if (total > MAX_IMPORT_BYTES) {
-                    withContext(Dispatchers.Main) {
-                        Toast.makeText(
-                            context,
-                            context.getString(R.string.toast_import_failed),
-                            Toast.LENGTH_LONG,
-                        ).show()
-                    }
-                    return null
-                }
+                overflow = total > MAX_IMPORT_BYTES
             }
-            buffer.copyOf(total).toString(Charsets.UTF_8)
+            if (overflow) {
+                withContext(Dispatchers.Main) { onError(R.string.toast_import_failed) }
+                null
+            } else {
+                buffer.copyOf(total).toString(Charsets.UTF_8)
+            }
         }
     }
 }

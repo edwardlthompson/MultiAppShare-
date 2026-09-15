@@ -15,4 +15,9 @@ object PayloadPreview {
         if (trimmed.length <= TEXT_LIMIT) return trimmed
         return trimmed.take(TEXT_LIMIT) + "…"
     }
+
+    fun showsThumbnail(mime: String?): Boolean {
+        val normalized = mime?.trim()?.lowercase().orEmpty()
+        return normalized.startsWith("image/") || normalized.startsWith("video/")
+    }
 }

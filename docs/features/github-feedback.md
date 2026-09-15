@@ -2,6 +2,8 @@
 
 > GitHub issue composer (form URL). **Do not** copy `examples/android/` over `app/`. Stub: template `docs/features/github-feedback.md`. Depends on AD.4.
 
+> **v1.6.0 catch-up (TU):** Product already ships this Golden Path slice under `com.multiappshare` (not `examples/android`). Parity locked by `TemplateGoldenPathParityTest`.
+
 ## Acceptance criteria
 
 - ✅ User-visible: Feedback can open a GitHub issue form via `ACTION_VIEW` (no raw token, no phone-home API)
@@ -24,7 +26,6 @@
 | View | Feedback dialog action |
 | Tests | `IssueFormUrl` unit tests |
 | Wiring | ≤10 lines on the Feedback dialog |
-
 ## Tests
 
 - Automated: yes — URL builder (repo, labels, length limits)

@@ -5,6 +5,8 @@ import com.multiappshare.model.AppGroup
 object GroupNameHelper {
     fun normalize(name: String): String = name.trim()
 
+    fun canSubmit(name: String): Boolean = normalize(name).isNotEmpty()
+
     fun isDuplicate(name: String, groups: List<AppGroup>): Boolean {
         val normalized = normalize(name)
         if (normalized.isEmpty()) return false
@@ -25,12 +27,12 @@ object GroupNameHelper {
         return groups.find { it.name.equals(normalized, ignoreCase = true) }
     }
 
-    fun uniqueCopyName(base: String, groups: List<AppGroup>): String {
+    fun uniqueCopyName(base: String, groups: List<AppGroup>, copyLabel: String): String {
         val normalized = normalize(base)
-        var candidate = "$normalized (copy)"
+        var candidate = "$normalized ($copyLabel)"
         var n = 2
         while (isDuplicate(candidate, groups)) {
-            candidate = "$normalized (copy $n)"
+            candidate = "$normalized ($copyLabel $n)"
             n++
         }
         return candidate

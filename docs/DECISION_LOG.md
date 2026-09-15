@@ -12,7 +12,7 @@ Chronological index of major technical decisions. Entries are **append-only**.
 | 2026-06-19 | V.3b Android 16 smoke — CPH2583 pass (overlay, rotation, deeplinks, E2E insets) | [`GATES.md`](GATES.md) |
 | 2026-06-20 | V.2 Dependabot triage — 0 Critical/High; merged #25, #23, #24; CI green on `8afb342` | [`GATES.md`](GATES.md) |
 | 2026-06-19 | V.1 configuration cache re-validated under AGP 9.2.1 full gate suite | `gradle.properties` |
-| 2026-07-12 | Audit X — require Android CI + CodeQL (not template Security Scan); keep Scorecard/Trivy optional; fix shell LF + Windows gh.exe | [`CODE_REVIEW.md`](../CODE_REVIEW.md) · [`SECURITY_TRIAGE.md`](SECURITY_TRIAGE.md) |
+| 2026-07-12 | Audit X — require Android CI + CodeQL (not template Security Scan); keep Scorecard/Trivy optional; fix shell LF + Windows gh.exe | [`CODE_REVIEW.md`](../CODE_REVIEW.md.example) · [`SECURITY_TRIAGE.md`](SECURITY_TRIAGE.md) |
 | 2026-07-12 | Automate X.4–X.6: Dependabot triage script, JAVA_HOME resolve, Trivy+Scorecard workflows (SHA-pinned trivy-action v0.35.0) | [SECURITY_TRIAGE.md](SECURITY_TRIAGE.md) |
 | 2026-07-21 | Milestone Y — Align to agent-project-bootstrap v0.15.0 (skills/hooks/agents, TEMPLATE_INDEX, dependency-review); keep docs/ board paths + android.yml; no release-please | [BOOTSTRAP_ALIGNMENT.md](BOOTSTRAP_ALIGNMENT.md) |
 | 2026-08-20 | Sync to agent-project-bootstrap **0.21.0** — coach/tour/ideas/codex-review, multi-agent adapters, `verify.sh`, `bootstrap.config.json`; preserve `android.yml`, `docs/` boards, `project.mdc` | [BOOTSTRAP_SYNC_0.21.md](BOOTSTRAP_SYNC_0.21.md) |
@@ -20,3 +20,4 @@ Chronological index of major technical decisions. Entries are **append-only**.
 | 2026-08-30 | Template catch-up **0.21.0 → 1.0.0** — Canon commands/help/scripts + Mixed workflows; Sacred `AGENTS.md` and product modules untouched; no `examples/` overwrite | [BOOTSTRAP_ALIGNMENT.md](BOOTSTRAP_ALIGNMENT.md) |
 | 2026-08-30 | **AD** Golden Path 1–7 in existing hosts (About, theme, crash queue, sanitized GitHub feedback, display-refresh). Crash/refresh prefs omitted from backup export. Local `feature-gate --stack android` passed | [COMPLETED_TASKS.md](COMPLETED_TASKS.md) |
 | 2026-08-30 | **AE** — Completed 70 vertical slice product backlog rows (AE.1–AE.70); automated human leftovers; verified ADB instrumented tests on hardware; prepared and shipped v1.10.0 | [COMPLETED_TASKS.md](COMPLETED_TASKS.md) |
+| 2026-09-15 | **BH-006/007** — leftover `strikes>=3` after a code halt blocked the next `/build`; new `/build` resets halt strikes; autofix retry does not increment | [features/build-halt-local-gates.md](features/build-halt-local-gates.md) |

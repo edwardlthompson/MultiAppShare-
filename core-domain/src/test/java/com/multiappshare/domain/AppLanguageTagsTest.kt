@@ -21,4 +21,10 @@ class AppLanguageTagsTest {
         assertNull(AppLanguageTags.sanitize(""))
         assertNull(AppLanguageTags.sanitize("xx-YY"))
     }
+
+    @Test
+    fun pickerOrderMatchesSupportedSet() {
+        assertEquals(setOf("en", "fr", "es", "de", "it"), AppLanguageTags.supported)
+        assertEquals(AppLanguageTags.pickerOrder.toSet(), AppLanguageTags.supported)
+    }
 }

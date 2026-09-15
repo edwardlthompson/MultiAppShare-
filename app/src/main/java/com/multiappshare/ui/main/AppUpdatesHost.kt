@@ -1,22 +1,22 @@
 package com.multiappshare.ui.main
 
-import android.content.ActivityNotFoundException
-import android.content.Intent
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.core.net.toUri
 import com.multiappshare.BuildConfig
 import com.multiappshare.R
+import com.multiappshare.core.ui.ExternalIntent
 import com.multiappshare.ui.dashboard.DashboardDonateNudgeDialog
 import com.multiappshare.ui.dashboard.DashboardUpdateDialog
 import com.multiappshare.ui.dashboard.DonateNudgeLabels
 import com.multiappshare.ui.dashboard.UpdateDialogLabels
+import com.multiappshare.ui.launch.rememberOpenUrl
 import com.multiappshare.updates.AppUpdates
 import com.multiappshare.updates.LaunchPrompt
 import com.multiappshare.updates.ProductUpdate
@@ -26,14 +26,20 @@ import kotlinx.coroutines.withContext
 
 @Composable
 internal fun AppUpdatesHost(enabled: Boolean) {
-    if (!enabled || BuildConfig.DEBUG) return
     val context = LocalContext.current
+    val openUrl = rememberOpenUrl()
     var prompt by remember { mutableStateOf<LaunchPrompt?>(null) }
-    LaunchedEffect(BuildConfig.VERSION_NAME) {
+    var retryNonce by remember { mutableIntStateOf(0) }
+    LaunchedEffect(enabled, BuildConfig.VERSION_NAME, retryNonce) {
+        if (!enabled || BuildConfig.DEBUG) {
+            prompt = null
+            return@LaunchedEffect
+        }
         prompt = withContext(Dispatchers.IO) {
             AppUpdates.evaluate(context, BuildConfig.VERSION_NAME)
         }
     }
+    if (!enabled || BuildConfig.DEBUG) return
     when (val current = prompt) {
         is LaunchPrompt.Donate -> DashboardDonateNudgeDialog(
             labels = DonateNudgeLabels(
@@ -44,7 +50,7 @@ internal fun AppUpdatesHost(enabled: Boolean) {
             ),
             onDonate = {
                 UpdatePrefs(context).markVersionSeen(BuildConfig.VERSION_NAME)
-                openUrl(context, ProductUpdate.VENMO_URL)
+                openUrl(ProductUpdate.VENMO_URL)
                 prompt = null
             },
             onDismiss = {
@@ -70,7 +76,7 @@ internal fun AppUpdatesHost(enabled: Boolean) {
             ),
             onInstall = {
                 UpdatePrefs(context).markChecked(System.currentTimeMillis(), current.version)
-                openUrl(context, current.url)
+                openUrl(current.url)
                 prompt = null
             },
             onDismiss = {
@@ -78,14 +84,25 @@ internal fun AppUpdatesHost(enabled: Boolean) {
                 prompt = null
             },
         )
+        is LaunchPrompt.CheckFailed -> DashboardUpdateDialog(
+            labels = UpdateDialogLabels(
+                title = stringResource(R.string.update_check_failed_title),
+                body = stringResource(R.string.update_check_failed_body),
+                install = stringResource(R.string.update_retry),
+                later = stringResource(R.string.update_later),
+            ),
+            onInstall = {
+                prompt = null
+                retryNonce += 1
+            },
+            onDismiss = {
+                UpdatePrefs(context).markChecked(System.currentTimeMillis())
+                prompt = null
+            },
+        )
         null -> Unit
     }
 }
 
-internal fun openUrl(context: android.content.Context, url: String) {
-    try {
-        context.startActivity(Intent(Intent.ACTION_VIEW, url.toUri()))
-    } catch (_: ActivityNotFoundException) {
-        // Stay silent — donate/update must never block the app.
-    }
-}
+internal fun openUrl(context: android.content.Context, url: String): Boolean =
+    ExternalIntent.tryViewUrl(context, url)

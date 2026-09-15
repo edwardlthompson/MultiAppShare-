@@ -13,12 +13,14 @@ import com.multiappshare.DeleteGroupDialog
 import com.multiappshare.MainUiState
 import com.multiappshare.MainViewModel
 import com.multiappshare.R
+import com.multiappshare.domain.InlineFieldError
 import com.multiappshare.model.AppGroup
 import com.multiappshare.ui.dashboard.AboutDialogLabels
 import com.multiappshare.ui.dashboard.DashboardAboutDialog
 import com.multiappshare.ui.dashboard.DashboardHistoryDialog
 import com.multiappshare.ui.dashboard.HistoryDialogLabels
 import com.multiappshare.ui.groups.CreateGroupDialog
+import com.multiappshare.ui.groups.LocalRequestAutoGroupPreview
 import com.multiappshare.ui.groups.ModifyGroupAppsDialog
 import com.multiappshare.ui.groups.ReorderAppsDialog
 import com.multiappshare.ui.groups.SortGroupsDialog
@@ -43,30 +45,48 @@ internal fun MainScreenDialogsHost(
     onShowHistoryDialog: (Boolean) -> Unit,
     showAboutDialog: Boolean,
     onShowAboutDialog: (Boolean) -> Unit,
+    onCrashReviewVisible: (Boolean) -> Unit,
 ) {
     val context = LocalContext.current
     var showFeedback by remember { mutableStateOf(false) }
-    MainScreenGoldenPathHost(showFeedback = showFeedback, onShowFeedback = { showFeedback = it })
-    val duplicateGroupToast = stringResource(R.string.toast_duplicate_group_name)
+    var showWhatsNew by remember { mutableStateOf(false) }
+    var showPrivacy by remember { mutableStateOf(false) }
+    var showLicenses by remember { mutableStateOf(false) }
+    MainScreenGoldenPathHost(
+        showFeedback = showFeedback,
+        onShowFeedback = { showFeedback = it },
+        onboardingVisible = viewModel.showOnboardingDialog,
+        onCrashReviewVisible = onCrashReviewVisible,
+    )
+    val requestAutoGroup = LocalRequestAutoGroupPreview.current
+    val duplicateGroupMessage = stringResource(R.string.toast_duplicate_group_name)
     val refreshingAppsToast = stringResource(R.string.toast_refreshing_apps)
+    var createNameError by remember { mutableStateOf<String?>(null) }
+    var historyError by remember { mutableStateOf<String?>(null) }
     val historyLabels = HistoryDialogLabels(
         title = stringResource(R.string.history_title),
         empty = stringResource(R.string.history_empty),
+        emptyCta = stringResource(R.string.history_empty_cta),
         sharedPrefix = stringResource(R.string.history_shared_prefix),
         close = stringResource(R.string.button_close),
         reshare = stringResource(R.string.history_reshare_last),
         reshareRow = stringResource(R.string.history_reshare_row),
+        error = stringResource(R.string.history_error_cd),
     )
-    val reshareFailedToast = stringResource(R.string.toast_reshare_unavailable)
+    val reshareFailedMessage = stringResource(R.string.toast_reshare_unavailable)
     if (showCreateGroupDialog) {
         CreateGroupDialog(
-            onDismiss = { onShowCreateGroupDialog(false) },
+            onDismiss = {
+                createNameError = null
+                onShowCreateGroupDialog(false)
+            },
+            nameError = createNameError,
+            onNameEdited = { createNameError = null },
             onCreateGroup = { name ->
                 viewModel.createGroup(name) { success ->
+                    createNameError = InlineFieldError.of(success, duplicateGroupMessage)
                     if (success) {
                         onShowCreateGroupDialog(false)
-                    } else {
-                        Toast.makeText(context, duplicateGroupToast, Toast.LENGTH_SHORT).show()
                     }
                 }
             },
@@ -74,11 +94,9 @@ internal fun MainScreenDialogsHost(
     }
     if (viewModel.showOnboardingDialog) {
         OnboardingDialog(
-            onAutofill = {
-                viewModel.autoGroupApps(state.allApps, append = false)
-                viewModel.setOnboardingDismissed()
-            },
+            onAutofill = { requestAutoGroup(false, true) },
             onManual = { viewModel.setOnboardingDismissed() },
+            onSkip = { viewModel.setOnboardingDismissed() },
         )
     }
     showModifyGroupDialog?.let { group ->
@@ -131,14 +149,17 @@ internal fun MainScreenDialogsHost(
         DashboardHistoryDialog(
             history = state.history,
             labels = historyLabels,
-            onDismiss = { onShowHistoryDialog(false) },
+            errorText = historyError,
+            onDismiss = {
+                historyError = null
+                onShowHistoryDialog(false)
+            },
             onReshare = if (viewModel.hasLastSharePayload) {
                 {
                     viewModel.restoreLastPayload { ok ->
+                        historyError = InlineFieldError.of(ok, reshareFailedMessage)
                         if (ok) {
                             onShowHistoryDialog(false)
-                        } else {
-                            Toast.makeText(context, reshareFailedToast, Toast.LENGTH_SHORT).show()
                         }
                     }
                 }
@@ -147,10 +168,9 @@ internal fun MainScreenDialogsHost(
             },
             onReshareItem = { item ->
                 viewModel.restoreHistoryPayload(item) { ok ->
+                    historyError = InlineFieldError.of(ok, reshareFailedMessage)
                     if (ok) {
                         onShowHistoryDialog(false)
-                    } else {
-                        Toast.makeText(context, reshareFailedToast, Toast.LENGTH_SHORT).show()
                     }
                 }
             },
@@ -182,9 +202,28 @@ internal fun MainScreenDialogsHost(
                 changelog = stringResource(R.string.about_changelog),
                 feedback = stringResource(R.string.feedback_title),
                 ok = stringResource(R.string.button_ok),
+                noAppForLink = stringResource(R.string.error_no_app_for_link),
+                privacyOpen = stringResource(R.string.settings_privacy),
+                licenses = stringResource(R.string.settings_licenses),
+                shortcuts = stringResource(R.string.about_shortcuts),
             ),
             onDismiss = { onShowAboutDialog(false) },
             onFeedback = { showFeedback = true },
+            onChangelog = { showWhatsNew = true },
+            onPrivacy = { showPrivacy = true },
+            onLicenses = { showLicenses = true },
         )
+    }
+    if (showWhatsNew) {
+        com.multiappshare.ui.about.WhatsNewDialog(onDismiss = { showWhatsNew = false })
+    }
+    if (showPrivacy) {
+        com.multiappshare.ui.about.PrivacyPolicyDialog(onDismiss = { showPrivacy = false })
+    }
+    if (showLicenses) {
+        com.multiappshare.ui.about.OssLicensesDialog(onDismiss = { showLicenses = false })
+    }
+    if (viewModel.pinUnsupported) {
+        com.multiappshare.ui.groups.PinUnsupportedDialog(onDismiss = { viewModel.pinUnsupported = false })
     }
 }

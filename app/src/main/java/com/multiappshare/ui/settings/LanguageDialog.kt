@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import com.multiappshare.R
+import com.multiappshare.domain.AppLanguageTags
 
 @Composable
 fun LanguageDialog(
@@ -25,28 +26,27 @@ fun LanguageDialog(
     onConfirm: (String?) -> Unit,
 ) {
     var draft by remember(selectedTag) { mutableStateOf(selectedTag) }
-    val options = listOf<Pair<String?, Int>>(
-        null to R.string.language_system,
-        "en" to R.string.language_english,
-        "fr" to R.string.language_french,
-        "es" to R.string.language_spanish,
-    )
+    val options = listOf<Pair<String?, Int>>(null to R.string.language_system) +
+        AppLanguageTags.pickerOrder.map { tag -> tag to languageLabel(tag) }
     AlertDialog(
         onDismissRequest = onDismiss,
         title = { Text(stringResource(R.string.language_title)) },
         text = {
             Column {
+                SettingsDialogHelper(stringResource(R.string.language_helper))
                 options.forEach { (tag, label) ->
                     val selected = if (tag == null) draft == null else draft == tag
                     Row(
-                        modifier = Modifier.selectable(
-                            selected = selected,
-                            onClick = { draft = tag },
-                            role = Role.RadioButton,
-                        ),
+                        modifier = Modifier
+                            .settingsOptionRow()
+                            .selectable(
+                                selected = selected,
+                                onClick = { draft = tag },
+                                role = Role.RadioButton,
+                            ),
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
-                        RadioButton(selected = selected, onClick = { draft = tag })
+                        RadioButton(selected = selected, onClick = null)
                         Text(stringResource(label))
                     }
                 }
@@ -59,4 +59,13 @@ fun LanguageDialog(
             TextButton(onClick = onDismiss) { Text(stringResource(R.string.button_cancel)) }
         },
     )
+}
+
+private fun languageLabel(tag: String): Int = when (tag) {
+    "en" -> R.string.language_english
+    "de" -> R.string.language_german
+    "es" -> R.string.language_spanish
+    "fr" -> R.string.language_french
+    "it" -> R.string.language_italian
+    else -> R.string.language_english
 }

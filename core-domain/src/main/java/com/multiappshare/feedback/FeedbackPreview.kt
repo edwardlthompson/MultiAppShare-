@@ -20,4 +20,7 @@ object FeedbackPreview {
             }
         }
     }
+
+    fun canSend(userTitle: String, userBody: String, crashText: String?): Boolean =
+        userTitle.isNotBlank() || userBody.isNotBlank() || !crashText.isNullOrBlank()
 }

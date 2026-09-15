@@ -19,8 +19,12 @@ object InstrumentedTestHelpers {
         device.wait(Until.findObject(By.text("Allow")), 2_000)?.click()
         device.waitForIdle()
 
+        val skip = context.getString(R.string.onboarding_skip)
+        device.wait(Until.findObject(By.text(skip)), 5_000)?.click()
+        device.waitForIdle()
+
         val next = context.getString(R.string.onboarding_next)
-        device.wait(Until.findObject(By.text(next)), 5_000)?.click()
+        device.wait(Until.findObject(By.text(next)), 2_000)?.click()
         device.waitForIdle()
 
         val manual = context.getString(R.string.onboarding_manual)
@@ -37,6 +41,11 @@ object InstrumentedTestHelpers {
 
     fun dismissStartupDialogsCompose(composeRule: ComposeContentTestRule, context: Context) {
         composeRule.waitForIdle()
+        val skip = context.getString(R.string.onboarding_skip)
+        if (composeRule.onAllNodesWithText(skip).fetchSemanticsNodes().isNotEmpty()) {
+            composeRule.onNodeWithText(skip).performClick()
+            composeRule.waitForIdle()
+        }
         val next = context.getString(R.string.onboarding_next)
         if (composeRule.onAllNodesWithText(next).fetchSemanticsNodes().isNotEmpty()) {
             composeRule.onNodeWithText(next).performClick()

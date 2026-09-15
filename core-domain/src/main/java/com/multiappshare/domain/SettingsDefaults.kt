@@ -4,4 +4,5 @@ object SettingsDefaults {
     const val CRASH_CAPTURE_ENABLED = false
     const val HIGH_REFRESH_ENABLED = true
     const val SHARE_HAPTICS_ENABLED = true
+    const val DYNAMIC_COLOR_ENABLED = DynamicColorPolicy.DEFAULT_ENABLED
 }

@@ -25,7 +25,7 @@ object DatabaseModule {
             context,
             AppDatabase::class.java,
             "multiappshare_db"
-        ).addMigrations(AppDatabaseMigrations.MIGRATION_1_2)
+        ).addMigrations(AppDatabaseMigrations.MIGRATION_1_2, AppDatabaseMigrations.MIGRATION_2_3)
         // Release: never wipe user groups/history on schema mismatch — add Migration X→Y when bumping DB version.
         // Debug: destructive rebuild OK for fast iteration (see BUILD_PLAN F.3).
         if (BuildConfig.DEBUG) {

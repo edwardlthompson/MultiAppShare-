@@ -1,17 +1,16 @@
 package com.multiappshare
 
 import android.content.Context
-import android.widget.Toast
 import com.multiappshare.domain.GroupNameHelper
+import com.multiappshare.domain.PinShortcutPolicy
 import com.multiappshare.model.AppGroup
 import com.multiappshare.share.ClipboardShare
 import com.multiappshare.share.PersistableShareUris
 
 internal object MainViewModelPins {
-    fun pinShortcut(context: Context, group: AppGroup) {
-        if (!ShortcutHelper.createPinShortcut(context, group)) {
-            Toast.makeText(context, R.string.toast_pin_unsupported, Toast.LENGTH_SHORT).show()
-        }
+    fun pinShortcut(context: Context, group: AppGroup, onUnsupported: () -> Unit) {
+        val supported = ShortcutHelper.createPinShortcut(context, group)
+        if (PinShortcutPolicy.shouldExplainUnsupported(supported)) onUnsupported()
     }
 
     fun afterRename(context: Context, group: AppGroup, newName: String) {
@@ -19,13 +18,31 @@ internal object MainViewModelPins {
         ShortcutHelper.updateAfterRename(context, renamed, group.name)
     }
 
-    fun shareClipboard(host: Context, appContext: Context, session: MainViewModelSession) {
+    fun shareClipboard(host: Context, session: MainViewModelSession) {
         val next = ClipboardShare.read(host)
         if (next == null) {
-            Toast.makeText(appContext, R.string.toast_clipboard_empty, Toast.LENGTH_SHORT).show()
+            session.update { copy(noticeRes = R.string.toast_clipboard_empty) }
             return
         }
         PersistableShareUris.take(host.contentResolver, next.uris, ClipboardShare.persistableFlags())
         session.update { next }
+    }
+
+    fun duplicate(
+        groups: MainGroupCommands,
+        context: Context,
+        group: AppGroup,
+        uiState: MainUiState,
+        setCopiedName: (String?) -> Unit,
+        onResult: (Boolean) -> Unit,
+    ) {
+        val label = context.getString(R.string.group_copy_label)
+        val preview = (uiState as? MainUiState.Success)?.let {
+            GroupNameHelper.uniqueCopyName(group.name, it.groups, label)
+        }
+        groups.duplicateGroup(group, label) { ok ->
+            if (ok) setCopiedName(preview)
+            onResult(ok)
+        }
     }
 }

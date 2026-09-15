@@ -5,8 +5,8 @@ import app.cash.paparazzi.Paparazzi
 import com.multiappshare.domain.HistoryPayload
 import com.multiappshare.domain.ShareSessionSnapshot
 import com.multiappshare.model.HistoryItem
-import com.multiappshare.ui.dashboard.DashboardHistoryDialog
 import com.multiappshare.ui.dashboard.HistoryDialogLabels
+import com.multiappshare.ui.dashboard.HistoryScreen
 import com.multiappshare.ui.main.GroupFilterField
 import com.multiappshare.ui.theme.MultiAppShareTheme
 import org.junit.Rule
@@ -34,7 +34,7 @@ class MilestoneAbPaparazziTest {
         val payload = HistoryPayload.encode(ShareSessionSnapshot(text = "hello", mimeType = "text/plain"))
         paparazzi.snapshot {
             MultiAppShareTheme(darkTheme = false, dynamicColor = false) {
-                DashboardHistoryDialog(
+                HistoryScreen(
                     history = listOf(
                         HistoryItem(
                             id = 1,
@@ -46,15 +46,64 @@ class MilestoneAbPaparazziTest {
                         ),
                     ),
                     labels = HistoryDialogLabels(
-                        title = "History",
-                        empty = "Empty",
+                        title = "Recent activity",
+                        empty = "No activity yet.",
+                        emptyCta = "Share something to see it here.",
                         sharedPrefix = "Shared: %1\$s",
                         close = "Close",
                         reshare = "Re-share last",
                         reshareRow = "Re-share",
+                        error = "Failed",
                     ),
                     onDismiss = {},
                     onReshareItem = {},
+                )
+            }
+        }
+    }
+
+    @Test
+    fun historyScreen_emptyCta_light() {
+        paparazzi.snapshot {
+            MultiAppShareTheme(darkTheme = false, dynamicColor = false) {
+                HistoryScreen(
+                    history = emptyList(),
+                    labels = HistoryDialogLabels(
+                        title = "Recent activity",
+                        empty = "No activity yet.",
+                        emptyCta = "Share something to see it here.",
+                        sharedPrefix = "Shared: %1\$s",
+                        close = "Close",
+                    ),
+                    onDismiss = {},
+                )
+            }
+        }
+    }
+
+    @Test
+    fun historyScreen_errorRow_light() {
+        paparazzi.snapshot {
+            MultiAppShareTheme(darkTheme = false, dynamicColor = false) {
+                HistoryScreen(
+                    history = listOf(
+                        HistoryItem(
+                            id = 2,
+                            timestamp = 1_700_000_000_000L,
+                            groupName = "Work",
+                            contentDescription = "Image",
+                            status = "Share failed",
+                            isError = true,
+                        ),
+                    ),
+                    labels = HistoryDialogLabels(
+                        title = "Recent activity",
+                        empty = "No activity yet.",
+                        sharedPrefix = "Shared: %1\$s",
+                        close = "Close",
+                        error = "Failed",
+                    ),
+                    onDismiss = {},
                 )
             }
         }

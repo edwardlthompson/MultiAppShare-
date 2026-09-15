@@ -11,5 +11,6 @@ class SettingsDefaultsTest {
         assertFalse(SettingsDefaults.CRASH_CAPTURE_ENABLED)
         assertTrue(SettingsDefaults.HIGH_REFRESH_ENABLED)
         assertTrue(SettingsDefaults.SHARE_HAPTICS_ENABLED)
+        assertTrue(SettingsDefaults.DYNAMIC_COLOR_ENABLED)
     }
 }

@@ -32,21 +32,28 @@ fun SharingDelayDialog(
         title = { Text(stringResource(R.string.delay_title)) },
         text = {
             Column {
+                SettingsDialogHelper(stringResource(R.string.delay_helper))
                 SharingDelay.PRESETS_MS.forEach { ms ->
-                    val label = if (ms == 0) {
-                        stringResource(R.string.delay_off)
-                    } else {
-                        stringResource(R.string.delay_ms, ms)
+                    val label = when (SharingDelay.presetCopy(ms)) {
+                        SharingDelay.PresetCopy.NONE -> stringResource(R.string.delay_off)
+                        SharingDelay.PresetCopy.SHORT -> stringResource(R.string.delay_seconds_half)
+                        SharingDelay.PresetCopy.ONE -> stringResource(R.string.delay_seconds_one)
+                        SharingDelay.PresetCopy.MANY -> stringResource(
+                            R.string.delay_seconds_n,
+                            SharingDelay.wholeSeconds(ms),
+                        )
                     }
                     Row(
-                        modifier = Modifier.selectable(
-                            selected = draft == ms,
-                            onClick = { draft = ms },
-                            role = Role.RadioButton,
-                        ),
+                        modifier = Modifier
+                            .settingsOptionRow()
+                            .selectable(
+                                selected = draft == ms,
+                                onClick = { draft = ms },
+                                role = Role.RadioButton,
+                            ),
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
-                        RadioButton(selected = draft == ms, onClick = { draft = ms })
+                        RadioButton(selected = draft == ms, onClick = null)
                         Text(label)
                     }
                 }

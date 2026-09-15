@@ -123,7 +123,7 @@ class LaunchPromptTest {
     }
 
     @Test
-    fun failedFetchOrEmptyAssetsStaySilent() = runTest {
+    fun failedFetchOffersRetryAndEmptyAssetsStaySilent() = runTest {
         val failed = LaunchPromptDecider.decide(
             currentVersion = "1.9.4",
             lastSeenVersion = "1.9.4",
@@ -144,7 +144,7 @@ class LaunchPromptTest {
             markSeen = {},
             markChecked = {},
         )
-        assertNull(failed)
+        assertEquals(LaunchPrompt.CheckFailed, failed)
         assertNull(empty)
         assertTrue(GithubReleaseJson.parse("{") == null)
         val json = """

@@ -3,8 +3,10 @@ package com.multiappshare
 import android.content.Context
 import android.content.pm.PackageManager
 import android.net.Uri
+import com.multiappshare.domain.GroupPinOrder
 import com.multiappshare.domain.GroupsRepository
 import com.multiappshare.domain.HistoryRepository
+import com.multiappshare.domain.ImportStrategy
 import com.multiappshare.domain.SettingsRepository
 import com.multiappshare.model.AppGroup
 import com.multiappshare.model.AppInfo
@@ -14,10 +16,12 @@ import kotlinx.coroutines.flow.first
 internal suspend fun loadMainUiData(
     groupsRepository: GroupsRepository,
     historyRepository: HistoryRepository,
+    settingsRepository: SettingsRepository,
     packageManager: PackageManager,
     excludePackage: String,
 ): Triple<List<AppGroup>, List<AppInfo>, List<HistoryItem>> {
-    val groups = groupsRepository.loadGroups().sortedByDescending { it.usageCount }
+    val pinned = settingsRepository.pinnedGroupNames.first()
+    val groups = GroupPinOrder.sortGroupsWithPinned(groupsRepository.loadGroups(), pinned)
     val history = historyRepository.loadHistory()
     val allApps = AppListResolver.resolveAllApps(packageManager, excludePackage)
     return Triple(groups, allApps, history)
@@ -62,8 +66,19 @@ internal object MainViewModelBackup {
         uri: Uri,
         onEncrypted: (Uri) -> Unit,
         onComplete: () -> Unit,
+        strategy: ImportStrategy = ImportStrategy.REPLACE,
+        onError: (Int) -> Unit = {},
     ) {
-        BackupOperations.importGroupsFromUri(viewModelScope, context, repos, uri, onEncrypted, onComplete)
+        BackupOperations.importGroupsFromUri(
+            viewModelScope,
+            context,
+            repos,
+            uri,
+            onEncrypted,
+            onComplete,
+            strategy,
+            onError,
+        )
     }
 
     fun importWithPassphrase(
@@ -73,7 +88,18 @@ internal object MainViewModelBackup {
         uri: Uri,
         passphrase: CharArray,
         onSuccess: () -> Unit,
+        strategy: ImportStrategy = ImportStrategy.REPLACE,
+        onError: (Int) -> Unit = {},
     ) {
-        BackupOperations.importGroupsWithPassphrase(viewModelScope, context, repos, uri, passphrase, onSuccess)
+        BackupOperations.importGroupsWithPassphrase(
+            viewModelScope,
+            context,
+            repos,
+            uri,
+            passphrase,
+            onSuccess,
+            strategy,
+            onError,
+        )
     }
 }

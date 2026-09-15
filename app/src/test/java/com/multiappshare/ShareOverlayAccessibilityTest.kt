@@ -26,6 +26,19 @@ class ShareOverlayAccessibilityTest {
     }
 
     @Test
+    fun createGroupDialog_duplicateName_light() {
+        paparazzi.snapshot {
+            MultiAppShareTheme(darkTheme = false, dynamicColor = false) {
+                CreateGroupDialog(
+                    onDismiss = {},
+                    onCreateGroup = {},
+                    nameError = "A group with that name already exists.",
+                )
+            }
+        }
+    }
+
+    @Test
     fun emptyGroupsPlaceholder_createAction_light() {
         paparazzi.snapshot {
             MultiAppShareTheme(darkTheme = false, dynamicColor = false) {

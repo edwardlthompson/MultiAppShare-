@@ -20,6 +20,7 @@ import androidx.compose.material.icons.filled.AutoAwesome
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -32,26 +33,42 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.multiappshare.R
+import com.multiappshare.ui.main.rememberSkipSuccessBurst
 import kotlinx.coroutines.launch
 
 @Composable
-fun OnboardingDialog(onAutofill: () -> Unit, onManual: () -> Unit) {
+fun OnboardingDialog(
+    onAutofill: () -> Unit,
+    onManual: () -> Unit,
+    onSkip: () -> Unit = onManual,
+) {
     val pagerState = rememberPagerState(pageCount = { 2 })
     val coroutineScope = rememberCoroutineScope()
+    val skipMotion = rememberSkipSuccessBurst()
+    val goToPage: (Int) -> Unit = { page ->
+        coroutineScope.launch {
+            if (skipMotion) pagerState.scrollToPage(page) else pagerState.animateScrollToPage(page)
+        }
+    }
 
-    BackHandler(enabled = pagerState.currentPage > 0) {
-        val prev = pagerState.currentPage - 1
-        coroutineScope.launch { pagerState.animateScrollToPage(prev) }
+    BackHandler {
+        if (pagerState.currentPage > 0) {
+            goToPage(pagerState.currentPage - 1)
+        } else {
+            onSkip()
+        }
     }
 
     Dialog(
-        onDismissRequest = { /* Force action */ },
+        onDismissRequest = onSkip,
         properties = DialogProperties(usePlatformDefaultWidth = false),
     ) {
         Surface(
@@ -71,6 +88,15 @@ fun OnboardingDialog(onAutofill: () -> Unit, onManual: () -> Unit) {
                 modifier = Modifier.padding(24.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.End,
+                ) {
+                    TextButton(onClick = onSkip) {
+                        Text(stringResource(R.string.onboarding_skip))
+                    }
+                }
+
                 Spacer(modifier = Modifier.weight(1f))
 
                 HorizontalPager(
@@ -95,12 +121,19 @@ fun OnboardingDialog(onAutofill: () -> Unit, onManual: () -> Unit) {
 
                 Row {
                     repeat(2) { index ->
-                        val color = if (pagerState.currentPage == index) {
+                        val selected = pagerState.currentPage == index
+                        val color = if (selected) {
                             MaterialTheme.colorScheme.primary
                         } else {
                             MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.4f)
                         }
-                        Box(modifier = Modifier.padding(4.dp).size(8.dp).background(color, CircleShape))
+                        val pageCd = stringResource(R.string.cd_onboarding_page, index + 1, 2)
+                        IconButton(
+                            onClick = { goToPage(index) },
+                            modifier = Modifier.semantics { contentDescription = pageCd },
+                        ) {
+                            Box(modifier = Modifier.size(8.dp).background(color, CircleShape))
+                        }
                     }
                 }
 
@@ -108,7 +141,7 @@ fun OnboardingDialog(onAutofill: () -> Unit, onManual: () -> Unit) {
 
                 if (pagerState.currentPage == 0) {
                     Button(
-                        onClick = { coroutineScope.launch { pagerState.animateScrollToPage(1) } },
+                        onClick = { goToPage(1) },
                         modifier = Modifier.fillMaxWidth(),
                     ) {
                         Text(stringResource(R.string.onboarding_next))

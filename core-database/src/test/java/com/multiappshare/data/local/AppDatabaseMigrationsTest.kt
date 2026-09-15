@@ -44,6 +44,51 @@ class AppDatabaseMigrationsTest {
         helper.close()
     }
 
+    @Test
+    fun migration2to3_addsGroupNotesColumn() {
+        val context = ApplicationProvider.getApplicationContext<Context>()
+        val name = "mas-mig-2-3.db"
+        context.deleteDatabase(name)
+        val helper = FrameworkSQLiteOpenHelperFactory().create(
+            SupportSQLiteOpenHelper.Configuration.builder(context)
+                .name(name)
+                .callback(V2Callback())
+                .build(),
+        )
+        val db = helper.writableDatabase
+        AppDatabaseMigrations.MIGRATION_2_3.migrate(db)
+        db.query("PRAGMA table_info(groups)").use { cursor ->
+            val cols = mutableListOf<String>()
+            while (cursor.moveToNext()) cols.add(cursor.getString(1))
+            assertTrue(cols.contains("notes"))
+        }
+        db.query("SELECT notes FROM groups").use { cursor ->
+            assertTrue(cursor.moveToFirst())
+            assertEquals("", cursor.getString(0))
+        }
+        helper.close()
+    }
+
+    private class V2Callback : SupportSQLiteOpenHelper.Callback(2) {
+        override fun onCreate(db: androidx.sqlite.db.SupportSQLiteDatabase) {
+            db.execSQL(
+                "CREATE TABLE IF NOT EXISTS `groups` (`name` TEXT NOT NULL, `apps` TEXT NOT NULL, " +
+                    "`isExpanded` INTEGER NOT NULL, `usageCount` INTEGER NOT NULL, `id` TEXT NOT NULL, " +
+                    "PRIMARY KEY(`name`))",
+            )
+            db.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS `index_groups_id` ON `groups` (`id`)")
+            db.execSQL(
+                "CREATE TABLE IF NOT EXISTS `history` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
+                    "`timestamp` INTEGER NOT NULL, `groupName` TEXT NOT NULL, " +
+                    "`contentDescription` TEXT NOT NULL, `status` TEXT NOT NULL, `isError` INTEGER NOT NULL, " +
+                    "`payloadJson` TEXT)",
+            )
+            db.execSQL("INSERT INTO groups (name, apps, isExpanded, usageCount, id) VALUES ('A', '[]', 0, 0, 'id-a')")
+        }
+
+        override fun onUpgrade(db: androidx.sqlite.db.SupportSQLiteDatabase, oldVersion: Int, newVersion: Int) = Unit
+    }
+
     private class V1Callback : SupportSQLiteOpenHelper.Callback(1) {
         override fun onCreate(db: androidx.sqlite.db.SupportSQLiteDatabase) {
             db.execSQL(

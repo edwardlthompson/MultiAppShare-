@@ -7,5 +7,6 @@ data class AppInfo(
     val appName: String,
     val packageName: String,
     val activityName: String = "",
-    val category: Int = -1
+    val category: Int = -1,
+    val isWorkProfile: Boolean = false,
 )

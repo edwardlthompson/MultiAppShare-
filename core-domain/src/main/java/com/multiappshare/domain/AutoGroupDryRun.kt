@@ -3,6 +3,8 @@ package com.multiappshare.domain
 import com.multiappshare.model.AppGroup
 import com.multiappshare.model.AppInfo
 
+data class AutoGroupPreviewRow(val name: String, val appCount: Int)
+
 object AutoGroupDryRun {
     fun preview(
         allApps: List<AppInfo>,
@@ -31,6 +33,9 @@ object AutoGroupDryRun {
 
         return existingGroups.filter { ex -> newGroups.none { it.name == ex.name } } + newGroups
     }
+
+    fun summarize(preview: List<AppGroup>): List<AutoGroupPreviewRow> =
+        preview.map { AutoGroupPreviewRow(it.name, it.apps.size) }
 
     private fun determineCategoryLabel(app: AppInfo): String? {
         val labelByKeywords = labelFromKeywords(app.appName.lowercase(), app.packageName.lowercase())

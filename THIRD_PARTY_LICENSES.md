@@ -1,8 +1,8 @@
 # Third-party licenses — Multi App Share
 
-This app is **MIT licensed** ([`LICENSE`](../LICENSE)). Dependencies are declared in Gradle:
+This app is **MIT licensed** ([`LICENSE`](LICENSE)). Dependencies are declared in Gradle:
 
-- Version catalog: [`gradle/libs.versions.toml`](../gradle/libs.versions.toml)
+- Version catalog: [`gradle/libs.versions.toml`](gradle/libs.versions.toml)
 - Module `build.gradle.kts` files
 
 ## Major OSS dependencies (non-exhaustive)

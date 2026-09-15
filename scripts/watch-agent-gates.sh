@@ -39,6 +39,8 @@ while [ $# -gt 0 ]; do
 done
 STEP="${STEP:-gate}"
 
+bash scripts/agent-progress.sh maybe-reset-env-strikes >/dev/null 2>&1 || true
+
 if [ "$ONCE" = true ]; then
   MAX_ATTEMPTS=1
   INTERVAL=0
@@ -202,7 +204,9 @@ while [ "$attempt" -lt "$MAX_ATTEMPTS" ]; do
       PIN_SCOPE=true
       SKIP_PREAMBLE_ONCE=true
     fi
+    export FEATURE_GATE_SKIP_STRIKE=1
     run_gate
+    unset FEATURE_GATE_SKIP_STRIKE
     PIN_SCOPE=false
     persist_gate_json
     bash scripts/render-gates-status.sh >/dev/null 2>&1 || true

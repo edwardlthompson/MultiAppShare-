@@ -1,11 +1,9 @@
 package com.multiappshare
 
-import android.Manifest
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -22,6 +20,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
 import androidx.core.content.ContextCompat
 import com.multiappshare.display.enableFastestSameResolutionMode
+import com.multiappshare.domain.BackupExportName
 import com.multiappshare.ui.theme.MultiAppShareTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -49,7 +48,6 @@ class MainActivity : ComponentActivity() {
     private val requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission(),
     ) { granted -> viewModel.onNotificationsPermissionResult(granted) }
-
     private var pendingExportPassphrase: CharArray? = null
     private val showExportPassphraseDialog = mutableStateOf(false)
 
@@ -59,22 +57,24 @@ class MainActivity : ComponentActivity() {
         }
     }
     private val packageChangeReceiver = PackageChangeReceiver { viewModel.loadData() }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         window.decorView.post { window.enableFastestSameResolutionMode() } // default until prefs load
-        sharing = MainActivitySharing(this, viewModel, MainActivityShareStep(this, viewModel))
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
-        }
-
+        val notifications = MainActivityNotifications(this, viewModel, requestPermissionLauncher)
+        sharing = MainActivitySharing(
+            this,
+            viewModel,
+            MainActivityShareStep(this, viewModel),
+            onShareSessionStarted = notifications::promptForShareSession,
+        )
+        notifications.syncGrantedFromSystem()
         sharing.handleIntent(intent, restoreIfColdStart = savedInstanceState == null)
 
         setContent {
-            val darkPref by viewModel.darkTheme.collectAsState(initial = null)
-            val highRefresh by viewModel.highRefreshEnabled.collectAsState(initial = true)
+            val darkPref by viewModel.appearance.darkTheme.collectAsState(initial = null)
+            val highRefresh by viewModel.appearance.highRefreshEnabled.collectAsState(initial = true)
+            val dynamicColor by viewModel.appearance.dynamicColorEnabled.collectAsState(initial = true)
             val systemDark = isSystemInDarkTheme()
             LaunchedEffect(highRefresh) {
                 if (highRefresh) {
@@ -85,7 +85,7 @@ class MainActivity : ComponentActivity() {
                     window.attributes = lp
                 }
             }
-            MultiAppShareTheme(darkTheme = darkPref ?: systemDark) {
+            MultiAppShareTheme(darkTheme = darkPref ?: systemDark, dynamicColor = dynamicColor) {
                 Box(modifier = Modifier.fillMaxSize()) {
                     MainScreen(
                         viewModel = viewModel,
@@ -110,7 +110,7 @@ class MainActivity : ComponentActivity() {
                             onConfirmed = { chars ->
                                 showExportPassphraseDialog.value = false
                                 pendingExportPassphrase = chars
-                                exportLauncher.launch("multiappshare-groups.json")
+                                exportLauncher.launch(BackupExportName.json(System.currentTimeMillis()))
                             },
                         )
                     }
@@ -121,6 +121,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onStart() {
         super.onStart()
+        MainActivityNotifications(this, viewModel, requestPermissionLauncher).syncGrantedFromSystem()
         ContextCompat.registerReceiver(
             this,
             shareFailedReceiver,

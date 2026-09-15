@@ -7,6 +7,7 @@
 
 - ✅ README updated with value proposition and quickstart
 - ✅ Environment variables configured (`.env.example` mirrored; `.env` not committed)
+- 🔲 `docs/spec.md` and `docs/plan.md` filled for the first milestone (Sacred — human only if still stub)
 - ✅ Initial tests passing in the local environment
 - 🔲 Pre-commit hooks installed (`pre-commit install`) — `[HUMAN]` optional
 
@@ -31,3 +32,4 @@
 1. `python3 scripts/agent-run.py validate-bootstrap --quick`
 2. `python3 scripts/agent-run.py feature-gate --stack android`
 3. Say Golden Path numbers to add BUILD_PLAN rows (do not implement until named)
+4. Optional: `scripts/setup-github-repo.sh` for alerts and branch protection

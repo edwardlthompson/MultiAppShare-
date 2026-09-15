@@ -72,7 +72,9 @@ class MainViewModelTest {
         every { settingsRepo.isDarkThemeEnabled } returns flowOf(null)
         every { settingsRepo.isCrashCaptureEnabled } returns flowOf(false)
         every { settingsRepo.isHighRefreshEnabled } returns flowOf(true)
+        every { settingsRepo.isDynamicColorEnabled } returns flowOf(true)
         every { settingsRepo.sharingDelay } returns flowOf(500)
+        every { settingsRepo.pinnedGroupNames } returns flowOf(emptySet())
 
         val vm = MainViewModel(groupsRepo, historyRepo, pm, settingsRepo, shareStore, context)
 

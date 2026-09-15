@@ -1,6 +1,7 @@
 package com.multiappshare
 
 import com.multiappshare.domain.GroupNameHelper
+import com.multiappshare.domain.GroupNotesHelper
 import com.multiappshare.domain.GroupsRepository
 import com.multiappshare.model.AppGroup
 
@@ -11,14 +12,20 @@ internal object GroupMutationsRename {
         groupsRepository: GroupsRepository,
         group: AppGroup,
         newName: String,
+        notes: String = group.notes,
     ): MainUiState.Success? {
         val normalized = GroupNameHelper.normalize(newName)
+        val sanitizedNotes = GroupNotesHelper.sanitize(notes)
         val invalid = normalized.isBlank() ||
             GroupNameHelper.isDuplicateExcluding(normalized, state.groups, group.name)
         if (invalid) return null
         val updated = state.copy(
             groups = state.groups.map {
-                if (it.name == group.name) it.copy(name = normalized) else it
+                if (it.name == group.name) {
+                    it.copy(name = normalized, notes = sanitizedNotes)
+                } else {
+                    it
+                }
             },
         )
         groupsRepository.saveGroups(updated.groups)

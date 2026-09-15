@@ -7,6 +7,7 @@ sealed class LaunchPrompt {
         val url: String,
         val listingOnly: Boolean = false,
     ) : LaunchPrompt()
+    data object CheckFailed : LaunchPrompt()
 }
 
 object LaunchPromptDecider {
@@ -56,8 +57,12 @@ object LaunchPromptDecider {
         if (!ProductUpdate.shouldCheckDaily(lastCheckAt, now)) {
             return null
         }
-        val release = runCatching { fetchLatest() }.getOrNull()
-        val prompt = updateFromRelease(currentVersion, dismissedVersion, release, allowDirectApk)
+        val release = runCatching { fetchLatest() }
+        val prompt = if (release.isFailure) {
+            LaunchPrompt.CheckFailed
+        } else {
+            updateFromRelease(currentVersion, dismissedVersion, release.getOrNull(), allowDirectApk)
+        }
         if (prompt == null) {
             markChecked(now)
         }

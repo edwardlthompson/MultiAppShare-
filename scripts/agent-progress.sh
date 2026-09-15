@@ -18,6 +18,8 @@ from pathlib import Path
 root = Path(sys.argv[1])
 progress_path = Path(sys.argv[2])
 args = sys.argv[3:]
+sys.path.insert(0, str(root / "scripts" / "lib"))
+from agent_strikes import is_env_failure, next_strikes, should_reset_halt_strikes
 
 def load():
     if progress_path.exists():
@@ -54,6 +56,7 @@ def parse_record_args(a):
         "failed_stage": "",
         "log_tail": "",
         "build_plan_step": None,
+        "no_increment": False,
     }
     i = 0
     while i < len(a):
@@ -82,12 +85,15 @@ def parse_record_args(a):
         elif a[i] == "--autofix":
             out["autofix"] = True
             i += 1
+        elif a[i] == "--no-increment":
+            out["no_increment"] = True
+            i += 1
         else:
             i += 1
     return out
 
 if not args:
-    print("Usage: agent-progress.sh status|record|next|set-feature|set-step|set-parallel-sprint-done [--json]", file=sys.stderr)
+    print("Usage: agent-progress.sh status|record|next|set-feature|set-step|set-parallel-sprint-done|reset-strikes|maybe-reset-env-strikes|maybe-reset-halt-strikes [--json]", file=sys.stderr)
     sys.exit(1)
 
 cmd = args[0]
@@ -158,15 +164,56 @@ if cmd == "set-parallel-sprint-done":
         print(json.dumps({"parallel_sprint_done": done}, indent=2))
     sys.exit(0)
 
+if cmd == "reset-strikes":
+    data = load()
+    data["strikes"] = 0
+    save(data)
+    if json_out:
+        print(json.dumps({"strikes": 0}, indent=2))
+    sys.exit(0)
+
+if cmd == "maybe-reset-env-strikes":
+    data = load()
+    strikes = int(data.get("strikes", 0))
+    if strikes < 3:
+        sys.exit(0)
+    lg = data.get("last_gate") or {}
+    stage = str(lg.get("failed_stage") or "")
+    tail = str(data.get("next_action") or "")
+    exit_code = int(lg.get("exit_code") or 1)
+    fg_path = root / ".cursor" / "last-feature-gate.json"
+    if fg_path.is_file():
+        try:
+            fg = json.loads(fg_path.read_text(encoding="utf-8"))
+            stage = stage or str(fg.get("failed_stage") or "")
+            tail = tail + "\n" + str(fg.get("log_tail") or "")
+            exit_code = int(fg.get("exit_code") or exit_code)
+        except json.JSONDecodeError:
+            pass
+    if is_env_failure(exit_code, stage, tail):
+        data["strikes"] = 0
+        save(data)
+    sys.exit(0)
+
+if cmd == "maybe-reset-halt-strikes":
+    data = load()
+    if should_reset_halt_strikes(int(data.get("strikes", 0))):
+        data["strikes"] = 0
+        save(data)
+    sys.exit(0)
+
 if cmd == "record":
     rec = parse_record_args(args[1:])
     data = load()
     gate = rec["gate"]
     if gate in ("feature-gate", "feature-gate.sh"):
-        if rec["exit"] == 0:
-            data["strikes"] = 0
-        else:
-            data["strikes"] = int(data.get("strikes", 0)) + 1
+        data["strikes"] = next_strikes(
+            int(data.get("strikes", 0)),
+            rec["exit"],
+            rec.get("failed_stage") or "",
+            rec.get("log_tail") or "",
+            no_increment=bool(rec.get("no_increment")),
+        )
     elif not rec.get("autofix"):
         pass
     if rec.get("autofix"):
@@ -176,6 +223,7 @@ if cmd == "record":
         "script": rec["gate"],
         "exit_code": rec["exit"],
         "step": rec["step"] or None,
+        "failed_stage": rec.get("failed_stage") or None,
     }
     if rec["gates_passed"]:
         data["gates_passed"] = rec["gates_passed"]

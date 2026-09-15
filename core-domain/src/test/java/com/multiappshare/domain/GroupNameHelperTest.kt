@@ -11,7 +11,7 @@ class GroupNameHelperTest {
     @Test
     fun uniqueCopyNameAppendsCopy() {
         val groups = listOf(AppGroup(name = "Social", apps = emptyList()))
-        assertEquals("Social (copy)", GroupNameHelper.uniqueCopyName("Social", groups))
+        assertEquals("Social (copy)", GroupNameHelper.uniqueCopyName("Social", groups, "copy"))
     }
 
     @Test
@@ -20,7 +20,14 @@ class GroupNameHelperTest {
             AppGroup(name = "Social", apps = emptyList()),
             AppGroup(name = "Social (copy)", apps = emptyList()),
         )
-        assertEquals("Social (copy 2)", GroupNameHelper.uniqueCopyName("Social", groups))
+        assertEquals("Social (copy 2)", GroupNameHelper.uniqueCopyName("Social", groups, "copy"))
+    }
+
+    @Test
+    fun canSubmitRejectsBlankNames() {
+        assertFalse(GroupNameHelper.canSubmit(""))
+        assertFalse(GroupNameHelper.canSubmit("   "))
+        assertTrue(GroupNameHelper.canSubmit("Work"))
     }
 
     @Test

@@ -19,4 +19,10 @@ class WorkProfileDisambiguationTest {
         assertTrue(WorkProfileDisambiguation.isWorkProfileUser(10))
         assertTrue(WorkProfileDisambiguation.isWorkProfileUser(11))
     }
+
+    @Test
+    fun userIdFromUid_usesAndroidPerUserRange() {
+        assertEquals(0, WorkProfileDisambiguation.userIdFromUid(10_001))
+        assertEquals(10, WorkProfileDisambiguation.userIdFromUid(1_000_000))
+    }
 }

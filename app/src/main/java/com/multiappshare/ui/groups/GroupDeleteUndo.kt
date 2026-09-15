@@ -29,7 +29,7 @@ fun GroupDeleteUndoEffect(
         val result = hostState.showSnackbar(
             message = message,
             actionLabel = undo,
-            duration = SnackbarDuration.Short,
+            duration = SnackbarDuration.Long,
         )
         if (result == SnackbarResult.ActionPerformed) onUndo() else onConsumed()
     }

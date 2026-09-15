@@ -26,7 +26,19 @@ if [ -n "$CUSTOM" ]; then
   esac
 fi
 
-if [ -f "$HOOKS_DIR/commit-msg" ] && [ -s "$HOOKS_DIR/commit-msg" ]; then
+hook_ok() {
+  [ -f "$HOOKS_DIR/commit-msg" ] && [ -s "$HOOKS_DIR/commit-msg" ]
+}
+
+if hook_ok; then
+  echo "OK   commit-msg hook installed ($HOOKS_DIR/commit-msg)"
+  exit 0
+fi
+
+echo "Installing commit-msg hook..."
+bash "$ROOT/scripts/install-commit-msg-hook.sh" || true
+
+if hook_ok; then
   echo "OK   commit-msg hook installed ($HOOKS_DIR/commit-msg)"
   exit 0
 fi

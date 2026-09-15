@@ -4,7 +4,7 @@
 
 ## Acceptance criteria
 
-- ✅ User-visible: tapping a group in share mode opens a labelled preview; Continue starts the sequence
+- ✅ User-visible: tapping a group in share mode opens one payload sheet (thumbnails + snippet); Continue starts the sequence
 - ✅ Cancel / dismiss does not launch a target app
 - ✅ Offline: preview is local; no network
 - ✅ Accessibility: dialog title and Continue/Cancel are labelled
@@ -18,7 +18,7 @@
 
 ## Tests
 
-- Automated: yes — `PayloadPreview` unit tests
+- Automated: `PayloadPreview` unit tests, `SharePayloadSheetPaparazziTest`
 
 ## Fallback validation
 

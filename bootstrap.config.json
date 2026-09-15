@@ -30,5 +30,12 @@
     "post_run_tests": false,
     "post_welcome_issue": false
   },
-  "notes": "Android child: board files under docs/; primary CI is android.yml; no release-please."
+  "notes": "Android child: board files under docs/; primary CI is android.yml; no release-please.",
+  "crash_proxy": {
+    "enabled": false
+  },
+  "crash_inbox": {
+    "enabled": false,
+    "provider": "none"
+  }
 }

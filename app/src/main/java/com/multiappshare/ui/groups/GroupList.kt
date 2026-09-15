@@ -2,28 +2,23 @@ package com.multiappshare.ui.groups
 
 import android.content.pm.PackageManager
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.DragHandle
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -36,16 +31,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImagePainter
-import coil.compose.SubcomposeAsyncImage
-import coil.compose.SubcomposeAsyncImageContent
 import com.multiappshare.R
 import com.multiappshare.core.ui.highRefreshScroll
+import com.multiappshare.domain.GroupCardTap
+import com.multiappshare.domain.ListFabPadding
+import com.multiappshare.domain.OverlayDestinationChips
 import com.multiappshare.model.AppGroup
-import com.multiappshare.model.AppInfo
 
 @Composable
 fun GroupList(
@@ -63,8 +56,15 @@ fun GroupList(
     onDuplicateClick: (AppGroup) -> Unit = {},
     onRenameClick: (AppGroup) -> Unit = {},
     onMergeClick: (AppGroup) -> Unit = {},
+    onPinClick: (AppGroup) -> Unit = {},
+    pinnedGroupNames: Set<String> = emptySet(),
+    lastSharedByGroup: Map<String, Long> = emptyMap(),
 ) {
-    LazyColumn(modifier = Modifier.highRefreshScroll()) {
+    val tap = GroupCardTap.action(inShareMode, onSelectClick != null)
+    LazyColumn(
+        modifier = Modifier.highRefreshScroll(),
+        contentPadding = PaddingValues(bottom = ListFabPadding.bottomDp(inShareMode).dp),
+    ) {
         items(groups, key = { it.name }) { group ->
             GroupItem(
                 group = group,
@@ -74,14 +74,21 @@ fun GroupList(
                 onDuplicateClick = { onDuplicateClick(group) },
                 onRenameClick = { onRenameClick(group) },
                 onMergeClick = { onMergeClick(group) },
+                onPinClick = { onPinClick(group) },
+                pinned = group.name in pinnedGroupNames,
+                lastSharedMillis = lastSharedByGroup[group.name],
                 onDeleteClick = { onDeleteClick(group) },
                 onToggleExpanded = { onToggleExpanded(group) },
                 onGroupClick = {
-                    if (inShareMode) onGroupClick(group) else onSelectClick?.invoke(group)
+                    when (tap) {
+                        GroupCardTap.Action.SHARE -> onGroupClick(group)
+                        GroupCardTap.Action.SELECT -> onSelectClick?.invoke(group)
+                        GroupCardTap.Action.TOGGLE_EXPAND -> onToggleExpanded(group)
+                    }
                 },
                 onAddShortcutClick = { onAddShortcutClick(group) },
                 inShareMode = inShareMode,
-                selectable = inShareMode || onSelectClick != null,
+                selectable = true,
                 packageManager = packageManager,
             )
         }
@@ -103,6 +110,9 @@ fun GroupItem(
     onDuplicateClick: () -> Unit = {},
     onRenameClick: () -> Unit = {},
     onMergeClick: () -> Unit = {},
+    onPinClick: () -> Unit = {},
+    pinned: Boolean = false,
+    lastSharedMillis: Long? = null,
     selectable: Boolean = inShareMode,
 ) {
     var menuExpanded by remember { mutableStateOf(false) }
@@ -111,22 +121,12 @@ fun GroupItem(
         modifier = Modifier.padding(8.dp).fillMaxWidth().clickable(enabled = selectable, onClick = onGroupClick),
         colors = when {
             selected -> CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer)
-            inShareMode -> CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondaryContainer)
+            inShareMode -> CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh)
             else -> CardDefaults.cardColors()
         },
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                if (!inShareMode) {
-                    Icon(
-                        imageVector = Icons.Default.DragHandle,
-                        contentDescription = stringResource(R.string.cd_reorder_share_order_hint),
-                        modifier = Modifier
-                            .padding(end = 4.dp)
-                            .size(22.dp),
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                }
                 IconButton(onClick = onToggleExpanded) {
                     Icon(
                         imageVector = if (group.isExpanded && !inShareMode) {
@@ -134,106 +134,68 @@ fun GroupItem(
                         } else {
                             Icons.Default.KeyboardArrowDown
                         },
-                        contentDescription = stringResource(R.string.cd_toggle_group),
+                        contentDescription = stringResource(
+                            if (group.isExpanded && !inShareMode) {
+                                R.string.cd_collapse_group
+                            } else {
+                                R.string.cd_expand_group
+                            },
+                            group.name,
+                        ),
                     )
                 }
-                Text(
-                    text = group.name,
-                    style = MaterialTheme.typography.headlineSmall,
-                    modifier = Modifier.weight(1f),
-                )
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = group.name,
+                        style = MaterialTheme.typography.titleMedium,
+                    )
+                    GroupRowSubtitle(appCount = group.apps.size, lastSharedMillis = lastSharedMillis)
+                    if (com.multiappshare.domain.GroupNotesHelper.hasNotes(group.notes)) {
+                        Text(
+                            text = group.notes,
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
+                    if (group.apps.isEmpty() && !inShareMode) {
+                        GroupAddAppsButton(onClick = onModifyClick)
+                    }
+                }
                 if (!inShareMode) {
                     Box {
                         IconButton(onClick = { menuExpanded = true }) {
                             Icon(Icons.Default.MoreVert, contentDescription = stringResource(R.string.cd_more_options))
                         }
-                        DropdownMenu(expanded = menuExpanded, onDismissRequest = { menuExpanded = false }) {
-                            DropdownMenuItem(
-                                text = { Text(stringResource(R.string.menu_modify_apps)) },
-                                onClick = { menuExpanded = false; onModifyClick() },
-                            )
-                            DropdownMenuItem(
-                                text = { Text(stringResource(R.string.menu_reorder_apps)) },
-                                onClick = { menuExpanded = false; onReorderClick() },
-                            )
-                            DropdownMenuItem(
-                                text = { Text(stringResource(R.string.menu_duplicate_group)) },
-                                onClick = { menuExpanded = false; onDuplicateClick() },
-                            )
-                            DropdownMenuItem(
-                                text = { Text(stringResource(R.string.menu_rename_group)) },
-                                onClick = { menuExpanded = false; onRenameClick() },
-                            )
-                            DropdownMenuItem(
-                                text = { Text(stringResource(R.string.menu_merge_group)) },
-                                onClick = { menuExpanded = false; onMergeClick() },
-                            )
-                            DropdownMenuItem(
-                                text = { Text(stringResource(R.string.menu_add_home_shortcut)) },
-                                onClick = { menuExpanded = false; onAddShortcutClick() },
-                            )
-                            DropdownMenuItem(
-                                text = { Text(stringResource(R.string.menu_delete_group), color = MaterialTheme.colorScheme.error) },
-                                onClick = { menuExpanded = false; onDeleteClick() },
-                            )
-                        }
+                        GroupItemOverflowMenu(
+                            expanded = menuExpanded,
+                            pinned = pinned,
+                            onDismiss = { menuExpanded = false },
+                            onModifyClick = onModifyClick,
+                            onReorderClick = onReorderClick,
+                            onDuplicateClick = onDuplicateClick,
+                            onRenameClick = onRenameClick,
+                            onMergeClick = onMergeClick,
+                            onPinClick = onPinClick,
+                            onAddShortcutClick = onAddShortcutClick,
+                            onDeleteClick = onDeleteClick,
+                        )
                     }
                 }
             }
 
-            AnimatedVisibility(visible = group.isExpanded && !inShareMode) {
+            if (OverlayDestinationChips.shouldShow(inShareMode, group.apps.size)) {
+                OverlayAppChips(apps = group.apps, packageManager = packageManager)
+            }
+
+            AnimatedVisibility(visible = group.isExpanded && !inShareMode && group.apps.isNotEmpty()) {
                 Column {
                     Spacer(modifier = Modifier.size(8.dp))
-                    if (group.apps.isEmpty()) {
-                        Text(
-                            text = stringResource(R.string.group_empty_hint),
-                            style = MaterialTheme.typography.bodySmall,
-                            modifier = Modifier.padding(vertical = 8.dp),
-                        )
-                    } else {
-                        group.apps.forEachIndexed { index, app ->
-                            AppListItem(app = app, packageManager = packageManager)
-                            if (index < group.apps.size - 1) HorizontalDivider()
-                        }
+                    group.apps.forEachIndexed { index, app ->
+                        AppListItem(app = app, packageManager = packageManager)
+                        if (index < group.apps.size - 1) HorizontalDivider()
                     }
                 }
             }
         }
-    }
-}
-
-@Composable
-fun AppListItem(app: AppInfo, @Suppress("UNUSED_PARAMETER") packageManager: PackageManager) {
-    val placeholderColor = remember(app.packageName) {
-        val hash = app.packageName.hashCode()
-        Color(
-            red = ((hash shr 16) and 0xFF) / 255f,
-            green = ((hash shr 8) and 0xFF) / 255f,
-            blue = (hash and 0xFF) / 255f,
-            alpha = 1f,
-        )
-    }
-
-    Row(
-        modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        SubcomposeAsyncImage(
-            model = app,
-            contentDescription = null,
-            modifier = Modifier.size(40.dp),
-        ) {
-            if (painter.state is AsyncImagePainter.State.Loading) {
-                Box(
-                    modifier = Modifier
-                        .matchParentSize()
-                        .background(placeholderColor, shape = CircleShape),
-                )
-            } else {
-                SubcomposeAsyncImageContent()
-            }
-        }
-        Spacer(modifier = Modifier.width(8.dp))
-        Text(text = app.appName)
     }
 }

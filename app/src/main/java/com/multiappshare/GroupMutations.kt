@@ -2,6 +2,7 @@ package com.multiappshare
 
 import com.multiappshare.domain.GroupIds
 import com.multiappshare.domain.GroupNameHelper
+import com.multiappshare.domain.GroupPinOrder
 import com.multiappshare.domain.GroupsRepository
 import com.multiappshare.model.AppGroup
 import com.multiappshare.model.AppInfo
@@ -50,11 +51,16 @@ internal object GroupMutations {
         return updated
     }
 
-    suspend fun incrementUsage(state: MainUiState.Success, groupsRepository: GroupsRepository, group: AppGroup): MainUiState.Success {
-        val sorted = state.groups.map {
+    suspend fun incrementUsage(
+        state: MainUiState.Success,
+        groupsRepository: GroupsRepository,
+        group: AppGroup,
+        pinnedGroupNames: Set<String> = emptySet(),
+    ): MainUiState.Success {
+        val incremented = state.groups.map {
             if (it.name == group.name) it.copy(usageCount = it.usageCount + 1) else it
-        }.sortedByDescending { it.usageCount }
-        val updated = state.copy(groups = sorted)
+        }
+        val updated = state.copy(groups = GroupPinOrder.sortGroupsWithPinned(incremented, pinnedGroupNames))
         groupsRepository.saveGroups(updated.groups)
         return updated
     }
@@ -69,8 +75,9 @@ internal object GroupMutations {
         state: MainUiState.Success,
         groupsRepository: GroupsRepository,
         group: AppGroup,
+        copyLabel: String,
     ): MainUiState.Success? {
-        val copyName = GroupNameHelper.uniqueCopyName(group.name, state.groups)
+        val copyName = GroupNameHelper.uniqueCopyName(group.name, state.groups, copyLabel)
         if (GroupNameHelper.isDuplicate(copyName, state.groups)) return null
         val copy = group.copy(name = copyName, isExpanded = false, usageCount = 0, id = GroupIds.newId())
         val updated = state.copy(groups = state.groups + copy)
@@ -95,14 +102,19 @@ internal object GroupMutations {
             !name.isNullOrBlank() -> GroupNameHelper.findGroupByName(name, state.groups)
             else -> null
         }
-        if (group == null || group.isExpanded) return null
-        val updated = state.copy(
-            groups = state.groups.map {
-                if (it.name == group.name) it.copy(isExpanded = true) else it
-            },
-        )
-        groupsRepository.saveGroups(updated.groups)
-        return updated
+        return when {
+            group == null -> null
+            group.isExpanded -> state
+            else -> {
+                val updated = state.copy(
+                    groups = state.groups.map {
+                        if (it.name == group.name) it.copy(isExpanded = true) else it
+                    },
+                )
+                groupsRepository.saveGroups(updated.groups)
+                updated
+            }
+        }
     }
 }
 

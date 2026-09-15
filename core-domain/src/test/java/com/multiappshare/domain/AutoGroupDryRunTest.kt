@@ -25,6 +25,7 @@ class AutoGroupDryRunTest {
 
         assertEquals(1, messaging?.apps?.size)
         assertEquals(1, email?.apps?.size)
+        assertEquals(2, AutoGroupDryRun.summarize(preview).size)
     }
 
     @Test

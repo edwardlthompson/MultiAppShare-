@@ -8,6 +8,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import com.multiappshare.crashcapture.CrashStore
+import com.multiappshare.domain.FirstRunDialogQueue
 import com.multiappshare.ui.crashcapture.CrashReviewDialog
 import com.multiappshare.ui.feedback.FeedbackDialog
 
@@ -15,6 +16,8 @@ import com.multiappshare.ui.feedback.FeedbackDialog
 internal fun MainScreenGoldenPathHost(
     showFeedback: Boolean,
     onShowFeedback: (Boolean) -> Unit,
+    onboardingVisible: Boolean,
+    onCrashReviewVisible: (Boolean) -> Unit,
 ) {
     val context = LocalContext.current
     var crashText by remember { mutableStateOf<String?>(null) }
@@ -25,7 +28,9 @@ internal fun MainScreenGoldenPathHost(
         crashText = pending
         showCrash = pending != null
     }
-    if (showCrash && !showFeedback) {
+    val crashVisible = showCrash && !showFeedback && FirstRunDialogQueue.allowCrashReview(onboardingVisible)
+    LaunchedEffect(crashVisible) { onCrashReviewVisible(crashVisible) }
+    if (crashVisible) {
         CrashReviewDialog(
             onDismiss = {
                 CrashStore.clear(context)

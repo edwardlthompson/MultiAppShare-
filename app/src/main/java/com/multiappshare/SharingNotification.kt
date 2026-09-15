@@ -4,6 +4,7 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import androidx.core.app.NotificationCompat
+import com.multiappshare.domain.ShareSessionChrome
 import com.multiappshare.share.ShareNotificationIntents
 
 internal object SharingNotification {
@@ -32,18 +33,20 @@ internal object SharingNotification {
         val key = appComponents.getOrNull(currentIndex).orEmpty()
         val targetLabel = resolveShareTargetLabel(context.packageManager, key)
             .ifBlank { context.getString(R.string.app_name) }
+        val title = sessionTitle(context, targetLabel, currentIndex, appComponents.size)
+        val hint = context.getString(R.string.notification_open_to_continue)
         val body = context.getString(
             R.string.notification_sharing_text,
             targetLabel,
             currentIndex + 1,
             appComponents.size,
-            context.getString(R.string.notification_open_to_continue),
+            hint,
         )
         val hasMore = currentIndex + 1 < appComponents.size
         return NotificationCompat.Builder(context, CHANNEL_ID)
-            .setContentTitle(context.getString(R.string.notification_sharing_title))
-            .setContentText(body)
-            .setStyle(NotificationCompat.BigTextStyle().bigText(body))
+            .setContentTitle(title)
+            .setContentText(hint)
+            .setStyle(NotificationCompat.BigTextStyle().bigText("$title. $body"))
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setPriority(NotificationCompat.PRIORITY_LOW)
             .setSilent(true)
@@ -73,5 +76,21 @@ internal object SharingNotification {
                 context.getString(R.string.notification_action_cancel),
                 ShareNotificationIntents.pending(context, REQUEST_CANCEL, ShareNotificationIntents.CMD_CANCEL),
             )
+    }
+
+    internal fun sessionTitle(
+        context: Context,
+        appLabel: String,
+        currentIndex: Int,
+        total: Int,
+    ): String {
+        val identity = ShareSessionChrome.identity(appLabel, currentIndex, total)
+            ?: return context.getString(R.string.notification_sharing_title)
+        return context.getString(
+            R.string.share_session_chrome_title,
+            identity.step,
+            identity.total,
+            identity.appLabel,
+        )
     }
 }

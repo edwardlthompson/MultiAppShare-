@@ -11,7 +11,6 @@
 | Production path | Root Gradle (`app/`, `feature-*`, `core-*`) - not `examples/android/` |
 | License | MIT (unchanged) |
 | Omitted stacks | web, python, node, go, rust, Lightroom |
-
 ## What already matched (0.11.0)
 
 - Agent entrypoints: `AGENTS.md`, `docs/START_HERE.md`, `docs/CURSOR_MODES.md`, `docs/FOR_AGENTS.md`
@@ -31,7 +30,6 @@
 | CI | `dependency-review.yml` documented but absent; optional stale/weekly-health |
 | Scripts | template update/sync peers; parallel check runner |
 | BUILD_PLAN | No Sequential/Parallel/Human-device lanes; no emoji-only active status protocol |
-
 ## Intentional divergences (preserved)
 
 | Template | MultiAppShare |
@@ -41,7 +39,6 @@
 | `ci.yml` | `android.yml` (Android CI) |
 | release-please / Pages | Not adopted - signed APK via `android.yml` |
 | Commercial Bugbot/cloud MCP | Examples only; not activated |
-
 ## Risk areas
 
 - FOSS Cursor hooks change agent shell behavior (encoding + denylist)
@@ -67,12 +64,27 @@
 | Y.H3 | `[HUMAN]` | Triage Dependabot PRs via `triage-dependabot-prs.sh --apply` |
 | Y.H4 | `[HUMAN]` | Push this alignment when ready (explicit approval) |
 | Y.A1 | `[ADB]` | Device smoke - N/A unless UX touched (process-only sprint) |
-
 ### Intentionally not adopted
 
 - release-please / Pages / renaming `android.yml` to `ci.yml`
 - Commercial Bugbot/cloud MCP activation
 - Copying `examples/web`, `examples/python`, `examples/node`
+
+## Sync 1.6.0 (2026-09-15)
+
+### What changed (agent/process only)
+
+1. Template version **1.0.0 → 1.6.0** (`.template-version`, `TEMPLATE_INDEX.json`).
+2. Canon: `.cursor/commands/` (45 files + UX suite), rules/skills/agents/hooks, `docs/help/`, `docs/CURSOR_MODES.md`, `docs/BATCH_COMMANDS.md`, adapters via `--sync-adapters` (Sacred `AGENTS.md` not overwritten).
+3. Mixed: `.gitignore`, `.env.example`, `PROJECT_CHECKLIST.md`, security/scorecard/CodeQL dispatch, `UPGRADING_FROM_TEMPLATE.md`, `bootstrap.config.json` crash_* keys, `.pre-commit-config.yaml`, `schemas/batch-commands-print.json`, batch print helpers.
+4. Golden Path: product already ships about/settings/feedback/crash-capture/privacy-report/display-refresh under `com.multiappshare`; locked with `TemplateGoldenPathParityTest` — no `examples/android/` overwrite.
+5. Sacred untouched: `AGENTS.md`, `LICENSE`, product `app/` / `feature-*` / `core-*` (beyond GP parity test).
+
+### Intentionally not adopted (1.6.0)
+
+- `ci.yml`, `pages.yml`, `release.yml` / release-please (child keeps `android.yml`)
+- Blind Dependabot automerge without secrets review
+- Overwriting Sacred `AGENTS.md` or copying Golden Path stubs over production UI
 
 ## Sync 1.0.0 (2026-08-30)
 

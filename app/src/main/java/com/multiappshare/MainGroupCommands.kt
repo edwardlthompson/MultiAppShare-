@@ -1,10 +1,12 @@
 package com.multiappshare
 
+import com.multiappshare.domain.GroupPinOrder
 import com.multiappshare.domain.SettingsRepository
 import com.multiappshare.model.AppGroup
 import com.multiappshare.model.AppInfo
 import com.multiappshare.model.HistoryItem
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 internal class MainGroupCommands(
@@ -34,14 +36,26 @@ internal class MainGroupCommands(
         scope.launch { settingsRepository.setHighRefreshEnabled(enabled) }
     }
 
+    fun setDynamicColorEnabled(enabled: Boolean) {
+        scope.launch { settingsRepository.setDynamicColorEnabled(enabled) }
+    }
+
     fun createGroup(groupName: String, onResult: (Boolean) -> Unit = {}) =
         stateHelper.createGroup(scope, groupName, onResult)
 
-    fun duplicateGroup(group: AppGroup, onResult: (Boolean) -> Unit = {}) =
-        stateHelper.duplicateGroup(scope, group, onResult)
+    fun duplicateGroup(group: AppGroup, copyLabel: String, onResult: (Boolean) -> Unit = {}) =
+        stateHelper.duplicateGroup(scope, group, copyLabel, onResult)
 
-    fun renameGroup(group: AppGroup, newName: String, onResult: (Boolean) -> Unit = {}) =
-        stateHelper.renameGroup(scope, group, newName, onResult)
+    fun renameGroup(group: AppGroup, newName: String, notes: String, onResult: (Boolean) -> Unit = {}) =
+        stateHelper.renameGroup(scope, group, newName, notes, onResult)
+
+    fun toggleGroupPin(groupName: String, onDone: () -> Unit = {}) {
+        scope.launch {
+            val next = GroupPinOrder.togglePin(settingsRepository.pinnedGroupNames.first(), groupName)
+            settingsRepository.setPinnedGroupNames(next)
+            onDone()
+        }
+    }
 
     fun mergeGroups(target: AppGroup, source: AppGroup, onResult: (Boolean) -> Unit = {}) =
         stateHelper.mergeGroups(scope, target, source, onResult)

@@ -16,4 +16,5 @@ data class AppGroup(
     val isExpanded: Boolean = false,
     val usageCount: Int = 0,
     val id: String = "",
+    val notes: String = "",
 )

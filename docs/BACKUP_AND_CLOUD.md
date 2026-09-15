@@ -21,7 +21,7 @@ The manifest references `android:dataExtractionRules="@xml/data_extraction_rules
 
 ## Manual encrypted export/import
 
-User-driven **export** produces an encrypted payload (see `BackupCipher` / settings UI). Inner plaintext is **BackupWrapper v2** (groups with stable `id`, optional settings, optional last-share payload). Import of v1 / raw arrays still works and does not overwrite settings. Envelope format is unchanged. That path is **independent** of Android Auto Backup: it is explicit, passphrase-protected, and intended for **user-controlled** backup and cross-device moves without trusting cloud plaintext.
+User-driven **export** produces an encrypted payload (see `BackupCipher` / settings UI). Inner plaintext is **BackupWrapper v2** (groups with stable `id` and optional `notes`, optional settings, optional last-share payload). Import of v1 / raw arrays still works and does not overwrite settings. Envelope format is unchanged. From **UX-015**, import asks **Merge** or **Replace** before applying groups. That path is **independent** of Android Auto Backup: it is explicit, passphrase-protected, and intended for **user-controlled** backup and cross-device moves without trusting cloud plaintext.
 
 ## Avoiding surprises (checklist)
 

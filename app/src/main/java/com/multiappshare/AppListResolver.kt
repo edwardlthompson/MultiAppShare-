@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
+import com.multiappshare.domain.WorkProfileDisambiguation
 import com.multiappshare.model.AppInfo
 
 internal object AppListResolver {
@@ -48,11 +49,13 @@ internal object AppListResolver {
                     -1
                 }
 
+                val userId = WorkProfileDisambiguation.userIdFromUid(info.activityInfo.applicationInfo.uid)
                 AppInfo(
                     appName = finalName,
                     packageName = info.activityInfo.packageName,
                     activityName = info.activityInfo.name,
                     category = category,
+                    isWorkProfile = WorkProfileDisambiguation.isWorkProfileUser(userId),
                 )
             }
             .filter { it.packageName != excludePackage }

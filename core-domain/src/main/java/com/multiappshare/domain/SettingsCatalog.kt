@@ -15,26 +15,34 @@ data class SettingsEntry(
 
 object SettingsCatalog {
     val ENTRIES = listOf(
-        SettingsEntry("theme", "Theme & Display", SettingsSection.APPEARANCE),
-        SettingsEntry("language", "Language", SettingsSection.APPEARANCE),
-        SettingsEntry("delay", "Sharing Delay", SettingsSection.SHARING_BEHAVIOR),
-        SettingsEntry("haptics", "Haptic Feedback", SettingsSection.SHARING_BEHAVIOR),
-        SettingsEntry("backup", "Backup & Restore", SettingsSection.DATA_MANAGEMENT),
-        SettingsEntry("history", "History Retention", SettingsSection.DATA_MANAGEMENT),
-        SettingsEntry("about", "About & FOSS Licenses", SettingsSection.ABOUT),
-        SettingsEntry("feedback", "Send Feedback", SettingsSection.ABOUT),
+        SettingsEntry("theme", "theme", SettingsSection.APPEARANCE),
+        SettingsEntry("dynamic_color", "dynamic_color", SettingsSection.APPEARANCE),
+        SettingsEntry("language", "language", SettingsSection.APPEARANCE),
+        SettingsEntry("refresh", "refresh", SettingsSection.APPEARANCE),
+        SettingsEntry("delay", "delay", SettingsSection.SHARING_BEHAVIOR),
+        SettingsEntry("haptics", "haptics", SettingsSection.SHARING_BEHAVIOR),
+        SettingsEntry("battery", "battery", SettingsSection.SHARING_BEHAVIOR),
+        SettingsEntry("backup", "backup", SettingsSection.DATA_MANAGEMENT),
+        SettingsEntry("history", "history", SettingsSection.DATA_MANAGEMENT),
+        SettingsEntry("about", "about", SettingsSection.ABOUT),
+        SettingsEntry("privacy", "privacy", SettingsSection.ABOUT),
+        SettingsEntry("licenses", "licenses", SettingsSection.ABOUT),
+        SettingsEntry("whats_new", "whats_new", SettingsSection.ABOUT),
+        SettingsEntry("feedback", "feedback", SettingsSection.ABOUT),
+        SettingsEntry("crash", "crash", SettingsSection.ABOUT),
     )
 
     fun filterBySection(section: SettingsSection): List<SettingsEntry> =
         ENTRIES.filter { it.section == section }
 
-    fun search(query: String?): List<SettingsEntry> {
+    fun search(query: String?, localizedTitles: Map<String, String> = emptyMap()): List<SettingsEntry> {
         val trimmed = query?.trim().orEmpty()
         if (trimmed.isEmpty()) return ENTRIES
         return ENTRIES.filter {
             it.title.contains(trimmed, ignoreCase = true) ||
                 it.id.contains(trimmed, ignoreCase = true) ||
-                it.section.name.contains(trimmed, ignoreCase = true)
+                it.section.name.contains(trimmed, ignoreCase = true) ||
+                localizedTitles[it.id]?.contains(trimmed, ignoreCase = true) == true
         }
     }
 }

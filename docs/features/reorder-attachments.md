@@ -4,7 +4,7 @@
 
 ## Acceptance criteria
 
-- ✅ User-visible: two or more attachments offer an order dialog after preview
+- ✅ User-visible: two or more attachments offer Move up / Move down on the same payload sheet
 - ✅ Cancel leaves the session unstarted
 - ✅ Offline: local only
 - ✅ Accessibility: move up/down labelled

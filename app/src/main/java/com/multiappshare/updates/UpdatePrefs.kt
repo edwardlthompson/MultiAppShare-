@@ -24,10 +24,17 @@ class UpdatePrefs(context: Context) {
         prefs.edit().putString(KEY_LAST_SEEN, version).apply()
     }
 
+    fun lastSeenVersionCode(): Int = prefs.getInt(KEY_LAST_SEEN_CODE, 0)
+
+    fun markVersionCodeSeen(code: Int) {
+        prefs.edit().putInt(KEY_LAST_SEEN_CODE, code).apply()
+    }
+
     companion object {
         const val PREFS = "mas_updates"
         private const val KEY_LAST_CHECK = "last_check_at"
         private const val KEY_LAST_SEEN = "last_seen_version"
+        private const val KEY_LAST_SEEN_CODE = "last_seen_version_code"
         private const val KEY_DISMISSED = "dismissed_version"
     }
 }

@@ -5,9 +5,11 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import com.multiappshare.domain.GroupsRepository
 import com.multiappshare.domain.HistoryRepository
+import com.multiappshare.domain.ImportStrategy
 import com.multiappshare.domain.SettingsRepository
 import com.multiappshare.domain.ShareSessionStore
 import com.multiappshare.model.AppInfo
+import com.multiappshare.widget.HomeShareWidget
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -35,7 +37,14 @@ internal class MainDataCommands(
     private val compatiblePackagesCache: MutableMap<Pair<String, String>, Set<String>>,
     private val setOnboarding: (Boolean) -> Unit,
     private val setImportUri: (Uri?) -> Unit,
+    private val setNotice: (Int?) -> Unit,
 ) {
+    private var importStrategy: ImportStrategy = ImportStrategy.REPLACE
+
+    fun prepareImport(strategy: ImportStrategy) {
+        importStrategy = strategy
+    }
+
     fun setOnboardingDismissed() {
         deps.scope.launch {
             deps.repos.settings.setOnboardingCompleted()
@@ -54,9 +63,11 @@ internal class MainDataCommands(
             uri,
             onEncrypted = { setImportUri(it) },
             onComplete = { loadData() },
+            strategy = importStrategy,
+            onError = { setNotice(it) },
         )
 
-    fun importGroupsWithPassphrase(uri: Uri, passphrase: CharArray) =
+    fun importGroupsWithPassphrase(uri: Uri, passphrase: CharArray, onError: (Int) -> Unit = {}) =
         MainViewModelBackup.importWithPassphrase(
             deps.scope,
             deps.context,
@@ -67,6 +78,8 @@ internal class MainDataCommands(
                 setImportUri(null)
                 loadData()
             },
+            strategy = importStrategy,
+            onError = onError,
         )
 
     fun loadData() {
@@ -75,6 +88,7 @@ internal class MainDataCommands(
             val (groups, allApps, history) = loadMainUiData(
                 deps.repos.groups,
                 deps.repos.history,
+                deps.repos.settings,
                 deps.packageManager,
                 deps.context.packageName,
             )
@@ -84,6 +98,7 @@ internal class MainDataCommands(
                 deps.uiState.value = MainUiState.Success(groups, allApps, history)
             }
             ShortcutHelper.syncAfterLoad(deps.context, groups)
+            HomeShareWidget.refresh(deps.context, groups.maxByOrNull { it.usageCount }?.name)
             stateHelper.applyPendingExpand()
         }
     }

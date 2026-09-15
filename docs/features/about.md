@@ -2,10 +2,13 @@
 
 > Golden Path About screen for this android child. Port into existing About/donate surfaces. **Do not** copy `examples/android/` over `app/`. Stub: template `docs/features/donations-updates.md`. Overlaps shipped **AC** (`donations-and-updates.md`).
 
+> **v1.6.0 catch-up (TU):** Product already ships this Golden Path slice under `com.multiappshare` (not `examples/android`). Parity locked by `TemplateGoldenPathParityTest`.
+
 ## Acceptance criteria
 
 - ✅ User-visible: a dedicated About surface (version, license/privacy, changelog, Donate via Venmo) reachable from the overflow menu
 - ✅ Donate stays off the update/install dialog (AC invariant)
+- ✅ Changelog, privacy, and licenses open in-app (WhatsNew / policy / OSS dialogs), not the browser (UX-040)
 - ✅ Offline/error: About renders with no network; failed update check stays silent
 - ✅ Accessibility: dialog/screen is labelled; donate is a real button/link
 - ✅ i18n: `about_*` in `en` / `es` / `fr`
@@ -24,7 +27,6 @@
 | View | `feature-dashboard/.../DashboardDialogs.kt` (`DashboardAboutDialog`); extend, do not replace AC |
 | Tests | `core-domain/src/test/.../updates/` + About UI unit/Paparazzi as needed |
 | Wiring | `MainScreenContent` / overflow ≤10 new lines |
-
 ## Tests
 
 - Automated: yes — extend existing `ProductUpdate` / About dialog tests

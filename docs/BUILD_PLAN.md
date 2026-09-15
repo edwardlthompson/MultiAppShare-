@@ -1,7 +1,7 @@
 # MultiAppShare BUILD PLAN - Living Checklist
 
-> **Completed milestones:** A-T, **U**, **W**, **V**, **X**, **Y** (agent/auto), **Z**, **AA**, **AB**, **AD** - [`COMPLETED_TASKS.md`](COMPLETED_TASKS.md)
-> **Active:** **AE** (allideas product backlog) · **AC** (ADB leftover) · Human leftovers (Y.H1–Y.H4)
+> **Completed milestones:** A-T, **U**, **W**, **V**, **X**, **Y** (agent/auto), **Z**, **AA**, **AB**, **AD**, **AE**, **BH**, **UX**, **TU** - [`COMPLETED_TASKS.md`](COMPLETED_TASKS.md)
+> **Active:** **AE.59** `[HUMAN]` F-Droid MR · template **v1.6.0**
 > **Agent workspace:** [`AGENTS.md`](../AGENTS.md) / [`AGENT_MEMORY.md`](../AGENT_MEMORY.md) / [`START_HERE.md`](START_HERE.md)
 > **Human backlog:** [`HUMAN_BACKLOG.md`](../HUMAN_BACKLOG.md)
 > **Gate log:** [`GATES.md`](GATES.md)
@@ -47,12 +47,21 @@ Per [`PRE_RELEASE_AUDIT.md`](PRE_RELEASE_AUDIT.md). Prefer `/ship`.
 > **AC** archived in docs/COMPLETED_TASKS.md (2026-08-30).
 > **AD** archived in docs/COMPLETED_TASKS.md @ `080e11a`.
 > **AE** archived in docs/COMPLETED_TASKS.md (2026-08-30).
+> **BH** archived in docs/COMPLETED_TASKS.md @ `17836a5`.
+> **BH-006–BH-007** remainder archived in docs/COMPLETED_TASKS.md (2026-09-15).
+> **UX** archived in docs/COMPLETED_TASKS.md (2026-09-15).
+> **TU** archived in docs/COMPLETED_TASKS.md (2026-09-15) — template **v1.6.0**.
 
 ## Human & device backlog (Unreleased)
 
 | Status | ID | Label | Task |
 |--------|----|-------|------|
 | 🔲 | AE.59 | `[HUMAN]` | F-Droid `fdroiddata` MR for 1.10.0 / next tag (`FDROID_MAINTENANCE.md`) |
+## UX inventory
+
+| Status | ID | Task |
+|--------|----|------|
+| ✅ | UX-081 | `[AGENT]` Settings glance redesign — section groups, icons, value subtitles, inline switches (no hairline dividers) |
 ---
 
 ## Ongoing maintenance
@@ -80,3 +89,6 @@ Per [`PRE_RELEASE_AUDIT.md`](PRE_RELEASE_AUDIT.md). Prefer `/ship`.
 | AC | Complete (2026-08-30) | [`COMPLETED_TASKS.md`](COMPLETED_TASKS.md) |
 | AD | Complete (2026-08-30) | [`COMPLETED_TASKS.md`](COMPLETED_TASKS.md) |
 | AE | Complete (2026-08-30) | [`COMPLETED_TASKS.md`](COMPLETED_TASKS.md) |
+| BH | Complete (2026-09-15) | [`COMPLETED_TASKS.md`](COMPLETED_TASKS.md) |
+| UX | Complete (2026-09-15) | [`COMPLETED_TASKS.md`](COMPLETED_TASKS.md) |
+| TU | Complete (2026-09-15) | [`COMPLETED_TASKS.md`](COMPLETED_TASKS.md) |

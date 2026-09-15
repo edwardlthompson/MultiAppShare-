@@ -2,6 +2,8 @@
 
 > High-refresh / display mode selector (phones and tablets only). **Do not** copy `examples/android/` over `app/`. Stub: template `docs/features/display-refresh.md`.
 
+> **v1.6.0 catch-up (TU):** Product already ships this Golden Path slice under `com.multiappshare` (not `examples/android`). Parity locked by `TemplateGoldenPathParityTest`.
+
 ## Acceptance criteria
 
 - ✅ User-visible: optional display-refresh preference (system default vs high) if the device supports it
@@ -24,7 +26,6 @@
 | View | Settings (AD.2) row or existing theme host |
 | Tests | `DisplayModeSelector` unit tests |
 | Wiring | `MainActivity` / window ≤10 lines |
-
 ## Tests
 
 - Automated: yes — mode selector + fallback

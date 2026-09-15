@@ -1,33 +1,22 @@
 package com.multiappshare.ui.dashboard
 
-import android.content.Intent
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
-import androidx.core.net.toUri
-import com.multiappshare.about.AboutLinks
-import com.multiappshare.core.ui.highRefreshScroll
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import com.multiappshare.model.HistoryItem
 
 data class HistoryDialogLabels(
     val title: String,
     val empty: String,
+    val emptyCta: String = "",
     val sharedPrefix: String,
     val close: String,
     val reshare: String = "",
     val reshareRow: String = "",
+    val error: String = "",
 )
 
 @Composable
@@ -37,30 +26,23 @@ fun DashboardHistoryDialog(
     onDismiss: () -> Unit,
     onReshare: (() -> Unit)? = null,
     onReshareItem: ((HistoryItem) -> Unit)? = null,
+    errorText: String? = null,
 ) {
-    AlertDialog(
+    Dialog(
         onDismissRequest = onDismiss,
-        title = { Text(labels.title) },
-        text = {
-            if (history.isEmpty()) {
-                Text(labels.empty)
-            } else {
-                LazyColumn(modifier = Modifier.height(400.dp).highRefreshScroll()) {
-                    items(history, key = { it.id }) { item ->
-                        DashboardHistoryRow(item = item, labels = labels, onReshareItem = onReshareItem)
-                    }
-                }
-            }
-        },
-        confirmButton = {
-            Button(onClick = onDismiss) { Text(labels.close) }
-        },
-        dismissButton = {
-            if (onReshare != null && labels.reshare.isNotEmpty()) {
-                Button(onClick = onReshare) { Text(labels.reshare) }
-            }
-        },
-    )
+        properties = DialogProperties(usePlatformDefaultWidth = false),
+    ) {
+        Surface(modifier = Modifier.fillMaxSize()) {
+            HistoryScreen(
+                history = history,
+                labels = labels,
+                onDismiss = onDismiss,
+                onReshare = onReshare,
+                onReshareItem = onReshareItem,
+                errorText = errorText,
+            )
+        }
+    }
 }
 
 data class AboutDialogLabels(
@@ -75,6 +57,10 @@ data class AboutDialogLabels(
     val changelog: String,
     val feedback: String,
     val ok: String,
+    val noAppForLink: String,
+    val privacyOpen: String,
+    val licenses: String,
+    val shortcuts: String = "",
 )
 
 @Composable
@@ -82,63 +68,23 @@ fun DashboardAboutDialog(
     labels: AboutDialogLabels,
     onDismiss: () -> Unit,
     onFeedback: () -> Unit = {},
+    onChangelog: () -> Unit = {},
+    onPrivacy: () -> Unit = {},
+    onLicenses: () -> Unit = {},
 ) {
-    val context = LocalContext.current
-
-    AlertDialog(
+    Dialog(
         onDismissRequest = onDismiss,
-        title = { Text(labels.title) },
-        text = {
-            Column {
-                Text(labels.versionLine, fontWeight = FontWeight.Bold)
-                Spacer(modifier = Modifier.height(16.dp))
-                Text(labels.tagline)
-                Spacer(modifier = Modifier.height(12.dp))
-                Text(
-                    labels.privacy,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-                Spacer(modifier = Modifier.height(16.dp))
-                Text(labels.developerContact, fontWeight = FontWeight.Bold)
-                Text(
-                    text = labels.telegramLabel,
-                    color = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.clickable {
-                        context.startActivity(Intent(Intent.ACTION_VIEW, AboutLinks.TELEGRAM.toUri()))
-                    },
-                )
-                Spacer(modifier = Modifier.height(16.dp))
-                Text(labels.supportDeveloper, fontWeight = FontWeight.Bold)
-                Text(
-                    text = labels.venmoLink,
-                    color = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.clickable {
-                        context.startActivity(
-                            Intent(Intent.ACTION_VIEW, AboutLinks.VENMO.toUri()),
-                        )
-                    },
-                )
-                Spacer(modifier = Modifier.height(12.dp))
-                Text(
-                    text = labels.changelog,
-                    color = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.clickable {
-                        context.startActivity(
-                            Intent(Intent.ACTION_VIEW, AboutLinks.CHANGELOG.toUri()),
-                        )
-                    },
-                )
-            }
-        },
-        confirmButton = {
-            Button(onClick = onDismiss) { Text(labels.ok) }
-        },
-        dismissButton = {
-            Button(onClick = {
-                onFeedback()
-                onDismiss()
-            }) { Text(labels.feedback) }
-        },
-    )
+        properties = DialogProperties(usePlatformDefaultWidth = false),
+    ) {
+        Surface(modifier = Modifier.fillMaxSize()) {
+            AboutScreen(
+                labels = labels,
+                onDismiss = onDismiss,
+                onFeedback = onFeedback,
+                onChangelog = onChangelog,
+                onPrivacy = onPrivacy,
+                onLicenses = onLicenses,
+            )
+        }
+    }
 }

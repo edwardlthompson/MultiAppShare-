@@ -17,7 +17,7 @@ fun CrashReviewDialog(
         title = { Text(stringResource(R.string.crash_review_title)) },
         text = { Text(stringResource(R.string.crash_review_body)) },
         confirmButton = {
-            TextButton(onClick = onSendFeedback) { Text(stringResource(R.string.feedback_title)) }
+            TextButton(onClick = onSendFeedback) { Text(stringResource(R.string.crash_review_send)) }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) { Text(stringResource(R.string.button_close)) }

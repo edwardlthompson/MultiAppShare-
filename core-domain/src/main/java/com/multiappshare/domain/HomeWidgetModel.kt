@@ -9,8 +9,10 @@ object HomeWidgetModel {
     fun createWidgetState(
         mostRecentGroupName: String?,
         clipboardEnabled: Boolean = true,
+        fallbackLabel: String,
     ): WidgetState {
-        val label = mostRecentGroupName?.trim()?.ifBlank { "Recent Group" } ?: "Recent Group"
+        val trimmed = mostRecentGroupName?.trim().orEmpty()
+        val label = trimmed.ifBlank { fallbackLabel }
         return WidgetState(
             primaryGroupLabel = label,
             hasClipboardTarget = clipboardEnabled,

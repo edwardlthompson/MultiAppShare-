@@ -2,6 +2,8 @@
 
 > On-device privacy sanitizer for crash/feedback text. **Do not** copy `examples/android/` over `app/`. Stub: template `docs/features/privacy-report.md`. Shared by AD.3 and AD.5.
 
+> **v1.6.0 catch-up (TU):** Product already ships this Golden Path slice under `com.multiappshare` (not `examples/android`). Parity locked by `TemplateGoldenPathParityTest`.
+
 ## Acceptance criteria
 
 - ✅ User-visible: any persisted or GitHub-bound crash/feedback text is sanitized (emails, tokens, prompt-injection phrases redacted)
@@ -24,7 +26,6 @@
 | Tests | `core-domain/src/test/.../privacyreport/` + `schemas/golden-path/sanitize-fixtures.json` |
 | View | optional; prefer logic-only unless a report screen is needed |
 | Wiring | called from crash-capture / github-feedback only |
-
 ## Tests
 
 - Automated: yes — fixture-driven sanitize tests

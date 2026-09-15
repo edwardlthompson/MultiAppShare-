@@ -37,8 +37,8 @@ See [`docs/MODULE_BOUNDARIES.md`](docs/MODULE_BOUNDARIES.md).
 
 ## Living plans
 
-- Active roadmap: [`docs/BUILD_PLAN.md`](docs/BUILD_PLAN.md) — **AC** ADB leftover + Y human leftovers; **AD** Golden Path 1–7 archived 2026-08-30; bootstrap sync **1.0.0**
-- Completed milestones A–AD: [`docs/COMPLETED_TASKS.md`](docs/COMPLETED_TASKS.md)
+- Active roadmap: [`docs/BUILD_PLAN.md`](docs/BUILD_PLAN.md) — template **v1.6.0**; remaining **AE.59** `[HUMAN]` F-Droid MR
+- Completed milestones A–TU: [`docs/COMPLETED_TASKS.md`](docs/COMPLETED_TASKS.md)
 - ADRs: [`docs/adr/README.md`](docs/adr/README.md)
 - Decision log: [`docs/DECISION_LOG.md`](docs/DECISION_LOG.md)
 - Human backlog: [`HUMAN_BACKLOG.md`](HUMAN_BACKLOG.md)
@@ -62,7 +62,7 @@ See [`docs/MODULE_BOUNDARIES.md`](docs/MODULE_BOUNDARIES.md).
 | Adapters | `CLAUDE.md`, `GEMINI.md`, `CONVENTIONS.md`, `.agent/`, `.windsurf/`, `.continue/`, `.clinerules` |
 | Verify | [`scripts/verify.sh`](scripts/verify.sh) |
 | Gate scripts | `scripts/validate-bootstrap.sh`, `watch-agent-gates.sh`, `feature-gate.sh`, `verify.sh` |
-| Template version | `.template-version` → **0.21.0** |
+| Template version | `.template-version` → **1.6.0** |
 ## Retrospectives
 
 ### Ship v1.10.0 — Product backlog Milestone AE complete (2026-08-30)

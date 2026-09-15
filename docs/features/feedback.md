@@ -2,6 +2,8 @@
 
 > In-app feedback dialogs. **Do not** copy `examples/android/` over `app/`. Stub: template `docs/features/feedback.md`.
 
+> **v1.6.0 catch-up (TU):** Product already ships this Golden Path slice under `com.multiappshare` (not `examples/android`). Parity locked by `TemplateGoldenPathParityTest`.
+
 ## Acceptance criteria
 
 - ✅ User-visible: Feedback entry from About or overflow; preview before send
@@ -24,7 +26,6 @@
 | View | `app/.../ui/feedback/` or `feature-dashboard/` dialog |
 | Tests | unit tests for preview/prefs |
 | Wiring | overflow/About ≤10 lines |
-
 ## Tests
 
 - Automated: yes — preview + prefs

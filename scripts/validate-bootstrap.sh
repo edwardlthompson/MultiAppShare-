@@ -125,7 +125,8 @@ if ! python3 scripts/lib/run_checks_parallel.py \
   check-batch-commands.sh \
   check-cursor-hooks.sh \
   check-template-version-sync.sh \
-  validate-template-index.sh
+  validate-template-index.sh \
+  check-build-plan-agent-rows.sh
 then
   ERRORS=$((ERRORS + 1))
 fi

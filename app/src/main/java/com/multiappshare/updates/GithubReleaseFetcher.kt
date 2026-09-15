@@ -13,10 +13,11 @@ object GithubReleaseFetcher {
             conn.instanceFollowRedirects = true
             conn.setRequestProperty("Accept", "application/vnd.github+json")
             conn.setRequestProperty("User-Agent", "MultiAppShare/$currentVersion")
-            if (conn.responseCode != HttpURLConnection.HTTP_OK) return null
+            if (conn.responseCode != HttpURLConnection.HTTP_OK) {
+                error("github ${conn.responseCode}")
+            }
             GithubReleaseJson.parse(conn.inputStream.bufferedReader().use { it.readText() })
-        } catch (_: Exception) {
-            null
+                ?: error("github parse")
         } finally {
             conn.disconnect()
         }

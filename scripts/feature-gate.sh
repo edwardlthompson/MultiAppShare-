@@ -96,6 +96,9 @@ record_progress() {
   [ -n "$gp" ] && rec+=(--gates-passed "$gp")
   [ -n "$FAILED_STAGE" ] && rec+=(--failed-stage "$FAILED_STAGE")
   [ -n "$LOG_TAIL" ] && rec+=(--log-tail "$LOG_TAIL")
+  if [ "${FEATURE_GATE_SKIP_STRIKE:-}" = "1" ]; then
+    rec+=(--no-increment)
+  fi
   bash scripts/agent-progress.sh "${rec[@]}" 2>/dev/null || true
 }
 
@@ -254,7 +257,7 @@ if [ "$SKIP_PREAMBLE" = false ]; then
   GATES_PASSED+=("file-limits")
 
   if ! bash scripts/check-pre-commit-hooks.sh >/dev/null 2>&1; then
-    fail_gate "pre-commit-hooks" "$(bash scripts/check-pre-commit-hooks.sh 2>&1 | tail -n 20)"
+    block_env "$(bash scripts/check-pre-commit-hooks.sh 2>&1 | tail -n 20)"
   fi
   GATES_PASSED+=("pre-commit-hooks")
 fi
@@ -339,6 +342,14 @@ if should_run android && [ -f gradlew ]; then
       skip_or_block "Skipping android gate (JAVA_HOME not set)"
     fi
   else
+    "$PY" "$ROOT/scripts/lib/android_sdk.py" --ensure --root "$ROOT" >/dev/null 2>&1 || true
+    if ! android_sdk_ready; then
+      if [ "$STACK" = "android" ] && [ "${FEATURE_GATE_CHILD:-}" != "1" ]; then
+        block_env "Android SDK not found; set ANDROID_HOME or sdk.dir in local.properties"
+      else
+        skip_or_block "Skipping android gate (no ANDROID_HOME / sdk.dir)"
+      fi
+    else
     gradle_extra="$("$PY" "$ROOT/scripts/lib/gradle_offline.py" --args --root "$ROOT" 2>/dev/null || true)"
     # shellcheck disable=SC2086
     run_cmd android-lint ./gradlew $gradle_extra lint --quiet
@@ -350,6 +361,7 @@ if should_run android && [ -f gradlew ]; then
     run_cmd android-kover ./gradlew $gradle_extra koverXmlReport --quiet
     # shellcheck disable=SC2086
     run_cmd android-assemble ./gradlew $gradle_extra assembleDebug --quiet
+    fi
   fi
 elif should_run android && [ -f examples/android/gradlew ]; then
   if ! command -v java >/dev/null 2>&1 && [ -z "${JAVA_HOME:-}" ]; then

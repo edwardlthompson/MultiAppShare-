@@ -11,6 +11,7 @@ data class ShareSessionState(
     val sharingStarted: Boolean = false,
     val lastShareFailed: Boolean = false,
     val paused: Boolean = false,
+    val noticeRes: Int? = null,
 ) {
     val inShareMode: Boolean get() = !uris.isNullOrEmpty() || text != null
 }

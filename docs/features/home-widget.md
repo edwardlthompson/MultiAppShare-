@@ -1,10 +1,13 @@
 # Feature: home-widget
 
-> State and layout model for launcher home-screen quick-share widget. BUILD_PLAN **AE.45**.
+> Launcher home-screen quick-share widget. BUILD_PLAN **AE.45**.
+>
+> Layer: user-visible (`HomeShareWidget`). Domain: `HomeWidgetModel`.
 
 ## Acceptance criteria
 
-- ✅ `HomeWidgetModel.createWidgetState` computes display state for widget UI
+- ✅ User-visible: `HomeShareWidget` AppWidget with `widget_home_share` layout
+- ✅ Domain: `HomeWidgetModel.createWidgetState` computes display state for widget UI
 - ✅ Falls back to clean defaults when no groups exist
 - ✅ 100% offline state
 

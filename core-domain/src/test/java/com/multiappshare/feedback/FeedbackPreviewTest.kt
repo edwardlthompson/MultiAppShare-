@@ -27,4 +27,12 @@ class FeedbackPreviewTest {
         assertEquals("hello", body)
         assertFalse(body.contains("--- crash ---"))
     }
+
+    @Test
+    fun sendDisabledWhenTitleAndBodyAreBlank() {
+        assertFalse(FeedbackPreview.canSend("  ", "", null))
+        assertTrue(FeedbackPreview.canSend("Bug", "", null))
+        assertTrue(FeedbackPreview.canSend("", "details", null))
+        assertTrue(FeedbackPreview.canSend("", "", "stack"))
+    }
 }

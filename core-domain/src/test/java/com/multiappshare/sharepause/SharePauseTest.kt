@@ -11,4 +11,10 @@ class SharePauseTest {
         assertTrue(SharePause.nextAllowed(paused = false))
         assertFalse(SharePause.nextAllowed(paused = true))
     }
+
+    @Test
+    fun blocksReplayWhilePaused() {
+        assertTrue(SharePause.replayAllowed(paused = false))
+        assertFalse(SharePause.replayAllowed(paused = true))
+    }
 }

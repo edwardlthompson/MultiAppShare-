@@ -52,7 +52,7 @@ class GroupMutationsTest {
             allApps = emptyList(),
             history = emptyList(),
         )
-        val result = GroupMutations.duplicateGroup(state, repo, original)
+        val result = GroupMutations.duplicateGroup(state, repo, original, "copy")
         assertEquals(2, result?.groups?.size)
         assertEquals("Social (copy)", result?.groups?.last()?.name)
         assertEquals(0, result?.groups?.last()?.usageCount)
@@ -74,6 +74,20 @@ class GroupMutationsTest {
         assertEquals("Friends", result?.groups?.single()?.name)
         assertEquals(3, result?.groups?.single()?.usageCount)
         assertEquals("keep-me", result?.groups?.single()?.id)
+    }
+
+    @Test
+    fun renameGroup_sanitizesNotes() = runBlocking {
+        val repo = mockk<GroupsRepository>(relaxed = true)
+        coEvery { repo.saveGroups(any()) } returns Unit
+        val original = AppGroup(name = "Social", apps = emptyList(), notes = "old")
+        val state = MainUiState.Success(
+            groups = listOf(original),
+            allApps = emptyList(),
+            history = emptyList(),
+        )
+        val result = GroupMutationsRename.renameGroup(state, repo, original, "Social", "  family chat  ")
+        assertEquals("family chat", result?.groups?.single()?.notes)
     }
 
     @Test

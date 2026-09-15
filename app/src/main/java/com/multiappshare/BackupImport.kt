@@ -1,8 +1,10 @@
 package com.multiappshare
 
 import com.multiappshare.domain.BackupCodec
+import com.multiappshare.domain.BackupImportResolver
 import com.multiappshare.domain.BackupWrapper
 import com.multiappshare.domain.GroupsRepository
+import com.multiappshare.domain.ImportStrategy
 import com.multiappshare.domain.SettingsRepository
 import com.multiappshare.domain.ShareSessionStore
 import com.multiappshare.domain.hasPayload
@@ -12,9 +14,12 @@ internal suspend fun applyImportedBackup(
     settingsRepository: SettingsRepository,
     shareSessionStore: ShareSessionStore,
     jsonText: String,
+    strategy: ImportStrategy = ImportStrategy.REPLACE,
 ) {
     val document = groupsRepository.parseBackupDocument(jsonText)
-    groupsRepository.saveGroups(document.groups.map { com.multiappshare.domain.GroupIds.ensure(it) })
+    val existing = groupsRepository.loadGroups()
+    val resolved = BackupImportResolver.resolve(existing, document.groups, strategy)
+    groupsRepository.saveGroups(resolved)
     if (document.version >= BackupCodec.VERSION_V2) {
         applyV2Extras(document, settingsRepository, shareSessionStore)
     }

@@ -12,4 +12,10 @@ object AppDatabaseMigrations {
             db.execSQL("ALTER TABLE history ADD COLUMN payloadJson TEXT")
         }
     }
+
+    val MIGRATION_2_3: Migration = object : Migration(2, 3) {
+        override fun migrate(db: SupportSQLiteDatabase) {
+            db.execSQL("ALTER TABLE groups ADD COLUMN notes TEXT NOT NULL DEFAULT ''")
+        }
+    }
 }

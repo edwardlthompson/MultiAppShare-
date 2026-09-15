@@ -2,6 +2,8 @@
 
 > Golden Path Settings slice. Port into existing theme/settings host. **Do not** copy `examples/android/` over `app/`. Stub: template `docs/features/settings.md`.
 
+> **v1.6.0 catch-up (TU):** Product already ships this Golden Path slice under `com.multiappshare` (not `examples/android`). Parity locked by `TemplateGoldenPathParityTest`.
+
 ## Acceptance criteria
 
 - ✅ User-visible: Settings (or equivalent) from main navigation; theme light/dark/system persists
@@ -24,7 +26,6 @@
 | View | `app/.../ui/settings/ThemeDialog.kt`, `MainScreenSettingsHost.kt` |
 | Tests | existing settings/theme unit tests + toggle persistence |
 | Wiring | `MainScreenOverflowMenu` ≤10 new lines |
-
 ## Tests
 
 - Automated: yes — persist theme + crash-save default-off

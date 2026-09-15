@@ -3,38 +3,27 @@ package com.multiappshare.ui.sharing
 import android.content.pm.PackageManager
 import android.net.Uri
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.Text
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.hapticfeedback.HapticFeedbackType
-import androidx.compose.ui.platform.LocalHapticFeedback
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.LiveRegionMode
-import androidx.compose.ui.semantics.contentDescription
-import androidx.compose.ui.semantics.liveRegion
-import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.multiappshare.R
+import com.multiappshare.domain.DesktopWindowingHelper
+import com.multiappshare.model.AppInfo
 import com.multiappshare.resolveShareTargetLabel
-import com.multiappshare.sharedefer.ShareDefer
-import com.multiappshare.sharehaptics.ShareHaptics
-import com.multiappshare.shareprogress.ShareProgressAnnounce
+import com.multiappshare.shareoverlay.ShareOverlayActions
 
 @Composable
 fun SharingInProgress(
@@ -55,178 +44,91 @@ fun SharingInProgress(
     onFinishEarly: () -> Unit = {},
     onTogglePause: () -> Unit = {},
     onTryLater: () -> Unit = {},
+    onCancelShare: () -> Unit = {},
 ) {
-    val haptic = LocalHapticFeedback.current
     val currentKey = appComponents.getOrNull(currentIndex).orEmpty()
     val currentLabel = remember(currentIndex, currentKey, appComponents) {
         resolveShareTargetLabel(packageManager, currentKey)
     }
+    val heroApp = remember(currentKey, currentLabel) { appInfoFromComponentKey(currentKey, currentLabel) }
 
-    Column(
-        modifier = Modifier.fillMaxSize().padding(16.dp).verticalScroll(rememberScrollState()),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
+    BoxWithConstraints(
+        modifier = Modifier
+            .fillMaxSize()
+            .then(shareSessionKeyModifier(paused, onNextStep, onCancelShare)),
     ) {
-        val contentNoun = when {
-            mimeType?.startsWith("image/") == true ->
-                if (uris != null && uris.size > 1) stringResource(R.string.sharing_content_photos_n, uris.size)
-                else stringResource(R.string.sharing_content_photo)
-            mimeType?.startsWith("video/") == true ->
-                if (uris != null && uris.size > 1) stringResource(R.string.sharing_content_videos_n, uris.size)
-                else stringResource(R.string.sharing_content_video)
-            text != null && uris.isNullOrEmpty() -> stringResource(R.string.sharing_content_text)
-            else ->
-                if (uris != null && uris.size > 1) stringResource(R.string.sharing_content_media_n, uris.size)
-                else stringResource(R.string.sharing_content_media)
-        }
-        Text(
-            stringResource(R.string.sharing_headline_format, contentNoun),
-            style = MaterialTheme.typography.headlineMedium,
-            textAlign = TextAlign.Center,
+        val maxContent = DesktopWindowingHelper.overlayMaxContentWidthDp(
+            DesktopWindowingHelper.classifyWindowSize(maxWidth.value.toInt()),
         )
-        Spacer(modifier = Modifier.height(8.dp))
-        val progress = ShareProgressAnnounce.snapshot(currentIndex, totalApps, currentLabel)
-        val progressSpoken = if (progress == null) {
-            ""
-        } else if (progress.target.isEmpty()) {
-            stringResource(R.string.sharing_step_format, progress.step, progress.total)
-        } else {
-            stringResource(
-                R.string.sharing_progress_announce,
-                progress.step,
-                progress.total,
-                progress.target,
-            )
-        }
-        Text(
-            stringResource(R.string.sharing_step_format, currentIndex + 1, totalApps),
-            style = MaterialTheme.typography.titleMedium,
-            modifier = Modifier.semantics {
-                liveRegion = LiveRegionMode.Polite
-                if (progressSpoken.isNotEmpty()) contentDescription = progressSpoken
-            },
-        )
-        if (currentLabel.isNotEmpty()) {
-            Spacer(modifier = Modifier.height(4.dp))
-            Text(
-                stringResource(R.string.sharing_next_app_format, currentLabel),
-                style = MaterialTheme.typography.titleSmall,
-                color = MaterialTheme.colorScheme.primary,
-                textAlign = TextAlign.Center,
-            )
-        }
-        Spacer(modifier = Modifier.height(12.dp))
-        Text(
-            stringResource(R.string.sharing_preview_hint),
-            textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-        )
-        Spacer(modifier = Modifier.height(12.dp))
-        Text(
-            stringResource(R.string.sharing_return_instruction),
-            textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.bodyLarge,
-        )
-        if (lastShareFailed && currentLabel.isNotEmpty()) {
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                stringResource(R.string.sharing_open_failed, currentLabel),
-                color = MaterialTheme.colorScheme.error,
-                textAlign = TextAlign.Center,
-            )
-        }
-        if (ShareDefer.shouldOffer(lastShareFailed, totalApps - currentIndex - 1)) {
-            Spacer(modifier = Modifier.height(8.dp))
-            OutlinedButton(
-                onClick = onTryLater,
-                enabled = !paused,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .defaultMinSize(minHeight = 48.dp),
-            ) {
-                Text(stringResource(R.string.sharing_try_later), textAlign = TextAlign.Center)
-            }
-        }
-        Spacer(modifier = Modifier.height(16.dp))
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-        ) {
-            OutlinedButton(
-                onClick = onReplayCurrentStep,
-                modifier = Modifier
-                    .weight(1f)
-                    .defaultMinSize(minHeight = 48.dp),
-            ) {
-                Text(
-                    stringResource(if (lastShareFailed) R.string.sharing_retry else R.string.sharing_replay_current),
-                    textAlign = TextAlign.Center,
-                )
-            }
-            OutlinedButton(
-                onClick = onPreviousStep,
-                enabled = currentIndex > 0,
-                modifier = Modifier
-                    .weight(1f)
-                    .defaultMinSize(minHeight = 48.dp),
-            ) {
-                Text(stringResource(R.string.sharing_previous), textAlign = TextAlign.Center)
-            }
-        }
-        Spacer(modifier = Modifier.height(12.dp))
-        OutlinedButton(
-            onClick = onTogglePause,
+        Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .defaultMinSize(minHeight = 48.dp),
+                .widthIn(max = maxContent.dp)
+                .fillMaxSize()
+                .align(Alignment.Center)
+                .navigationBarsPadding()
+                .imePadding(),
         ) {
-            Text(
-                stringResource(if (paused) R.string.sharing_resume else R.string.sharing_pause),
-                textAlign = TextAlign.Center,
-            )
-        }
-        Spacer(modifier = Modifier.height(8.dp))
-        Button(
-            onClick = {
-                if (currentIndex + 1 >= totalApps && ShareHaptics.shouldPerform(hapticsEnabled)) {
-                    haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxWidth()
+                    .verticalScroll(rememberScrollState())
+                    .padding(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
+            ) {
+                ElevatedCard(
+                    modifier = Modifier.fillMaxWidth(),
+                    elevation = CardDefaults.elevatedCardElevation(defaultElevation = 2.dp),
+                ) {
+                    Column(
+                        modifier = Modifier.padding(24.dp).fillMaxWidth(),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                    ) {
+                        SharingInProgressCopy(
+                            heroApp = heroApp,
+                            currentLabel = currentLabel,
+                            mimeType = mimeType,
+                            text = text,
+                            uris = uris,
+                            currentIndex = currentIndex,
+                            totalApps = totalApps,
+                            paused = paused,
+                            lastShareFailed = lastShareFailed,
+                        )
+                    }
                 }
-                onNextStep()
-            },
-            enabled = !paused,
-            modifier = Modifier
-                .fillMaxWidth()
-                .defaultMinSize(minHeight = 48.dp),
-        ) {
-            Text(
-                if (currentIndex + 1 < totalApps) {
-                    stringResource(R.string.sharing_button_next)
-                } else {
-                    stringResource(R.string.sharing_button_finish)
-                },
-            )
-        }
-        if (currentIndex + 1 < totalApps) {
-            Spacer(modifier = Modifier.height(8.dp))
-            OutlinedButton(
-                onClick = onSkipThisApp,
-                enabled = !paused,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .defaultMinSize(minHeight = 48.dp),
-            ) {
-                Text(stringResource(R.string.sharing_button_skip_app))
             }
-            Spacer(modifier = Modifier.height(8.dp))
-            OutlinedButton(
-                onClick = onFinishEarly,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .defaultMinSize(minHeight = 48.dp),
-            ) {
-                Text(stringResource(R.string.sharing_button_finish_early))
+            if (ShareOverlayActions.PRIMARY_STICKY) {
+                Column(modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp)) {
+                    SharingInProgressActions(
+                        currentIndex = currentIndex,
+                        totalApps = totalApps,
+                        lastShareFailed = lastShareFailed,
+                        paused = paused,
+                        hapticsEnabled = hapticsEnabled,
+                        remainingAfterCurrent = totalApps - currentIndex - 1,
+                        onReplayCurrentStep = onReplayCurrentStep,
+                        onPreviousStep = onPreviousStep,
+                        onNextStep = onNextStep,
+                        onSkipThisApp = onSkipThisApp,
+                        onFinishEarly = onFinishEarly,
+                        onTogglePause = onTogglePause,
+                        onTryLater = onTryLater,
+                    )
+                }
             }
         }
     }
+}
+
+private fun appInfoFromComponentKey(key: String, label: String): AppInfo? {
+    val trimmed = key.trim()
+    if (trimmed.isEmpty()) return null
+    val parts = trimmed.split("/", limit = 2)
+    return AppInfo(
+        appName = label.ifEmpty { parts[0] },
+        packageName = parts[0],
+        activityName = parts.getOrNull(1).orEmpty(),
+    )
 }

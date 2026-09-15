@@ -2,6 +2,8 @@
 
 > Opt-in local crash queue. Never auto-sends. Sanitize before persist. **Do not** copy `examples/android/` over `app/`. Stub: template `docs/features/crash-capture.md`. Depends on AD.2 toggle and AD.4 dialog contract.
 
+> **v1.6.0 catch-up (TU):** Product already ships this Golden Path slice under `com.multiappshare` (not `examples/android`). Parity locked by `TemplateGoldenPathParityTest`.
+
 ## Acceptance criteria
 
 - ✅ User-visible: when save-crashes is on, one review dialog after a captured crash; never auto-open GitHub
@@ -26,7 +28,6 @@
 | View | `feature-dashboard/` or `app/.../ui/` review dialog |
 | Tests | `core-domain/src/test/.../crashcapture/` |
 | Wiring | composition root ≤10 lines |
-
 ## Tests
 
 - Automated: yes — pending-crash allowlist, sanitize, toggle-off deletes

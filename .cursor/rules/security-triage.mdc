@@ -1,8 +1,8 @@
 ---
-description: Weekly security triage and Dependabot expectations
+description: Weekly security triage and Dependabot expectations for template maintainers
 alwaysApply: false
 globs:
-  - "docs/BUILD_PLAN.md"
+  - "BUILD_PLAN.md"
   - "docs/SECURITY_TRIAGE.md"
   - "scripts/check-security-triage.sh"
 ---
@@ -11,15 +11,16 @@ globs:
 
 ## Cadence
 
-- Run `bash scripts/check-security-triage.sh --wait-ci 300` weekly
-- Triage Dependabot Critical/High first; open version-update PRs next
+- Run `/update-deps` (local) then `python3 scripts/agent-run.py check-security-triage --wait-ci 300` weekly (or `run-maintainer-gates.sh` full cycle)
+- Triage OpenSSF Scorecard SARIF findings into BUILD_PLAN `[AGENT]` rows when not green
 
 ## Gates
 
-- Zero open Critical/High Dependabot alerts before release (`pre-release-gate.sh`)
-- Required workflows green: **Android CI**, **CodeQL**
-- Scorecard / Trivy are optional — SKIP when workflows are absent (see `docs/SECURITY_TRIAGE.md`)
+- Local HIGH+ from `update-deps --audit` before `/ship` (`pre-release-gate.sh --local`)
+- Zero open Critical/High Dependabot alerts before GitHub release (`pre-release-gate.sh` default / `/regress`)
+- Required workflows green: **CI**, **Security Scan**, **CodeQL**
+- Scorecard workflow latest run should be `success` after `scorecard.yml` fix is on `main`
 
 ## gh auth
 
-Dependabot API requires `gh` auth with access to repository security alerts. On Windows Git Bash, scripts use `scripts/lib/resolve-gh.sh` (`gh.exe`). See `docs/SECURITY_TRIAGE.md`.
+Dependabot API requires `gh` auth with access to repository security alerts. See `docs/SECURITY_TRIAGE.md`.

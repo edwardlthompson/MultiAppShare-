@@ -14,4 +14,8 @@ object WorkProfileDisambiguation {
     }
 
     fun isWorkProfileUser(userId: Int): Boolean = userId != 0
+
+    fun userIdFromUid(uid: Int): Int = uid / PER_USER_RANGE
+
+    private const val PER_USER_RANGE = 100_000
 }

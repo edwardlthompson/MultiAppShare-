@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -59,7 +58,6 @@ fun ReorderAppsDialog(
                                     }
                                 },
                                 enabled = index > 0,
-                                modifier = Modifier.size(36.dp),
                             ) {
                                 Icon(Icons.Default.KeyboardArrowUp, contentDescription = stringResource(R.string.cd_move_up))
                             }
@@ -71,7 +69,6 @@ fun ReorderAppsDialog(
                                     }
                                 },
                                 enabled = index < apps.size - 1,
-                                modifier = Modifier.size(36.dp),
                             ) {
                                 Icon(Icons.Default.KeyboardArrowDown, contentDescription = stringResource(R.string.cd_move_down))
                             }
@@ -115,7 +112,6 @@ fun SortGroupsDialog(
                                     }
                                 },
                                 enabled = index > 0,
-                                modifier = Modifier.size(36.dp),
                             ) {
                                 Icon(Icons.Default.KeyboardArrowUp, contentDescription = stringResource(R.string.cd_move_up))
                             }
@@ -127,7 +123,6 @@ fun SortGroupsDialog(
                                     }
                                 },
                                 enabled = index < sortedGroups.size - 1,
-                                modifier = Modifier.size(36.dp),
                             ) {
                                 Icon(Icons.Default.KeyboardArrowDown, contentDescription = stringResource(R.string.cd_move_down))
                             }

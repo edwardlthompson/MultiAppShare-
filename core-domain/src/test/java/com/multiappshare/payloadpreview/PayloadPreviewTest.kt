@@ -26,4 +26,12 @@ class PayloadPreviewTest {
         assertTrue(snippet.endsWith("…"))
         assertTrue(snippet.length <= PayloadPreview.TEXT_LIMIT + 1)
     }
+
+    @Test
+    fun showsThumbnail_forImageAndVideoMime() {
+        assertTrue(PayloadPreview.showsThumbnail("image/jpeg"))
+        assertTrue(PayloadPreview.showsThumbnail("VIDEO/mp4"))
+        assertFalse(PayloadPreview.showsThumbnail("text/plain"))
+        assertFalse(PayloadPreview.showsThumbnail(null))
+    }
 }
