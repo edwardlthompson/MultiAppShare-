@@ -2,6 +2,10 @@
 
 Project-specific edge cases and resolved patterns. Not generic framework docs.
 
+## Releases are APK-only (no SBOM/OpenVEX)
+
+`/regress` `wait-release-sbom --require` times out on this child: GitHub Releases upload the signed APK via `android.yml` `release-apk` only. Do not block ship on CycloneDX/OpenVEX assets unless a workflow is added.
+
 ## Sequential sharing and OEM variance
 
 Share targets are **opaque** — the app only relaunches `ACTION_SEND` for the current orchestration index; it cannot undo inside another app's composer. See [`docs/MANUAL_SHARE_CHECKLIST.md`](docs/MANUAL_SHARE_CHECKLIST.md).

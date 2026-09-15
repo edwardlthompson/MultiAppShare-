@@ -61,7 +61,9 @@ Per [`PRE_RELEASE_AUDIT.md`](PRE_RELEASE_AUDIT.md). Prefer `/ship`.
 
 | Status | ID | Task |
 |--------|----|------|
-| ✅ | UX-081 | `[AGENT]` Settings glance redesign — section groups, icons, value subtitles, inline switches (no hairline dividers) |
+| ✅ | UX-081 | `[AGENT]` Settings glance redesign — section groups, icons, value subtitles, inline switches (no hairline dividers) — shipped in **v1.10.0** |
+
+> **UX-081** archived with Milestone UX / v1.10.0 ship (2026-09-15).
 ---
 
 ## Ongoing maintenance

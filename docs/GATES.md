@@ -2,6 +2,20 @@
 
 Record milestone and release gate evidence here.
 
+## Ship — v1.10.0 (2026-09-15)
+
+| Step | Result | Notes |
+|------|--------|-------|
+| `/update-deps` | ✅ | Audit clean; skipped invalid `codeql-action` → `vcodeql-bundle-*` false-positive |
+| `/prerelease` local | ✅ | `prerelease-autofix` + `pre-release-gate --local` |
+| Push | ✅ | `57675a6` → `origin/main` |
+| GitHub CI | ✅ | Android CI + CodeQL + Security Scan green @ `57675a6` |
+| Tag / Release | ✅ | `v1.10.0` · [GitHub Release](https://github.com/edwardlthompson/MultiAppShare-/releases/tag/v1.10.0) · APK `MultiAppShare-v1.10.0-release.apk` |
+| SBOM / OpenVEX | ⏭️ | Not published on this child (APK-only) |
+| Upgrade sim | ⚠️ | Bootstrap validate OK; non-interactive init smoke hit `ModuleNotFoundError: bootstrap_lifecycle` in temp clone |
+| Pages analytics | ✅ | Pass (no tracking) |
+| Leftover | `[HUMAN]` | **AE.59** F-Droid `fdroiddata` MR |
+
 ## Milestone AD — Golden Path 1–7 (2026-08-30)
 
 | Step | Result | Notes |

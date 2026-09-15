@@ -65,6 +65,13 @@ See [`docs/MODULE_BOUNDARIES.md`](docs/MODULE_BOUNDARIES.md).
 | Template version | `.template-version` → **1.6.0** |
 ## Retrospectives
 
+### Ship v1.10.0 — GitHub Release (2026-09-15)
+
+- Pushed `57675a6` to `main`; Android CI + CodeQL + Security Scan green.
+- Tagged **v1.10.0**; `release-apk` uploaded `MultiAppShare-v1.10.0-release.apk`.
+- Includes Settings glance redesign (**UX-081**) and template catch-up **v1.6.0**.
+- No CycloneDX/OpenVEX assets on this child (APK-only release). F-Droid MR remains **AE.59** `[HUMAN]`.
+
 ### Ship v1.10.0 — Product backlog Milestone AE complete (2026-08-30)
 
 - Completed 70 vertical slice features across Milestone AE: granular sharing controls, TalkBack live regions, reduce motion, haptics, per-group delay, QS tile, dynamic shortcuts, widget state, foldable two-pane, desktop windowing, German/Italian translations, offline licenses/privacy/changelog, and uninstalled package cleanup.
