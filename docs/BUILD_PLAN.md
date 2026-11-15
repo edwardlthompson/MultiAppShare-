@@ -94,3 +94,7 @@ Per [`PRE_RELEASE_AUDIT.md`](PRE_RELEASE_AUDIT.md). Prefer `/ship`.
 | BH | Complete (2026-09-15) | [`COMPLETED_TASKS.md`](COMPLETED_TASKS.md) |
 | UX | Complete (2026-09-15) | [`COMPLETED_TASKS.md`](COMPLETED_TASKS.md) |
 | TU | Complete (2026-09-15) | [`COMPLETED_TASKS.md`](COMPLETED_TASKS.md) |
+
+## News inbox (synced)
+
+- 🔲 [ADB] Verify share flow against Android 17 QPR2 share-sheet changes (news P2, 2026-11-13) https://www.androidauthority.com/android-17-qpr2-stable-3733645/

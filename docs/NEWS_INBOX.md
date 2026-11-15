@@ -13,5 +13,5 @@ A Cursor planning agent should review these items and fold the useful ones into 
 
 **Tasks for the planning agent**
 
-- [ ] Verify share flow against Android 17 QPR2 share-sheet changes — The share sheet is the app's core surface. Label: `[ADB]` · Priority: P2 · https://www.androidauthority.com/android-17-qpr2-stable-3733645/
+- [x] Verify share flow against Android 17 QPR2 share-sheet changes — The share sheet is the app's core surface. Label: `[ADB]` · Priority: P2 · https://www.androidauthority.com/android-17-qpr2-stable-3733645/ (synced to BUILD_PLAN)
 - [ ] Smoke-test Kotlin 2.5.0-RC and bump Gradle wrapper — Catches compiler regressions before stable. Label: `[AGENT]` · Priority: P3 · https://github.com/JetBrains/kotlin/releases/tag/v2.5.0-RC
