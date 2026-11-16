@@ -1,3 +1,6 @@
+AntiFeatures:
+  NonFreeNet:
+    en-US: Optionally checks GitHub Releases for updates.
 Categories:
   - Multimedia
   - System
@@ -5,28 +8,27 @@ License: MIT
 AuthorName: Edward Lee Thompson
 SourceCode: https://github.com/edwardlthompson/MultiAppShare-
 IssueTracker: https://github.com/edwardlthompson/MultiAppShare-/issues
+Changelog: https://github.com/edwardlthompson/MultiAppShare-/releases
 
 AutoName: Multi App Share
 
 RepoType: git
-Repo: https://github.com/edwardlthompson/MultiAppShare-
+Repo: https://github.com/edwardlthompson/MultiAppShare-.git
 
 Builds:
-  - versionName: 1.9.5
-    versionCode: 181
-    commit: v1.9.5
+  - versionName: 1.10.1
+    versionCode: 183
+    commit: v1.10.1
     subdir: app
-    gradle:
-      - yes
-
-  - versionName: 1.10.0
-    versionCode: 182
-    commit: v1.10.0
-    subdir: app
+    sudo:
+      - 'echo "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list'
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
     gradle:
       - yes
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 1.10.0
-CurrentVersionCode: 182
+CurrentVersion: 1.10.1
+CurrentVersionCode: 183

@@ -110,7 +110,9 @@ function Update-FdroidMetadataContent {
 function Read-VersionsFromGradle {
     param([string]$GradlePath)
     $text = Get-Content -LiteralPath $GradlePath -Raw
-    $vn = if ($text -match 'versionName\s*=\s*"([^"]+)"') { $Matches[1] } else { $null }
+    $vn = if ($text -match 'val appVersion\s*=\s*"([^"]+)"') { $Matches[1] }
+        elseif ($text -match 'versionName\s*=\s*"([^"]+)"') { $Matches[1] }
+        else { $null }
     $vc = if ($text -match 'versionCode\s*=\s*(\d+)') { [int]$Matches[1] } else { $null }
     if (-not $vn -or -not $vc) {
         throw "Could not parse versionName/versionCode from $GradlePath"

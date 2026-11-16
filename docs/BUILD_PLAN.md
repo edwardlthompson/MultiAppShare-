@@ -56,7 +56,7 @@ Per [`PRE_RELEASE_AUDIT.md`](PRE_RELEASE_AUDIT.md). Prefer `/ship`.
 
 | Status | ID | Label | Task |
 |--------|----|-------|------|
-| 🔲 | AE.59 | `[HUMAN]` | F-Droid `fdroiddata` MR for 1.10.0 / next tag (`FDROID_MAINTENANCE.md`) |
+| 🔲 | AE.59 | `[HUMAN]` | F-Droid `fdroiddata` MR for **1.10.1** after tagging (`FDROID_MAINTENANCE.md`); source-side phone screenshots + scan-tolerant signingConfig are in-tree |
 ## UX inventory
 
 | Status | ID | Task |
