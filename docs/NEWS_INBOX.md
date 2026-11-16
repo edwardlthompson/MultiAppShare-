@@ -15,3 +15,13 @@ A Cursor planning agent should review these items and fold the useful ones into 
 
 - [x] Verify share flow against Android 17 QPR2 share-sheet changes — The share sheet is the app's core surface. Label: `[ADB]` · Priority: P2 · https://www.androidauthority.com/android-17-qpr2-stable-3733645/ (synced to BUILD_PLAN)
 - [ ] Smoke-test Kotlin 2.5.0-RC and bump Gradle wrapper — Catches compiler regressions before stable. Label: `[AGENT]` · Priority: P3 · https://github.com/JetBrains/kotlin/releases/tag/v2.5.0-RC
+
+## 2026-11-16
+
+**News and updates**
+
+- GitHub Actions will block `pull_request_target` runs in public repos by default from Dec 2 unless an Actions event policy allows them; today (Nov 16) 12:00–14:00 AST is the second brownout. [source](https://github.blog/changelog/2026-11-02-pull_request_target-blocked-by-default-december-2/) Your `.github/workflows/pr-title.yml` uses it and only needs `pull-requests: read`.
+
+**Tasks for the planning agent**
+
+- [x] Switch pr-title.yml from pull_request_target to pull_request — The semantic PR-title check will fail on Dec 2 (and during brownouts), and plain pull_request works for same-repo PRs. Label: `[AGENT]` · Priority: P1 · https://github.blog/changelog/2026-11-02-pull_request_target-blocked-by-default-december-2/ (synced to BUILD_PLAN)
