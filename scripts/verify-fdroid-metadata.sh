@@ -46,12 +46,22 @@ if [ ! -f "$GRADLE" ]; then
   fail "missing $GRADLE"
 else
   VERSION_CODE="$(grep -E 'versionCode\s*=' "$GRADLE" | head -1 | sed -E 's/.*=\s*([0-9]+).*/\1/')"
+  VERSION_NAME="$(grep -E '^[[:space:]]*versionName[[:space:]]*=[[:space:]]*"[^"]+"' "$GRADLE" | head -1 | sed 's/.*"\(.*\)".*/\1/')"
+  APP_VERSION="$(grep -E 'val appVersion\s*=' "$GRADLE" | head -1 | sed 's/.*"\(.*\)".*/\1/')"
   if [ -z "${VERSION_CODE:-}" ]; then
     fail "could not parse versionCode from build.gradle.kts"
   elif [ ! -s "$META/changelogs/${VERSION_CODE}.txt" ]; then
     fail "missing changelog $META/changelogs/${VERSION_CODE}.txt"
   else
     ok "changelog for versionCode ${VERSION_CODE}"
+  fi
+  if [ -z "${VERSION_NAME:-}" ]; then
+    fail "F-Droid checkupdates needs a quoted versionName = \"…\" in $GRADLE"
+  else
+    ok "quoted versionName ${VERSION_NAME} (F-Droid checkupdates)"
+  fi
+  if [ -n "${APP_VERSION:-}" ] && [ "$APP_VERSION" != "$VERSION_NAME" ]; then
+    fail "val appVersion ($APP_VERSION) must match quoted versionName ($VERSION_NAME)"
   fi
 fi
 

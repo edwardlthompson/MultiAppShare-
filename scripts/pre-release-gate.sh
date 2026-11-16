@@ -36,7 +36,7 @@ else
 fi
 
 if [ -f app/build.gradle.kts ]; then
-  APP_VERSION="$(grep -E 'val appVersion\s*=' app/build.gradle.kts | head -1 | sed 's/.*"\(.*\)".*/\1/')"
+  APP_VERSION="$(grep -E 'versionName\s*=\s*"' app/build.gradle.kts | head -1 | sed 's/.*"\(.*\)".*/\1/')"
   echo "OK   app versionName = ${APP_VERSION}"
 fi
 

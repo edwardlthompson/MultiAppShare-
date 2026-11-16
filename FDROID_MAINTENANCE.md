@@ -14,7 +14,7 @@ This guide keeps Multi App Share aligned with the F-Droid buildserver. Previous 
 
 Before every release, these must match **exactly**:
 
-1. `app/build.gradle.kts` → `val appVersion` / `versionCode` (currently **1.10.1** / **183**)
+1. `app/build.gradle.kts` → quoted `versionName = "1.10.1"` (F-Droid `checkupdates` regex) and matching `val appVersion` / `versionCode` **183**
 2. `metadata/com.edwardlthompson.multiappshare.yml` → `CurrentVersion` / `CurrentVersionCode` and the `Builds:` `commit:` (use `CurrentVersion`, not `CurrentVersionName`)
 3. **Git tag**: `v` + `appVersion` (currently `v1.10.1`)
 
@@ -75,7 +75,7 @@ Copy version/commit/sudo from this repo’s `metadata/` file into the **dedicate
 
 ## Release workflow
 
-1. Bump `appVersion` / `versionCode` in `app/build.gradle.kts` (keep `versionName = appVersion`).
+1. Bump `val appVersion`, quoted `versionName = "…"`, and `versionCode` together in `app/build.gradle.kts` (F-Droid `checkupdates` will not see `versionName = appVersion`).
 2. Add `fastlane/metadata/android/en-US/changelogs/<versionCode>.txt` and a `CHANGELOG.md` section.
 3. Strip images: `python3 app/strip_all_pngs.py`.
 4. Commit on a feature branch; merge to `main`. **Do not** tag from an agent unless a human asked.

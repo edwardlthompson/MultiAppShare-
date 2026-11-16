@@ -31,7 +31,8 @@ android {
         minSdk = 26
         targetSdk = 36
         versionCode = 183
-        versionName = appVersion
+        // Quoted string required so F-Droid checkupdates can parse versionName.
+        versionName = "1.10.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
