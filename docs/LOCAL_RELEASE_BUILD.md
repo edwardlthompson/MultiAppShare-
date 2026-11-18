@@ -6,6 +6,8 @@ Use this when you want a **properly signed** `release` APK or AAB on your machin
 
 ## 1. One-time keystore
 
+Create a **dedicated upload keystore** (not a `CN=Edward, OU=Dev` throwaway). F-Droid `Binaries` / `AllowedAPKSigningKeys` should only be added after GitHub Releases are signed with that upload cert.
+
 From the repo root:
 
 ```bash
@@ -13,7 +15,7 @@ keytool -genkeypair -v -keystore release.keystore -alias multiappshare \
   -keyalg RSA -keysize 2048 -validity 10000
 ```
 
-Keep **`release.keystore`** secret and **back it up** (loss = you cannot ship updates under the same signing key).
+Keep **`release.keystore`** secret and **back it up** (loss = you cannot ship updates under the same signing key). Never commit the keystore or `keystore.properties`.
 
 ## 2. Signing configuration (do not commit secrets)
 

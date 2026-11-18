@@ -13,7 +13,7 @@ plugins {
 
 
 
-val appVersion = "1.10.0"
+val appVersion = "1.10.1"
 
 /** Local signing: copy `keystore.properties.example` → `keystore.properties` (gitignored). Env vars override file. */
 val keystoreProperties = Properties().apply {
@@ -30,14 +30,17 @@ android {
         applicationId = "com.edwardlthompson.multiappshare"
         minSdk = 26
         targetSdk = 36
-        versionCode = 182
-        versionName = "1.10.0"
+        versionCode = 183
+        // Quoted string required so F-Droid checkupdates can parse versionName.
+        versionName = "1.10.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    // F-Droid's scanner strips signingConfigs. Use maybeCreate/findByName so a missing
+    // "release" config does not fail configuration (no fdroiddata prebuild sed).
     signingConfigs {
-        create("release") {
+        maybeCreate("release").apply {
             val storeRel = System.getenv("RELEASE_KEYSTORE_PATH")
                 ?: keystoreProperties.getProperty("storeFile")
                 ?: "release.keystore"
@@ -60,8 +63,9 @@ android {
             isPseudoLocalesEnabled = true
         }
         release {
-            val releaseSigning = signingConfigs.getByName("release")
-            val signingReady = releaseSigning.storeFile?.let { it.isFile } == true &&
+            val releaseSigning = signingConfigs.findByName("release")
+            val signingReady = releaseSigning != null &&
+                releaseSigning.storeFile?.let { it.isFile } == true &&
                 !releaseSigning.storePassword.isNullOrBlank() &&
                 !releaseSigning.keyAlias.isNullOrBlank() &&
                 !releaseSigning.keyPassword.isNullOrBlank()
@@ -101,7 +105,7 @@ baselineProfile {
 
 
 
-// Custom APK naming for v1.8.0
+// Custom APK naming (archivesName follows appVersion)
 base {
    archivesName.set("MultiAppShare-v$appVersion")
 }

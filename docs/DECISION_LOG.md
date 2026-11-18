@@ -4,6 +4,7 @@ Chronological index of major technical decisions. Entries are **append-only**.
 
 | Date | Decision | Record |
 |------|----------|--------|
+| 2026-11-16 | F-Droid source readiness: Fastlane phone screenshots from Paparazzi goldens; `signingConfigs.findByName`/`maybeCreate` so fdroiddata needs no prebuild sed; no keystore in git; `Binaries` wait for a dedicated upload cert | [FDROID_MAINTENANCE.md](../FDROID_MAINTENANCE.md) |
 | 2026-05-06 | Complete `:feature-dashboard` module (strategy A) rather than consolidate into `:app` | [ADR-0001](adr/0001-feature-dashboard.md) |
 | 2026 | Milestones A–Q completed (testing, Room, UX, security, i18n) | [COMPLETED_TASKS.md](COMPLETED_TASKS.md) |
 | 2026-06-12 | Milestone R — Project Initialization Template alignment complete | [COMPLETED_TASKS.md](COMPLETED_TASKS.md) |
