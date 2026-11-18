@@ -114,6 +114,8 @@ case "$( uname )" in                #(
   NONSTOP* )        nonstop=true ;;
 esac
 
+
+
 # Determine the Java command to use to start the JVM.
 if [ -n "$JAVA_HOME" ] ; then
     if [ -x "$JAVA_HOME/jre/sh/java" ] ; then
@@ -137,10 +139,6 @@ else
 Please set the JAVA_HOME variable in your environment to match the
 location of your Java installation."
     fi
-fi
-
-if [ "$cygwin" = "false" ] && [ "$msys" = "false" ] && command -v wslpath >/dev/null 2>&1; then
-    cygwin=true
 fi
 
 # Increase the maximum file descriptors if we can.
@@ -172,12 +170,9 @@ fi
 
 # For Cygwin or MSYS, switch paths to Windows format before running java
 if "$cygwin" || "$msys" ; then
-    if command -v cygpath >/dev/null 2>&1; then
-        APP_HOME=$( cygpath --path --mixed "$APP_HOME" )
-        JAVACMD=$( cygpath --unix "$JAVACMD" )
-    elif command -v wslpath >/dev/null 2>&1; then
-        APP_HOME=$( wslpath -m "$APP_HOME" )
-    fi
+    APP_HOME=$( cygpath --path --mixed "$APP_HOME" )
+
+    JAVACMD=$( cygpath --unix "$JAVACMD" )
 
     # Now convert the arguments - kludge to limit ourselves to /bin/sh
     for arg do
@@ -189,11 +184,7 @@ if "$cygwin" || "$msys" ; then
               *)    false ;;
             esac
         then
-            if command -v cygpath >/dev/null 2>&1; then
-                arg=$( cygpath --path --ignore --mixed "$arg" )
-            elif command -v wslpath >/dev/null 2>&1; then
-                arg=$( wslpath -m "$arg" 2>/dev/null || echo "$arg" )
-            fi
+            arg=$( cygpath --path --ignore --mixed "$arg" )
         fi
         # Roll the args list around exactly as many times as the number of
         # args, so each arg winds up back in the position where it started, but
