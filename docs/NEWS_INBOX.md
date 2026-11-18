@@ -25,3 +25,15 @@ A Cursor planning agent should review these items and fold the useful ones into 
 **Tasks for the planning agent**
 
 - [x] Switch pr-title.yml from pull_request_target to pull_request — The semantic PR-title check will fail on Dec 2 (and during brownouts), and plain pull_request works for same-repo PRs. Label: `[AGENT]` · Priority: P1 · https://github.blog/changelog/2026-11-02-pull_request_target-blocked-by-default-december-2/ (synced to BUILD_PLAN)
+
+## 2026-11-18
+
+Catch-up for Nov 17–18 (the daily brief did not run those mornings).
+
+**News and updates**
+
+- Both `pull_request_target` brownouts (Nov 9 and Nov 16) have passed, and `.github/workflows/pr-title.yml` is still on `pull_request_target`. The existing P1 to switch it to `pull_request` remains open; the default block becomes permanent on Dec 2. [source](https://github.blog/changelog/2026-11-02-pull_request_target-blocked-by-default-december-2/)
+
+**Tasks for the planning agent**
+
+_No new tasks. See the news items above._
