@@ -1,5 +1,10 @@
 # MultiAppShare BUILD PLAN - Living Checklist
 
+<!-- remaining-tally -->
+**Remaining:** (tally on next sync)
+<!-- /remaining-tally -->
+
+
 > **Completed milestones:** A-T, **U**, **W**, **V**, **X**, **Y** (agent/auto), **Z**, **AA**, **AB**, **AD**, **AE**, **BH**, **UX**, **TU** - [`COMPLETED_TASKS.md`](COMPLETED_TASKS.md)
 > **Active:** **AE.59** `[HUMAN]` F-Droid MR · template **v1.6.0**
 > **Agent workspace:** [`AGENTS.md`](../AGENTS.md) / [`AGENT_MEMORY.md`](../AGENT_MEMORY.md) / [`START_HERE.md`](START_HERE.md)
@@ -94,8 +99,38 @@ Per [`PRE_RELEASE_AUDIT.md`](PRE_RELEASE_AUDIT.md). Prefer `/ship`.
 | BH | Complete (2026-09-15) | [`COMPLETED_TASKS.md`](COMPLETED_TASKS.md) |
 | UX | Complete (2026-09-15) | [`COMPLETED_TASKS.md`](COMPLETED_TASKS.md) |
 | TU | Complete (2026-09-15) | [`COMPLETED_TASKS.md`](COMPLETED_TASKS.md) |
+### Local agent (This Computer)
 
-## News inbox (synced)
+Standing queue for This Computer. Rows: `🔲 [AGENT][LOCAL] … — scope: path`.
+
+<!-- local-agent-lane:begin -->
+- 🔲 [AGENT][LOCAL] Switch pr-title.yml from pull_request_target to pull_request — scope: .github/workflows/pr-title.yml (news P1, 2026-11-16) https://github.blog/changelog/2026-11-02-pull_request_target-blocked-by-default-december-2/
+<!-- local-agent-lane:end -->
+
+### Cloud agent (Cursor Cloud)
+
+Standing queue for Cursor Cloud. Rows: `🔲 [AGENT][CLOUD] … — scope: path`.
+
+<!-- cloud-agent-lane:begin -->
+_No cloud agent items._
+<!-- cloud-agent-lane:end -->
+
+### Open PRs (synced)
+
+> Auto-managed. Do not hand-edit inside the markers.
+
+<!-- open-prs-sync:begin -->
+_No open Dependabot or Release Please PRs._
+<!-- open-prs-sync:end -->
+
+### Template gaps (synced)
+
+> Auto-managed. Do not hand-edit inside the markers.
+
+<!-- template-gaps-sync:begin -->
+_No template gaps._
+<!-- template-gaps-sync:end -->
+
+### Waiting on a person
 
 - 🔲 [ADB] Verify share flow against Android 17 QPR2 share-sheet changes (news P2, 2026-11-13) https://www.androidauthority.com/android-17-qpr2-stable-3733645/
-- 🔲 [AGENT][LOCAL] Switch pr-title.yml from pull_request_target to pull_request — scope: .github/workflows/pr-title.yml (news P1, 2026-11-16) https://github.blog/changelog/2026-11-02-pull_request_target-blocked-by-default-december-2/
