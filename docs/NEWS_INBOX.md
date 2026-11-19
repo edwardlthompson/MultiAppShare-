@@ -37,3 +37,15 @@ Catch-up for Nov 17–18 (the daily brief did not run those mornings).
 **Tasks for the planning agent**
 
 _No new tasks. See the news items above._
+
+## 2026-11-19
+
+**News and updates**
+
+- Jetpack Compose November '26 release is stable: Compose BOM 2026.11.01 (Compose 1.13) with Material3 1.5.0. The BOM needs Kotlin 2.2+ and compileSdk 37.1. Material3 1.5.0 breaks Slider/RangeSlider source (stateless overloads deprecated, `onValueChange` now required, RangeSliderState activeRangeStart/End renamed to startValue/endValue); SecureTextField now defaults to system obfuscation, and clickables play platform click sounds by default. [source](https://developer.android.com/blog/posts/jetpack-compose-november-2026-release) · [Material3 notes](https://developer.android.com/jetpack/androidx/releases/compose-material3)
+- Material3 1.5.0 adds a `material3-ripple` artifact that draws keyboard/D-pad focus as inset focus rings, and Compose 1.13 clickables now play the system click sound by default (respecting system settings). [source](https://developer.android.com/jetpack/androidx/releases/compose-material3)
+
+**Tasks for the planning agent**
+
+- [x] Bump Compose BOM 2026.08.00 to 2026.11.01 (Compose 1.13 / Material3 1.5.0) and fix Slider/RangeSlider call sites — Material3 1.5.0 makes `onValueChange` required on Slider/RangeSlider (no Slider/RangeSlider calls found, but check other deprecations) and the BOM requires Kotlin 2.2+ and compileSdk 37.1, so a Dependabot/Argus BOM bump will fail unless AGP accepts 37.1 and the call sites are fixed first. Label: `[AGENT]` · Priority: P2 · https://developer.android.com/blog/posts/jetpack-compose-november-2026-release (synced to BUILD_PLAN)
+- [ ] After the BOM 2026.11.01 bump, check keyboard/D-pad focus rings on the main flows and remove manual click sounds that would now double-fire — Inset focus rings make focus visible for keyboard and switch-access users, and stray double UI sounds are noticeable in an accessibility-focused app. Label: `[AGENT]` · Priority: P3 · https://developer.android.com/jetpack/androidx/releases/compose-material3

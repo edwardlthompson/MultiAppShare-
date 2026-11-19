@@ -75,6 +75,7 @@ Per [`PRE_RELEASE_AUDIT.md`](PRE_RELEASE_AUDIT.md). Prefer `/ship`.
 <!-- parallel_exception: independent news follow-ups; run sequentially -->
 
 1. 🔲 [AGENT] Switch pr-title.yml from pull_request_target to pull_request — scope: .github/workflows/pr-title.yml (news P1, 2026-11-16) https://github.blog/changelog/2026-11-02-pull_request_target-blocked-by-default-december-2/
+2. 🔲 [AGENT] Bump Compose BOM 2026.08.00 → 2026.11.01 (Compose 1.13 / Material3 1.5.0; needs Kotlin 2.2+ and compileSdk 37.1, check AGP) and fix Slider/RangeSlider call sites (`onValueChange` now required) — scope: gradle/libs.versions.toml,app/,core-ui/,feature-dashboard/ (news P2, 2026-11-19) https://developer.android.com/blog/posts/jetpack-compose-november-2026-release
 
 #### Human & device (after automation)
 
