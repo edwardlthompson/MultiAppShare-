@@ -69,6 +69,17 @@ Per [`PRE_RELEASE_AUDIT.md`](PRE_RELEASE_AUDIT.md). Prefer `/ship`.
 | ✅ | UX-081 | `[AGENT]` Settings glance redesign — section groups, icons, value subtitles, inline switches (no hairline dividers) — shipped in **v1.10.0** |
 
 > **UX-081** archived with Milestone UX / v1.10.0 ship (2026-09-15).
+
+## Milestone NEWS — News Bot follow-ups
+
+<!-- parallel_exception: independent news follow-ups; run sequentially -->
+
+1. 🔲 [AGENT] Switch pr-title.yml from pull_request_target to pull_request — scope: .github/workflows/pr-title.yml (news P1, 2026-11-16) https://github.blog/changelog/2026-11-02-pull_request_target-blocked-by-default-december-2/
+
+#### Human & device (after automation)
+
+1. 🔲 [ADB] Verify share flow against Android 17 QPR2 share-sheet changes (news P2, 2026-11-13) https://www.androidauthority.com/android-17-qpr2-stable-3733645/
+
 ---
 
 ## Ongoing maintenance
@@ -104,7 +115,7 @@ Per [`PRE_RELEASE_AUDIT.md`](PRE_RELEASE_AUDIT.md). Prefer `/ship`.
 Standing queue for This Computer. Rows: `🔲 [AGENT][LOCAL] … — scope: path`.
 
 <!-- local-agent-lane:begin -->
-- 🔲 [AGENT][LOCAL] Switch pr-title.yml from pull_request_target to pull_request — scope: .github/workflows/pr-title.yml (news P1, 2026-11-16) https://github.blog/changelog/2026-11-02-pull_request_target-blocked-by-default-december-2/
+_No local agent items._
 <!-- local-agent-lane:end -->
 
 ### Cloud agent (Cursor Cloud)
@@ -133,4 +144,3 @@ _No template gaps._
 
 ### Waiting on a person
 
-- 🔲 [ADB] Verify share flow against Android 17 QPR2 share-sheet changes (news P2, 2026-11-13) https://www.androidauthority.com/android-17-qpr2-stable-3733645/
