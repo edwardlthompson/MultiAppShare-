@@ -85,6 +85,22 @@ Per [`PRE_RELEASE_AUDIT.md`](PRE_RELEASE_AUDIT.md). Prefer `/ship`.
 
 ---
 
+### Local agent (This Computer)
+
+Standing queue for This Computer. Rows: `🔲 [AGENT][LOCAL] … — scope: path`.
+
+<!-- local-agent-lane:begin -->
+_No local agent items._
+<!-- local-agent-lane:end -->
+
+### Cloud agent (Cursor Cloud)
+
+Standing queue for Cursor Cloud. Rows: `🔲 [AGENT][CLOUD] … — scope: path`.
+
+<!-- cloud-agent-lane:begin -->
+_No cloud agent items._
+<!-- cloud-agent-lane:end -->
+
 ## Ongoing maintenance
 
 - Weekly: `check-security-triage.sh` / `triage-dependabot-prs.sh` / `/verify`
@@ -113,21 +129,6 @@ Per [`PRE_RELEASE_AUDIT.md`](PRE_RELEASE_AUDIT.md). Prefer `/ship`.
 | BH | Complete (2026-09-15) | [`COMPLETED_TASKS.md`](COMPLETED_TASKS.md) |
 | UX | Complete (2026-09-15) | [`COMPLETED_TASKS.md`](COMPLETED_TASKS.md) |
 | TU | Complete (2026-09-15) | [`COMPLETED_TASKS.md`](COMPLETED_TASKS.md) |
-### Local agent (This Computer)
-
-Standing queue for This Computer. Rows: `🔲 [AGENT][LOCAL] … — scope: path`.
-
-<!-- local-agent-lane:begin -->
-_No local agent items._
-<!-- local-agent-lane:end -->
-
-### Cloud agent (Cursor Cloud)
-
-Standing queue for Cursor Cloud. Rows: `🔲 [AGENT][CLOUD] … — scope: path`.
-
-<!-- cloud-agent-lane:begin -->
-_No cloud agent items._
-<!-- cloud-agent-lane:end -->
 
 ### Open PRs (synced)
 
