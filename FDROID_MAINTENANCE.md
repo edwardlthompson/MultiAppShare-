@@ -1,77 +1,91 @@
-# 🏁 F-Droid Maintenance & Release Guide
+# F-Droid Maintenance & Release Guide
 
-This guide ensures that future version updates of MultiAppShare follow the strict, proven template required by the F-Droid buildserver and audit scripts.
+This guide keeps Multi App Share aligned with the F-Droid buildserver. Previous upstream attempt: closed MR !34700 (opened from protected `master`, missing Fastlane screenshots, Summary/Description in YAML). Do not repeat those mistakes.
 
-## 📐 Current Structure (Template)
+## Current structure
 
-### 1. Metadata Location
-- **App repo (this GitHub project)**: `metadata/com.edwardlthompson.multiappshare.yml` is the **canonical** copy for your GitLab `fdroiddata` fork. Keep **`Categories`** alphabetically (`Multimedia` then `System`), include **`AutoName: Multi App Share`** (required by `fdroid checkupdates` / `rewritemeta` on fdroiddata CI). Do **not** add `Summary` or `Description` here when using Fastlane for store text.
-- **F-Droid data repo (GitLab fork of `fdroid/fdroiddata`)**: after editing, open a **Merge Request** to [gitlab.com/fdroid/fdroiddata](https://gitlab.com/fdroid/fdroiddata). Your fork’s default branch is usually `master`; CI there runs `fdroid lint`, schema checks, and `check-fastlane.py`.
-- **Optional `en-US` folder in `fdroiddata`**: only if you are **not** using Fastlane in the app source; this project uses Fastlane, so you normally **do not** add `metadata/com.edwardlthompson.multiappshare/en-US/` on GitLab.
+### 1. Metadata location
 
-### 2. Version Alignment (CRITICAL)
-Before every release, ensure these three fields match **exactly**:
-1.  `app/build.gradle.kts` → `versionCode: 175`, `versionName: "1.8.0"`
-2.  `metadata/com.edwardlthompson.multiappshare.yml` → `CurrentVersionCode: 175`, `CurrentVersion: 1.8.0` (use `CurrentVersion`, not `CurrentVersionName`)
-3.  **Git Tag**: `v1.8.0`
+- **App repo**: `metadata/com.edwardlthompson.multiappshare.yml` is the canonical recipe for the GitLab `fdroiddata` fork. Keep **`Categories`** alphabetically (`Multimedia` then `System`). Include **`AutoName: Multi App Share`**. **Do not** add `Summary` or `Description` — Fastlane at the repo root supplies store text.
+- **Fastlane (scraped by F-Droid from the tagged commit)**: `fastlane/metadata/android/en-US/` with `title.txt`, `short_description.txt`, `full_description.txt`, `changelogs/<versionCode>.txt`, `images/icon.png`, `images/featureGraphic.png`, and `images/phoneScreenshots/*.png`.
+- **F-Droid data repo**: Edward's fork branch `fdroid/com.edwardlthompson.multiappshare` (not `master`). Open the MR from that branch to [fdroid/fdroiddata](https://gitlab.com/fdroid/fdroiddata) `master`. Merge (do not rebase) upstream `master` into the fork branch first.
 
----
+### 2. Version alignment (CRITICAL)
 
-## 🛡️ Pitfalls & Solutions
+Before every release, these must match **exactly**:
 
-### ❌ Binary Audit Failure
-**Problem:** F-Droid scanners find compiled `.class` or `.bin` files.
-**Solution:** Ensure `.gitignore` ignores `build/` recursively. Never commit anything from a `build` folder.
+1. `app/build.gradle.kts` → quoted `versionName = "1.10.1"` (F-Droid `checkupdates` regex) and matching `val appVersion` / `versionCode` **183**
+2. `metadata/com.edwardlthompson.multiappshare.yml` → `CurrentVersion` / `CurrentVersionCode` and the `Builds:` `commit:` (use `CurrentVersion`, not `CurrentVersionName`)
+3. **Git tag**: `v` + `appVersion` (currently `v1.10.1`)
 
-### ❌ Image Metadata Audit Failure
-**Problem:** F-Droid rejects PNGs with hidden chunks (EXIF, pHYs, tIME).
-**Solution:** Run the binary-level stripper on **ANY new images** before committing:
+`v1.10.0` already exists and ships 1.10.0 / 182. Do **not** move that tag.
+
+### 3. Signing (no prebuild sed)
+
+`app/build.gradle.kts` uses `signingConfigs.maybeCreate("release")` and `signingConfigs.findByName("release")`. F-Droid's scanner may strip the keystore block; configuration must still succeed. **Do not** restore `getByName("release")` — that forced this sed on the fork, which must now be **removed**:
+
+```
+prebuild: sed -i -e 's/signingConfigs\.getByName("release")/signingConfigs.maybeCreate("release")/g' build.gradle.kts
+```
+
+Local `assembleRelease` still signs when `keystore.properties` or `RELEASE_KEYSTORE_*` env vars point at a real keystore. Never commit a keystore, `keystore.properties`, or passwords.
+
+GitHub Releases for v1.10.0 are signed with a **Dev** certificate (`CN=Edward, OU=Dev`). F-Droid reproducible builds (`Binaries` + `AllowedAPKSigningKeys`) should wait until a **dedicated upload keystore** signs the GitHub APK. After that tagged APK exists:
+
+```yaml
+Binaries: https://github.com/edwardlthompson/MultiAppShare-/releases/download/v%v/MultiAppShare-v%v-release.apk
+AllowedAPKSigningKeys: <sha256 of the dedicated upload cert>
+```
+
+Compute the new cert fingerprint from the signed APK (do not reuse the Dev DN):
+
 ```bash
-python app/strip_all_pngs.py
+apksigner verify --print-certs MultiAppShare-v1.10.1-release.apk | grep SHA-256
+# or
+keytool -printcert -jarfile MultiAppShare-v1.10.1-release.apk
 ```
-*This script is located in the `app/` directory and is essential for all project assets.*
-
-### ❌ YAML Syntax Failure
-**Problem:** Duplicate YAML keys (GitLab CI: `duplication of key "AutoName"`) or `rewritemeta` / `check-fastlane` parse errors.
-**Solution:** Keep a single canonical block. Do **not** set `AutoName` in the `.yml` if Fastlane already defines the title (`fastlane/.../title.txt`). Do **not** add `Summary:` / `Description:` to the `.yml` for this app; Fastlane supplies them.
-
-### ❌ GitLab `fdroiddata` CI failures
-**Problem:** Personal fork pipeline fails on `metadata/com.edwardlthompson.multiappshare.yml`.
-**Solution:** Copy the YAML from this repo’s `metadata/` folder, push to your fork, and fix any merge residue (duplicate keys). Publication still requires an accepted **MR to `fdroid/fdroiddata`**, not only a green fork pipeline.
 
 ---
 
-## 🚀 Release Workflow
-1.  **Bump Version** in `app/build.gradle.kts`.
-2.  **Strip Images**: `python app/strip_all_pngs.py`.
-3.  **Commit & Tag**:
-    ```bash
-    git add . ; git commit -m "release: v1.8.0"
-    git tag v1.8.0
-    git push origin main --tags
-    ```
-4.  **Update GitLab `fdroiddata` fork**: Copy `metadata/com.edwardlthompson.multiappshare.yml` from this repo into the same path in your fork; set `CurrentVersion`, `CurrentVersionCode`, and the `Builds:` `commit:` to the new tag. Push `master` (or your default branch), then open/update an MR to `fdroid/fdroiddata`. The helper scripts `release_v1_7_4.sh` / `automate_v174.sh` expect a sibling clone at `../fdroiddata`.
+## Pitfalls
 
-### GitHub branch `fdroiddata`
-This branch is kept **merged with `main`** so the same metadata and source snapshot match. F-Droid still builds from **GitHub** using the tag in the YAML, not from this branch name.
+### Binary audit
 
-### Automate GitLab fork sync (token)
-From the repo root, with a GitLab PAT that has **`api`** and **`write_repository`**:
+`.gitignore` must ignore `build/` recursively. Never commit `build/` output.
 
-```powershell
-$env:GITLAB_TOKEN = "glpat-..."   # or put GITLAB_TOKEN= in scripts/.env.local
-.\scripts\sync-fdroiddata-gitlab.ps1
+### Image metadata
+
+F-Droid rejects PNGs with extra chunks (EXIF, pHYs, tIME). After adding images:
+
+```bash
+python3 app/strip_all_pngs.py
 ```
 
-Optional: `-GitLabForkPath yourname/fdroiddata`, `-FdroidDataPath D:\src\fdroiddata`, `-SkipMr`, `-DryRun`. Versions and tag default from `app/build.gradle.kts` (`v` + `versionName`).
+### YAML / Fastlane
 
-### Download GitLab CI job logs (API, Free tier)
-Create `scripts/.env.local` from `scripts/.env.local.example` and set **`GITLAB_TOKEN`** (PAT with at least **`read_api`**; use **`api`** if anything 403s). Then:
+- No `Summary:` / `Description:` in the YAML (reviewer requirement from MR !34700).
+- Phone screenshots live in this repo, not in fdroiddata.
+- Changelog files are keyed by **versionCode** (`fastlane/.../changelogs/183.txt`), max 500 characters.
 
-```powershell
-# List failed jobs in a pipeline (paste your pipeline URL from the browser)
-.\scripts\fetch-gitlab-job-log.ps1 -PipelineUrl "https://gitlab.com/edwardleethompson/fdroiddata/-/pipelines/PIPELINE_ID" -FailedOnly
+### GitLab `fdroiddata` CI
 
-# Save a job log to a file (use job id from the list, or the job’s web URL)
-.\scripts\fetch-gitlab-job-log.ps1 -JobUrl "https://gitlab.com/.../jobs/JOB_ID" -OutFile ".\fdroid-failed-job.txt"
-```
+Copy version/commit/sudo from this repo’s `metadata/` file into the **dedicated fork branch**. Keep the fork’s `AntiFeatures: NonFreeNet` and JDK 21 `sudo` recipe. Drop the `prebuild` sed. Publication still requires an accepted **MR to `fdroid/fdroiddata`**.
+
+---
+
+## Release workflow
+
+1. Bump `val appVersion`, quoted `versionName = "…"`, and `versionCode` together in `app/build.gradle.kts` (F-Droid `checkupdates` will not see `versionName = appVersion`).
+2. Add `fastlane/metadata/android/en-US/changelogs/<versionCode>.txt` and a `CHANGELOG.md` section.
+3. Strip images: `python3 app/strip_all_pngs.py`.
+4. Commit on a feature branch; merge to `main`. **Do not** tag from an agent unless a human asked.
+5. Human tags the merge commit (example for this F-Droid polish):
+
+   ```bash
+   git fetch origin main
+   git log -1 --oneline origin/main
+   git tag -a v1.10.1 <sha> -m "Multi App Share 1.10.1"
+   git push origin v1.10.1
+   ```
+
+6. Update the GitLab fork branch `fdroid/com.edwardlthompson.multiappshare`: set `CurrentVersion` / `CurrentVersionCode` / `Builds.commit` to `v1.10.1`, **delete `prebuild`**. Merge upstream `fdroid/fdroiddata` `master` (merge commit, not rebase). Open the MR from that branch — never from protected `master`.

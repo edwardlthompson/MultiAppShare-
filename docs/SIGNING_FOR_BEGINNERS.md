@@ -23,6 +23,8 @@ Details and troubleshooting are below.
 
 If you **lose** the keystore file or forget the passwords, you **cannot** ship updates that replace an existing Play Store or user install under the same signing identity. **Back up `release.keystore`** somewhere safe (password manager attachment, encrypted drive—not email in plain text).
 
+F-Droid reproducible builds need this to be a **dedicated upload key**, not the historical GitHub Releases Dev certificate (`CN=Edward, OU=Dev`). Do not generate a keystore in git or CI logs.
+
 ---
 
 ## Step 1 — One-time: create the key (Windows)

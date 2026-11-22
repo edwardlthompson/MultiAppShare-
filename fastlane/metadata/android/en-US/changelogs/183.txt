@@ -1,0 +1,1 @@
+F-Droid listing polish: phone screenshots of the real UI, and a release signingConfig that survives F-Droid's scan without rewriting Gradle.

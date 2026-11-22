@@ -5,6 +5,13 @@ This project uses Android **`versionCode`**-keyed changelogs for F-Droid/Store m
 
 ## [Unreleased]
 
+## 1.10.1 (versionCode 183)
+
+### Changed
+
+- Release signing uses `signingConfigs.maybeCreate` / `findByName` so F-Droid can strip the keystore block without a metadata `prebuild` sed.
+- Fastlane listing includes real phone screenshots (Paparazzi goldens of onboarding, groups, share review, and Settings).
+
 ## 1.10.0 (versionCode 182)
 
 ### Added

@@ -6,5 +6,5 @@
 | Deferred | Sprint | Owner | Task | Reason |
 |----------|--------|-------|------|--------|
 | X.JAVA | X | [HUMAN] | Ensure JAVA_HOME usable for agent Git Bash Gradle | Machine env |
-| AE.59 | Milestone AE — Product backlog (allideas 2026-08-30) | HUMAN | F-Droid `fdroiddata` MR for 1.9.5 / next tag (`FDROID_MAINTENANCE.md`) | Release action requiring GitLab MR on fdroiddata repo after release tag |
-| 2026-09-15 | Human & device backlog (Unreleased) | HUMAN | F-Droid fdroiddata MR for 1.10.0 / next tag (FDROID_MAINTENANCE.md) | No automation rule for HUMAN task (GitLab fdroiddata MR) |
+| AE.59 | Milestone AE — Product backlog (allideas 2026-08-30) | HUMAN | F-Droid `fdroiddata` MR for 1.10.1 after tagging (`FDROID_MAINTENANCE.md`) | GitLab MR on fdroiddata; source-side screenshots + signingConfig are in-tree |
+| 2026-09-15 | Human & device backlog (Unreleased) | HUMAN | F-Droid fdroiddata MR for 1.10.1 after tagging (FDROID_MAINTENANCE.md) | No automation rule for HUMAN task (GitLab fdroiddata MR) |
