@@ -74,9 +74,6 @@ Per [`PRE_RELEASE_AUDIT.md`](PRE_RELEASE_AUDIT.md). Prefer `/ship`.
 
 <!-- parallel_exception: independent news follow-ups; run sequentially -->
 
-1. 🔲 [AGENT] Switch pr-title.yml from pull_request_target to pull_request — scope: .github/workflows/pr-title.yml (news P1, 2026-11-16) https://github.blog/changelog/2026-11-02-pull_request_target-blocked-by-default-december-2/
-2. 🔲 [AGENT] Bump Compose BOM 2026.08.00 → 2026.11.01 (Compose 1.13 / Material3 1.5.0; needs Kotlin 2.2+ and compileSdk 37.1, check AGP) and fix Slider/RangeSlider call sites (`onValueChange` now required) — scope: gradle/libs.versions.toml,app/,core-ui/,feature-dashboard/ (news P2, 2026-11-19) https://developer.android.com/blog/posts/jetpack-compose-november-2026-release
-3. 🔲 [AGENT] Bump the Gradle wrapper 9.9.0 → 9.9.2 and commit the regenerated wrapper jar and distributionSha256Sum (4 High security fixes: SFTP host keys, snapshot dependency verification, TestKit temp dir, daemon registry, also gets the 9.9.1 Critical version-catalog fix) — scope: gradle/wrapper/ (news P2, 2026-11-20) https://docs.gradle.org/9.9.2/release-notes.html
 
 #### Human & device (after automation)
 
@@ -110,6 +107,16 @@ _No cloud agent items._
 **Toolchain:** Gradle **9.5.1** / AGP **9.2.1** / Kotlin **2.4.0** / `compileSdk` **37** / `targetSdk` **36**
 
 ---
+
+### Waiting on a person
+
+## Child Repo Playbook
+
+### Sprint — Visible queue
+
+1. 🔲 [AGENT] Switch pr-title.yml from pull_request_target to pull_request — scope: .github/workflows/pr-title.yml (news P1, 2026-11-16) https://github.blog/changelog/2026-11-02-pull_request_target-blocked-by-default-december-2/
+2. 🔲 [AGENT] Bump Compose BOM 2026.08.00 → 2026.11.01 (Compose 1.13 / Material3 1.5.0; needs Kotlin 2.2+ and compileSdk 37.1, check AGP) and fix Slider/RangeSlider call sites (`onValueChange` now required) — scope: gradle/libs.versions.toml,app/,core-ui/,feature-dashboard/ (news P2, 2026-11-19) https://developer.android.com/blog/posts/jetpack-compose-november-2026-release
+3. 🔲 [AGENT] Bump the Gradle wrapper 9.9.0 → 9.9.2 and commit the regenerated wrapper jar and distributionSha256Sum (4 High security fixes: SFTP host keys, snapshot dependency verification, TestKit temp dir, daemon registry, also gets the 9.9.1 Critical version-catalog fix) — scope: gradle/wrapper/ (news P2, 2026-11-20) https://docs.gradle.org/9.9.2/release-notes.html
 
 ## Archived sprints
 
@@ -145,6 +152,4 @@ _No open Dependabot or Release Please PRs._
 <!-- template-gaps-sync:begin -->
 _No template gaps._
 <!-- template-gaps-sync:end -->
-
-### Waiting on a person
 
